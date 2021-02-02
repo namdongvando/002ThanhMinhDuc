@@ -1,0 +1,49 @@
+<?php
+$project = new Module\project\Model\Controller($project);
+?>
+<a href="/project/controller/" class="btn btn-primary" ><i class="fa fa-arrow-left" ></i></a>
+<div class="row "  >
+    <section class="col-md-6 pb-10" >
+        <div class="connectedSortable" >
+            <div class="box box-primary" >
+                <div class="box-header" >
+                    <h3 class="box-title" >Controller</h3>
+                </div>
+                <div class="box-body" >
+                    <form action="" method="post" enctype="multipart/form-data" >
+                        <?php
+                        \Module\project\Model\ControllerForm::Id($project->Id)->render();
+                        \Module\project\Model\ControllerForm::Name($project->Name)->renderHTML();
+                        \Module\project\Model\ControllerForm::Lat($project->Lat)->renderHTML();
+                        \Module\project\Model\ControllerForm::Lon($project->Lon)->renderHTML();
+                        \Module\project\Model\ControllerForm::Ip($project->Ip)->renderHTML();
+                        \Module\project\Model\ControllerForm::Username($project->Username)->renderHTML();
+                        \Module\project\Model\ControllerForm::Password($project->Password)->renderHTML();
+                        ?>
+                        <input type="submit" class="btn btn-success" value="Lưu" />
+                        <?php
+                        if ($project->CanDelete()) {
+                            ?>
+                            <a href="/project/controller/delete/<?php echo $project->CodeId(); ?>" data-confirm="Bạn có muốn xóa thiết bị này?" class="btn btn-danger xoa" >Xóa</a>
+                            <?php
+                        }
+                        ?>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="col-md-6 pb-10" >
+        <div class="box box-primary" >
+            <div class="box-header" >
+                <h3 class="box-title" >Ghi Chú</h3>
+            </div>
+            <div class="box-body" >
+                <p class="label-danger p-10" >Để xóa thiết bị này bạn phải xóa hết thông tin khách hàng của thiết bị</p>
+
+                <a href="/project/controller/clear/<?php echo $project->CodeId(); ?>" class="btn btn-danger confirm" data-confirm="Trước Khi xóa bạn hãy nhớ bakup data."  >Xóa Thông Tin Khách Trên Thiết Bị</a>
+
+            </div>
+        </div>
+    </section>
+</div>

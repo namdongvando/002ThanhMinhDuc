@@ -1,0 +1,80 @@
+<script type="text/javascript" >
+    app.controller("rmmController", function($scope, $http) {
+        $scope.rmmInnit = function( ) {
+            $http.get("/rmm/api/rooms/").then(function(res) {
+                $scope._Rooms = res.data;
+            });
+        }
+    });
+</script>
+<div class="row " ng-controller="rmmController" ng-init="rmmInnit()" >
+    <section class="col-md-12 pb-10" >
+        <div class="connectedSortable" >
+            <a class="btn btn-primary" data-toggle="modal" href='#modal-id'><i class="fa fa-plus" ></i></a>
+            <form action="" enctype="multipart/form-data" >
+                <div class="modal fade " id="modal-id">
+                    <div class="modal-dialog modal-lg">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                <h4 class="modal-title">Thêm Phòng Họp</h4>
+                            </div>
+                            <div class="modal-body ">
+
+                                <?php
+                                Module\rmm\Model\RoomForm::Id(0)->render();
+                                Module\rmm\Model\RoomForm::Name()->renderHTML();
+                                Module\rmm\Model\RoomForm::Code()->renderHTML();
+                                Module\rmm\Model\RoomForm::Adreess()->renderHTML();
+                                Module\rmm\Model\RoomForm::MaxNumber()->renderHTML();
+                                Module\rmm\Model\RoomForm::Type()->renderHTML();
+                                Module\rmm\Model\RoomForm::Config()->renderHTML();
+                                ?>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                <button type="button" class="btn btn-primary">Thêm</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+
+
+            <div class="box box-solid">
+                <div class=" box-header bg-green-gradient">
+                    <i class="fa fa-list"></i>
+                    <h3 class="box-title">Danh Sách Phòng Hop</h3>
+                    <!-- tools box -->
+                </div><!-- /.box-header -->
+                <div class="box-body">
+                    <table class="table table-bordered" >
+                        <thead>
+                            <tr>
+                                <td>Id</td>
+                                <td>Tên Phòng</td>
+                                <td>Đia Chỉ Phòng</td>
+                                <td>Loại Hình Phòng</td>
+                                <td>Số Người Tốt Da</td>
+                                <td>Khác</td>
+                            </tr>
+                        </thead>
+
+                        <tbody  >
+                            <tr ng-repeat="item  in _Rooms" >
+                                <td>Id</td>
+                                <td>Tên Phòng</td>
+                                <td>Đia Chỉ Phòng</td>
+                                <td>Loại Hình Phòng</td>
+                                <td>Số Người Tốt Da</td>
+                                <td>Khác</td>
+                            </tr>
+
+                        </tbody>
+
+                    </table>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>

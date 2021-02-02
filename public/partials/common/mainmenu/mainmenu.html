@@ -1,0 +1,36 @@
+<h4 class="title">
+    <span class="title-menu">Danh Mục Sản Phẩm</span>
+    <span class="btn-open-mobile pull-right home-page"><i class="fa fa-bars"></i></span>
+</h4>
+<div class="vertical-menu-content is-home">
+    <ul class="vertical-menu-list">
+        <li><a href="#" ng-show="!_mainMenu" >loading...</a></li>
+        <li><a href="#" ng-show="!_mainMenu" >loading...</a></li>
+        <li><a href="#" ng-show="!_mainMenu" >loading...</a></li>
+        <li><a href="#" ng-show="!_mainMenu" >loading...</a></li>
+        <li><a href="#" ng-show="!_mainMenu" >loading...</a></li>
+        <li><a href="#" ng-show="!_mainMenu" >loading...</a></li>
+        <li><a href="#" ng-show="!_mainMenu" >loading...</a></li>
+        <li><a href="#" ng-show="!_mainMenu" >loading...</a></li>
+        <li><a href="#" ng-show="!_mainMenu" >loading...</a></li>
+        <li><a href="#" ng-show="!_mainMenu" >loading...</a></li>
+        <li><a href="#" ng-show="!_mainMenu" >loading...</a></li>
+        <li ng-class="$index >= 11 ? 'cat-link-orther' : ''"  ng-repeat="menu in  _mainMenu" >
+            <a ng-class="menu.DSDanhMucCon.length > 0 ? 'parent' : ''"  title="{{menu.catName}}" data-tooltip="{{menu.catName}}" href="{{menu.Link}}">{{menu.catName}}</a>
+            <div ng-show="menu.DSDanhMucCon.length > 0" class="vertical-dropdown-menu" style="width: 900px;" >
+                <div class="vertical-groups col-sm-12">
+                    <div class="mega-group col-sm-4" ng-repeat="submenu in menu.DSDanhMucCon" >
+                        <h4 class="mega-group-header"><span><a href="{{submenu.Link}}" >{{submenu.catName}}</a></span></h4>
+                        <ul class="group-link-default">
+                            <li ng-repeat="submenu1 in submenu.DSDanhMucCon" ><a href="{{submenu1.Link}}">{{submenu1.catName}}</a></li>
+                        </ul>
+                    </div>
+                    <div class="mega-custom-html col-sm-12 hidden">
+                        <a href="#"><img src="/public/home/assets/data/banner-megamenu.jpg" alt="Banner"></a>
+                    </div>
+                </div>
+            </div>
+        </li>
+    </ul>
+    <div class="all-category"><span class="open-cate">Tất Cả Danh Mục</span></div>
+</div>

@@ -1,0 +1,95 @@
+<?php
+$admin = new Module\user\Model\Admin($admin);
+?>
+<script type="text/javascript" >
+    app.controller("usersController", function($scope, $http) {
+        $scope.resetMail = function(id) {
+            $http.post("/user/users/resetpassword/", $.param({"publicKey": id})).then(function(res) {
+                $scope.thongBao = "đã reset password";
+            });
+        }
+    });</script>
+
+<div class="" ng-controller="usersController" >
+    <form action="" method="post" enctype="multipart/form-data" >
+        <div class="breadcrumb">
+            <a href="/user/users/" class="btn-sm btn btn-primary" >
+                <i class="fa fa-angle-double-left" ></i>
+                Quay Lại
+            </a>
+            <input type="submit" class="btn-sm btn btn-success" value="Lưu" />
+            <button onclick="window.location.reload()" class ="pull-right btn-sm btn btn-primary"  ><i class="fa fa-refresh" ></i></button>
+        </div>
+        <div class="row" >
+            <section class="col-md-6 pb-10" >
+                <div class="connectedSortable" >
+                    <div class="box box-primary" >
+                        <div class="box-header" >
+                            <h3 class="box-title" >Tài Khoản</h3>
+                        </div>
+                        <div class="box-body" >
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <?php
+                                    Module\user\Model\AdminForm::Id($admin->Id)->render();
+                                    Module\user\Model\AdminForm::Name($admin->Name)->renderHTML();
+                                    ?>
+                                </div>
+                                <div class="col-md-6">
+                                    <?php
+                                    Module\user\Model\AdminForm::Username($admin->Username)->renderHTML();
+                                    ?>
+                                </div>
+                                <div class="col-md-6">
+                                    <?php
+                                    Module\user\Model\AdminForm::Email($admin->Email)->renderHTML();
+                                    ?>
+                                </div>
+                                <div class="col-md-6">
+                                    <?php
+                                    Module\user\Model\AdminForm::Phone($admin->Phone)->renderHTML();
+                                    ?>
+                                </div>
+                                <div class="col-md-6">
+                                    <?php
+                                    Module\user\Model\AdminForm::Address($admin->Address)->renderHTML();
+                                    ?>
+                                </div>
+                                <div class="col-md-6">
+                                    <?php
+                                    Module\user\Model\AdminForm::Active($admin->Active)->renderHTML();
+                                    ?>
+                                </div>
+                                <div class="col-md-6">
+                                    <?php
+                                    Module\user\Model\AdminForm::Groups($admin->Groups)->renderHTML();
+                                    ?>
+                                </div>
+                                <div class="col-md-12">
+                                    <?php
+                                    Module\user\Model\AdminForm::Note($admin->Note)->renderHTML();
+                                    ?>
+                                </div>
+
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <section class="col-md-6 pb-10" >
+                <div class="connectedSortable" >
+                    <div class="box box-primary" >
+                        <div class="box-header" >
+                            <h3 class="box-title" >Thao Tác</h3>
+                        </div>
+                        <div class="box-body" >
+                            <input type="button" ng-click="resetMail('<?php echo $admin->publicKey(); ?>')" class="btn btn-success" value="Reset Password" />
+                            {{thongBao}}
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </form>
+</div>

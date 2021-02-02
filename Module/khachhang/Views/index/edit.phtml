@@ -1,0 +1,205 @@
+<?php
+$project = new Module\project\Model\Project($project);
+//var_dump(\Module\project\Model\Project::GetEditProject(true));
+?>
+<script type="text/javascript" >
+    app.controller("projecteditController", function($scope, $http) {
+        $scope.projectInnit = function() {
+            $http.get("/project/api/allusers/").then(function(res) {
+                $scope._Users = res.data;
+            });
+            $scope.projectUsers();
+            $scope.projectController();
+        }
+        $scope.projectUsers = function() {
+            $http.get("/project/api/usersproject/").then(function(res) {
+                $scope._UsersProject = res.data;
+            });
+        }
+        $scope.projectController = function() {
+            $http.get("/project/api/projectController/").then(function(res) {
+                $scope._projectController = res.data;
+            });
+        }
+        $scope.AddProjectUser = function(id) {
+            $http.get("/project/api/addusersproject/" + id).then(function(res) {
+                $scope.projectUsers();
+            });
+        }
+        $scope.RemoveProjectUser = function(id) {
+            if (confirm("Bạn có muốn xóa user này khỏi dự án?") == false)
+                return;
+            $http.get("/project/api/removeusersproject/" + id).then(function(res) {
+                $scope.projectUsers();
+            });
+        }
+    });</script>
+<div class="row " ng-controller="projecteditController" ng-init='projectInnit()' >
+    <section class="col-md-6 pb-10" >
+        <div class="connectedSortable" >
+            <div class="box box-primary" >
+                <div class="box-header" >
+                    <h3 class="box-title" >Dự Án</h3>
+                </div>
+                <div class="box-body" >
+                    <form action="" method="post" enctype="multipart/form-data" >
+                        <?php
+                        \Module\project\Model\ProjectForm::Id($project->Id)->render();
+                        \Module\project\Model\ProjectForm::Name($project->Name)->renderHTML();
+                        \Module\project\Model\ProjectForm::Email($project->Email)->renderHTML();
+                        \Module\project\Model\ProjectForm::Phone($project->Phone)->renderHTML();
+                        \Module\project\Model\ProjectForm::MaxNumberController($project->MaxNumberController)->renderHTML();
+                        \Module\project\Model\ProjectForm::Address($project->Address)->renderHTML();
+                        ?>
+                        <input type="submit" class="btn btn-success" value="Lưu" />
+                        <a href="/project/index/" class="btn btn-primary" >Quay Lại</a>
+                        <a href="/project/index/look/<?php echo $project->EncodeData(); ?>" class="btn btn-warning" >Khóa Dự Án</a>
+                        <a href="/project/index/delete/<?php echo $project->EncodeData(); ?>" class="btn btn-danger" >Hủy Dự Án</a>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="col-md-6 pb-10" >
+        <div class="connectedSortable" >
+            <div class="box box-primary" >
+                <div class="box-header" >
+                    <h3 class="box-title" >Tài khoản</h3>
+                </div>
+                <div class="box-body" >
+                    <?php
+                    if (\Module\user\Model\Admin::getCurentUser(true)->isAdmin()) {
+                        ?>
+                        <p>
+                            Thêm Tài khoản quản lý dự án.
+                        </p>
+                        <div class="form-group">
+                            <label for="">Tìm Kiếm</label>
+                            <input type="text" class="form-control" ng-model="timkiem" placeholder="Email hoặc Tài khoản">
+                        </div>
+                        <div class="col-md-6"  >
+                            <div class="form-group" ng-repeat="us in _Users| filter: timkiem" >
+                                <button class="pull-right btn btn-success" ng-click="AddProjectUser(us.Id)" ><i class="fa fa-plus" ></i></button>
+                                <h3 for="">{{us.Name}}</h3>
+                                <h5 for="">{{us.Email}}</h5>
+                            </div>
+                        </div>
+                        <?php
+                    }
+                    ?>
+                    <div class="col-md-6" >
+                        <div class="form-group" ng-repeat="us in _UsersProject| filter: timkiem" >
+                            <?php
+                            if (\Module\user\Model\Admin::getCurentUser(true)->isAdmin()) {
+                                ?>
+                                <button class="pull-right btn btn-danger" ng-click="RemoveProjectUser(us.user.Id)" >
+                                    <i class="fa fa-minus" ></i>
+                                </button>
+                                <?php
+                            }
+                            ?>
+                            <h3 for="">{{us.user.Name}}</h3>
+                            <h5 for="">{{us.user.Email}}</h5>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="col-md-12 pb-10" >
+        <div class="connectedSortable" >
+            <div class="box box-primary" >
+                <div class="box-header" >
+                    <h3 class="box-title" >Thiết Bị ({{_projectController.length}}/<?php echo $project->MaxNumberController ?>)</h3>
+                </div>
+                <div class="box-body" >
+                    <table class="table table-bordered" >
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <th>#</th>
+                                <th>Name Controller</th>
+                                <th>Lat/Long</th>
+                                <th>IP</th>
+                                <th>Username</th>
+                                <th>Password</th>
+
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="item in _projectController" >
+                                <td>
+                                    <a href="/project/controller/edit/{{item.token}}" class="btn btn-success" >
+                                        <i class="fa fa-edit" ></i>
+                                    </a>
+                                    <a target="_blank" href="{{item.LinkLogin}}" class="btn btn-success" >
+                                        <i class="fa fa-sign-in" ></i>
+                                    </a>
+                                </td>
+                                <td>{{$index + 1}}</td>
+                                <td><a href="/project/controller/datacontroller/{{item.token}}">{{item.Name}}</a></td>
+                                <td><i class="fa fa-map-marker" ></i>{{item.Lat}}.{{item.Lon}}</td>
+                                <td>{{item.Ip}}</td>
+                                <td>{{item.Username}}</td>
+                                <td><input value="{{item.Password}}" type="password" ></td>
+                            </tr>
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <th></th>
+                                <th>#</th>
+                                <th>Name</th>
+                                <th>Lat/Long</th>
+                                <th>IP</th>
+                                <th>Username</th>
+                                <th>Password</th>
+                            </tr>
+                        </tfoot>
+
+                    </table>
+
+                </div>
+                <div class="box-footer clearfix no-border">
+                    <?php
+                    if ($project->CanInsertController()) {
+                        ?>
+                        <a class="pull-right btn btn-primary" data-toggle="modal" href='#addThietBi'>
+                            <i class="fa fa-plus" ></i>
+                            Thêm Thiết Bị
+                        </a>
+                        <?php
+                    }
+                    ?>
+                    <form method="POST" action="/project/controller/create/" enctype="multipart/form-data" >
+                        <div class="modal fade" data-backdrop="false"  id="addThietBi">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                        <h4 class="modal-title">Thêm Thiết Bị</h4>
+                                    </div>
+                                    <div class="modal-body">
+                                        <?php
+                                        \Module\project\Model\ControllerForm::PIdHidder($project->Id)->render();
+                                        \Module\project\Model\ControllerForm::Name()->renderHTML();
+                                        \Module\project\Model\ControllerForm::Lat()->renderHTML();
+                                        \Module\project\Model\ControllerForm::Lon()->renderHTML();
+                                        \Module\project\Model\ControllerForm::Ip()->renderHTML();
+                                        \Module\project\Model\ControllerForm::Username()->renderHTML();
+                                        \Module\project\Model\ControllerForm::Password()->renderHTML();
+                                        ?>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-default" data-dismiss="modal">Đóng</button>
+                                        <button type="submit" name="btnsave" class="btn btn-primary">Thêm</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+</div>

@@ -1,0 +1,220 @@
+<link href="<?php echo AppPath ?>/public/lichsu/lichsu.css" rel="stylesheet" type="text/css"/>
+<script src="<?php echo AppPath ?>/public/lichsu/lichsuServices.js?v=<?php echo time(); ?>" type="text/javascript"></script>
+<script src="<?php echo AppPath ?>/public/lichsu/lichsuController.js?v=<?php echo time(); ?>" type="text/javascript"></script>
+<div class="" ng-controller="lichsuController"  >
+    <h3> Lịch Sử Sử Dụng Dịch Vụ</h3>
+    <div role="tabpanel" class="panel-history" >
+        <div class="tabs" >
+            <ul class="tabs__list" >
+                <li role="presentation" class="tabs__item tabs__item--active">
+                    <a href="#chuakham" class="tabs__url tabs__trigger" target="_self"  aria-controls="chuakham" role="tab" data-toggle="tab">Sắp Tới</a>
+                </li>
+                <li role="presentation" class="tabs__item" >
+                    <a href="#tab" class="tabs__url tabs__trigger" target="_self" aria-controls="tab" role="tab" data-toggle="tab">Đã Qua</a>
+                </li>
+                <li role="presentation" class="tabs__item" >
+                    <a href="#Denghi" class="tabs__url tabs__trigger" target="_self" aria-controls="Denghi" role="tab" data-toggle="tab">Đề Nghị</a>
+                </li>
+            </ul>
+        </div>
+        <!-- Tab panes -->
+        <div class="tabs__content tabs__content-trigger">
+            <div role="tabpanel" class="tabs__content-pane  tabs__content-pane--active" id="chuakham"  >
+                <div class="panel panel-default" >
+                    <div class="panel-body " style="padding: 10px;" >
+                        <div class="row" >
+                            <div class="form-group col-md-12 ">
+                                <input type="text" class="form-control" ng-model="lblTimKiem.Status" placeholder="Tìm kiếm phiếu hẹn">
+                            </div>
+                            <div ng-show="immunizationLichKhamSapToi" ng-repeat="PhieuHen1DangChon in immunizationLichKhamSapToi| filter:lblTimKiem" ng-class="PhieuHen1DangChon.IsRemoved == true ? 'hidden' : ''" class="col-md-6 " style="margin-top: 10px;padding: 5px;" >
+                                <div class="PhieuHen1" style="background-color: #3F95A2;height: 450px;overflow: hidden;" >
+                                    <div class="tinhtrangphieuhen" >
+                                        <span class="dakham" ng-show="PhieuHen1DangChon.Status == 2"  >đã thực hiện</span>
+                                        <span class="huy" ng-show="PhieuHen1DangChon.Status == 3" >Hủy</span>
+                                        <span class="huy" ng-show="PhieuHen1DangChon.Status == 5" >Người dùng hủy</span>
+                                        <span class="khongthuchien" ng-show="PhieuHen1DangChon.Status == 4" >Không thực hiện</span>
+                                    </div>
+                                    <h3 class="PhieuHen1_Hname " data-toggle="tooltip" data-placement="top" title="{{PhieuHen1DangChon.HospitalName}}" >{{PhieuHen1DangChon.HospitalName}}</h3>
+                                    <p style="height: 40px;" >Đ/c:{{PhieuHen1DangChon.HospitalInfo.Address}}</p>
+                                    <p >{{PhieuHen1DangChon.Id}}</p>
+                                    <!--<p >Đ/c:{{PhieuHen1DangChon.Id}}</p>-->
+                                    <hr style="margin: 0px;" >
+                                    <div>
+                                        <table class="table table-bordered"  style="margin-bottom: 0px" >
+                                            <tbody style="border-bottom: 1px solid #fff;" >
+                                                <tr>
+                                                    <td>Họ & Tên </td>
+                                                    <td>{{PhieuHen1DangChon.Customer.FullName}}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td >Mã định danh </td>
+                                                    <td ></td>
+                                                </tr>
+                                                <tr>
+                                                    <td >Ngày sinh </td>
+                                                    <td >
+                                                        {{PhieuHen1DangChon.Customer.BirthDate.substring(0, 10) | date:"dd-MM-yyyy"}}
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Điện thoại</td>
+                                                    <td>{{PhieuHen1DangChon.Customer.Phone}}</td>
+                                                </tr>
+
+                                            </tbody>
+                                            <tbody style="border-bottom: 1px solid #fff;"  >
+                                                <tr>
+                                                    <td>Loai hình </td>
+                                                    <td>{{PhieuHen1DangChon.ServiceName}} </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Ngày </td>
+                                                    <td><b style="color: gold" >{{PhieuHen1DangChon.Schedule.Date| date:"dd-MM-yyyy"}}</b>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td >Giờ </td>
+                                                    <td ><b style="color: gold" >{{PhieuHen1DangChon.Schedule.Time.substring(0, 5)}}</b></td>
+                                                </tr>
+                                                <tr  >
+                                                    <td  >Bác Sĩ </td>
+                                                    <td > <label>{{PhieuHen1DangChon.DoctorName}}</label>  </td>
+                                                </tr>
+                                                <tr  >
+                                                    <td >Chuyên Khoa </td>
+                                                    <td style="line-height: 20px;overflow: no-content;height: 20px;display: block;" > {{PhieuHen1DangChon.Service.Name}}
+                                                    </td>
+                                                </tr>
+                                                <tr  >
+                                                    <td>Phòng </td>
+                                                    <td style="width: 60%;" >
+                                                        {{PhieuHen1DangChon.RoomName}}
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                            <tbody style="min-height: 70px"  >
+                                                <tr>
+                                                    <td colspan="2" ><strong>Người liên hệ </strong>
+                                                    </td>
+                                                </tr>
+                                                <tr  ng-repeat="item  in PhieuHen1DangChon.ContactInfo" >
+                                                    <td colspan="2" > {{item.Phone}} | {{item.Relationship}} - {{item.Name}}
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                                <div class="clearfix" ></div>
+                                <div class="text-center" style="min-height: 50px;margin-top: 15px;" >
+                                    <button ng-show="PhieuHen1DangChon.Status == 1" class="btn btn-danger" type="button" ng-click="XoaLichTiemChung(PhieuHen1DangChon)" >Hủy Phiếu Hẹn</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div ng-show="!immunizationLichKhamSapToi" >loading...</div>
+                    </div>
+                </div>
+            </div>
+            <div role="tabpanel" class="tabs__content-pane " id="tab">
+                <div class="panel panel-default" >
+                    <div class="panel-body " style="padding: 10px;" >
+                        <div class="row" >
+                            <div ng-show="immunizationLichDaQua" ng-repeat="PhieuHen1DangChon in immunizationLichDaQua" ng-class="PhieuHen1DangChon.IsRemoved == true ? 'hidden' : ''" class="col-md-6 " style="margin-top: 10px;padding: 5px;" >
+                                <div class="PhieuHen1" style="background-color: #3F95A2;height: 450px;overflow: hidden;" >
+                                    <div class="tinhtrangphieuhen" >
+                                        <span class="dakham" ng-show="PhieuHen1DangChon.Status == 2"  >đã thực hiện</span>
+                                        <span class="huy" ng-show="PhieuHen1DangChon.Status == 3" >Hủy</span>
+                                        <span class="huy" ng-show="PhieuHen1DangChon.Status == 5" >Người dùng hủy</span>
+                                        <span class="khongthuchien" ng-show="PhieuHen1DangChon.Status == 4" >Không thực hiện</span>
+                                    </div>
+                                    <h3 class="PhieuHen1_Hname " data-toggle="tooltip" data-placement="top" title="{{PhieuHen1DangChon.HospitalName}}" >{{PhieuHen1DangChon.HospitalName}}</h3>
+                                    <p style="height: 40px;" >Đ/c:{{PhieuHen1DangChon.HospitalInfo.Address}}</p>
+                                    <!--<p >Đ/c:{{PhieuHen1DangChon.Id}}</p>-->
+                                    <hr style="margin: 0px;" >
+                                    <div>
+                                        <table class="table table-bordered"  style="margin-bottom: 0px" >
+                                            <tbody style="border-bottom: 1px solid #fff;" >
+                                                <tr>
+                                                    <td>Họ & Tên </td>
+                                                    <td>{{PhieuHen1DangChon.Customer.FullName}}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td >Mã định danh </td>
+                                                    <td ></td>
+                                                </tr>
+                                                <tr>
+                                                    <td >Ngày sinh </td>
+                                                    <td >
+                                                        {{PhieuHen1DangChon.Customer.BirthDate.substring(0, 10) | date:"dd-MM-yyyy"}}
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Điện thoại</td>
+                                                    <td>{{PhieuHen1DangChon.Customer.Phone}}</td>
+                                                </tr>
+
+                                            </tbody>
+                                            <tbody style="border-bottom: 1px solid #fff;"  >
+                                                <tr>
+                                                    <td>Loai hình </td>
+                                                    <td>{{PhieuHen1DangChon.ServiceName}} </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Ngày </td>
+                                                    <td><b style="color: gold" >{{PhieuHen1DangChon.Schedule.Date| date:"dd-MM-yyyy"}}</b>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td >Giờ </td>
+                                                    <td ><b style="color: gold" >{{PhieuHen1DangChon.Schedule.Time.substring(0, 5)}}</b></td>
+                                                </tr>
+                                                <tr  >
+                                                    <td  >Bác Sĩ </td>
+                                                    <td > <label>{{PhieuHen1DangChon.DoctorName}}</label>  </td>
+                                                </tr>
+                                                <tr  >
+                                                    <td >Chuyên Khoa </td>
+                                                    <td style="line-height: 20px;overflow: no-content;height: 20px;display: block;" > {{PhieuHen1DangChon.Service.Name}}
+                                                    </td>
+                                                </tr>
+                                                <tr  >
+                                                    <td>Phòng </td>
+                                                    <td style="width: 60%;" >
+                                                        {{PhieuHen1DangChon.RoomName}}
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                            <tbody style="min-height: 70px;">
+                                                <tr>
+                                                    <td colspan="2" ><strong>Người liên hệ </strong>
+                                                    </td>
+                                                </tr>
+                                                <tr ng-repeat="item  in PhieuHen1DangChon.ContactInfo" >
+                                                    <td colspan="2" > {{item.Phone}} | {{item.Relationship}} - {{item.Name}}
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                        </div>
+                        <div class="clearfix" ></div>
+                        <ul class="pagination ">
+                            <li><a href="#">&laquo;</a></li>
+                            <li><a href="#" ng-repeat="itemp in total_pages"  ng-click="paginateController1(DSLichKhamDaQua, itemp)" >{{itemp}}</a></li>
+                            <li><a href="#">&raquo;</a></li>
+                        </ul>
+                        <div ng-show="!immunizationLichDaQua" >loading...</div>
+                    </div>
+                </div>
+            </div>
+            <div role="tabpanel" class="tabs__content-pane " id="Denghi">
+
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,37 @@
+ 
+<div>
+    <a href="/option/index/" class="btn btn-primary" >Danh Sách Tùy Chọn</a>
+</div>
+<div class="container" >
+    <div class="row " ng-controller="rmmController" ng-init="rmmInnit()" >
+        <section class="col-md-12 pb-10" >
+            <form action="" method="POST" enctype="multipart/form-data" >
+
+                <div class="connectedSortable" >
+                    <div class="box box-solid">
+                        <div class=" box-header bg-blue-gradient">
+                            <h3 class="box-title">Chi Tiết Phòng Họp</h3>
+                            <!-- tools box -->
+                        </div>
+                        <div class="box-body">
+                            <?php
+                            \Module\option\Model\OptionForm::Id($option->Id)->render();
+                            \Module\option\Model\OptionForm::Code($option->Code)->renderHTML();
+                            \Module\option\Model\OptionForm::Name($option->Name)->renderHTML();
+                            \Module\option\Model\OptionForm::Groups($option->Groups)->renderHTML();
+                            \Module\option\Model\OptionForm::Note($option->Note)->renderHTML();
+                            \Module\option\Model\OptionForm::Parents($option->Parents)->renderHTML();
+                            \Module\option\Model\OptionForm::OrderBy($option->OrderBy)->renderHTML();
+                            ?>
+                        </div>
+                        <div class="box-footer" >
+                            <?php
+                            Module\rmm\Model\RoomForm::btnSave()->render();
+                            ?>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </section>
+    </div>
+</div>

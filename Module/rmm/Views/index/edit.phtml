@@ -1,0 +1,46 @@
+<script type="text/javascript" >
+    app.controller("rmmController", function($scope, $http) {
+        $scope.rmmInnit = function( ) {
+            $http.get("/rmm/api/roomstype/").then(function(res) {
+                $scope._Rooms = res.data;
+            });
+        }
+    });
+</script>
+<?php
+$room = new Module\rmm\Model\Room($Room);
+?>
+<div class="container" >
+    <div class="row " ng-controller="rmmController" ng-init="rmmInnit()" >
+        <section class="col-md-12 pb-10" >
+            <form action="" method="POST" enctype="multipart/form-data" >
+
+                <div class="connectedSortable" >
+                    <div class="box box-solid">
+                        <div class=" box-header bg-green-gradient">
+                            <i class="fa fa-list"></i>
+                            <h3 class="box-title">Chi Tiết Phòng Họp</h3>
+                            <!-- tools box -->
+                        </div>
+                        <div class="box-body">
+                            <?php
+                            Module\rmm\Model\RoomForm::Id($room->Id)->render();
+                            Module\rmm\Model\RoomForm::Name($room->Name)->renderHTML();
+                            Module\rmm\Model\RoomForm::Code($room->Code)->renderHTML();
+                            Module\rmm\Model\RoomForm::Adreess($room->Adreess)->renderHTML();
+                            Module\rmm\Model\RoomForm::MaxNumber($room->MaxNumber)->renderHTML();
+                            Module\rmm\Model\RoomForm::Type([$room->Type])->renderHTML();
+                            Module\rmm\Model\RoomForm::Config($room->Config)->renderHTML();
+                            ?>
+                        </div>
+                        <div class="box-footer" >
+                            <?php
+                            Module\rmm\Model\RoomForm::btnSave()->render();
+                            ?>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </section>
+    </div>
+</div>

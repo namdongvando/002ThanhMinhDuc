@@ -1,0 +1,61 @@
+<div class="container-fluid" >
+    <div class="row" >
+        <section class="pb-10" >
+            <a href="/trungtambaohanh/index/" class="btn btn-primary" >Các Trung Tâm Bảo Hành</a>
+        </section>
+        <div class="clearfix" ></div>
+        <section class="pb-10" >
+            <form action="/trungtambaohanh/index/create/"  method="POST" enctype="multipart/form-data" >
+
+                <div class="connectedSortable" >
+                    <div class="box box-solid">
+                        <div class=" box-header bg-blue-gradient">
+                            <h3 class="box-title">Thêm Trung Tâm Bảo Hành</h3>
+                            <!-- tools box -->
+                        </div>
+                        <div class="box-body">
+                            <div class="row pt-15">
+                                <div class="col-md-3">
+                                    <?php
+                                    Module\trungtambaohanh\Model\TrungTamBaoHanhForm::Name(null)->renderHTML();
+                                    ?>
+                                </div>
+                                <div class="col-md-3">
+                                    <?php
+                                    Module\trungtambaohanh\Model\TrungTamBaoHanhForm::Hotline(null)->renderHTML();
+                                    ?>
+                                </div>
+
+                                <div class="col-md-3">
+                                    <?php
+                                    Module\trungtambaohanh\Model\TrungTamBaoHanhForm::TenNhanVien(null)->renderHTML();
+                                    ?>
+                                </div>
+                                <div class="col-md-3">
+                                    <?php
+                                    Module\trungtambaohanh\Model\TrungTamBaoHanhForm::UserId(null)->renderHTML();
+                                    ?>
+                                </div>
+                                <div class="col-md-8">
+                                    <?php
+                                    Module\trungtambaohanh\Model\TrungTamBaoHanhForm::Address(null)->renderHTML();
+                                    ?>
+                                </div>
+                                <div class="col-md-4">
+                                    <?php
+                                    Module\trungtambaohanh\Model\TrungTamBaoHanhForm::KhuVuc(null)->renderHTML();
+                                    ?>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="box-footer" >
+                            <?php
+                            Module\rmm\Model\RoomForm::btnSave()->render();
+                            ?>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </section>
+    </div>
+</div>

@@ -1,0 +1,30 @@
+<ul class="tree-menu">
+    <li ng-show="!_leftMenu" ><span></span><a href="#"  >Loading...</a></li>
+    <li ng-show="!_leftMenu" ><span></span><a href="#"  >Loading...</a></li>
+    <li ng-show="!_leftMenu" ><span></span><a href="#"  >Loading...</a></li>
+    <li ng-show="!_leftMenu" ><span></span><a href="#"  >Loading...</a></li>
+    <li ng-show="!_leftMenu" ><span></span><a href="#"  >Loading...</a></li>
+    <li ng-show="!_leftMenu" ><span></span><a href="#"  >Loading...</a></li>
+    <li ng-show="!_leftMenu" ><span></span><a href="#"  >Loading...</a></li>
+    <li ng-show="!_leftMenu" ><span></span><a href="#"  >Loading...</a></li>
+    <li ng-show="!_leftMenu" ><span></span><a href="#"  >Loading...</a></li>
+    <li ng-show="!_leftMenu" ><span></span><a href="#"  >Loading...</a></li>
+    <li ng-show="!_leftMenu" ><span></span><a href="#"  >Loading...</a></li>
+    <li  ng-repeat="mainmenu in _leftMenu" >
+        <span></span> <a href="{{mainmenu.Link}}"> {{mainmenu.catName}}</a>
+        <ul >
+            <li ng-repeat="submainmenu in mainmenu.DSDanhMucCon" ><span></span>
+                <a href="{{submainmenu.Link}}" >
+                    {{submainmenu.catName}}
+                </a>
+                <ul>
+                    <li ng-repeat="submainmenu1 in submainmenu.DSDanhMucCon" ><span></span> 
+                        <a href="{{submainmenu1.Link}}">
+                            {{submainmenu1.catName}}
+                        </a>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+    </li>
+</ul>

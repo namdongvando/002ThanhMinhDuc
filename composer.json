@@ -1,0 +1,29 @@
+{
+    "name": "namdong/genco",
+    "description": "tool cho genco",
+    "license": "1.1",
+    "keywords": [
+        "facebook",
+        "ads",
+        "business",
+        "sdk",
+        "instagram",
+        "page"
+    ],
+    "require-dev": {
+        "phpunit/phpunit": "~8",
+        "symfony/finder": "~2.6"
+    },
+    "autoload": {
+        "psr-4": {
+            "FacebookAds\\": "src/FacebookAds/"
+        }
+    },
+    "require": {
+        "pfbc/pfbc": "3.1",
+        "zendframework/zend-db": "^2.11",
+        "phpmailer/phpmailer": "^6.1",
+        "facebook/php-business-sdk": "5.0.5",
+        "phpoffice/phpspreadsheet": "^1.14"
+    }
+}

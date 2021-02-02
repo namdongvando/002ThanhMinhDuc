@@ -1,0 +1,39 @@
+<script type="text/javascript" >
+    app.controller("rmmController", function($scope, $http) {
+        $scope.rmmInnit = function( ) {
+            $http.get("/rmm/api/roomstype/").then(function(res) {
+                $scope._Rooms = res.data;
+            });
+        }
+    });
+</script>
+<?php
+$option = new Module\rmm\Model\Option($Option);
+?>
+<div class="container " >
+    <div class="row " ng-controller="rmmController" ng-init="rmmInnit()" >
+        <section class="col-md-12 pb-10" >
+            <div class="connectedSortable" >
+                <div class="box box-solid">
+                    <div class=" box-header bg-green-gradient">
+                        <i class="fa fa-list"></i>
+                        <h3 class="box-title">Danh Sách Loại Phòng Hop</h3>
+                        <!-- tools box -->
+                    </div><!-- /.box-header -->
+                    <div class="box-body">
+                        <form action="" method="POST" enctype="multipart/form-data" >
+                            <?php
+                            \Module\rmm\Model\OptionForm::Id($option->Id)->render();
+                            \Module\rmm\Model\OptionForm::Name($option->Name)->renderHTML();
+                            \Module\rmm\Model\OptionForm::Code($option->Code)->renderHTML();
+                            \Module\rmm\Model\OptionForm::Groups($option->Groups)->renderHTML();
+                            \Module\rmm\Model\OptionForm::OrderBy($option->OrderBy)->renderHTML();
+                            \Module\rmm\Model\OptionForm::btnSubmit()->render();
+                            ?>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+</div>

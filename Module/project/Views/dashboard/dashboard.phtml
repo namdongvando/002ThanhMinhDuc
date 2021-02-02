@@ -1,0 +1,107 @@
+<script type="text/javascript" >
+    app.controller("projectdashboardController", function($scope, $http) {
+        $scope.projectdashboardInnit = function(id) {
+            $http.get("/project/api/dashboard/").then(function(res) {
+                $scope._Dashboard = res.data;
+            });
+        }
+    });
+</script>
+<?php
+if (\Module\project\Model\Project::GetCurentProject(true)) {
+    ?>
+    <div class="row " ng-controller="projectdashboardController" ng-init="projectdashboardInnit('<?php echo $_Param[0] ?>')" >
+        <section class="col-md-12 pb-10" >
+            <div class="col-md-2">
+                <!-- Info Boxes Style 2 -->
+                <div class="info-box bg-yellow">
+                    <a href="/project/controller/datacontrollers/" style="color: #fff;" >
+                        <span class="info-box-icon"><i class="fa fa-users"></i></span>
+                    </a>
+                    <div class="info-box-content">
+                        <span class="info-box-text">Khách Hàng</span>
+                        <span class="info-box-number">{{_Dashboard.TongKhachHang}}</span>
+                        <div class="progress">
+                            <div class="progress-bar" style="width: 100%"></div>
+                        </div>
+                        <span class="progress-description">
+                            Khách hàng đã truy cập
+                        </span>
+                    </div><!-- /.info-box-content -->
+                </div><!-- /.info-box -->
+            </div>
+            <div class="col-md-2">
+                <div class="info-box bg-blue">
+                    <a href="" style="color: #fff;" >
+                        <span class="info-box-icon"><i class="fa fa-wifi"></i></span>
+                    </a>
+                    <div class="info-box-content">
+                        <span class="info-box-text">Thiết Bị</span>
+                        <span class="info-box-number">{{_Dashboard.WifiRouter}}</span>
+                        <div class="progress">
+                            <div class="progress-bar" style=" width: {{(_Dashboard.WifiRouter / 5) * 100}}%"></div>
+                        </div>
+                        <span class="progress-description">
+                            Các Thiết Bị Đang Kết Nối
+                        </span>
+                    </div>
+                </div><!-- /.info-box -->
+            </div>
+            <div class="col-md-2">
+                <div class="info-box bg-green">
+                    <a href="" style="color: #fff;" >
+                        <span class="info-box-icon"><i class="ion ion-clipboard"></i></span>
+                    </a>
+                    <div class="info-box-content">
+                        <span class="info-box-text">Dự Án</span>
+                        <span class="info-box-number">{{_Dashboard.SoLuongProject}}</span>
+                        <div class="progress">
+                            <div class="progress-bar" style="width: 20%"></div>
+                        </div>
+                        <span class="progress-description">
+                            Các Dự Án Đang Quản Lý
+                        </span>
+                    </div>
+                </div><!-- /.info-box -->
+            </div>
+            <div class="col-md-2">
+                <div class="info-box bg-red">
+                    <a href="/project/controller/datacontrollers/" style="color: #fff;" >
+                        <span class="info-box-icon"><i class="ion ion-ios-cloud-download-outline"></i></span>
+                    </a>
+                    <div class="info-box-content">
+                        <span class="info-box-text">Xuất Danh Sách Khách Hàng </span>
+                        <span class="info-box-number">{{_Dashboard.TongKhachHang}}</span>
+                        <div class="progress">
+                            <div class="progress-bar" style="width: 70%"></div>
+                        </div>
+                        <span class="progress-description">
+                            70% Increase in 30 Days
+                        </span>
+                    </div><!-- /.info-box-content -->
+                </div><!-- /.info-box -->
+            </div><!-- /.info-box -->
+            <div class="col-md-2">
+                <div class="info-box bg-aqua">
+                    <a href="/project/users/" style="color: #fff;" >
+                        <span class="info-box-icon"><i class="fa fa-users"></i></span>
+                    </a>
+
+                    <div class="info-box-content">
+                        <span class="info-box-text">Người Quản Trị</span>
+                        <span class="info-box-number">{{_Dashboard.UserAdmin}}</span>
+                        <div class="progress">
+                            <div class="progress-bar" style="width: 40%"></div>
+                        </div>
+                        <span class="progress-description">
+                            Các Tài Khoản Cùng Quản lý
+                        </span>
+                    </div><!-- /.info-box-content -->
+                </div><!-- /.info-box -->
+            </div>
+    </div>
+    </section>
+    </div>
+    <?php
+}
+?>

@@ -1,0 +1,56 @@
+<script type="text/javascript" >
+    app.controller("rmmController", function($scope, $http) {
+        $scope.rmmInnit = function( ) {
+            $http.get("/rmm/api/roomstype/").then(function(res) {
+                $scope._Rooms = res.data;
+            });
+        }
+    });
+</script>
+<?php
+$options = $Option;
+?>
+<div class="container" >
+    <div class="row " ng-controller="rmmController" ng-init="rmmInnit()" >
+        <section class="col-md-12 pb-10" >
+            <div class="connectedSortable" >
+                <a class="btn btn-primary" href='/rmm/roomtype/'><i class="fa fa-angle-left" ></i></a>
+
+                <div class="box box-solid">
+                    <div class=" box-header bg-green-gradient">
+                        <i class="fa fa-list"></i>
+                        <h3 class="box-title">Loại Phòng Hop</h3>
+                        <!-- tools box -->
+                    </div>
+                    <div class="box-body">
+                        <table class="table table-bordered" >
+                            <thead>
+                                <tr>
+                                    <td>Mã</td>
+                                    <td><?php echo $options["Code"] ?></td>
+                                </tr>
+                                <tr>
+                                    <td>Tên Loại</td>
+                                    <td><?php echo $options["Name"] ?></td>
+                                </tr>
+                                <tr>
+                                    <td>Nhóm</td>
+                                    <td><?php echo $options["Groups"] ?></td>
+                                </tr>
+                            </thead>
+
+                        </table>
+
+
+                    </div>
+                    <div class="box-footer" >
+                        <?php
+                        \Module\rmm\Model\OptionForm::btnXoa($options["Id"]);
+                        \Module\rmm\Model\OptionForm::btnEdit($options["Id"]);
+                        ?>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+</div>

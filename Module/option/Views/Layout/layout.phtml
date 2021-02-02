@@ -1,0 +1,41 @@
+<?php
+$bk = new Module\option\Functions();
+$theme = new theme\backend\backend();
+?>
+<!DOCTYPE html>
+<html ng-cloak="TRUE" ng-app="rootApp"  >
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>Quản Lý Tùy Chọn</title>
+        <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+        <?php
+        $theme->head();
+        echo \Application\Html\Css::GetCss();
+        ?>
+        <script src="/public/root/assets/assetConfig.js"></script>
+        <script src="/public/root/assets/libs/agb.min.js"></script>
+    </head>
+    <body class="hold-transition skin-blue-light sidebar-mini"  >
+        <div class="wrapper">
+            <?php
+            $bk->Menu();
+            ?>
+            <div class="content-wrapper">
+                <section class="content">
+                    <?php
+                    Common\Alert::showAlert();
+                    include $_Content;
+                    ?>
+                </section>
+            </div>
+            <?php
+            $theme->footer();
+            ?>
+        </div><!-- ./wrapper -->
+        <?php
+        $theme->js();
+        echo Application\Html\Js::GetJS();
+        ?>
+    </body>
+</html>

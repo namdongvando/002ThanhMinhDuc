@@ -1,0 +1,87 @@
+<script type="text/javascript" >
+    app.controller("projectcontrollerController", function($scope, $http) {
+        $scope.isloading = "Cập Nhật";
+        $scope.projectcontrollerInnit = function(id) {
+            $http.get("/project/api/controllerdata/" + id).then(function(res) {
+                $scope._Project = res.data;
+                $scope.isloading = "Cập Nhật";
+            });
+        }
+        $scope.projectCapnhat = function(id) {
+            $scope.isloading = "Đang Cập Nhật...";
+            $http.get("/project/api/controllerdatabyid/" + id).then(function(res) {
+                $scope.projectcontrollerInnit(id);
+            });
+        }
+    });
+</script>
+<?php
+$model_option = new \Module\project\Model\ControllerData();
+$Controller = new \Module\project\Model\Controller();
+$DataToken = $Controller->TokenDecode($_Param[0]);
+$where = "`ControllerId` = '{$DataToken->Id}'";
+$Options = $model_option->GetRows($where);
+?>
+
+<div class="row " ng-controller="projectcontrollerController" ng-init="projectcontrollerInnit('<?php echo $_Param[0] ?>')" >
+    <section class="col-md-12 pb-10" >
+        <div class="connectedSortable" >
+            <a href="/project/controller/" class="btn btn-primary" ><i class="fa fa-arrow-left" ></i></a>
+            <button type="button" ng-click="projectCapnhat('<?php echo isset($_Param[0]) ? $_Param[0] : "" ?>')" class="btn btn-primary" >
+                {{isloading}}
+            </button>
+            <div class="box box-primary" >
+                <div class="box-header" >
+                    <h3 class="box-title" >Danh Sách Người Dùng</h3>
+                </div>
+                <div class="box-body table-responsive" >
+                    <table class="table table-bordered  dataTable " data-lengthchange='true' id="dataTable1112"  >
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>SĐT | Email</th>
+                                <th>Họ & Tên</th>
+                                <th>Nguồn</th>
+                                <th>Ngày Đăng Nhập</th>
+                                <th>Số Lần Đăng Nhập</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php
+                            foreach ($Options as $k => $value) {
+                                ?>
+                                <tr >
+
+                                    <td><?php echo $k + 1; ?></td>
+                                    <td><?php echo $value["Col0"]; ?></td>
+                                    <td><?php echo $value["Col1"]; ?></td>
+                                    <td><?php echo $value["Col2"]; ?></td>
+                                    <td><?php echo $value["Col3"]; ?></td>
+                                    <td><?php echo $value["Col4"]; ?></td>
+                                    <td></td>
+
+                                </tr>
+                                <?php
+                            }
+                            ?>
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <th>#</th>
+                                <th>SĐT | Email</th>
+                                <th>Họ & Tên</th>
+                                <th>Nguồn</th>
+                                <th>Ngày Đăng Nhập</th>
+                                <th>Số Lần Đăng Nhập</th>
+                                <th></th>
+                            </tr>
+                        </tfoot>
+
+                    </table>
+                </div>
+            </div>
+
+        </div>
+    </section>
+</div>

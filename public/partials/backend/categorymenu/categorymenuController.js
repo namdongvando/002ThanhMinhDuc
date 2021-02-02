@@ -1,0 +1,1 @@
+app.controller("categorymenuController", categorymenuController);  function categorymenuController($scope, $rootScope, $http, $routeParams) {}

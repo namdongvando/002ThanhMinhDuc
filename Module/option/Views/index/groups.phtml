@@ -1,0 +1,80 @@
+<script type="text/javascript" >
+    app.controller("optionController", function($scope, $http) {
+        $scope.optionInnit = function( ) {
+            $http.get("/option/api/options/").then(function(res) {
+                $scope._Options = res.data;
+                console.log($scope._Options);
+            });
+        }
+    });
+</script>
+<div class="row " ng-controller="optionController" ng-init="optionInnit()" >
+    <section class="col-md-12 pb-10" >
+        <div class="connectedSortable" >
+            <a class="btn btn-primary" data-toggle="modal" href='#ThemOptions'>Thêm</a>
+            <form method="POST" action="/option/index/create/" enctype="multipart/form-data" >
+                <div class="modal fade" data-backdrop="false" id="ThemOptions">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                <h4 class="modal-title">Thêm option</h4>
+                            </div>
+                            <div class="modal-body">
+                                <?php
+                                \Module\option\Model\OptionForm::Code()->renderHTML();
+                                \Module\option\Model\OptionForm::Name()->renderHTML();
+                                \Module\option\Model\OptionForm::Groups()->renderHTML();
+                                \Module\option\Model\OptionForm::OrderBy()->renderHTML();
+                                ?>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">Đóng</button>
+                                <button type="submit" name="btnsave" class="btn btn-primary">Thêm</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+
+            <div class="box box-primary" >
+                <div class="box-header" >
+                    <h3 class="box-title" >Tùy Chỉnh</h3>
+                </div>
+                <div class="box-body table-responsive" >
+                    <table class="table table-bordered" >
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Name</th>
+                                <th>Giá Trị</th>
+                                <th>Groups</th>
+                                <th>Xắp Sếp</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="item in _Options" >
+                                <td>{{$index + 1}}</td>
+                                <td>{{item.Name}}</td>
+                                <td>{{item.Code}}</td>
+                                <td>{{item.Groups}}</td>
+                                <td>{{item.OrderBy}}</td>
+                            </tr>
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <th>#</th>
+                                <th>Name</th>
+                                <th>Giá Trị</th>
+                                <th>Groups</th>
+                                <th>Xắp Sếp</th>
+                            </tr>
+                        </tfoot>
+
+                    </table>
+                </div>
+            </div>
+
+        </div>
+    </section>
+</div>

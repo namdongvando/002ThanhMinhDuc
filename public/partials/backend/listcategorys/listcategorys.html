@@ -1,0 +1,88 @@
+<div class="row" >
+    <div class="col-md-4 " >
+        <div class="col-md-12 connectedSortable" >
+            <div class="box box-solid " style="margin-top: 20px;" >
+                <div class="box-header bg-green-gradient">
+                    <i class="fa fa-book"></i>
+                    <h3 class="box-title">Danh Mục </h3>
+                </div><!-- /.box-header -->
+                <div class="box-body bakco-formcategory" ng-init="formcategoryInit(_CategoryDetail.catID,true)" >
+                </div><!-- /.box-body -->
+            </div>
+        </div>
+    </div>
+    <div class="col-md-8 " >
+        <table class="table " >
+            <tr>
+                <!--<th><input class="form-control" ng-model="Timkiem.catID" placeholder="Mã Danh Mục" ></th>-->
+                <th><input class="form-control" ng-model="Timkiem.catName" placeholder="Tên Danh Mục" ></th>
+                <th>
+                    <select ng-model="Timkiem.parentCatID" class="form-control select2" >
+                        <option value="" >Tất cả</option>
+                        <option ng-repeat="item in ListCategory" value="{{item.catID}}" >{{item.catName}}</option>
+                    </select>
+
+                </th>
+                <!--        <th><select ng-model="Timkiem.Public" class="form-control select2" >
+                                <option value="1" >Hiện</option>
+                                <option value="0" >Ẩn</option>
+                            </select>
+                        </th>-->
+            </tr>
+        </table>        
+        <div class="clearfix" ></div>
+
+        <div class="  table-responsive" style="height: 500px;"  >
+            <table class="table table-bordered table-hover"  >
+                <thead>
+                    <tr>
+                        <th>STT</th>
+                        <th>Mã Danh Mục</th>
+                        <th>Tên Danh Mục</th>
+                        <th>Tên Danh Mục Cha</th>
+                        <th>Ẩn Hiển</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody  style="height: 500px;" >
+                    <tr ng-repeat="item in ListCategory| filter : Timkiem" >
+                        <td>{{$index + 1}}</td>
+                        <td>
+                            <a href="/mcategory/detail/{{item.catID}}"  >{{item.catID}}</a>
+
+                        </td>
+                        <td><a href="/mcategory/detail/{{item.catID}}"  ><b>{{item.catName}}</b></a>
+
+                        </td>
+                        <td>
+                            <a ng-show="item.parentCatID != 0" href="/mcategory/detail/{{item.parentCatID}}"  >{{showNameCategory(item.parentCatID)}}</a>
+                            <a ng-show="item.parentCatID == 0" >{{showNameCategory(item.parentCatID)}}</a>
+                        </td>
+                        <td>{{item.Public==1?"Hiện":"Ẩn"}}</td>
+                        <td>
+                            <button class="btn btn-primary" type="button" ng-click="selectCategory(item.catID)" >Chọn</button>
+                        </td>
+
+                    </tr>
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <th>Stt</th>
+                        <th>Mã Danh Mục</th>
+                        <th>Tên Danh Mục</th>
+                        <th>Tên Danh Mục Cha</th>
+                        <th>Ẩn Hiển</th>
+                        <th></th>
+                    </tr>
+                </tfoot>
+
+            </table>    
+        </div>    
+    </div>
+</div>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("select.select2").select2();
+    })
+</script>
+

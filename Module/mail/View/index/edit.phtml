@@ -1,0 +1,62 @@
+<?php
+$_Mail = new Module\mail\Model\MailContent($Mail);
+$form = new \Model\Form();
+?>
+<div class="am-pagetitle">
+    <div class="btn-group" >
+        <a href="/mail/index/index/" class="btn btn-primary" >Danh Sách Nội Dung Mail</a>
+    </div>
+</div>
+<div class="container" >
+    <div class="am-pagebody" >
+        <div class="centercontent">
+            <div class="card pd-20 mg-t-5">
+                <h6 class="card-body-title">Sủa Nội Dung Mail</h6>
+                <form action="" method="POST" enctype="multipart/form-data" >
+                    <div >
+                        <div class="row" >
+                            <div class="col-md-12" >
+                                <?php
+                                $Alert = new Application\Model\Alert();
+                                $cAlert = $Alert->getAlert();
+                                if ($cAlert) {
+                                    ?>
+                                    <div class="col-md-12 alert-<?php echo $cAlert["Type"] ?> alert" >
+                                        <?php echo $cAlert["Content"] ?>
+                                    </div>
+                                    <?php
+                                }
+                                ?>  
+                                <div class="form-group">
+                                    <label for="">Mã</label>
+                                    <?php
+                                    Module\mail\Model\MailContentForm::Code(["required" => "", "name" => "Mail[Code]", "class" => "form-control"], $_Mail->Code)->render();
+                                    Module\mail\Model\MailContentForm::IdHidden("Mail[Id]", $_Mail->Id)->render();
+                                    ?>
+                                </div>
+                                <div class="form-group">
+                                    <label for="">Tên Mail</label>
+                                    <?php
+                                    Module\mail\Model\MailContentForm::Name(["required" => "", "name" => "Mail[Name]", "class" => "form-control"], $_Mail->Name)->render();
+                                    ?>
+                                </div>
+                                <div class="form-group">
+                                    <label for="">Nội Dung</label>
+                                    <?php
+                                    Module\mail\Model\MailContentForm::Content(["required" => "", "name" => "Mail[Content]", "class" => "ckeditor"], $_Mail->Content)->render();
+                                    ?>
+                                </div>
+                                <div class="form-group">
+                                    <label for=""></label>
+                                    <?php
+                                    $form->btnSave()->render();
+                                    ?>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

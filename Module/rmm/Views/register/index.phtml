@@ -1,0 +1,47 @@
+<script type="text/javascript" >
+    app.controller("rmmController", function($scope, $http) {
+        $scope.rmmInnit = function() {
+            $http.get("/rmm/api/rooms/").then(function(res) {
+                $scope._Rooms = res.data;
+            });
+        }
+    });</script>
+
+<section class="content" ng-controller="rmmController" ng-init="rmmInnit()" >
+    <div class="row">
+        <form action="" method="post" enctype="multipart/form-data" >
+            <div class="col-md-4">
+                <div class="box box-primary">
+                    <div class="box-header ">
+                        <h3  class="box-title" >Danh Sách Phòng Họp</h3>
+                    </div>
+                    <div class="box-body ">
+                        <?php
+                        Module\rmm\Model\RoomRegisterForm::Code()->render();
+                        ?>
+                    </div>
+                </div>
+
+            </div><!-- /.col -->
+            <div class="col-md-8">
+                <div class="box box-primary">
+                    <div class="box-header" >
+                        <h3 class="box-title" >Form Đăng Ký Phòng Họp</h3>
+                    </div>
+                    <div class="box-body ">
+                        <?php
+                        Module\rmm\Model\RoomRegisterForm::NumberPerson()->renderHTML();
+                        Module\rmm\Model\RoomRegisterForm::StarTime()->renderHTML();
+                        Module\rmm\Model\RoomRegisterForm::EndTime()->renderHTML();
+                        ?>
+                    </div>
+                    <div class="box-footer" >
+                        <?php
+                        Module\rmm\Model\RoomRegisterForm::btnSubmit("Đăng Ký Họp")->render();
+                        ?>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</section>

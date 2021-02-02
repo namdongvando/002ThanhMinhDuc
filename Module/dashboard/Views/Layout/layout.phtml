@@ -1,0 +1,47 @@
+<?php
+$bk = new \Module\rmm\Functions();
+?>
+<!DOCTYPE html>
+<html ng-cloak="TRUE" ng-app="rootApp"  >
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>Quản Lý Phòng Họp</title>
+        <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+        <?php
+        $bk->head();
+        echo \Application\Html\Css::GetCss();
+        ?>
+        <script src="/public/root/assets/assetConfig.js"></script>
+        <script src="/public/root/assets/libs/agb.min.js"></script>
+    </head>
+    <body class="hold-transition skin-green-light sidebar-mini"  >
+        <div class="wrapper">
+            <?php
+            $bk->Menu();
+            ?>
+            <div class="content-wrapper">
+                <?php
+                $bk->Breadcrumb();
+                ?>
+                <!-- Main content -->
+                <section class="content">
+                    <?php
+                    Common\Alert::showAlert();
+                    include $_Content;
+                    ?>
+                </section>
+            </div>
+            <footer class="main-footer ">
+                <div class="pull-right hidden-xs">
+                    <b>Version</b> 2.3.0
+                </div>
+                <strong>Copyright &copy; <?php echo date("Y", time()); ?> <a href="http://nguyenvando.net">bakco.com.vn</a>.</strong>
+            </footer>
+        </div><!-- ./wrapper -->
+        <?php
+        $bk->js();
+        echo Application\Html\Js::GetJS();
+        ?>
+    </body>
+</html>

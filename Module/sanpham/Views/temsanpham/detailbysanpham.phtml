@@ -1,0 +1,123 @@
+<?php
+$link = "/public/phpqrcode/index.php?data= " . Root_URL . "baohanh/" . $temSanPham->SanPham()->Code;
+?>
+<div class="breadcrumb" >
+    <a href="/sanpham/temsanpham/index/" class="btn btn-primary" >Danh Sách Tùy Chọn</a>
+    <a class="btn btn-primary" data-toggle="modal" href='#ThemTemPhu'>Thêm Tem Phụ</a>
+    <a class="btn btn-primary" data-toggle="modal" href='#MaBaoHanh'>Mã QR Code</a>
+    <div class="modal fade" id="ThemTemPhu">
+        <form action="" method="POST" enctype="multipart/form-data" >
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h4 class="modal-title">Tem Bảo Hành Phụ</h4>
+                    </div>
+                    <div class="modal-body">
+                        <?php
+                        \Module\sanpham\Model\TemSanPhamForm::Name()->renderHTML();
+                        \Module\sanpham\Model\TemSanPhamForm::MaSanPham()->renderHTML();
+                        \Module\sanpham\Model\TemSanPhamForm::NgayBatDau()->renderHTML();
+                        \Module\sanpham\Model\TemSanPhamForm::NgayKetThuc()->renderHTML();
+
+                        \Module\sanpham\Model\TemSanPhamForm::Status()->renderHTML();
+                        \Module\sanpham\Model\TemSanPhamForm::Parents($temSanPham->Id, "", true)->renderHTML();
+                        ?>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Lưu</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+
+    </div>
+</div>
+
+<div class="" >
+    <div class="row "  >
+        <section class="col-md-12 pb-10" >
+            <form action="" method="POST" enctype="multipart/form-data" >
+                <div class="modal fade" id="MaBaoHanh">
+                    <div class="modal-dialog modal-sm">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                <h4 class="modal-title">QR code</h4>
+                            </div>
+                            <div class="modal-body">
+                                <img style="width: 100%" src="<?php echo $link; ?>" class="img img-responsive"  >
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="connectedSortable" >
+                    <div class="box box-solid">
+                        <div class=" box-header bg-blue-gradient">
+                            <h3 class="box-title">Chi Tiết Tem Sản Phẩm</h3>
+                        </div>
+                        <div class="box-body">
+                            <div class="col-md-6" >
+                                <fieldset>
+                                    <legend>Thông Tin Sản Phẩm</legend>
+                                    <?php
+                                    \Module\sanpham\Model\TemSanPhamForm::Id($temSanPham->Id)->render();
+                                    \Module\sanpham\Model\TemSanPhamForm::Name($temSanPham->Name)->renderHTML();
+                                    \Module\sanpham\Model\TemSanPhamForm::MaSanPham($temSanPham->MaSanPham, true)->renderHTML();
+                                    ?>
+                                    <div class="row" >
+                                        <div class="col-md-6">
+                                            <?php
+                                            \Module\sanpham\Model\TemSanPhamForm::NgayBatDau($temSanPham->NgayBatDau)->renderHTML();
+                                            ?>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <?php
+                                            \Module\sanpham\Model\TemSanPhamForm::NgayKetThuc($temSanPham->NgayKetThuc)->renderHTML();
+                                            ?>
+                                        </div>
+                                    </div>
+                                    <?php
+                                    \Module\sanpham\Model\TemSanPhamForm::KhachHangTieuDung($temSanPham->KhachHangTieuDung, true)->renderHTML();
+                                    \Module\sanpham\Model\TemSanPhamForm::Status($temSanPham->Status)->renderHTML();
+                                    ?>
+                                </fieldset>
+                            </div>
+                            <div class="col-md-6" >
+                                <fieldset>
+                                    <legend>Thông Tin Khách Hàng Tiêu Dùng</legend>
+                                    <?php
+                                    Module\khachhang\Model\KhachHangTieuDungForm::Id($khachHang->Id)->render();
+                                    Module\khachhang\Model\KhachHangTieuDungForm::Name($khachHang->Name)->renderHTML();
+                                    ?>
+                                    <div class="row" >
+                                        <div class="col-md-6">
+                                            <?php
+                                            Module\khachhang\Model\KhachHangTieuDungForm::CMNN($khachHang->CMNN)->renderHTML();
+                                            ?>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <?php
+                                            Module\khachhang\Model\KhachHangTieuDungForm::Phone($khachHang->Phone)->renderHTML();
+                                            ?>
+                                        </div>
+                                    </div>
+                                    <?php
+                                    Module\khachhang\Model\KhachHangTieuDungForm::DiaChi($khachHang->DiaChi)->renderHTML();
+                                    Module\khachhang\Model\KhachHangTieuDungForm::GhiChu($khachHang->GhiChu)->renderHTML();
+                                    ?>
+                                </fieldset>
+                            </div>
+                        </div>
+                        <div class="box-footer" >
+                            <?php
+                            Module\rmm\Model\RoomForm::btnSave()->render();
+                            ?>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </section>
+    </div>
+</div>

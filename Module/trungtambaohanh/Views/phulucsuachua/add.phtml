@@ -1,0 +1,66 @@
+<div class="container-fluid" >
+    <div class="row" >
+        <section class="pb-10" >
+            <?php
+            echo \Module\trungtambaohanh\Model\PhuLucSuaChuaForm::btnPhuLucSuaChua("Phụ Lục Sửa Chữa");
+            ?>
+        </section>
+        <div class="clearfix" ></div>
+        <section class="pb-10" >
+            <form action="/trungtambaohanh/index/create/"  method="POST" enctype="multipart/form-data" >
+                <div class="connectedSortable" >
+                    <div class="box box-solid">
+                        <div class=" box-header bg-blue-gradient">
+                            <h3 class="box-title">Thêm Trung Tâm Bảo Hành</h3>
+                            <!-- tools box -->
+                        </div>
+                        <div class="box-body">
+                            <div class="row pt-15">
+                                <div class="col-md-6">
+                                    <?php
+                                    Module\trungtambaohanh\Model\PhuLucSuaChuaForm::Code(null, "Mã Phụ Lục")->renderHTML();
+                                    ?>
+                                </div>
+                                <div class="col-md-6">
+                                    <?php
+                                    Module\trungtambaohanh\Model\PhuLucSuaChuaForm::Name(null, "Nội Dung Công Việc")->renderHTML();
+                                    ?>
+                                </div>
+                                <div class="col-md-6">
+                                    <?php
+                                    Module\trungtambaohanh\Model\PhuLucSuaChuaForm::DonGia(null, "Đơn Giá")->renderHTML();
+                                    ?>
+                                </div>
+                                <div class="col-md-6">
+                                    <?php
+                                    Module\trungtambaohanh\Model\PhuLucSuaChuaForm::LinhKien(null, "Linh Kiện")->renderHTML();
+                                    ?>
+                                </div>
+                                <div class="col-md-6">
+                                    <?php
+                                    Module\trungtambaohanh\Model\PhuLucSuaChuaForm::YeuCau(null, "Yêu Cầu")->renderHTML();
+                                    ?>
+                                </div>
+                                <div class="col-md-6">
+                                    <?php
+                                    Module\trungtambaohanh\Model\PhuLucSuaChuaForm::GiaLinhKien(null, "Giá Linh Kiện")->renderHTML();
+                                    ?>
+                                </div>
+                                <div class="col-md-6">
+                                    <?php
+                                    Module\trungtambaohanh\Model\PhuLucSuaChuaForm::LoaiPhuLuc(null, "Loại Phụ Lục")->renderHTML();
+                                    ?>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="box-footer" >
+                            <?php
+                            Module\rmm\Model\RoomForm::btnSave()->render();
+                            ?>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </section>
+    </div>
+</div>

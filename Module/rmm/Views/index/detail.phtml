@@ -1,0 +1,61 @@
+<script type="text/javascript" >
+    app.controller("rmmController", function($scope, $http) {
+        $scope.rmmInnit = function( ) {
+            $http.get("/rmm/api/roomstype/").then(function(res) {
+                $scope._Rooms = res.data;
+            });
+        }
+    });
+</script>
+<?php
+$room = new Module\rmm\Model\Room($Room);
+?>
+<div class="container" >
+    <div class="row " ng-controller="rmmController" ng-init="rmmInnit()" >
+        <section class="col-md-12 pb-10" >
+            <div class="connectedSortable" >
+
+                <div class="box box-solid">
+                    <div class=" box-header bg-green-gradient">
+                        <i class="fa fa-list"></i>
+                        <h3 class="box-title">Chi Tiết Phòng Họp</h3>
+                        <!-- tools box -->
+                    </div>
+                    <div class="box-body">
+                        <table class="table table-bordered" >
+                            <thead>
+                                <tr>
+                                    <td>Mã Phòng</td>
+                                    <td><?php echo $room->Code ?></td>
+                                </tr>
+                                <tr>
+                                    <td>Tên Phòng</td>
+                                    <td><?php echo $room->Name ?></td>
+                                </tr>
+                                <tr>
+                                    <td>Loại Phòng</td>
+                                    <td><?php echo $room->Type()->Name ?></td>
+                                </tr>
+                                <tr>
+                                    <td>Địa Chị</td>
+                                    <td><?php echo $room->Adreess ?></td>
+                                </tr>
+                                <tr>
+                                    <td>Khác</td>
+                                    <td><?php echo $room->Config ?></td>
+                                </tr>
+                            </thead>
+
+                        </table>
+                    </div>
+                    <div class="box-footer" >
+                        <?php
+                        Module\rmm\Model\RoomForm::btnEdit($room->Id);
+                        Module\rmm\Model\RoomForm::btnDelete($room->Id);
+                        ?>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+</div>

@@ -1,0 +1,366 @@
+<link href="<?php echo AppPath ?>/public/jquery-ui/jquery-ui.css" rel="stylesheet" type="text/css"/>
+<script src="<?php echo AppPath ?>/public/input-mask/jquery.inputmask.js" type="text/javascript"></script>
+<script src="<?php echo AppPath ?>/public/input-mask/jquery.inputmask.date.extensions.js" type="text/javascript"></script>
+<script src="<?php echo AppPath ?>/public/input-mask/jquery.inputmask.extensions.js" type="text/javascript"></script>
+<script src="<?php echo AppPath ?>/public/dangky/jquery-validation/dist/jquery.validate.js" type="text/javascript"></script>
+<script src="<?php echo AppPath ?>/public/jquery-ui/jquery-ui.min.js" type="text/javascript"></script>
+<script src="<?php echo AppPath ?>/public/dangky/dangkyServices.js" type="text/javascript"></script>
+<script src="<?php echo AppPath ?>/public/popupwindow/popupwindowController.js" type="text/javascript"></script>
+<script src="<?php echo AppPath ?>/public/dangky/dangkyController.js?v=<?php echo time(); ?>" type="text/javascript"></script>
+<link href="<?php echo AppPath ?>/public/popupwindow/popupwindow.css" rel="stylesheet" type="text/css"/>
+<div ng-controller="popupwindowController" class="modal modal_popupwindow fade" id="popupwindow_id">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="panel panel-{{popupwindowtype}}" style="margin-bottom: 0px;" >
+                <div class="panel-heading">
+                    <i class="fa fa-info-circle pull-left" ></i>
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h3 class="panel-title">{{popupwindowTitle}}</h3>
+                </div>
+                <div class="panel-body text-center" style="min-height: 100px;">
+                    {{popupwindowContent}}
+                </div>
+                <div class="panel-footer text-center">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Đóng</button>
+                    <button type="button" ng-repeat="btn in popupwindowBtnList" ng-click="_callbackfunction(btn.event, btn.param)" class="btn btn-primary">
+                        {{btn.name}}
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div ng-controller="dangkyController"  >
+    <form method="post" enctype="multipart/form-data" class="validate-customer">
+        <div class="col-md-12">
+            <div  >
+                <fieldset class="form-dangky" >
+                    <legend  style=" font-size: 16px;" >Thông Tin Chung người đăng ký</legend>
+                    <div class="row" >
+                        <div class="form-group col-md-4">
+                            <label for="customerFullName" class="form-title-name">Họ và tên (*) </label>
+                            <input type="text" name="customerFullName" class="form-control " ng-model="Customer.FullName">
+                        </div>
+                        <div class="form-group col-md-2">
+                            <label class="form-title-name">Giới tính </label>
+                            <select class="form-control" ng-model="Customer.Gender" >
+                                <option value="true" >Nam</option>
+                                <option value="false" >Nữ</option>
+                            </select>
+                        </div>
+                        <div class="form-group col-md-3">
+                            <label class="form-title-name">Mã định danh (hoặc CMND) </label>
+                            <input name='customerIC' class="form-control " ng-model="Customer.IC">
+                        </div>
+                        <div class="col-md-3 form-group " >
+                            <label class="form-title-name">Ngày sinh </label>
+                            <input  id="datepicker" autocomplete="off" data-inputmask="'alias': 'dd-mm-yyyy'" data-mask type="text" name="customerBirthDate" class="form-control" value="{{Customer.BirthDate|date:'dd-MM-yyyy'}}"  placeholder="Chọn Ngày" >
+                            <input class="form-control" id="date-start-value"  name="customerBirthDate" ng-model="Customer.BirthDate" value="{{Customer.BirthDate|date:'yyyy-MM-dd'}}" type="hidden"  >
+                        </div>
+                        <div class="clearfix" ></div>
+                        <div class="col-md-12" >
+                            <div class="row" >
+
+                                <div class="col-md-2" >
+                                    <div class="form-group">
+                                        <label>Tỉnh/Thành Phố (*)</label>
+                                        <select name="customerProvince" class="form-control" style="width: 100%;" ng-model="Customer.Tinh" ng-change="clickChangeCity(Customer.Tinh)" >
+                                            <option value="{{x}}"  ng-repeat="x in getCitys" >{{x.Name}}</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-2" >
+                                    <div class="form-group">
+                                        <label>Quận/Huyện (*)</label>
+                                        <select name="customerDistrict" class="form-control " style="width: 100%;" ng-model="Customer.Huyen" ng-change="clickChangeDistricts(Customer.Huyen)" >
+                                            <option value="{{y}}"  ng-repeat="y in getDistricts" >{{y.Name}}</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-2" >
+                                    <div class="form-group">
+                                        <label>Phường/Xã (*)</label>
+                                        <select name="customerWard" class="form-control " style="width: 100%;" ng-model="Customer.Xa" ng-change="clickChangeWards(Customer.Xa)" >
+                                            <option value="{{y}}"  ng-repeat="y in getWards" >{{y.Name}}</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-6" >
+                                    <div class="form-group">
+                                        <label>Số nhà,Đường (*)</label>
+                                        <input name="customerAdress" class="form-control" ng-model="Customer.Address" >
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="" hidden="" >
+                                <div class="col-md-12  " >
+                                    <div class="form-group" >
+                                        <label>Địa chỉ(*)</label>
+                                        <a class="form-control" style="white-space: nowrap;overflow: hidden;" data-toggle="modal" href='#diachi'>{{Customer.Address}},{{Customer.WardCode.Name}},{{Customer.DistrictCode.Name}},{{Customer.ProvinceCode.Name}}</a>
+                                    </div>
+                                    <div class="modal fade" id="diachi">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                                    <h4 class="modal-title">Địa Chỉ</h4>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <div class="col-md-12" >
+                                                        <div class="form-group">
+                                                            <label>Số nhà,Đường (*)</label>
+                                                            <input name="customerAdress" class="form-control" ng-model="Customer.Address" >
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-12" >
+                                                        <div class="form-group">
+                                                            <label>Tỉnh/Thành Phố (*)</label>
+                                                            <select name="customerProvince" class="form-control" style="width: 100%;" ng-model="Customer.Tinh" ng-change="clickChangeCity(Customer.Tinh)" >
+                                                                <option value="{{x}}"  ng-repeat="x in getCitys" >{{x.Name}}</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-12" >
+                                                        <div class="form-group">
+                                                            <label>Quận/Huyện (*)</label>
+                                                            <select name="customerDistrict" class="form-control " style="width: 100%;" ng-model="Customer.Huyen" ng-change="clickChangeDistricts(Customer.Huyen)" >
+                                                                <option value="{{y}}"  ng-repeat="y in getDistricts" >{{y.Name}}</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-12" >
+                                                        <div class="form-group">
+                                                            <label>Phường/Xã (*)</label>
+                                                            <select name="customerWard" class="form-control " style="width: 100%;" ng-model="Customer.Xa" ng-change="clickChangeWards(Customer.Xa)" >
+                                                                <option value="{{y}}"  ng-repeat="y in getWards" >{{y.Name}}</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="clearfix" ></div>
+                                                </div>
+                                                <div class="modal-footer" >
+                                                    <button type="button" class="btn btn-primary" data-dismiss="modal" aria-hidden="true">Đồng ý</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label class="form-title-name">Số điện thoại</label>
+                            <input name='ContactPhone' class="form-control" ng-model="Customer.ContactPhone">
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label class="form-title-name">Email </label>
+                            <input type="email" name="customerEmail" class="form-control " ng-model="Customer.Email">
+                        </div>
+                        <!--                    <div class="form-group col-md-3">
+                                                <label class="form-title-name">Nghề Nghiệp :</label>
+                                                <input type="text" class="form-control " ng-model="Customer.NgheNghiep">
+                                            </div>-->
+
+                    </div>
+                    <div hidden class="row hidden-xs hidden-sm" >
+                        <div class="form-group col-md-3">
+                            <label class="form-title-name">Số bảo hiểm y tế </label>
+                            <input type="text" class="form-control " ng-model="Customer.HealthInsurance_Start_No">
+                        </div>
+                        <div class="form-group col-md-3">
+                            <label for="customerUsername">Nơi Đăng Ký</label>
+                            <input type="text" name="HealthInsuranceAddress" ng-disabled="!Customer.HealthInsurance_Start_No" class="form-control " ng-model="Customer.HealthInsurance_Place">
+                        </div>
+                        <div class="form-group col-md-3">
+                            <label for="customerPassword">Ngày Bắt Đầu</label>
+                            <input type="hidden" id="HealthInsuranceStartView" value="{{Customer.HealthInsurance_Start}}"  ng-model="Customer.HealthInsurance_Start" class="form-control " >
+                            <input readonly="readonly" placeholder="" id="HealthInsuranceStart" value="{{Customer.HealthInsurance_Start|date:'dd-MM-yyyy'}}" type="text" name="HealthInsuranceStartDate" ng-disabled="!Customer.HealthInsurance_Start_No" class="form-control "  >
+                        </div>
+                        <div class="form-group col-md-3">
+                            <label for="customerRetypePassword">Ngày Hết Hạn</label>
+                            <input type="hidden" ng-model="Customer.HealthInsurance_End" value="{{Customer.HealthInsurance_End}}" id="HealthInsuranceEndView"  >
+                            <input readonly="readonly" placeholder="" id="HealthInsuranceEnd" value="{{Customer.HealthInsurance_End|date:'dd-MM-yyyy'}}" type="text" name="HealthInsuranceEndDate" ng-disabled="!Customer.HealthInsurance_Start_No" class="form-control">
+                        </div>
+                    </div>
+                    <div hidden class="hidden-md hidden-lg" >
+                        <div class="form-group" >
+                            <label class="form-title-name">Số bảo hiểm y tế </label>
+                            <a class="form-control" data-toggle="modal" href='#modal-id'>{{Customer.HealthInsurance_Start_No}}</a>
+                        </div>
+                        <div class="modal fade" id="modal-id">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                        <h4 class="modal-title">Bảo hiểm y tế</h4>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="form-group col-md-12">
+                                            <label class="form-title-name">Số bảo hiểm y tế </label>
+                                            <input type="text" class="form-control " ng-model="Customer.HealthInsurance_Start_No">
+                                        </div>
+                                        <div class="form-group col-md-12">
+                                            <label for="customerUsername">Nơi Đăng Ký</label>
+                                            <input type="text" name="HealthInsuranceAddress" ng-disabled="!Customer.HealthInsurance_Start_No" class="form-control " ng-model="Customer.HealthInsurance_Place">
+                                        </div>
+                                        <div class="form-group col-md-12">
+                                            <label for="customerPassword">Ngày Bắt Đầu</label>
+                                            <input readonly="readonly" placeholder="" id="mHealthInsuranceStart" value="{{Customer.HealthInsurance_Start|date:'dd-MM-yyyy'}}" type="text" name="HealthInsuranceStartDate" ng-disabled="!Customer.HealthInsurance_Start_No" class="form-control "  >
+                                        </div>
+                                        <div class="form-group col-md-12">
+                                            <label for="customerRetypePassword">Ngày Hết Hạn</label>
+                                            <input readonly="readonly" placeholder="" id="mHealthInsuranceEnd" value="{{Customer.HealthInsurance_End|date:'dd-MM-yyyy'}}" type="text" name="HealthInsuranceEndDate" ng-disabled="!Customer.HealthInsurance_Start_No" class="form-control">
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-default" data-dismiss="modal">Đồng Ý</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="clearfix" ></div>
+                </fieldset>
+            </div>
+        </div>
+        <div class="col-md-12">
+            <fieldset class="form-dangky " ng-show="ShowFC"  >
+                <legend style="font-size: 16px;" >Thông Tin Tài Khoản</legend>
+                <div class="row" >
+                    <div class="form-group col-md-3">
+                        <label for="customerUsername">SĐT Đăng Ký(*)</label>
+                        <input type="text" name="customerPhone" class="form-control " ng-model="Customer.Phone">
+                    </div>
+                    <div class="form-group col-md-3">
+                        <label for="customerUsername">Tên Tài Khoản (*)</label>
+                        <input type="text" name="customerUsername" class="form-control " ng-model="Customer.Username">
+                    </div>
+                    <div class="form-group col-md-3">
+                        <label for="customerPassword">Mật khẩu (*)</label>
+                        <input type="password" name="customerPassword" class="form-control " ng-model="Customer.Password" id="customerPassword">
+                    </div>
+                    <div class="form-group col-md-3">
+                        <label for="customerRetypePassword">Nhập lại mật khẩu (*)</label>
+                        <input type="password" name="customerRetypePassword" class="form-control  RetypePassword">
+                    </div>
+                    <div class="col-md-4" ></div>
+                    <div class="col-md-8" >
+                        <p style="" >
+                            * Sử dụng 8 ký tự trở lên, nên kết hợp chữ cái, chữ số và biểu tượng. Ví dụ: NguyenvanA1983@
+                        </p>
+                    </div>
+                </div>
+
+            </fieldset>
+            <fieldset hidden class="form-dangky hidden" >
+                <legend style="color: #56BCA1;font-size: 16px;" >Đăng ký dịch vụ cấp cứu</legend>
+                <div class="form-group col-md-4">
+                    <label class="form-title-name">SĐT đăng ký cấp cứu : <i class="fa fa-question-circle" ></i></label>
+                    <input type="text" class="form-control " ng-model="Customer.PhoneSos">
+                </div>
+            </fieldset>
+        </div>
+        <div class="col-md-12" >
+            <p style="color: red;padding: 10px;" >
+                Ghi Chú: <br>
+                - Nhập thông tin đầy đủ và chính xác. <br>
+                - Nhập email để nhận thông tin khi sử dụng dịch vụ và khôi phuc tài khoản khi có sự cố xảy ra.
+            </p>
+        </div>
+        <div class="clearfix"></div>
+        <div class="col-md-12 text-center" style="margin-top: 10px;" >
+            <button ng-show="Action == 0" type="button" class="btn btn-primary" ng-click="ChonNguoiKhamDongY(Customer)" > Chọn </button>
+            <button type="submit" ng-show="Action == 1"  class="btn btn-primary" >
+                Đăng Ký <i class="fa fa-edit" ></i>
+            </button>
+            <button type="submit" ng-show="Action == 2" class="btn btn-primary" >
+                Thêm <i class="fa fa-edit" ></i>
+            </button>
+            <button type="submit" ng-show="Action == 3 || Action == 4" class="btn btn-primary" >
+                Lưu <i class="fa fa-edit" ></i>
+            </button>
+            <a ng-show="Action == 3" href="/user/dsnguoithan/" class="btn btn-danger pull-right" >Hủy <i class="fa fa-times" ></i></a>
+            <div class="clearfix" ></div>
+
+            <!--<button ng-click="sendmail();" type="button" class="btn btn-success" >testmail</button>-->
+
+        </div>
+    </form>
+    <script  src="<?php echo AppPath ?>/public/dangky/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script type="text/javascript" >
+                        $(function() {
+
+
+                            $("#datepicker").datepicker({
+                                inline: true,
+                                changeMonth: true,
+                                changeYear: true,
+                                yearRange: "-100:+0",
+                                showOtherMonths: true,
+                                altField: "#date-start-value",
+                                altFormat: "yy-mm-dd",
+                                dateFormat: 'dd-mm-yy',
+                                onSelect: function(dateText) {
+                                    $('#date-start-output').val(dateText);
+                                }
+                            });
+
+                            $("#datepicker").inputmask("dd-mm-yyyy", {"placeholder": "dd-mm-yyyy"});
+
+                            $("#HealthInsuranceStart").datepicker({
+                                inline: true,
+                                changeMonth: true,
+                                changeYear: true,
+                                yearRange: "-6:+6",
+                                showOtherMonths: true,
+                                altField: "#HealthInsuranceStartView",
+                                altFormat: "yy-mm-dd",
+                                dateFormat: 'dd-mm-yy',
+                            });
+                            $("#HealthInsuranceEnd").datepicker({
+                                inline: true,
+                                changeMonth: true,
+                                changeYear: true,
+                                yearRange: "-6:+6",
+                                showOtherMonths: true,
+                                altField: "#HealthInsuranceEndView",
+                                altFormat: "yy-mm-dd",
+                                dateFormat: 'dd-mm-yy',
+                            });
+                            $("#mHealthInsuranceStart").datepicker({
+                                inline: true,
+                                changeMonth: true,
+                                changeYear: true,
+                                yearRange: "-6:+6",
+                                showOtherMonths: true,
+                                altField: "#HealthInsuranceStartView",
+                                altFormat: "yy-mm-dd",
+                                dateFormat: 'dd-mm-yy',
+                            });
+                            $("#mHealthInsuranceEnd").datepicker({
+                                inline: true,
+                                changeMonth: true,
+                                changeYear: true,
+                                yearRange: "-6:+6",
+                                showOtherMonths: true,
+                                altField: "#HealthInsuranceEndView",
+                                altFormat: "yy-mm-dd",
+                                dateFormat: 'dd-mm-yy',
+                            });
+                        });
+                        $.datepicker.regional['vi'] = {
+                            monthNames: ['Tháng 1', 'Tháng 2', 'Tháng 3', 'Tháng 4', 'Tháng 5', 'Tháng 6',
+                                'Tháng 7', 'Tháng 8', 'Tháng 9', 'Tháng 10', 'Tháng 11', 'Tháng 12'],
+                            monthNamesShort: ['th01', 'th02', 'th03', 'th04', 'th05', 'th06',
+                                'th07', 'th08', 'th09', 'th10', 'th11', 'th12'],
+                            dayNames: ['zondag', 'maandag', 'dinsdag', 'woensdag', 'donderdag', 'vrijdag', 'zaterdag'],
+                            dayNamesShort: ['CN', 'T2', 'T3', 'T4', 'T5', 'T6', 'T7'],
+                            dayNamesMin: ['CN', 'T2', 'T3', 'T4', 'T5', 'T6', 'T7'],
+                        };
+                        $.datepicker.setDefaults($.datepicker.regional['vi']);
+    </script>
+
+</div>

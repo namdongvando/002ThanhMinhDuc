@@ -1,0 +1,98 @@
+<?php
+$tong = 0;
+$SanPhams = Module\sanpham\Model\SanPham::SanPhamsPT("", 1, 200, $tong);
+?>
+<form action="" method="POST" enctype="multipart/form-data" >
+    <div class="modal fade" id="ThemSanPham">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title">Thêm Sản Phẩm</h4>
+                </div>
+                <div class="modal-body">
+                    <?php
+                    \Module\sanpham\Model\SanPhamForm::DanhMuc()->renderHTML();
+                    ?>
+                    <div class="form-group">
+                        <label for="">Số Lượng </label>
+                        <input type="text" class="form-control" name="SoLuong" value="10" placeholder="Số Lượng">
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="submit" name="TaoMaSanPham" value="TaoMaSanPham" class="btn btn-primary">Thêm Sản Phẩm</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+
+<div class="row " >
+    <section class="col-md-12 pb-10 mt-20" >
+        <div class="box box-primary" >
+
+            <div class="box-header " >
+                <div class="btn-group pull-right" >
+                    <a class="btn btn-primary" data-toggle="modal" href='#ThemSanPham'>
+                        <i class="fa fa-plus" ></i>
+                        Thêm Sản Phẩm
+                    </a>
+                </div>
+                Danh Sách Sản Phẩm
+            </div>
+            <div class="box-body table-responsive" >
+
+
+                <table class="table table-bordered dataTable " id="data"   >
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th>#</th>
+                            <th>Code</th>
+                            <th>Name</th>
+                            <th>Tem Bảo Hành</th>
+                            <th>Danh Mục</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php
+                        foreach ($SanPhams as $k => $sp) {
+                            $_sp = new Module\sanpham\Model\SanPham($sp);
+                            ?>
+                            <tr>
+                                <td style="width: 100px;" >
+                                    <a href="/sanpham/taosanpham/edit/<?php echo $_sp->Id ?>/" class="" >Sửa</a>|
+                                    <a href="/sanpham/index/delete/" data-confirm="Xóa Danh Mục Sản Phẩm" class="xoa" >Xóa</a>
+
+                                </td>
+                                <td style="width: 50px;" ><?php echo $k + 1; ?></td>
+                                <td style="width: 150px;" ><?php echo $_sp->Code ?></td>
+                                <td><?php echo $_sp->Name ?></td>
+                                <td style="width: 150px;" >
+                                    <a href="/sanpham/temsanpham/detailbysanpham/<?php echo $_sp->Id ?>" >Tem Bảo Hành</a>
+                                </td>
+                                <td style="width: 200px;" ><?php echo $_sp->DanhMuc()->Name; ?></td>
+                            </tr>
+                            <?php
+                        }
+                        ?>
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <th></th>
+                            <th>#</th>
+                            <th>Code</th>
+                            <th>Name</th>
+                            <th>Tem Bảo Hành</th>
+                            <th>Danh Mục</th>
+                        </tr>
+                    </tfoot>
+
+                </table>
+            </div>
+        </div>
+    </section>
+</div>

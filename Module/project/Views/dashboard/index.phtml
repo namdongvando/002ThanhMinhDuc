@@ -1,0 +1,61 @@
+<script type="text/javascript" >
+    app.controller("projectcontrollerController", function($scope, $http) {
+        $scope.projectcontrollerInnit = function(id) {
+            $http.get("/project/api/projectByUser/").then(function(res) {
+                $scope._Project = res.data;
+            });
+        }
+    });
+</script>
+<div class="row " ng-controller="projectcontrollerController" ng-init="projectcontrollerInnit('<?php echo $_Param[0] ?>')" >
+    <section class="col-md-12 pb-10" >
+        <div class="connectedSortable" >
+            <div class="box box-primary" >
+                <div class="box-header" >
+                    <h3 class="box-title" >Controller</h3>
+                </div>
+                <div class="box-body table-responsive" >
+                    <table class="table table-bordered" >
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <th>#</th>
+                                <th>Name Project</th>
+                                <th>Email</th>
+                                <th>Phone</th>
+                                <th>Address</th>
+
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="item in _Project" >
+                                <td>
+                                    <a href="/project/index/edit/{{item.Project.Id}}" class="btn btn-success" >
+                                        <i class="fa fa-edit" ></i>
+                                    </a>
+                                </td>
+                                <td>{{$index + 1}}</td>
+                                <td><a href="/project/dashboard/SetCurentProject/{{item.Project.Id}}"  >{{item.Project.Name}}</a></td>
+                                <td>{{item.Project.Email}}</td>
+                                <td>{{item.Project.Phone}}</td>
+                                <td>{{item.Project.Address}}</td>
+                            </tr>
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <th></th>
+                                <th>#</th>
+                                <th>Name Project</th>
+                                <th>Email</th>
+                                <th>Phone</th>
+                                <th>Address</th>
+                            </tr>
+                        </tfoot>
+
+                    </table>
+                </div>
+            </div>
+
+        </div>
+    </section>
+</div>

@@ -1,0 +1,101 @@
+<?php
+$options = \Module\option\Model\Option::GetOptions();
+?>
+<script type="text/javascript" >
+    app.controller("optionController", function($scope, $http) {
+        $scope.optionInnit = function( ) {
+            $http.get("/option/api/options/").then(function(res) {
+                $scope._Options = res.data;
+                console.log($scope._Options);
+            });
+        }
+    });
+</script>
+<div class="row " ng-controller="optionController" ng-init="optionInnit()" >
+    <section class="col-md-12 mb-10" >
+        <a class="btn btn-primary" data-toggle="modal" href='#ThemOptions'>Thêm Tùy Chọn</a>
+    </section>
+    <section class="col-md-12 pb-10 mt-20" >
+        <div class="connectedSortable" >
+            <form method="POST" action="/option/index/create/" enctype="multipart/form-data" >
+                <div class="modal fade" data-backdrop="false" id="ThemOptions">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                <h4 class="modal-title">Thêm option</h4>
+                            </div>
+                            <div class="modal-body">
+                                <?php
+                                \Module\option\Model\OptionForm::Code()->renderHTML();
+                                \Module\option\Model\OptionForm::Name()->renderHTML();
+                                \Module\option\Model\OptionForm::Groups()->renderHTML();
+                                \Module\option\Model\OptionForm::Note()->renderHTML();
+                                \Module\option\Model\OptionForm::Parents(0)->renderHTML();
+                                \Module\option\Model\OptionForm::OrderBy(0)->renderHTML();
+                                ?>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">Đóng</button>
+                                <button type="submit" name="btnsave" class="btn btn-primary">Thêm</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </form>
+
+            <div class="box box-primary" >
+                <div class="box-header" >
+                    <h3 class="box-title" >Tùy Chọn</h3>
+                </div>
+                <div class="box-body table-responsive" >
+                    <table class="table table-bordered dataTable " id="data"   >
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <th>#</th>
+                                <th>Name</th>
+                                <th>Giá Trị</th>
+                                <th>Groups</th>
+                                <th>Xắp Sếp</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php
+                            foreach ($options as $index => $op) {
+                                $_op = new \Module\option\Model\Option($op);
+                                ?>
+                                <tr >
+                                    <td>
+                                        <a href="/option/index/edit/<?php echo $_op->Id; ?>" class="btn btn-primary" >Sửa</a>
+                                    </td>
+                                    <td><?php echo $index + 1; ?></td>
+                                    <td><?php echo $_op->Name; ?></td>
+                                    <td><?php echo $_op->Code; ?></td>
+                                    <td><?php echo $_op->Groups; ?></td>
+                                    <td><?php echo $_op->OrderBy; ?></td>
+
+                                </tr>
+                                <?php
+                            }
+                            ?>
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <th></th>
+                                <th>#</th>
+                                <th>Name</th>
+                                <th>Giá Trị</th>
+                                <th>Groups</th>
+                                <th>Xắp Sếp</th>
+                            </tr>
+                        </tfoot>
+
+                    </table>
+                </div>
+            </div>
+
+        </div>
+    </section>
+</div>

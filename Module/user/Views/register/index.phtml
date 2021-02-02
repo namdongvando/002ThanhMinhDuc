@@ -1,0 +1,61 @@
+<div class="register-box">
+
+    <?php
+    $alt = Common\Alert::getAlert();
+    if ($alt) {
+        ?> 
+        <div class="alert alert-<?php echo $alt["Type"] ?>" ><?php echo $alt["Content"] ?></div>
+        <?php
+    }
+    ?>
+    <div class="register-box-body">
+        <div class="text-center">
+            <a class="fa-2x" href="/app/">
+                <img src="[Logo]" class="img img-responsive" alt="[Website]" title="[Website]" >
+            </a>
+        </div>
+        <p class="login-box-msg">Đăng Ký Thành Viên</p>
+        <form action="" method="post">
+            <div class="form-group has-feedback">
+                <input type="text" required="required" name="Account[Username]" class="form-control" placeholder="Username" />
+                <span class="glyphicon glyphicon-user form-control-feedback"></span>
+            </div>
+            <div class="form-group has-feedback">
+                <input type="text" required="required" name="Account[Name]" class="form-control" placeholder="Name" />
+                <span class="glyphicon glyphicon-user form-control-feedback"></span>
+            </div>
+            <div class="form-group has-feedback">
+                <input type="email" required="required" name="Account[Email]" class="form-control" placeholder="Email" />
+                <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
+            </div>
+            <div class="form-group has-feedback">
+                <input type="password" required="required" name="Account[Password]" class="form-control" placeholder="Password" />
+                <span class="glyphicon glyphicon-lock form-control-feedback"></span>
+            </div>
+            <div class="form-group has-feedback">
+                <input type="password" required="required" name="Account[RePassword]" class="form-control" placeholder="Retype password" />
+                <span class="glyphicon glyphicon-log-in form-control-feedback"></span>
+            </div>
+            <div class="">
+                <div class="col-xs-8">
+                    <div class="checkbox icheck">
+                        <label>
+                            <input name="DongY" required="required" type="checkbox"> Tôi Đồng Ý Với  
+                            <a target="_blank" href="/">Điều Khoản</a>
+                        </label>
+                    </div>
+                </div><!-- /.col -->
+                <div class="col-xs-4">
+                    <button type="submit"  class="btn btn-primary btn-block btn-flat">Đăng Ký</button>
+                </div> 
+            </div>
+        </form>
+        <div class="hidden social-auth-links text-center">
+            <p>- OR -</p>
+            <a href="#" class="btn btn-block btn-social btn-facebook btn-flat"><i class="fa fa-facebook"></i> Sign up using Facebook</a>
+            <a href="#" class="btn btn-block btn-social btn-google-plus btn-flat"><i class="fa fa-google-plus"></i> Sign up using Google+</a>
+        </div>
+
+        <a href="/user/index/login" class="text-center">I already have a membership</a>
+    </div><!-- /.form-box -->
+</div><!-- /.register-box -->

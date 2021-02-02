@@ -1,0 +1,61 @@
+<?php
+$KhachHangs = \Module\khachhang\Model\KhachHang::KhachHangs();
+?>
+<script type="text/javascript" >
+    app.controller("optionController", function($scope, $http) {
+        $scope.optionInnit = function( ) {
+            $http.get("/option/api/options/").then(function(res) {
+
+            });
+        }
+    });
+</script>
+<div class="row " >
+    <section class="col-md-12 mb-10" >
+        <?php
+        \Module\khachhang\Model\KhachHangForm::btnThem("Thêm Khách Hàng");
+        ?>
+        <a class="btn btn-primary" href='#ThemOptions'>Import</a>
+    </section>
+    <section class="col-md-12 pb-10 mt-20" >
+        <div class="connectedSortable" >
+            <div class="box box-primary" >
+                <div class="box-body table-responsive" >
+                    <table class="table table-bordered dataTable " id="data"   >
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <th>#</th>
+                                <th>Name</th>
+                                <th>Giá Trị</th>
+                                <th>Groups</th>
+                                <th>Xắp Sếp</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php
+                            foreach ($KhachHangs as $index => $op) {
+                                ?>
+
+                                <?php
+                            }
+                            ?>
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <th></th>
+                                <th>#</th>
+                                <th>Name</th>
+                                <th>Giá Trị</th>
+                                <th>Groups</th>
+                                <th>Xắp Sếp</th>
+                            </tr>
+                        </tfoot>
+
+                    </table>
+                </div>
+            </div>
+
+        </div>
+    </section>
+</div>

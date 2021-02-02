@@ -1,0 +1,69 @@
+<script type="text/javascript" >
+    app.controller("rmmController", function($scope, $http) {
+        $scope.rmmInnit = function( ) {
+            $http.get("/rmm/api/roomstype/").then(function(res) {
+                $scope._Rooms = res.data;
+            });
+        }
+    });
+</script>
+<div class="row " ng-controller="rmmController" ng-init="rmmInnit()" >
+    <section class="col-md-12 pb-10" >
+        <div class="connectedSortable" >
+            <a class="btn btn-primary" data-toggle="modal" href='#modal-id'><i class="fa fa-plus" ></i></a>
+            <form action="/rmm/roomtype/create/" method="POST" enctype="multipart/form-data" >
+                <div class="modal fade " id="modal-id">
+                    <div class="modal-dialog modal-lg">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                <h4 class="modal-title">Thêm Loại Phòng Họp</h4>
+                            </div>
+                            <div class="modal-body ">
+                                <?php
+                                \Module\rmm\Model\OptionForm::Id()->renderHTML();
+                                \Module\rmm\Model\OptionForm::Name()->renderHTML();
+                                \Module\rmm\Model\OptionForm::Code()->renderHTML();
+                                \Module\rmm\Model\OptionForm::Groups()->renderHTML();
+                                \Module\rmm\Model\OptionForm::OrderBy()->renderHTML();
+                                ?>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button"  class="btn btn-default" data-dismiss="modal">Close</button>
+                                <?php
+                                \Module\rmm\Model\OptionForm::btnSubmit()->render();
+                                ?>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+            <div class="box box-solid">
+                <div class=" box-header bg-green-gradient">
+                    <i class="fa fa-list"></i>
+                    <h3 class="box-title">Danh Sách Loại Phòng Hop</h3>
+                    <!-- tools box -->
+                </div><!-- /.box-header -->
+                <div class="box-body">
+                    <table class="table table-bordered" >
+                        <thead>
+                            <tr>
+                                <td>Mã</td>
+                                <td>Tên Loại</td>
+                                <td>Nhóm</td>
+                            </tr>
+                        </thead>
+                        <tbody  >
+                            <tr ng-repeat="item  in _Rooms" >
+                                <td>{{item.Code}}</td>
+                                <td><a href="/rmm/roomtype/detail/{{item.Id}}"  >{{item.Name}}</a></td>
+                                <td>{{item.Groups}}</td>
+                            </tr>
+                        </tbody>
+
+                    </table>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>

@@ -1,0 +1,61 @@
+<?php
+$MailContent = new Module\mail\Model\MailContent();
+$Mails = $MailContent->getMailContents();
+?>
+<div class="am-pagetitle">
+    <div class="btn-group" >
+        <a href="/mail/index/add/" class="btn btn-primary" >Thêm Mail</a>
+    </div>
+    <form id="searchBar" class="search-bar" action="">
+        <div class="form-control-wrapper">
+            <input type="search" class="form-control bd-0" ng-model="search" placeholder="Tìm kiếm">
+        </div>
+        <button id="searchBtn" class="btn btn-orange"><i class="fa fa-search"></i></button>
+    </form>
+</div>
+<div class="am-pagebody" ng-controller="userController" ng-init="userinit()" >
+    <div class="centercontent">
+        <div class="card pd-20 pd-sm-40 mg-t-5">
+            <h6 class="card-body-title">Nội dụng mail tự động</h6>
+            <table class="table table-bordered" >
+                <thead>
+                    <tr>
+                        <th>Action</th>
+                        <th>#</th>
+                        <th>Code</th>
+                        <th>Name</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php
+                    $i = 1;
+                    if ($Mails)
+                        foreach ($Mails as $key => $value) {
+                            $_Mail = new Module\mail\Model\MailContent($value);
+                            ?> 
+                            <tr>
+                                <th style="width: 100px;" >
+                                    <a href="<?php echo $_Mail->linkEditMail() ?>" >Sửa</a>|
+                                </th>
+                                <th><?php echo $i++; ?></th>
+                                <th><?php echo $_Mail->Code ?></th>
+                                <th><?php echo $_Mail->Name ?></th>
+                            </tr>
+                            <?php
+                        }
+                    ?>
+
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <th>Action</th>
+                        <th>#</th>
+                        <th>Code</th>
+                        <th>Name</th>
+                    </tr>
+                </tfoot>
+
+            </table>
+        </div>
+    </div>
+</div>

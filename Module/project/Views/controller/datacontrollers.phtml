@@ -1,0 +1,96 @@
+<script type="text/javascript" >
+    app.controller("projectcontrollerController", function($scope, $http) {
+        $scope.projectcontrollerInnit = function(id) {
+            $http.get("/project/api/controllersdata/").then(function(res) {
+                $scope._Project = res.data;
+            });
+        }
+    });
+</script>
+<?php
+$Project = \Module\project\Model\Project::GetCurentProject(TRUE);
+$Controllers = $Project->GetControllersId();
+$Controllers = implode(",", $Controllers);
+$model_option = new \Module\project\Model\ControllerData();
+$where = "`ControllerId` in ({$Controllers})";
+$Options = $model_option->GetRows($where);
+?>
+<!-- End Facebook Pixel Code -->
+<div class="row " ng-controller="projectcontrollerController" ng-init="projectcontrollerInnit('<?php echo $_Param[0] ?>')" >
+    <section class="col-md-12 pb-10" >
+        <div class="connectedSortable" >
+            <a href="/project/controller/index/<?php echo $Project->Id; ?>" class="btn btn-primary" ><i class="fa fa-arrow-left" ></i></a>
+            <a href="/project/controller/datacontroller2excell/" class="btn btn-primary" >Export Excell</a>
+
+            <div class="box box-primary" >
+                <div class="box-header" >
+                    <h3 class="box-title" >Danh Sách Người Dùng</h3>
+                </div>
+                <div class="box-body table-responsive" >
+                    <table class="table table-bordered dataTable " data-lengthchange='true' id="dataTable" >
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Email</th>
+                                <th>Họ & Tên</th>
+                                <th>Nguồn</th>
+                                <th>Ngày Đăng Nhập</th>
+                                <th>Số Lần Đăng Nhập</th>
+                                <th></th>
+
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php
+                            foreach ($Options as $k => $value) {
+                                ?>
+                                <tr >
+
+                                    <td><?php echo $k + 1; ?></td>
+                                    <td><?php echo $value["Col0"]; ?></td>
+                                    <td><?php echo $value["Col1"]; ?></td>
+                                    <td><?php echo $value["Col2"]; ?></td>
+                                    <td><?php echo $value["Col3"]; ?></td>
+                                    <td><?php echo $value["Col4"]; ?></td>
+                                    <td></td>
+
+                                </tr>
+                                <?php
+                            }
+                            ?>
+<!--                                <tr ng-repeat="item in _Project" >
+
+<td>{{$index + 1}}</td>
+<td>{{item.Col0}}</td>
+<td>{{item.Col1}}</td>
+<td>{{item.Col2}}</td>
+<td>{{item.Col3}}</td>
+<td>{{item.Col4}}</td>
+<td>{{item.Col5}}</td>
+</tr>-->
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <th>#</th>
+                                <th>Email</th>
+                                <th>Họ & Tên</th>
+                                <th>Nguồn</th>
+                                <th>Ngày Đăng Nhập</th>
+                                <th>Số Lần Đăng Nhập</th>
+                                <th></th>
+                            </tr>
+                        </tfoot>
+
+                    </table>
+                </div>
+            </div>
+
+        </div>
+    </section>
+</div>
+<!--<script>
+    $(function() {
+        $(".datatable").DataTable();
+
+    });
+</script>-->

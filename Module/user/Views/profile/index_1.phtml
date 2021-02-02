@@ -1,0 +1,144 @@
+<?php
+$Uer = \Module\user\Model\user::getCurentUserInfor(true);
+?>
+
+<div class="tabs">
+    <ul class="tabs__list">
+        <li class="tabs__item tabs__item--active">
+            <a href="#tab-1" class="tabs__url tabs__trigger"> <label>Thông Tin </label>
+                <i class="fa fa-info-circle" ></i></a>
+        </li>
+        <li class="tabs__item">
+            <a href="#tab-2" class="tabs__url tabs__trigger"> <label>Cập Nhật </label>
+                <i class="fa fa-upload" ></i></a>
+        </li>
+        <li class="tabs__item">
+            <a href="#tab-3" class="tabs__url tabs__trigger"><label>Bảo Mật </label>
+                <i class="fa fa-shield" ></i></a>
+        </li>
+    </ul> <!-- end tabs -->
+</div>
+<!-- tab content -->
+<div class="tabs__content tabs__content-trigger">
+    <div class="tabs__content-pane tabs__content-pane--active" id="tab-1">
+        <fieldset class="row"  >
+            <legend>Thông Tin Chung</legend>
+            <table class="table table-bordered  " >
+                <thead>
+                    <tr class="" >
+                        <th class="text-right" >Họ & Tên</th>
+                        <th class="" ><?php echo $Uer->FullName ?></th>
+                    </tr>
+                    <tr>
+                        <th class="text-right" >Email</th>
+                        <th><?php echo $Uer->Email ?></th>
+                    </tr>
+                    <tr>
+                        <th class="text-right" >Số Điện Thoại</th>
+                        <th><?php echo $Uer->Phone; ?></th>
+                    </tr>
+                    <tr>
+                        <th class="text-right" >Tỉnh/Thành Phố</th>
+                        <th><?php echo $Uer->ProvinceName; ?></th>
+                    </tr>
+                    <tr>
+                        <th class="text-right" >Quận/Huện</th>
+                        <th><?php echo $Uer->DistrictName; ?></th>
+                    </tr>
+                    <tr>
+                        <th class="text-right" >Phường/Xã</th>
+                        <th><?php echo $Uer->WardName; ?></th>
+                    </tr>
+                    <tr>
+                        <th class="text-right" >Đường/Số Nhà</th>
+                        <th><?php echo $Uer->Address; ?></th>
+                    </tr>
+                </thead>
+            </table>
+        </fieldset>
+
+        <div class="clearfix" ></div>
+
+    </div>
+    <div class="tabs__content-pane" id="tab-2">
+
+        <form method="POST" action="" class="form-horizontal">
+            <div class="row" >
+                <div class=" col-6" >
+                    <fieldset >
+                        <legend>Thông tin chung</legend>
+                        <div class="form-group">
+                            <label for="inputName" class="control-label">Họ Tên</label>
+                            <div >
+                                <?php \Model\Form::TextBox(["placeholder" => "Name", "name" => "Accout[Name]", "class" => "form-control"], \Module\user\Model\user::getCurentUserInfor(true)->FullName)->render(); ?>
+                                <!--<input type="text" name="Accout[Name]" value="<?php echo \Module\user\Model\user::getCurentUserInfor(true)->FullName ?>" class="form-control"  placeholder="Name">-->
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="inputEmail" class="control-label">Email</label>
+                            <div >
+                                <?php \Model\Form::TextBox(["placeholder" => "Name", "name" => "Accout[Email]", "class" => "form-control"], \Module\user\Model\user::getCurentUserInfor(true)->Email)->render(); ?>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="inputEmail" class="control-label">Số Điện Thoại</label>
+                            <div >
+                                <?php \Model\Form::TextBox(["placeholder" => "Name", "name" => "AccoutInfor[Phone]", "class" => "form-control"], \Module\user\Model\user::getCurentUserInfor(true)->Phone)->render(); ?>
+                            </div>
+                        </div>
+                    </fieldset>
+                </div>
+                <div class=" col-6" >
+                    <?php
+//                    \Model\Form::DiaChi();
+                    ?>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-offset-2 col-sm-8">
+                    <button name="Save"  type="submit" class="btn  btn-color">Lưu</button>
+                </div>
+            </div>
+        </form>
+        <div class="clearfix" ></div>
+    </div>
+    <div class="tabs__content-pane" id="tab-3">
+        <div  class="col-md-2"></div>
+        <div  class="col-md-8">
+            <form method="POST" action="" class="form-horizontal">
+                <fieldset>
+                    <legend>Thay Đổi Mật Khẩu</legend>
+                    <div class="form-group">
+                        <label for="inputName" class="control-label">Mật Khẩu Cũ</label>
+                        <div >
+                            <input type="password" name="Accout[OldPassword]" class="form-control"  placeholder="Mật Khẩu Cũ">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="inputName" class="control-label">Mật Khẩu Mới</label>
+                        <div >
+                            <input type="password" name="Accout[NewPassword]" class="form-control"  placeholder="Mật Khẩu Mới">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="inputName" class="control-label">Nhập Lại Password</label>
+                        <div >
+                            <input type="password" name="Accout[RePassword]" class="form-control"  placeholder="Nhập Lại Mật Khẩu">
+                        </div>
+                    </div>
+                </fieldset>
+                <div class="form-group">
+                    <div class="col-sm-offset-4 col-sm-8">
+                        <button name="Save"  type="submit" class="btn btn-danger">Lưu</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="clearfix" >  </div>
+    </div>
+</div>
+
+
+
+
+

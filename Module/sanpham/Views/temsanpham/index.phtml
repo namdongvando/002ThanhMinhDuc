@@ -1,0 +1,76 @@
+<?php
+$pagesIndex = 1;
+$pageNumber = 20;
+$tong = 0;
+$name = "";
+$TemSanPhams = \Module\sanpham\Model\TemSanPham::GetRowsPT($name, $pagesIndex, $pageNumber, $tong);
+?>
+<div class="row " >
+    <section class="col-md-12 pb-10 mt-20" >
+        <div class="box box-primary" >
+            <div class="box-header " >
+                Danh Sách Tem Sản Phẩm
+            </div>
+            <div class="box-body table-responsive" >
+                <table class="table table-bordered   " id="data"   >
+                    <thead>
+                        <tr>
+                            <th style="width: 120px;" ></th>
+                            <th>#</th>
+                            <th>Mã Sản Phẩm</th>
+                            <th>Tên Sản Phẩm</th>
+                            <th>Tình Trạng</th>
+                            <th>Khách Hàng Tiêu Dùng</th>
+                            <th>Ngày Bắt Đầu</th>
+                            <th>Ngày Kết Thúc</th>
+                            <th>Tài Khoản</th>
+                            <th style="width: 100px;" >Ngày Tạo</th>
+                            <th style="width: 100px;" >Ngày Sửa</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php
+                        foreach ($TemSanPhams as $k => $op) {
+                            $_op = new \Module\sanpham\Model\TemSanPham($op);
+                            ?>
+                            <tr>
+                                <td>
+                                    <a href="/sanpham/temsanpham/detailbysanpham/<?php echo $_op->MaSanPham; ?>/" class="btn-sm btn btn-primary" >Sửa</a>
+                                    <a href="/sanpham/index/delete/" data-confirm="Xóa Danh Mục Sản Phẩm" class="btn-sm btn xoa btn-danger" >Xóa</a>
+                                </td>
+                                <td><?php echo $k + 1; ?></td>
+                                <td><?php echo $_op->MaSanPham ?></td>
+                                <td><?php echo $_op->Name ?></td>
+                                <td><?php echo $_op->Status()->Name; ?></td>
+                                <td><?php echo $_op->KhachHangTieuDung ?></td>
+                                <td><?php echo $_op->NgayBatDau ?></td>
+                                <td><?php echo $_op->NgayKetThuc ?></td>
+                                <td><?php echo $_op->UserId()->Name; ?></td>
+                                <td><?php echo $_op->CreateDate ?></td>
+                                <td><?php echo $_op->ModifyDate ?></td>
+                            </tr>
+                            <?php
+                        }
+                        ?>
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <th></th>
+                            <th>#</th>
+                            <th>Mã Sản Phẩm</th>
+                            <th>Tên Sản Phẩm</th>
+                            <th>Tình Trạng</th>
+                            <th>Khách Hàng Tiêu Dùng</th>
+                            <th>Ngày Bắt Đầu</th>
+                            <th>Ngày Kết Thúc</th>
+                            <th>Tài Khoản</th>
+                            <th>Ngày Tạo</th>
+                            <th>Ngày Sửa</th>
+                        </tr>
+                    </tfoot>
+
+                </table>
+            </div>
+        </div>
+    </section>
+</div>

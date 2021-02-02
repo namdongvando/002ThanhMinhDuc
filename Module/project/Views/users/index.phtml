@@ -1,0 +1,39 @@
+
+<script type="text/javascript" >
+    app.controller("projectcontrollerController", function($scope, $http) {
+        $scope.projectcontrollerInnit = function() {
+            $http.get("/project/api/users/").then(function(res) {
+                $scope._users = res.data;
+            });
+        }
+
+    });</script>
+<div class="container " ng-controller="projectcontrollerController" ng-init="projectcontrollerInnit()" >
+    <section class="col-md-12 pb-10" >
+        <div class="connectedSortable" >
+            <div class="box box-primary" >
+                <div class="box-header" >
+                    <h3 class="box-title" >Danh Sách Quản Lý</h3>
+                </div>
+                <div class="box-body " >
+                    <div class="row ">
+                        <div ng-repeat="item in _users" class="col-md-4">
+                            <div class="box box-widget widget-user-2">
+                                <div class="widget-user-header bg-primary">
+                                    <div class="widget-user-image">
+                                        <img class="img-circle" onerror="this.src='/public/user_no_photo.png'" src="../dist/img/user7-128x128.jpg" alt="User Avatar">
+                                    </div>
+                                    <h3 class="widget-user-username">{{item.user.Name}}</h3>
+                                    <h5 class="widget-user-desc">{{item.user.Email}}</h5>
+                                </div>
+
+                            </div><!-- /.widget-user -->
+                        </div><!-- /.col -->
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+</div>
