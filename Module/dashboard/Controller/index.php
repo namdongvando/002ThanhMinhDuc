@@ -19,7 +19,6 @@ class index extends \ApplicationM {
 <script src="/Module/dashboard/public/ipnet.js?v={$time}" type="text/javascript"></script>
 JS;
         \Application\Html\Js::AddJS($Js);
-
         return $this->ViewThemeModlue();
     }
 

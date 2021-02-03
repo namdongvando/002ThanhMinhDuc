@@ -1,0 +1,285 @@
+@charset "utf-8";
+@font-face {
+    font-family: verdana;
+    src: url("fonts/verdana.ttf");
+}
+:root {
+    --bg: #BC9311;
+    --gold: #BC9311;
+    --black: #000;
+    --gray : gray;
+}
+boby {
+    font-family: verdana;
+}
+.border-radius-0{
+    border-radius: 0px !important;
+}
+.color-while{
+    color: white;
+}
+.bg-menu.affix{
+    background-color: #fff;
+    padding: 5px 10px;
+}
+.menu-top,.bg-menu{
+    background-color: rgb(255 255 255 / 80%);
+}
+.mainslide .carousel-item {
+    height: 550px;
+    background-image: url("../images/Carousel_Placeholder.png");
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: center;
+}
+.carousel-control-prev, .carousel-control-next {
+    position: absolute;
+    top: auto;
+    bottom: 45%;
+    padding: 10px;
+    background-color: black;
+    z-index: 1;
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-align: center;
+    align-items: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    color: #fff;
+    width: auto;
+    text-align: center;
+    opacity: 0.5;
+    transition: opacity 0.15s ease;
+}
+.main-menu li a {
+    color: #000;
+    font-weight: bold;
+}
+.list-news-group li {
+    border-bottom: 1px dashed#aaa;
+}
+.list-news-group {
+    padding: 0px;
+    margin: 0px;
+    list-style-type: none;
+}
+.list-news-group a {
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+.list-news-group li a {
+    color: #000;
+    text-transform: capitalize !important;
+}
+.list-news-group li a {
+    display: block;
+    padding: 10px;
+}
+.btn-theme {
+    background: #BC9315;
+    color: #fff;
+    font-weight: bold;
+}
+.footer {
+    background: rgba(65, 62, 62, 1.00);
+}
+.footer-title {
+    color: #fff;
+    font-size: 18px;
+}
+address {
+    color: #aaa;
+}
+.title-mail {
+    color: #aaa;
+}
+.footer-map {
+    width: 100%;
+}
+.title-theme {
+    color: #000;
+    font-weight: bold;
+    font-size: 14px;
+    background: #BC9315;
+}
+.hotline {
+    position: fixed;
+    bottom: 30px;
+    left: 20px;
+}
+.taisaochonchungtoi .title {
+    font-size: 1.3em;
+    font-weight: bold;
+}
+.theme-color {
+    color: rgba(245, 208, 12, 1.00);
+}
+.taisaochonchungtoi .item h2 {
+    font-size: 1.2em;
+}
+.taisaochonchungtoi-title {
+    font-size: 1.3px;
+
+}
+.taisaochonchungtoi {
+    color: #000;
+}
+.theme-bg {
+    background: linear-gradient(#BC9311, gold, #BC9311, gold);
+    color: #000;
+    font-size: 14px;
+}
+.fw-bold{
+    font-weight: bold;
+}
+.bg-gray{
+    background: #ddd;
+}
+.fs-3{
+    font-size: 20px;
+}
+.fs-2{
+    font-size: 18px;
+}
+.fs-1{
+    font-size: 16px;
+}
+.fs-0{
+    font-size: 14px;
+}
+.bg-theme {
+    background: #BC9315;
+}
+.main-menu .navbar-nav li a {
+    color: #000;
+    font-size: 14px;
+}
+.nav-item {
+    color: #000;
+}
+.navbar-expand-md .navbar-nav .nav-link {
+    color: #000;
+}
+.navbar-expand-sm .navbar-nav .nav-link:hover {
+    background-color: var(--bg);
+}
+.navbar-brand{
+    color: #000;
+    font-size: 16px;
+    font-weight: bold;
+}
+.color-gray{
+    color: var(--gray);
+    font-size: 12px;
+
+}
+.bg-white{
+    background-color: #fff ;
+}
+.logo-img {
+    max-height: 70px;
+}
+
+.BaiVietNoiBat .BaiVietNoiBat3 img{
+    height: 150px;
+}
+.BaiVietNoiBat .BaiVietNoiBat2 img{
+    height: 235px;
+}
+.BaiVietNoiBat .BaiVietNoiBat1 .card-title,
+.BaiVietNoiBat .BaiVietNoiBat2 .card-title,
+.BaiVietNoiBat .BaiVietNoiBat3 .card-title,
+.BaiVietNoiBat .BaiVietNoiBat-Main .card-body {
+    position: absolute;
+    text-align: center;
+    top: 40%;
+    color: #fff;
+    width: 100%;
+}
+.BaiVietNoiBat .BaiVietNoiBat-Main .card-img-top{
+    height: 590px;
+}
+
+.BaiVietNoiBat .BaiVietNoiBat1,
+.BaiVietNoiBat .BaiVietNoiBat2,
+.BaiVietNoiBat .BaiVietNoiBat3,
+.BaiVietNoiBat .BaiVietNoiBat-Main {
+    position: relative;
+}
+.DanhSachDoiTac .owl-nav .owl-prev{
+    float: left;
+}
+.DanhSachDoiTac .owl-nav .owl-next{
+    float: right;
+}
+.DanhSachDoiTac .owl-nav .owl-prev,
+.DanhSachDoiTac .owl-nav .owl-next{
+    padding: 10px !important;
+    width: 40px;
+    height: 40px;
+    line-height: 40px;
+    padding: 0px;
+    background: rgba(0,0,0,0.47) !important;
+    color: #fff !important;
+}
+.DanhSachDoiTac .owl-nav{
+    position: absolute;
+    top: 40%;
+    width: 100%;
+}
+@media(max-width:600px) {
+    #carouselExampleIndicators1{
+        background-color: #ddd;
+
+    }
+    .mainslide .carousel-item {
+        min-height: 300px;
+        background-image: url("../images/Carousel_Placeholder.png");
+        background-repeat: no-repeat;
+        background-size: contain;
+        background-position: center;
+    }
+    .Main-menu {
+        background: var(--gold);
+        margin-top: 10px;
+    }
+    .logo-img {
+        max-height: 70px;
+    }
+    .Main-menu .navbar-toggler{
+        border: 1px solid #000;
+    }
+
+}
+
+
+
+.NhanXetCuaKhacHang .carousel-item {
+    min-height: 200px;
+}
+.NhanXetCuaKhacHang .carousel-caption{
+    bottom: 35%;
+}
+
+.bg-dark60 {
+    background: rgba(0,0,0,0.60);
+}
+
+.mainslide {
+    position: relative;
+}
+
+.mainslide .danhSachDoiTac{
+    position: absolute;
+    bottom: -10px;
+    width: 100%;
+}
+
+.ChungToiLaAi .card .card-body{
+    min-height: 350px;
+}
+.taisaochonchungtoi-phone{
+    line-height: 10px;
+    font-size: 40px;
+}

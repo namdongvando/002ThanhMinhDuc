@@ -152,9 +152,25 @@ abstract class Element extends Base {
         echo '<button' . $this->getAttributes() . ">{$this->_attributes["value"]}</button>";
     }
 
+    public function renderDetail() {
+        $label = "";
+        $html = "";
+        $htmlTemplate = <<<HTML
+                <div class="form-group">
+                                    <label for="">$label</label>
+        $html
+                </div>
+HTML;
+        if (isset($this->attributes["value"]) && is_array($this->attributes["value"]))
+            $this->attributes["value"] = "";
+        $html .= $this->getAttributes();
+        $label = isset($this->attributes["label"]) ? $this->attributes["label"] : "";
+        echo $htmlTemplate;
+    }
+
     public function renderHTML() {
-        $label = isset($label) ? $label : "";
-        $html = isset($html) ? $html : "";
+        $label = "";
+        $html = "";
         $htmlTemplate = <<<HTML
                 <div class="form-group">
                                     <label for="">$label</label>

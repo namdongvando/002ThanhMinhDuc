@@ -1,0 +1,166 @@
+@charset "utf-8";
+@font-face{
+     font-family: verdana;
+    src: url("fonts/verdana.ttf");
+  
+}
+:root {
+  --bg : #BC9311;
+}
+
+boby{
+  font-family: verdana; 
+} 
+.mainslide .carousel-item{
+    min-height: 450px;
+    background-image: url("../images/Carousel_Placeholder.png");
+    background-repeat: no-repeat;
+    background-size: contain; 
+    background-position: center;
+}
+.mainslide .carousel-control-prev, .carousel-control-next {
+    position: absolute;
+    top: auto;
+    bottom: 45%;
+    padding: 10px;
+    background-color: black;
+    z-index: 1;
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-align: center;
+    align-items: center;
+    -ms-flex-pack: center;
+    justify-content: center; 
+    color: #fff;
+    width: auto;
+    text-align: center;
+    opacity: 0.5;
+    transition: opacity 0.15s ease;
+}
+.main-menu li a {
+    color: #000;
+    font-weight: bold;
+}
+
+.list-news-group li {
+    border-bottom: 1px dashed#aaa;
+}
+
+.list-news-group {
+    padding: 0px;
+    margin: 0px;
+    list-style-type: none;
+}
+.list-news-group a{
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+.list-news-group li a{
+  color: #000; 
+  text-transform: capitalize !important;
+}
+
+.list-news-group li a {
+    display: block;
+    padding: 10px;
+}
+
+.btn-theme {
+  background: #BC9315;
+  color: #fff;
+  font-weight: bold;
+}
+
+.footer {
+  background: rgba(65,62,62,1.00);
+}
+
+.footer-title {
+  color: #fff;
+}
+
+address {
+  color: #aaa;
+}
+
+.title-mail {
+  color: #aaa;
+}
+
+.footer-map {
+  width: 100%;
+  
+}
+
+.title-theme {
+  color: #000;
+  font-weight: bold;
+  font-size: 14px;
+  background:#BC9315;
+}
+
+.hotline {
+  position: fixed;
+  bottom: 30px;
+  left:20px;
+}
+
+.taisaochonchungtoi .title {
+  font-size: 2em;
+}
+
+.theme-color {
+  color: rgba(245,208,12,1.00);
+}
+
+.taisaochonchungtoi .item h2{
+  font-size: 1.4em;
+}
+
+.taisaochonchungtoi-title {
+  font-size: 1.4em;
+}
+
+.taisaochonchungtoi {
+  color: #000;
+}
+
+.theme-bg { 
+  background:linear-gradient(#BC9311,gold,#BC9311,gold);
+  color:#000;
+  font-size:14px;
+  
+}
+
+.bg-theme {
+  background: #BC9315;
+}
+
+.main-menu .navbar-nav li a{
+  color: #000;
+  font-size: 14px;
+}
+
+.nav-item {
+  color:#000;
+}
+
+.navbar-expand-md .navbar-nav .nav-link {
+  color: #000;
+}
+.navbar-expand-sm .navbar-nav .nav-link:hover{
+  background-color: var(--bg); 
+}
+
+@media(max-width:600px){
+ .mainslide .carousel-item{
+    min-height: 300px;
+    background-image: url("../images/Carousel_Placeholder.png");
+    background-repeat: no-repeat;
+    background-size: contain; 
+    background-position: center;
+}
+   
+  
+}

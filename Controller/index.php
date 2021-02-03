@@ -11,6 +11,10 @@ class Controller_index extends Application {
         Model_ViewTheme::set_viewthene("thanhminhduc");
     }
 
+    function index() {
+        return $this->ViewTheme([], null, "tmd");
+    }
+
     function index2() {
         $data = array(
             "Phone" => "0901337411",
@@ -51,11 +55,9 @@ class Controller_index extends Application {
     function baohanh() {
         $ModelTemSanPham = new \Module\sanpham\Model\TemSanPham();
         $idSanPham = $this->getParam()[0];
-
         $maKhachHangTieuDung = md5(time() . rand(1, time()));
         $temSanPham = \Module\sanpham\Model\TemSanPham::GetByCodeSanPham($idSanPham);
         $SanPham = Module\sanpham\Model\SanPham::GetItemByCode($idSanPham);
-
         if ($temSanPham["KhachHangTieuDung"] == "") {
             $khachHang = \Module\khachhang\Model\KhachHangTieuDung::TaoKhachHang($maKhachHangTieuDung);
             $temSanPham["KhachHangTieuDung"] = $maKhachHangTieuDung;
