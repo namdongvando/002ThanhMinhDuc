@@ -4,7 +4,12 @@ namespace Module\sanpham\Model;
 
 class SanPham extends SanPhamData {
 
-    public $Id, $Name, $Code, $Mota, $Gia, $HinhAnh, $DanhMuc;
+    const DangOCty = 0;
+    const DangODaiLy = 1;
+    const DangOChiNhanh = 2;
+    const DangSuDung = 3;
+
+    public $Id, $Name, $Code, $Mota, $Gia, $HinhAnh, $DanhMuc, $TinhTrang;
 
     public function __construct($dv = null) {
         parent::__construct();
@@ -19,11 +24,25 @@ class SanPham extends SanPhamData {
             $this->Gia = !empty($dv["Gia"]) ? $dv["Gia"] : 0;
             $this->HinhAnh = !empty($dv["HinhAnh"]) ? $dv["HinhAnh"] : null;
             $this->DanhMuc = !empty($dv["DanhMuc"]) ? $dv["DanhMuc"] : null;
+            $this->TinhTrang = !empty($dv["TinhTrang"]) ? $dv["TinhTrang"] : 0;
         }
     }
 
     function DanhMuc() {
         return new \Module\option\Model\Option($this->DanhMuc);
+    }
+
+    public static function ListTinhTrang() {
+        return [
+            self::DangOCty => "Đang Ở Công Ty",
+            self::DangODaiLy => "Đang Ở Đại Lý",
+            self::DangOChiNhanh => "Đang Chi Nhánh",
+            self::DangSuDung => "Đang Sử Dụng",
+        ];
+    }
+
+    public function TinhTrang() {
+        return self::ListTinhTrang()[$this->TinhTrang];
     }
 
     public static function SanPhams() {
@@ -54,9 +73,17 @@ class SanPham extends SanPhamData {
         return $this->GetRowsNumber();
     }
 
+    public function TemBaoHanh() {
+        $tem = new TemSanPham();
+        $a = $tem->GetBySanPham($this->Id);
+        if ($a)
+            return new TemSanPham($a);
+        return null;
+    }
+
     public function TemBaoHang() {
         $tem = new TemSanPham();
-        $a = $tem->GetById($this->Id);
+        $a = $tem->GetBySanPham($this->Id);
         if ($a)
             return new TemSanPham($a);
         return null;
@@ -75,6 +102,17 @@ class SanPham extends SanPhamData {
         $where = "`Code` like '%$idSanPham%'";
         $a = $tem->GetRowByWhere($where);
         return $a;
+    }
+
+    public static function ListTinhTrangToOptions() {
+        $lisTinhTrang = self::ListTinhTrang();
+        $options = [];
+        foreach ($lisTinhTrang as $key => $value) {
+//            $option["Id"] = $key;
+//            $option["Name"] = $value;
+            $options[$key] = $value;
+        }
+        return $options;
     }
 
 }

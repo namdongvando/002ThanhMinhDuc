@@ -74,11 +74,15 @@ class Common {
     }
 
     public static function DateTimeFormat() {
-        return "d/m/Y H:i";
+        return "d-m-Y H:i";
     }
 
     public static function DateFormat() {
-        return "H:i d/m/Y";
+        return "H:i d-m-Y";
+    }
+
+    public static function ToDate($date) {
+        return date(self::DateFormat(), strtotime($date));
     }
 
     static function minimizeCSSsimple($css) {

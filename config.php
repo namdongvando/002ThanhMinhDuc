@@ -10,15 +10,17 @@ spl_autoload_register(function ($class) {
 });
 define("DEFAULT_MODULE", "dashboard");
 define("DEFAULT_CONTROLLER", "index");
+define("DataBaseName", "thanh962_demo");
 define("DEFAULT_ACTION", "index");
 define("BASE_DIR", "/");
 define("ROOT_DIR", __DIR__);
 define("NgonNgu", "NgonNgu");
 define("UserApp", "UserApp");
+define("DateFomatDB", "Y-m-d H:i:s");
+define("DateFomatVN", "d-m-Y H:i:s");
 define("TinDaXem", "TinDaXem");
 define("Password", "@NguyenVanDo1");
 define("QuanTri", "QuanTri_PGV");
-define("online", true);
 new \Module\mail\Model\PHPMailerService("ipsquantri@gmail.com", "@NguyenVanDo");
 
 $_SESSION[UserApp] = isset($_SESSION[UserApp]) ? $_SESSION[UserApp] : null;
@@ -26,8 +28,9 @@ $_SESSION[UserApp] = isset($_SESSION[UserApp]) ? $_SESSION[UserApp] : null;
 $_SESSION['TenHienThi'] = 0;
 global $INI;
 
+define("online", false);
 
-if (true) {
+if (online) {
     $INI['host'] = "localhost";
     $INI['username'] = "root";
     $INI['password'] = "";
@@ -40,8 +43,8 @@ if (true) {
     $INI['username'] = "thanh962_demo";
     $INI['password'] = "zaq@123Abc456";
     $INI['DBname'] = "thanh962_demo";
-    define("BASE_URL", "http://demo.thanhminhduc.com/");
-    define("Root_URL", "http://demo.thanhminhduc.com/");
+    define("BASE_URL", "https://demo.thanhminhduc.com/");
+    define("Root_URL", "https://demo.thanhminhduc.com/");
     define("DOMAIN", ".thanhminhduc.com");
 }
 define("table_prefix", "thanhminhduc_");

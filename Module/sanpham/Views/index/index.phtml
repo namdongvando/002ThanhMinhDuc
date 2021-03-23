@@ -5,15 +5,14 @@ $Options = Module\option\Model\Option::OptionByGroups(Module\option\Model\Option
     app.controller("optionController", function($scope, $http) {
         $scope.optionInnit = function( ) {
             $http.get("/option/api/options/").then(function(res) {
-
             });
         }
     });
 </script>
+
 <div class="row " >
     <section class="col-md-12 mb-10" >
-
-        <a class="btn btn-primary" href=''>Tạo Sản Phẩm</a>
+        <a class="btn btn-primary" href='/sanpham/taosanpham/'>Tạo Sản Phẩm</a>
     </section>
     <section class="col-md-12 pb-10 mt-20" >
         <div class="connectedSortable" >

@@ -25,10 +25,12 @@ SetOutputFilter DEFLATE
 #RewriteCond %{HTTPS} off
 #RewriteRule (.*) https://%{SERVER_NAME}/$1 [L]
 
+RewriteRule ^baohanh/(.*)/ /index.php?ctr=index&action=baohanh&param=$1 [L]
 RewriteRule ^baohanh/(.*) /index.php?ctr=index&action=baohanh&param=$1 [L]
-RewriteRule ^ /index.php [L]
-RewriteRule (.*) /indexm.php [L]
 
+RewriteRule ^(dashboard|khachhang|excell|mail|option|project|rmm|sanpham|trungtambaohanh|user)  indexm.php?path=$1 [L]
+
+RewriteRule ^ /index.php [L]
 #
 ErrorDocument 404 /index.php?ctr=index&action=loi404
 #

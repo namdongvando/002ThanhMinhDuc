@@ -24,12 +24,12 @@ class taosanpham extends \ApplicationM implements \Controller\IController {
                 $_DanhMuc = new \Module\option\Model\Option($danhMuc);
                 $_SanPham = new \Module\sanpham\Model\SanPham();
                 $SoLuong = intval(\Common\Form::RequestPost("SoLuong", 10));
-
                 for ($index = 1; $index <= $SoLuong; $index++) {
                     $SanPham["Code"] = \Module\sanpham\Model\SanPham::CreateCode();
                     $SanPham["Name"] = $_DanhMuc->Name;
                     $SanPham["MoTa"] = $_DanhMuc->Note;
                     $SanPham["Gia"] = 0;
+                    $SanPham["TinhTrang"] = \Module\sanpham\Model\SanPham::DangOCty;
                     $SanPham["HinhAnh"] = "";
                     $SanPham["DanhMuc"] = $_DanhMuc->Id;
                     $_SanPham->InsertSubmit($SanPham);

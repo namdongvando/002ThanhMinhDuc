@@ -1,6 +1,7 @@
 <?php
-$Options = \Module\option\Model\Option::GetOptions();
+$YeuCauSuas = Module\trungtambaohanh\Model\YeuCauBaoHanh::YeuCauSuaChuas();
 ?>
+
 <div class="row " >
     <section class="col-md-12 mb-10" >
         <a class="btn btn-primary" href='/dashboard/'>Danh Sách Công Việc</a>
@@ -15,26 +16,39 @@ $Options = \Module\option\Model\Option::GetOptions();
                                 <th></th>
                                 <th>#</th>
                                 <th>Name</th>
-                                <th>Giá Trị</th>
-                                <th>Ghi Chú</th>
-                                <th>Xắp Sếp</th>
+                                <th>Thơi Gian Tạo</th>
+                                <th>Thời Gian Cập Nhật</th>
+                                <th>Tình Trạng</th>
                             </tr>
                         </thead>
                         <tbody>
                             <?php
-                            foreach ($Options as $k => $op) {
-                                $_op = new Module\option\Model\Option($op);
+                            foreach ($YeuCauSuas as $k => $op) {
+                                $_Option = new Module\trungtambaohanh\Model\YeuCauBaoHanh($op);
                                 ?>
                                 <tr>
-                                    <td>
-                                        <a href="/sanpham/index/edit/<?php echo $_op->Id ?>/" class="btn btn-primary" >Sửa</a>
-                                        <a href="/sanpham/index/delete/" data-confirm="Xóa Danh Mục Sản Phẩm" class="btn xoa btn-danger" >Xóa</a>
-                                    </td>
+                                    <td><a href="/trungtambaohanh/yeucaubaohanh/index/#/<?php echo $_Option->Code ?>" class="btn btn-success" >Chọn</a></td>
                                     <td><?php echo $k + 1; ?></td>
-                                    <td><?php echo $_op->Code ?></td>
-                                    <td><?php echo $_op->Name ?></td>
-                                    <td><?php echo $_op->Note ?></td>
-                                    <td><?php echo $_op->OrderBy ?></td>
+                                    <td>
+                                        <?php
+                                        echo $_Option->Name;
+                                        ?>
+                                    </td>
+                                    <td>
+                                        <?php
+                                        echo Common\Common::ToDate($_Option->CreateDate);
+                                        ?>
+                                    </td>
+                                    <td>
+                                        <?php
+                                        echo Common\Common::ToDate($_Option->UpdateDate);
+                                        ?>
+                                    </td>
+                                    <td>
+                                        <?php
+                                        echo $_Option->Status();
+                                        ?>
+                                    </td>
                                 </tr>
                                 <?php
                             }
@@ -45,9 +59,9 @@ $Options = \Module\option\Model\Option::GetOptions();
                                 <th></th>
                                 <th>#</th>
                                 <th>Name</th>
-                                <th>Giá Trị</th>
-                                <th>Ghi Chú</th>
-                                <th>Xắp Sếp</th>
+                                <th>Thơi Gian Tạo</th>
+                                <th>Thời Gian Cập Nhật</th>
+                                <th>Tình Trạng</th>
                             </tr>
                         </tfoot>
 

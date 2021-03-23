@@ -95,7 +95,7 @@ class TemSanPham extends TemSanPhamData {
         return [
             "Active" =>
             ["Id" => self::Active,
-                "Name" => "Đang Kích Hoạt",
+                "Name" => "Kích Hoạt",
             ]
             , "DeActive" =>
             ["Id" => self::DeActive,
@@ -108,8 +108,11 @@ class TemSanPham extends TemSanPhamData {
         $sanpham = new SanPham();
         $where = " `Code` = '{$idSanPham}'";
         $_sanpham = $sanpham->GetRowByWhere($where);
-        $idSP = $_sanpham["Id"];
-        return TemSanPham::GetBySanPham($idSP);
+        if ($_sanpham) {
+            $idSP = $_sanpham["Id"];
+            return TemSanPham::GetBySanPham($idSP);
+        }
+        return [];
     }
 
     public function UserId() {

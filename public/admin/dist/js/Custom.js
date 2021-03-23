@@ -63,7 +63,6 @@ var TabActive = function(dataConfig) {
     }
 }
 
-
 const ConfirnXoa = function() {
     this.Confirm = function(mes) {
         return confirm(mes);

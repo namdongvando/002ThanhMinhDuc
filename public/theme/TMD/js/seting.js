@@ -1,6 +1,5 @@
-$(function () {
-    $(window).scroll(function () {
-
+$(function() {
+    $(window).scroll(function() {
         var html = $("html");
         var windowsScrollTop = html.scrollTop();
         var affix = $(".affix");
@@ -17,15 +16,15 @@ $(function () {
 
         }
     });
-  
-  
-  $(".owl-custom").each(function(){
-      var self = $(this);
-      var owlData = $(this).data();
-      console.log(owlData);
-      self.owlCarousel(owlData);
-       
-  });
-    
-  
+
+
+    $(".owl-custom").each(function() {
+        var self = $(this);
+        var owlData = $(this).data();
+        console.log(owlData);
+        self.owlCarousel(owlData);
+
+    });
+
+
 });

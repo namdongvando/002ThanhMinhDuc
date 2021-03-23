@@ -49,7 +49,7 @@ $link = "/public/phpqrcode/index.php?data= " . Root_URL . "baohanh/" . $temSanPh
                             <div class="modal-body">
                                 <img style="width: 100%" src="<?php echo $link; ?>" class="img img-responsive"  >
                                 <a href="<?php echo Root_URL . "baohanh/" . $temSanPham->SanPham()->Code; ?>"
-                                   class="btn btn-success" >Xem</a>
+                                   class="" >Xem -->></a>
                             </div>
                         </div>
                     </div>
@@ -89,19 +89,22 @@ $link = "/public/phpqrcode/index.php?data= " . Root_URL . "baohanh/" . $temSanPh
                             <div class="col-md-6" >
                                 <fieldset>
                                     <legend>Thông Tin Khách Hàng Tiêu Dùng</legend>
-                                    <?php
-                                    Module\khachhang\Model\KhachHangTieuDungForm::Id($khachHang->Id)->render();
-                                    Module\khachhang\Model\KhachHangTieuDungForm::Name($khachHang->Name)->renderHTML();
-                                    ?>
                                     <div class="row" >
                                         <div class="col-md-6">
                                             <?php
-                                            Module\khachhang\Model\KhachHangTieuDungForm::CMNN($khachHang->CMNN)->renderHTML();
+                                            Module\khachhang\Model\KhachHangTieuDungForm::Id($khachHang->Id)->render();
+                                            Module\khachhang\Model\KhachHangTieuDungForm::Name($khachHang->Name)->renderHTML();
+                                            ?>
+                                        </div>
+
+                                        <div class="col-md-6">
+                                            <?php
+                                            Module\khachhang\Model\KhachHangTieuDungForm::Phone($khachHang->Phone)->renderHTML();
                                             ?>
                                         </div>
                                         <div class="col-md-6">
                                             <?php
-                                            Module\khachhang\Model\KhachHangTieuDungForm::Phone($khachHang->Phone)->renderHTML();
+                                            Module\khachhang\Model\KhachHangTieuDungForm::KhuVuc($khachHang->KhuVuc)->renderHTML();
                                             ?>
                                         </div>
                                     </div>

@@ -14,6 +14,13 @@ class api extends \ApplicationM {
         echo \lib\APIs::Json_encode($Options);
     }
 
+    function optionsbyGroups() {
+        $model_option = new \Module\option\Model\Option();
+        $groups = $this->getParam()[0];
+        $Options = $model_option->OptionByGroups($groups);
+        echo \lib\APIs::Json_encode($Options);
+    }
+
 }
 ?>
 

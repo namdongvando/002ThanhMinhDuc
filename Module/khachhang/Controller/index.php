@@ -20,6 +20,16 @@ class index extends \ApplicationM implements \Controller\IController {
         return $this->ViewThemeModlue();
     }
 
+    function add() {
+//        var_dump();
+        if (isset($_POST["khachhang"])) {
+            $kh = $_POST["khachhang"];
+            $khachHang = new \Module\khachhang\Model\KhachHang();
+            $khachHang->InsertSubmit($kh);
+        }
+        return $this->ViewThemeModlue();
+    }
+
     function controller() {
 
         $this->ViewThemeModlue();
@@ -69,34 +79,15 @@ class index extends \ApplicationM implements \Controller\IController {
     }
 
     public function edit() {
-        $ModelProject = new \Module\project\Model\Project();
-        if (\Module\project\Model\ProjectForm::onSubmit()) {
-            try {
-                $proj = $_POST["project"];
-                $id = $proj["Id"];
-                $_Model = $ModelProject->GetById($id);
-                $_Model["Name"] = $proj["Name"];
-                $_Model["Email"] = $proj["Email"];
-                $_Model["Address"] = $proj["Address"];
-                $_Model["Phone"] = $proj["Phone"];
-                if (strlen($_Model["Phone"]) > 10) {
-                    \Application\redirectTo::Url($_SERVER["HTTP_REFERER"]);
-                    throw new \Exception("SĐT Quá Dài");
-                }
-                $kt = $ModelProject->UpdateSubmit($_Model);
-            } catch (Exception $exc) {
-                echo $exc->getTraceAsString();
-            }
-            \Application\redirectTo::Url($_SERVER["HTTP_REFERER"]);
-            exit();
+        if (isset($_POST["khachhang"])) {
+            $kh = $_POST["khachhang"];
+            $khachHang = new \Module\khachhang\Model\KhachHang();
+            $KHBYId = \Module\khachhang\Model\KhachHang::GetKhachHangById($kh["Id"]);
+            $khachHang->UpdateSubmit($kh);
         }
-        $DataId = \Module\project\Model\Project::DecodeData($this->getParam()[0]);
-
-        $id = $DataId->Id;
-        \Module\project\Model\Project::SetEditProject($id);
-
-        $_Model = $ModelProject->GetById($id);
-        $this->ViewThemeModlue(["project" => $_Model], self::$UserLayout);
+        $id = $this->getParam()[0];
+        $_KhachHang = \Module\khachhang\Model\KhachHang::GetKhachHangById($id);
+        $this->ViewThemeModlue(["KhachHang" => $_KhachHang], self::$UserLayout);
     }
 
 }

@@ -49,7 +49,7 @@ class OptionData extends \datatable\ZendData implements \Model\IModel {
         } else {
             $where = " 1=1";
         }
-        return $this->getColumnsOption(["Id", "Code", "Name"], $where);
+        return $this->getColumnsOption(["Code", "Name"], $where);
     }
 
 }

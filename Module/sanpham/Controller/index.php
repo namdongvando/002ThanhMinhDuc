@@ -76,4 +76,9 @@ class index extends \ApplicationM implements \Controller\IController {
         return $this->ModelView(["option" => $option], "");
     }
 
+    public function form() {
+
+        return $this->AView(["option" => $option], "");
+    }
+
 }

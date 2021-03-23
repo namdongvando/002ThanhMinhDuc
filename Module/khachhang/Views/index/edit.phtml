@@ -1,205 +1,204 @@
 <?php
-$project = new Module\project\Model\Project($project);
-//var_dump(\Module\project\Model\Project::GetEditProject(true));
+$KhachHang = new Module\khachhang\Model\KhachHang($KhachHang);
+//var_dump($KhachHang->Name);
+//var_dump($KhachHang->DiaChi);
 ?>
-<script type="text/javascript" >
-    app.controller("projecteditController", function($scope, $http) {
-        $scope.projectInnit = function() {
-            $http.get("/project/api/allusers/").then(function(res) {
-                $scope._Users = res.data;
-            });
-            $scope.projectUsers();
-            $scope.projectController();
-        }
-        $scope.projectUsers = function() {
-            $http.get("/project/api/usersproject/").then(function(res) {
-                $scope._UsersProject = res.data;
-            });
-        }
-        $scope.projectController = function() {
-            $http.get("/project/api/projectController/").then(function(res) {
-                $scope._projectController = res.data;
-            });
-        }
-        $scope.AddProjectUser = function(id) {
-            $http.get("/project/api/addusersproject/" + id).then(function(res) {
-                $scope.projectUsers();
-            });
-        }
-        $scope.RemoveProjectUser = function(id) {
-            if (confirm("Bạn có muốn xóa user này khỏi dự án?") == false)
-                return;
-            $http.get("/project/api/removeusersproject/" + id).then(function(res) {
-                $scope.projectUsers();
-            });
-        }
-    });</script>
-<div class="row " ng-controller="projecteditController" ng-init='projectInnit()' >
-    <section class="col-md-6 pb-10" >
-        <div class="connectedSortable" >
-            <div class="box box-primary" >
-                <div class="box-header" >
-                    <h3 class="box-title" >Dự Án</h3>
-                </div>
-                <div class="box-body" >
-                    <form action="" method="post" enctype="multipart/form-data" >
-                        <?php
-                        \Module\project\Model\ProjectForm::Id($project->Id)->render();
-                        \Module\project\Model\ProjectForm::Name($project->Name)->renderHTML();
-                        \Module\project\Model\ProjectForm::Email($project->Email)->renderHTML();
-                        \Module\project\Model\ProjectForm::Phone($project->Phone)->renderHTML();
-                        \Module\project\Model\ProjectForm::MaxNumberController($project->MaxNumberController)->renderHTML();
-                        \Module\project\Model\ProjectForm::Address($project->Address)->renderHTML();
-                        ?>
-                        <input type="submit" class="btn btn-success" value="Lưu" />
-                        <a href="/project/index/" class="btn btn-primary" >Quay Lại</a>
-                        <a href="/project/index/look/<?php echo $project->EncodeData(); ?>" class="btn btn-warning" >Khóa Dự Án</a>
-                        <a href="/project/index/delete/<?php echo $project->EncodeData(); ?>" class="btn btn-danger" >Hủy Dự Án</a>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </section>
-    <section class="col-md-6 pb-10" >
-        <div class="connectedSortable" >
-            <div class="box box-primary" >
-                <div class="box-header" >
-                    <h3 class="box-title" >Tài khoản</h3>
-                </div>
-                <div class="box-body" >
-                    <?php
-                    if (\Module\user\Model\Admin::getCurentUser(true)->isAdmin()) {
-                        ?>
-                        <p>
-                            Thêm Tài khoản quản lý dự án.
-                        </p>
-                        <div class="form-group">
-                            <label for="">Tìm Kiếm</label>
-                            <input type="text" class="form-control" ng-model="timkiem" placeholder="Email hoặc Tài khoản">
+<div class="container-fluid" >
+    <div class="row" >
+        <section class="pb-10" >
+            <a href="/khachhang/index/" class="btn btn-primary" >Danh Sách Khác Hàng</a>
+        </section>
+        <div class="clearfix" ></div>
+        <section class="pb-10" >
+            <form action="" method="POST" enctype="multipart/form-data" >
+                <div class="connectedSortable" >
+                    <div class="box box-solid">
+                        <div class=" box-header bg-blue-gradient">
+                            <h3 class="box-title">Thêm Khách Hàng</h3>
+                            <!-- tools box -->
                         </div>
-                        <div class="col-md-6"  >
-                            <div class="form-group" ng-repeat="us in _Users| filter: timkiem" >
-                                <button class="pull-right btn btn-success" ng-click="AddProjectUser(us.Id)" ><i class="fa fa-plus" ></i></button>
-                                <h3 for="">{{us.Name}}</h3>
-                                <h5 for="">{{us.Email}}</h5>
-                            </div>
-                        </div>
-                        <?php
-                    }
-                    ?>
-                    <div class="col-md-6" >
-                        <div class="form-group" ng-repeat="us in _UsersProject| filter: timkiem" >
-                            <?php
-                            if (\Module\user\Model\Admin::getCurentUser(true)->isAdmin()) {
-                                ?>
-                                <button class="pull-right btn btn-danger" ng-click="RemoveProjectUser(us.user.Id)" >
-                                    <i class="fa fa-minus" ></i>
-                                </button>
-                                <?php
-                            }
-                            ?>
-                            <h3 for="">{{us.user.Name}}</h3>
-                            <h5 for="">{{us.user.Email}}</h5>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-    <section class="col-md-12 pb-10" >
-        <div class="connectedSortable" >
-            <div class="box box-primary" >
-                <div class="box-header" >
-                    <h3 class="box-title" >Thiết Bị ({{_projectController.length}}/<?php echo $project->MaxNumberController ?>)</h3>
-                </div>
-                <div class="box-body" >
-                    <table class="table table-bordered" >
-                        <thead>
-                            <tr>
-                                <th></th>
-                                <th>#</th>
-                                <th>Name Controller</th>
-                                <th>Lat/Long</th>
-                                <th>IP</th>
-                                <th>Username</th>
-                                <th>Password</th>
+                        <div class="box-body">
+                            <div role="tabpanel">
+                                <!-- Nav tabs -->
+                                <ul class="nav nav-tabs" role="tablist">
+                                    <li role="presentation" class="active">
+                                        <a href="#ThongTinChung" aria-controls="ThongTinChung" role="tab" data-toggle="tab">Thông Tin Chung</a>
+                                    </li>
+                                    <li class="hidden" role="presentation">
+                                        <a href="#ThongTinLienHe" aria-controls="ThongTinLienHe" role="tab" data-toggle="tab">Thông Tin Liên Hệ</a>
+                                    </li>
+                                    <li role="presentation">
+                                        <a href="#ThongTinThanhToan" aria-controls="ThongTinThanhToan" role="tab" data-toggle="tab">Thông Tin Thanh Toán</a>
+                                    </li>
+                                </ul>
 
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr ng-repeat="item in _projectController" >
-                                <td>
-                                    <a href="/project/controller/edit/{{item.token}}" class="btn btn-success" >
-                                        <i class="fa fa-edit" ></i>
-                                    </a>
-                                    <a target="_blank" href="{{item.LinkLogin}}" class="btn btn-success" >
-                                        <i class="fa fa-sign-in" ></i>
-                                    </a>
-                                </td>
-                                <td>{{$index + 1}}</td>
-                                <td><a href="/project/controller/datacontroller/{{item.token}}">{{item.Name}}</a></td>
-                                <td><i class="fa fa-map-marker" ></i>{{item.Lat}}.{{item.Lon}}</td>
-                                <td>{{item.Ip}}</td>
-                                <td>{{item.Username}}</td>
-                                <td><input value="{{item.Password}}" type="password" ></td>
-                            </tr>
-                        </tbody>
-                        <tfoot>
-                            <tr>
-                                <th></th>
-                                <th>#</th>
-                                <th>Name</th>
-                                <th>Lat/Long</th>
-                                <th>IP</th>
-                                <th>Username</th>
-                                <th>Password</th>
-                            </tr>
-                        </tfoot>
+                                <!-- Tab panes -->
+                                <div class="tab-content">
+                                    <div role="tabpanel" class="tab-pane active" id="ThongTinChung">
+                                        <div class="row pt-15">
+                                            <div class="col-md-4">
+                                                <a class="pull-right" data-toggle="modal" href='#huongDan'>
+                                                    <i class="fa fa-question" ></i>
+                                                </a>
+                                                <?php
+                                                Module\khachhang\Model\KhachHangForm::Id($KhachHang->Id)->render();
+                                                Module\khachhang\Model\KhachHangForm::Code($KhachHang->Code)->renderHTML();
+                                                ?>
+                                                <div class="modal fade" id="huongDan">
+                                                    <div class="modal-dialog modal-lg">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                                                <h3 class="modal-title">Hướng Dẫn</h3>
+                                                            </div>
+                                                            <div class="modal-body center-block">
+                                                                <div class="text-center"  >
+                                                                    <img style="margin: auto;" class="img img-responsive" src="/public/duongdan/MaKhachHang.JPG" alt="hướng Dẫn"/>
+                                                                </div>
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <button type="button" class="btn btn-default" data-dismiss="modal">Thoát</button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <?php
+                                                Module\khachhang\Model\KhachHangForm::Name($KhachHang->Name)->renderHTML();
+                                                ?>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <?php
+                                                Module\khachhang\Model\KhachHangForm::Parents($KhachHang->Parents)->renderHTML();
+                                                ?>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <?php
+                                                Module\khachhang\Model\KhachHangForm::KhuVuc($KhachHang->KhuVuc)->renderHTML();
+                                                ?>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <?php
+                                                Module\khachhang\Model\KhachHangForm::LoaiHinhKinhDoanh($KhachHang->LoaiHinhKinhDoanh)->renderHTML();
+                                                ?>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <?php
+                                                Module\khachhang\Model\KhachHangForm::DienThoai($KhachHang->DienThoai)->renderHTML();
+                                                ?>
+                                            </div>
+                                            <div class="col-md-12">
+                                                <?php
+                                                Module\khachhang\Model\KhachHangForm::DiaChi($KhachHang->DiaChi)->renderHTML();
+                                                ?>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <?php
+                                                Module\khachhang\Model\KhachHangForm::TinhThanh($KhachHang->TinhThanh)->renderHTML();
+                                                ?>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <?php
+                                                Module\khachhang\Model\KhachHangForm::QuanHuyen($KhachHang->QuanHuyen)->renderHTML();
+                                                ?>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <?php
+                                                Module\khachhang\Model\KhachHangForm::PhuongXa($KhachHang->PhuongXa)->renderHTML();
+                                                ?>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <?php
+                                                Module\khachhang\Model\KhachHangForm::LaChuKinhDoanh($KhachHang->LaChuKinhDoanh)->renderHTML();
+                                                ?>
+                                            </div>
 
-                    </table>
-
-                </div>
-                <div class="box-footer clearfix no-border">
-                    <?php
-                    if ($project->CanInsertController()) {
-                        ?>
-                        <a class="pull-right btn btn-primary" data-toggle="modal" href='#addThietBi'>
-                            <i class="fa fa-plus" ></i>
-                            Thêm Thiết Bị
-                        </a>
-                        <?php
-                    }
-                    ?>
-                    <form method="POST" action="/project/controller/create/" enctype="multipart/form-data" >
-                        <div class="modal fade" data-backdrop="false"  id="addThietBi">
-                            <div class="modal-dialog">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                                        <h4 class="modal-title">Thêm Thiết Bị</h4>
+                                            <div class="col-md-4">
+                                                <?php
+                                                Module\khachhang\Model\KhachHangForm::DiDong($KhachHang->DiDong)->renderHTML();
+                                                ?>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <?php
+                                                Module\khachhang\Model\KhachHangForm::Zalo($KhachHang->Zalo)->renderHTML();
+                                                ?>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <?php
+                                                Module\khachhang\Model\KhachHangForm::MaSoThue($KhachHang->MaSoThue)->renderHTML();
+                                                ?>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <?php
+                                                Module\khachhang\Model\KhachHangForm::DiaChiGiaoHang($KhachHang->DiaChi)->renderHTML();
+                                                ?>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <?php
+                                                Module\khachhang\Model\KhachHangForm::NhomHangKinhDoanh($KhachHang->NhomHangKinhDoanh)->renderHTML();
+                                                ?>
+                                            </div>
+                                        </div>
                                     </div>
-                                    <div class="modal-body">
-                                        <?php
-                                        \Module\project\Model\ControllerForm::PIdHidder($project->Id)->render();
-                                        \Module\project\Model\ControllerForm::Name()->renderHTML();
-                                        \Module\project\Model\ControllerForm::Lat()->renderHTML();
-                                        \Module\project\Model\ControllerForm::Lon()->renderHTML();
-                                        \Module\project\Model\ControllerForm::Ip()->renderHTML();
-                                        \Module\project\Model\ControllerForm::Username()->renderHTML();
-                                        \Module\project\Model\ControllerForm::Password()->renderHTML();
-                                        ?>
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-default" data-dismiss="modal">Đóng</button>
-                                        <button type="submit" name="btnsave" class="btn btn-primary">Thêm</button>
+                                    <div role="tabpanel" class="tab-pane" id="ThongTinLienHe">...</div>
+                                    <div role="tabpanel" class="tab-pane" id="ThongTinThanhToan">
+                                        <div class="row">
+                                            <div class="col-md-4">
+                                                <?php
+                                                Module\khachhang\Model\KhachHangThanhToanForm::MaKhachHang()->renderHTML();
+                                                ?>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <?php
+                                                Module\khachhang\Model\KhachHangThanhToanForm::TenCongTy()->renderHTML();
+                                                ?>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <?php
+                                                Module\khachhang\Model\KhachHangThanhToanForm::MaSoThue()->renderHTML();
+                                                ?>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <?php
+                                                Module\khachhang\Model\KhachHangThanhToanForm::DiaChi()->renderHTML();
+                                                ?>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <?php
+                                                Module\khachhang\Model\KhachHangThanhToanForm::STK()->renderHTML();
+                                                ?>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <?php
+                                                Module\khachhang\Model\KhachHangThanhToanForm::NganHang()->renderHTML();
+                                                ?>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <?php
+                                                Module\khachhang\Model\KhachHangThanhToanForm::Fax()->renderHTML();
+                                                ?>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <?php
+                                                Module\khachhang\Model\KhachHangThanhToanForm::GhiChu()->renderHTML();
+                                                ?>
+                                            </div>
+
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </section>
 
+                        </div>
+                        <div class="box-footer" >
+                            <?php
+                            Module\rmm\Model\RoomForm::btnSave()->render();
+                            ?>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </section>
+    </div>
 </div>

@@ -12,7 +12,7 @@ class KhachHangData extends \datatable\ZendData implements \Model\IModel {
     private $TableName;
 
     public function __construct() {
-        $this->TableName = table_prefix . "khachhang_tieudung";
+        $this->TableName = table_prefix . "khachhang";
         $this->setTableGateway($this->TableName);
         parent::__construct($this->TableName);
         if (!self::$tableNews)

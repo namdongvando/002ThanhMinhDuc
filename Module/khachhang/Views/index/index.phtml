@@ -1,11 +1,11 @@
 <?php
 $KhachHangs = \Module\khachhang\Model\KhachHang::KhachHangs();
+//var_dump($KhachHangs);
 ?>
 <script type="text/javascript" >
     app.controller("optionController", function($scope, $http) {
         $scope.optionInnit = function( ) {
             $http.get("/option/api/options/").then(function(res) {
-
             });
         }
     });
@@ -26,17 +26,25 @@ $KhachHangs = \Module\khachhang\Model\KhachHang::KhachHangs();
                             <tr>
                                 <th></th>
                                 <th>#</th>
-                                <th>Name</th>
-                                <th>Giá Trị</th>
-                                <th>Groups</th>
-                                <th>Xắp Sếp</th>
+                                <th>Tên Khách Hàng</th>
+                                <th>Địa Chỉ</th>
+                                <th>Khu Vực</th>
+                                <th>SĐT</th>
                             </tr>
                         </thead>
                         <tbody>
                             <?php
-                            foreach ($KhachHangs as $index => $op) {
+                            foreach ($KhachHangs as $index => $kh) {
+                                $Modelkh = new Module\khachhang\Model\KhachHang($kh);
                                 ?>
-
+                                <tr>
+                                    <th><a href="/khachhang/index/edit/<?php echo $Modelkh->Id; ?>" class="btn btn-primary" >Xem</a></th>
+                                    <th>#</th>
+                                    <th><?php echo $Modelkh->Name ?></th>
+                                    <th><?php echo $Modelkh->DiaChi ?></th>
+                                    <th><?php echo $Modelkh->KhuVuc ?></th>
+                                    <th><?php echo $Modelkh->DiDong ?></th>
+                                </tr>
                                 <?php
                             }
                             ?>
@@ -45,10 +53,10 @@ $KhachHangs = \Module\khachhang\Model\KhachHang::KhachHangs();
                             <tr>
                                 <th></th>
                                 <th>#</th>
-                                <th>Name</th>
-                                <th>Giá Trị</th>
-                                <th>Groups</th>
-                                <th>Xắp Sếp</th>
+                                <th>Tên Khách Hàng</th>
+                                <th>Địa Chỉ</th>
+                                <th>Khu Vực</th>
+                                <th>SĐT</th>
                             </tr>
                         </tfoot>
 

@@ -2,6 +2,7 @@
 $pageNumber = 1;
 $Number = 20;
 $Tong = 0;
+datatable\ZendData::$IsDebug = true;
 $KhachHangs = \Module\khachhang\Model\KhachHangTieuDung::KhachHangTieuDungsPt($pageNumber, $Number, $Tong);
 ?>
 <script type="text/javascript" >
@@ -26,7 +27,6 @@ $KhachHangs = \Module\khachhang\Model\KhachHangTieuDung::KhachHangTieuDungsPt($p
                                 <th class="text-center" >#</th>
                                 <th>Họ & Tên</th>
                                 <th>SĐT</th>
-                                <th>CMNN</th>
                                 <th>Địa Chỉ</th>
                             </tr>
                         </thead>
@@ -39,7 +39,6 @@ $KhachHangs = \Module\khachhang\Model\KhachHangTieuDung::KhachHangTieuDungsPt($p
                                     <th class="text-center" ><?php echo $index + 1; ?></th>
                                     <th><?php echo $_Kh->Name; ?></th>
                                     <th><?php echo $_Kh->Phone; ?></th>
-                                    <th><?php echo $_Kh->CMNN; ?></th>
                                     <th><?php echo $_Kh->DiaChi; ?></th>
                                 </tr>
                                 <?php

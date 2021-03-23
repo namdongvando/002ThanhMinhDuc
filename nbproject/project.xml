@@ -5,5 +5,14 @@
         <data xmlns="http://www.netbeans.org/ns/php-project/1">
             <name>002ThanhMinhDuc</name>
         </data>
+        <spellchecker-wordlist xmlns="http://www.netbeans.org/ns/spellchecker-wordlist/1">
+            <word>dv</word>
+            <word>fomrg</word>
+            <word>formg</word>
+            <word>inout</word>
+            <word>php</word>
+            <word>pph</word>
+            <word>ssub</word>
+        </spellchecker-wordlist>
     </configuration>
 </project>

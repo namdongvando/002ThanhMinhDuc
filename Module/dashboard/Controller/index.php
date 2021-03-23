@@ -22,6 +22,15 @@ JS;
         return $this->ViewThemeModlue();
     }
 
+    function listdata() {
+        $time = filemtime("Module/dashboard/public/js/dashboardWorkflows.js");
+        $Js = <<<JS
+<script src="/Module/dashboard/public/js/dashboardWorkflows.js?v={$time}" type="text/javascript"></script>
+JS;
+        \Application\Html\Js::AddJS($Js);
+        return $this->ViewThemeModlue();
+    }
+
 }
 ?>
 

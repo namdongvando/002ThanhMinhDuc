@@ -251,7 +251,7 @@ class ApplicationM {
         include_once $layout;
     }
 
-    function AView($data) {
+    function AView($data = null) {
 
         if ($this->getController() == "") {
             $this->controller = "index";
@@ -259,11 +259,11 @@ class ApplicationM {
         if ($this->getAction() == "") {
             $this->action = "index";
         }
-        $_Lang = $this->getLang();
+        $_Module = $this->getModule();
         $_Param = $this->getParam();
         $_Controller = $this->getController();
         $_Action = $this->getAction();
-        $view = "View/" . $this->getController() . "/" . $this->getAction() . ".phtml";
+        $view = "Module/{$_Module}/Views/" . $this->getController() . "/" . $this->getAction() . ".phtml";
 
         include_once $view;
     }
@@ -477,6 +477,29 @@ class ApplicationM {
     }
 
     function ViewThemeModlue($data = NULL, $theme = null, $themelayout = "") {
+        $_Module = $this->getModule();
+        $_Controller = $this->getController();
+        $_Action = $this->getAction();
+        $_Param = $this->getParam();
+        if ($data)
+            extract($data);
+        if (!$theme) {
+            $theme = \Core\ViewTheme::get_viewthene();
+        }
+        $_Content = sprintf("Module/%s/Views/%s/%s.phtml", $this->getModule(), $this->getController(), $this->getAction());
+        if ($themelayout == "") {
+            $layout = "theme/" . $theme . "/" . "layout.phtml";
+        } else {
+            $themelayout = "_" . $themelayout;
+            $layout = "theme/" . $theme . "/" . "layout{$themelayout}.phtml";
+        }
+        if (!is_file($layout)) {
+            throw new Exception("Không Có Theme");
+        }
+        include_once $layout;
+    }
+
+    function ViewThemeModule($data = NULL, $theme = null, $themelayout = "") {
         $_Module = $this->getModule();
         $_Controller = $this->getController();
         $_Action = $this->getAction();

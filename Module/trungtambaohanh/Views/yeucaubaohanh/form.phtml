@@ -1,0 +1,135 @@
+<form action="" enctype="multipart/form-data" onsubmit="return false;" method="POST" >
+    <fieldset>
+        <legend>Thông tin chung yêu cầu</legend>
+        <div class="row">
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label >Mã</label>
+                    <input type="text" ng-model="formdataDefaut.Id" class="form-control"  placeholder="...">
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label >Code</label>
+                    <input type="text" ng-model="formdataDefaut.Code" class="form-control"  placeholder="...">
+                </div>
+            </div>
+            <div class="form-group col-md-3">
+                <label >Ngày Tạo Yêu Cầu</label>
+                <input type="datetime-local" ng-model="formdataDefaut.CreateDate" class="form-control"  placeholder="...">
+            </div>
+            <div class="form-group col-md-3">
+                <label>Tình Trạng</label>
+                <select ng-model="formdataDefaut.Status" class="form-control" >
+                    <option ng-repeat="item in listStatus" value="{{item.id}}" >{{item.name}}</option>
+                </select>
+            </div>
+        </div>
+    </fieldset>
+
+    <fieldset>
+        <legend>Thông tin bảo hành</legend>
+        <div class="row" >
+            <div class="form-group col-md-4">
+                <label >Ngày Bảo Hành</label>
+                <input type="datetime-local" ng-model="formdataDefaut.NgayBaoHanh" class="form-control"  placeholder="...">
+            </div>
+            <div class="form-group col-md-4">
+                <label >SĐT Khách Hàng</label>
+                <input  ng-model="formdataDefaut.SDT" class="form-control"  placeholder="...">
+            </div>
+            <div class="form-group col-md-4">
+                <label >Họ Tên Khách Hàng</label>
+                <input  ng-model="formdataDefaut.ThongTinKhachHang.Name" class="form-control"  placeholder="...">
+            </div>
+        </div>
+        <div class="form-group">
+            <label >Sự Cố Mắc Phải</label>
+            <textarea  ng-model="formdataDefaut.NoiDung" class="form-control"  placeholder="..."></textarea>
+        </div>
+    </fieldset>
+
+    <fieldset>
+        <legend>Thông tin sản phẩm</legend>
+        <div class="row" >
+            <div class="form-group col-md-4">
+                <label >Mã Sản Phẩm</label>
+                <input  ng-model="formdataDefaut.ThongTinSanPham.Code" class="form-control"  placeholder="...">
+            </div>
+            <div class="form-group col-md-4">
+                <label >Tên Sản Phẩm</label>
+                <input  ng-model="formdataDefaut.ThongTinSanPham.Name" class="form-control"  placeholder="...">
+            </div>
+            <div class="form-group col-md-4">
+                <label >Ngày Hết Bảo Hành</label>
+                <input  ng-model="formdataDefaut.TemSanPham.NgayKetThuc" type="date" class="form-control"  placeholder="...">
+            </div>
+        </div>
+        <div class="form-group">
+            <label >Chi Tiết Sản Phẩm</label>
+            <div>{{formdataDefaut.ThongTinSanPham.Mota}}</div>
+        </div>
+    </fieldset>
+    <fieldset>
+        <legend>Thông Tin Khách Hàng</legend>
+        <div class="row">
+            <div class="form-group col-md-3">
+                <label for="">Họ & Tên</label>
+                <input type="text" ng-model="formdataDefaut.ThongTinKhachHang.Name" class="form-control" >
+            </div>
+            <div class="form-group col-md-3">
+                <label for="">CMND/Hộ Chiếu</label>
+                <input type="text" ng-model="formdataDefaut.ThongTinKhachHang.CMNN" class="form-control" >
+            </div>
+            <div class="form-group col-md-3">
+                <label for="">Số Điện Thoại</label>
+                <input type="text" ng-model="formdataDefaut.ThongTinKhachHang.Phone" class="form-control" >
+            </div>
+
+            <div class="form-group col-md-3">
+                <label for="">Khu Vực</label>
+                <select ng-model="formdataDefaut.ThongTinKhachHang.KhuVuc" class="form-control" >
+                    <option ng-repeat="item in _KhuVuc" value="{{item.Code}}" >{{item.Name}}</option>
+                </select>
+            </div>
+            <div class="form-group col-md-12">
+                <label for="">Địa Chỉ</label>
+                <input type="text" ng-model="formdataDefaut.ThongTinKhachHang.DiaChi" class="form-control" >
+            </div>
+        </div>
+        <button type="button" ng-click="LuuThongTinKhachHang(formdataDefaut.ThongTinKhachHang, true)" >Cập Nhật Thông Tin Khách Hàng</button>
+    </fieldset>
+    <fieldset>
+        <legend>Thông Tin Đơn Vị Bảo Hành</legend>
+        <div class="form-group col-md-4">
+            <label >Trung Tâm Bảo Hành</label>
+            <select  ng-model="formdataDefaut.IdTrungTamBaoHanh" class="form-control"  >
+                <option ng-repeat="item in _TrungTamBaoHanh" value="{{item.Id}}" >{{item.Name}}</option>
+            </select>
+            <!--            <a class="btn btn-primary" data-toggle="modal" href='#modal-id'>Chọn tung</a>
+                        <div class="modal fade" id="modal-id">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                        <h4 class="modal-title">Modal title</h4>
+                                    </div>
+                                    <div class="modal-body">
+
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                        <button type="button" class="btn btn-primary">Save changes</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>-->
+        </div>
+    </fieldset>
+    <div class="form-group text-center">
+        <label ></label>
+        <input type="button" ng-click="SaveFormData(formdataDefaut)" class="btn btn-success" value="&nbsp; &nbsp; Gửi &nbsp; &nbsp;" >
+
+    </div>
+</form>
+

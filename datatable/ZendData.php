@@ -6,6 +6,7 @@ use Zend\Db\Adapter\Adapter;
 use Zend\Db\Sql\Ddl;
 use Zend\Db\Sql\Sql;
 use Zend\Db\Sql\TableIdentifier;
+use Zend\Db\TableGateway\Feature\RowGatewayFeature;
 use Zend\Db\TableGateway\TableGateway;
 use Zend\Db\Sql\Select;
 use lib\io;
@@ -15,6 +16,7 @@ class ZendData {
     private static $TableName;
     private static $Adapter;
     private $TableContext;
+    public static $IsDebug;
 
     public function __construct($TableName = null) {
         if ($TableName) {
@@ -47,9 +49,18 @@ class ZendData {
         return self::$Adapter;
     }
 
-    function setTableGateway($TableName) {
-        $this->TableContext = new TableGateway($TableName, $this->Connect());
+    function setTableGateway($TableName, $id = null) {
+        if ($id == null) {
+            $this->TableContext = new TableGateway($TableName, $this->Connect());
+        } else {
+            $this->TableContext = new TableGateway($TableName, $this->Connect(), new \Zend\Db\TableGateway\Feature($id));
+        }
         self::$TableName = $TableName;
+    }
+
+    function getSql() {
+//
+//        return $this->TableContext->getSql();
     }
 
     function GetRowTableById($id) {
@@ -63,6 +74,10 @@ class ZendData {
     }
 
     function GetRowsNumber($where = null) {
+        if (self::$IsDebug) {
+//            $this->TableContext->select($where);
+//            echo $this->getSql();
+        }
         if ($where) {
             $res = $this->fechArray($this->TableContext->select($where));
             if ($res)

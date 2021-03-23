@@ -64,6 +64,11 @@ class KhachHang extends KhachHangData {
         return $Kh->GetAll2Option();
     }
 
+    public static function GetKhachHangById($id) {
+        $Kh = new KhachHang();
+        return $Kh->GetById($id);
+    }
+
 }
 ?>
 

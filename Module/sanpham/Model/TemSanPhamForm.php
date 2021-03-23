@@ -62,7 +62,6 @@ class TemSanPhamForm extends \PFBC\Form implements ITemSanPhamForm {
         $Option = self::$Option;
         $Option["value"] = $value;
         $Option["type"] = "date";
-        $Option["min"] = date("Y-m-d", time());
         return new \PFBC\Element\Textbox("Ngày Bắt Đầu", "temsanpham[" . __FUNCTION__ . "]", $Option);
     }
 

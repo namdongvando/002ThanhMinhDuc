@@ -58,6 +58,13 @@ class SanPhamForm extends \PFBC\Form implements ISanPhamForm {
         return new \PFBC\Element\Select("Danh Mục Sản Phẩm", "sanpham[DanhMuc]", $ops, $Option);
     }
 
+    public static function TinhTrang($value = null) {
+        $Option = self::$Option;
+        $Option["value"] = $value;
+        $ops = SanPham::ListTinhTrangToOptions();
+        return new \PFBC\Element\Select("Tình Trạng Sản Phẩm", "sanpham[TinhTrang]", $ops, $Option);
+    }
+
     public static function btnSave() {
         return new \PFBC\Element\Button("Lưu", "Submit", ["name" => "IsSubmit", "class" => "btn btn-primary"]);
     }

@@ -1,0 +1,80 @@
+<form action="" enctype="multipart/form-data" onsubmit="return false;" method="POST" >
+    <fieldset>
+        <legend>Thông tin chung yêu cầu</legend>
+        <div class="row">
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label >Mã</label>
+                    <input type="text" ng-model="CtrlData.formdataDefaut.Id" class="form-control"  placeholder="...">
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label >Code</label>
+                    <input type="text" ng-model="CtrlData.formdataDefaut.Code" class="form-control"  placeholder="...">
+                </div>
+            </div>
+            <div class="form-group col-md-3">
+                <label >Ngày Tạo Yêu Cầu</label>
+                <input type="datetime-local" ng-model="CtrlData.formdataDefaut.CreateDate" class="form-control"  placeholder="...">
+            </div>
+            <div class="form-group col-md-3">
+                <label>Tình Trạng</label>
+                <select ng-model="CtrlData.formdataDefaut.Status" class="form-control" >
+                    <option ng-repeat="item in listStatus" value="{{item.id}}" >{{item.name}}</option>
+                </select>
+            </div>
+        </div>
+    </fieldset>
+
+    <fieldset>
+        <legend>Thông tin bảo hành</legend>
+        <div class="row" >
+            <div class="form-group col-md-4">
+                <label >Ngày Bảo Hành</label>
+                <input type="datetime-local" ng-model="CtrlData.formdataDefaut.NgayBaoHanh" class="form-control"  placeholder="...">
+            </div>
+            <div class="form-group col-md-4">
+                <label >SĐT Khách Hàng</label>
+                <input  ng-model="CtrlData.formdataDefaut.SDT" class="form-control"  placeholder="...">
+            </div>
+            <div class="form-group col-md-4">
+                <label >Họ Tên Khách Hàng</label>
+                <input  ng-model="CtrlData.formdataDefaut.ThongTinKhachHanh.Name" class="form-control"  placeholder="...">
+            </div>
+        </div>
+        <div class="form-group">
+            <label >Sự Cố Mắc Phải</label>
+            <textarea  ng-model="CtrlData.formdataDefaut.NoiDung" class="form-control"  placeholder="..."></textarea>
+        </div>
+    </fieldset>
+    <fieldset>
+        <legend>Thông tin sản phẩm</legend>
+        <div class="row" >
+            <div class="form-group col-md-6">
+                <label >Mã Sản Phẩm</label>
+                <input  ng-model="CtrlData.formdataDefaut.ThongTinSanPham.Code" class="form-control"  placeholder="...">
+            </div>
+            <div class="form-group col-md-6">
+                <label >Tên Sản Phẩm</label>
+                <input  ng-model="CtrlData.formdataDefaut.ThongTinSanPham.Name" class="form-control"  placeholder="...">
+            </div>
+        </div>
+        <div class="form-group">
+            <label >Chi Tiết Sản Phẩm</label>
+            <div>{{CtrlData.formdataDefaut.ThongTinSanPham.Mota}}</div>
+        </div>
+    </fieldset>
+    <fieldset>
+        <legend>Tình Trạng Công Việc</legend>
+        <select ng-model="CtrlData.formdataDefaut.Status" class="form-control" >
+            <option ng-repeat="item in listStatus" value="{{item.id}}" >{{item.name}}</option>
+        </select>
+    </fieldset>
+    <div class="form-group text-center">
+        <label ></label>
+        <input type="button" ng-click="SaveFormData(CtrlData.formdataDefaut)" class="btn btn-success" value="&nbsp; &nbsp; Gửi &nbsp; &nbsp;" >
+
+    </div>
+</form>
+

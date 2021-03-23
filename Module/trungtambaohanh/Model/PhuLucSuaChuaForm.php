@@ -2,7 +2,7 @@
 
 namespace Module\trungtambaohanh\Model;
 
-class PhuLucSuaChuaForm extends \PFBC\Form implements IPhuLucSuaChua {
+class PhuLucSuaChuaForm extends \PFBC\Form implements IPhuLucSuaChuaForm {
 
     const nameForm = "plsc";
 

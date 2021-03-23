@@ -2,7 +2,7 @@
 
 namespace Module\trungtambaohanh\Model;
 
-interface IPhuLucSuaChua {
+interface IPhuLucSuaChuaForm {
 
     static public function Id($value = null);
 

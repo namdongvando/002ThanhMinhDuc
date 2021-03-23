@@ -2,7 +2,6 @@
     <a href="/sanpham/taosanpham/" class="btn btn-primary" >Danh Sách Sảm Phẩm</a>
 </div>
 <div class="container" >
-
     <div class="row " >
         <section class="col-md-12 pb-10" >
             <form action="" method="POST" enctype="multipart/form-data" >
@@ -12,15 +11,36 @@
                             <h3 class="box-title">Chi Tiết Sản Phẩm</h3>
                         </div>
                         <div class="box-body">
+                            <div class="row" >
+                                <div class="col-md-6">
+                                    <?php
+                                    Module\sanpham\Model\SanPhamForm::Id($SanPham->Id)->render();
+                                    Module\sanpham\Model\SanPhamForm::Name($SanPham->Name)->renderHTML();
+                                    ?>
+                                </div>
+                                <div class="col-md-6">
+                                    <?php
+                                    Module\sanpham\Model\SanPhamForm::Code($SanPham->Code)->renderHTML();
+                                    ?>
+                                </div>
+                            </div>
                             <?php
-                            Module\sanpham\Model\SanPhamForm::Id($SanPham->Id)->render();
-                            Module\sanpham\Model\SanPhamForm::Name($SanPham->Name)->renderHTML();
-                            Module\sanpham\Model\SanPhamForm::Code($SanPham->Code)->renderHTML();
                             Module\sanpham\Model\SanPhamForm::Gia($SanPham->Gia)->renderHTML();
                             Module\sanpham\Model\SanPhamForm::Mota($SanPham->Mota)->renderHTML();
                             Module\sanpham\Model\SanPhamForm::HinhAnh($SanPham->HinhAnh)->renderHTML();
-                            Module\sanpham\Model\SanPhamForm::DanhMuc($SanPham->DanhMuc)->renderHTML();
                             ?>
+                            <div class="row" >
+                                <div class="col-md-6" >
+                                    <?php
+                                    Module\sanpham\Model\SanPhamForm::DanhMuc($SanPham->DanhMuc)->renderHTML();
+                                    ?>
+                                </div>
+                                <div class="col-md-6" >
+                                    <?php
+                                    Module\sanpham\Model\SanPhamForm::TinhTrang($SanPham->TinhTrang)->renderHTML();
+                                    ?>
+                                </div>
+                            </div>
                         </div>
                         <div class="box-footer" >
                             <?php

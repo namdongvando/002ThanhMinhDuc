@@ -4,8 +4,9 @@
     src: url("fonts/verdana.ttf");
 }
 :root {
-    --bg: #BC9311;
-    --gold: #BC9311;
+    --bg: #D5181F;
+    --gold: #D5181F;
+    --color: #fff;
     --black: #000;
     --gray : gray;
 }
@@ -77,8 +78,8 @@ boby {
     padding: 10px;
 }
 .btn-theme {
-    background: #BC9315;
-    color: #fff;
+    background: var(--bg);
+    color: var(--color);
     font-weight: bold;
 }
 .footer {
@@ -149,7 +150,8 @@ address {
     font-size: 14px;
 }
 .bg-theme {
-    background: #BC9315;
+    background: var(--bg);
+    color: var(--color)
 }
 .main-menu .navbar-nav li a {
     color: #000;

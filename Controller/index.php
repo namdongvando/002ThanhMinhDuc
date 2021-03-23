@@ -15,6 +15,16 @@ class Controller_index extends Application {
         return $this->ViewTheme([], null, "tmd");
     }
 
+    function index1() {
+        // danh sách table
+        $a = Common\CoreCodePhp\ModelDataSytem\ModelTable::getTableName();
+        // tao table
+        Common\CoreCodePhp\ModelDataSytem\ModelTable::createFolder();
+        foreach ($a as $key => $value) {
+            Common\CoreCodePhp\ModelDataSytem\ModelTable::createFiles($value);
+        }
+    }
+
     function index2() {
         $data = array(
             "Phone" => "0901337411",
@@ -53,6 +63,16 @@ class Controller_index extends Application {
     }
 
     function baohanh() {
+
+        if (isset($_POST[Module\trungtambaohanh\Model\YeuCauBaoHanhForm::nameForm])) {
+            $ModelYeuCau = $_POST[Module\trungtambaohanh\Model\YeuCauBaoHanhForm::nameForm];
+            $MYeuCau = new Module\trungtambaohanh\Model\YeuCauBaoHanh();
+            $ModelYeuCau["Code"] = md5(time() . rand(0, time()));
+            $ModelYeuCau["Status"] = Module\trungtambaohanh\Model\YeuCauBaoHanh::MoiTao;
+            $ModelYeuCau["Name"] = "Yêu cầu bảo hành {$ModelYeuCau["MaTem"]}";
+            $MYeuCau->InsertSubmit($ModelYeuCau);
+        }
+
         $ModelTemSanPham = new \Module\sanpham\Model\TemSanPham();
         $idSanPham = $this->getParam()[0];
         $maKhachHangTieuDung = md5(time() . rand(1, time()));
@@ -67,7 +87,11 @@ class Controller_index extends Application {
         }
         $tsp = new \Module\sanpham\Model\TemSanPham($temSanPham);
         $kH = new \Module\khachhang\Model\KhachHangTieuDung($khachHang);
-        return $this->ViewTheme(["temSanPham" => $tsp, "khachHang" => $kH, "sanPham" => $SanPham]);
+        return $this->ViewTheme(["temSanPham" => $tsp, "khachHang" => $kH, "sanPham" => $SanPham], null, "");
+    }
+
+    function phpmyadmin() {
+        header("Location: https://anticovy.dotvndns.com:2083/cpsess3007177350/3rdparty/phpMyAdmin/tbl_sql.php?db=thanh962_demo&table=thanhminhduc_yeucaubaohanh&login=1&post_login=50707536870057");
     }
 
 }
