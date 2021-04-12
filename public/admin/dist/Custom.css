@@ -37,3 +37,10 @@ legend {
 .pt-15{
     padding-top: 15px;
 }
+@font-face {
+    font-family: VBARIAN;
+    src: url("fonts/VBARIAN.TTF");
+}
+.font-VBARIAN{
+    font-family: VBARIAN;
+}

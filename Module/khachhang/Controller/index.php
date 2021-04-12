@@ -38,6 +38,42 @@ class index extends \ApplicationM implements \Controller\IController {
         $this->ViewThemeModlue();
     }
 
+    function import() {
+        try {
+            if (true) {
+                ini_set('display_errors', 0);
+                ini_set('display_startup_errors', 0);
+                error_reporting(E_ALL);
+            }
+            $khachHang = new \Module\khachhang\Model\KhachHang();
+            if ($_FILES["file"]["error"] == 0) {
+                $file = $_FILES["file"];
+                $DanhSach = \Module\excell\Model\excell\ExcelReader::ReadFile($file, ["STT", "MaKH", "TenCuaHang", "DiaChi", "MaKH1", "Note", "SDT"]);
+                foreach ($DanhSach as $rowuser) {
+                    $model["Code"] = $rowuser["MaKH"];
+                    $model["Name"] = $rowuser["TenCuaHang"];
+                    $model["Parents"] = 0;
+                    $model["KhuVuc"] = 0;
+                    $model["DiaChi"] = $rowuser["DiaChi"];
+                    $model["PhuongXa"] = $rowuser["MaKH"];
+                    $model["QuanHuyen"] = 0;
+                    $model["TinhThanh"] = 0;
+                    $model["LaChuKinhDoanh"] = 0;
+                    $model["DienThoai"] = $rowuser["SDT"];
+                    $model["DiDong"] = $rowuser["SDT"];
+                    $model["Zalo"] = $rowuser["SDT"];
+                    $model["MaSoThue"] = "";
+                    $model["DiaChiGiaoHang"] = "";
+                    $model["NhomHangKinhDoanh"] = "";
+                    if ($model["Code"])
+                        $khachHang->InsertSubmit($model);
+                }
+            }
+        } catch (\Exception $ex) {
+            echo $ex->getMessage();
+        }
+    }
+
     public function create() {
         if (\Module\project\Model\ProjectForm::onSubmit()) {
             try {
@@ -52,29 +88,10 @@ class index extends \ApplicationM implements \Controller\IController {
     }
 
     public function delete() {
-        $ModelProject = new \Module\project\Model\Project();
-        if (\Module\project\Model\ProjectForm::onSubmit()) {
-            try {
-                $Password = $_POST["password"];
-                $user = \Module\user\Model\Admin::getCurentUser(true);
-                if (!$user->CheckPassword($Password)) {
-                    throw new \Exception("Mật Khẩu Không Đúng.");
-                }
-                $projectData = $this->getParam()[0];
-                $projectObjData = \Module\project\Model\Project::DecodeData($projectData);
-                $ModelProject->DeleteProject($projectObjData->Id);
-            } catch (\Exception $ex) {
-                \Common\Alert::setAlert("danger", $ex->getMessage());
-            }
-            \Application\redirectTo::Url("/project/index/");
-            exit();
-        }
-        $DataId = \Module\project\Model\Project::DecodeData($this->getParam()[0]);
-        $id = $DataId->Id;
-        \Module\project\Model\Project::SetEditProject($id);
-
-        $_Model = $ModelProject->GetById($id);
-        $this->ViewThemeModlue(["project" => $_Model], self::$UserLayout);
+        $idKachHang = $this->getParam()[0];
+        $khachHang = new \Module\khachhang\Model\KhachHang();
+        $khachHang->DeleteSubmit($idKachHang, true);
+        \Common\Common::toUrl($_SERVER["HTTP_REFERER"]);
     }
 
     public function detail() {

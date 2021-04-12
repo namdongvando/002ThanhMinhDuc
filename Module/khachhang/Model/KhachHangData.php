@@ -39,8 +39,8 @@ class KhachHangData extends \datatable\ZendData implements \Model\IModel {
         return $this->UpdateRowTable($model);
     }
 
-    public function DeleteSubmit($id) {
-        return $this->DeleteRowById($id);
+    public function DeleteSubmit($id, $maHoa = false) {
+        return $this->DeleteRowById($id, $maHoa);
     }
 
     function GetAll2Option($where = null) {

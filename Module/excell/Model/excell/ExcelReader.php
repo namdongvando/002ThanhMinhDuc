@@ -70,6 +70,7 @@ class ExcelReader {
         }
         require_once 'PHPExcel.php';
         $objReader = \PHPExcel_IOFactory::createReader('Excel2007');
+
         $objReader->setReadDataOnly(true); //optional
         $full_path = $FilePath;
         $objPHPExcel = $objReader->load($full_path);
@@ -78,7 +79,7 @@ class ExcelReader {
         foreach ($objWorksheet->getRowIterator() as $row) {
             $item = [];
             foreach ($ColNames as $k => $Colname) {
-                $item[$StructArray[$k]] = $objPHPExcel->getActiveSheet()->getCell("{$Colname}{$i}")->getValue();
+                $item[$StructArray[$k]] = $objPHPExcel->getActiveSheet()->getCell($Colname . $i)->getValue();
             }
             $DanhMucs[] = $item;
             $i++;

@@ -92,7 +92,7 @@ class temsanpham extends \ApplicationM implements \Controller\IController {
 //            die();
             $ModelKhachHanhTieuDung->UpdateRowTable($khachHanhTieuDung);
         }
-        if (\Common\Form::RequestPost("ThemTemPhu", null)) {
+        if (\Common\Form::RequestPost("ThenTemPhu", null)) {
 
         }
         $ModelTemSanPham = new \Module\sanpham\Model\TemSanPham();

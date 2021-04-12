@@ -164,7 +164,10 @@ class ZendData {
         return $this->fechArray($this->TableContext->select());
     }
 
-    function DeleteRowById($id) {
+    function DeleteRowById($id, $maHoa = false) {
+        if ($maHoa) {
+            return $this->TableContext->delete("sha1(`Id`) = '{$id}'");
+        }
         return $this->TableContext->delete("`Id` = '{$id}'");
     }
 

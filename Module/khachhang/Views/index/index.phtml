@@ -22,7 +22,7 @@ $KhachHangs = \Module\khachhang\Model\KhachHang::KhachHangs();
         <?php
         \Module\khachhang\Model\KhachHangForm::btnThem("Thêm Khách Hàng");
         ?>
-        <a class="btn btn-primary" href='#ThemOptions'>Import</a>
+        <button class="btn btn-primary" data-toggle="modal" data-target='#ImportModel'>Import</button>
     </section>
     <div class="container-fluid">
         <section class="pb-10 mt-20" >
@@ -32,13 +32,13 @@ $KhachHangs = \Module\khachhang\Model\KhachHang::KhachHangs();
                         <table class="table table-bordered dataTable " id="data"   >
                             <thead>
                                 <tr>
-                                    <th style="width:100px;" ></th>
                                     <th>#</th>
                                     <th>Tên Khách Hàng</th>
                                     <th>Tỉnh Thành</th>
                                     <th>Quận Huyện</th>
                                     <th>Khu Vực</th>
                                     <th>SĐT</th>
+                                    <th style="width:100px;" ></th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -47,13 +47,16 @@ $KhachHangs = \Module\khachhang\Model\KhachHang::KhachHangs();
                                     $Modelkh = new Module\khachhang\Model\KhachHang($kh);
                                     ?>
                                     <tr>
-                                        <th><a href="/khachhang/index/edit/<?php echo sha1($Modelkh->Id); ?>" class="btn btn-primary" >Xem</a></th>
-                                        <th>#</th>
-                                        <th><?php echo $Modelkh->Name ?></th>
+                                        <th><?php echo $index + 1; ?></th>
+                                        <th class="font-VBARIAN" ><?php echo $Modelkh->Name ?></th>
                                         <th><?php echo $Modelkh->TinhThanh()->Name; ?></th>
                                         <th><?php echo $Modelkh->QuanHuyen()->Name; ?></th>
                                         <th><?php echo $Modelkh->KhuVuc()->Name ?></th>
-                                        <th><?php echo $Modelkh->DiDong ?></th>
+                                        <th class="font-VBARIAN" ><?php echo $Modelkh->DiDong ?></th>
+                                        <th>
+                                            <a href="/khachhang/index/edit/<?php echo sha1($Modelkh->Id); ?>" class="btn btn-primary" >Xem</a>
+                                            <a  href="/khachhang/index/delete/<?php echo sha1($Modelkh->Id); ?>" data-confirm="Xóa Khách Hàng Này?" class="btn xoa btn-danger" >Xóa</a>
+                                        </th>
                                     </tr>
                                     <?php
                                 }
@@ -69,13 +72,33 @@ $KhachHangs = \Module\khachhang\Model\KhachHang::KhachHangs();
                                     <th>SĐT</th>
                                 </tr>
                             </tfoot>
-
                         </table>
                     </div>
                 </div>
-
             </div>
         </section>
     </div>
-
+    <form action="/khachhang/index/import/" enctype="multipart/form-data" method="POST" >
+        <div class="modal fade" id="ImportModel">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h4 class="modal-title">Chọn File</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="">Chọn file</label>
+                            <input type="file" class="form-control" required="" name="file" >
+                        </div>
+                        <p>Chọn file *.xlsx</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Thoát</button>
+                        <button type="submit" name="Import" class="btn btn-primary">Lưu</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
 </div>

@@ -1,3 +1,10 @@
 .select2-hidden-accessible{
     display: hidden;
 }
+@font-face {
+    font-family: VBARIAN;
+    src: url("fonts/VBARIAN.TTF");
+}
+.font-VBARIAN{
+    font-family: VBARIAN;
+}
