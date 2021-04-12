@@ -38,15 +38,16 @@ class KhachHangThanhToanForm extends \PFBC\Form implements IKhachHangThanhToanFo
     public static function GhiChu($value = null) {
         $Option = self::$Option;
         $Option["value"] = $value;
-
-        return new \PFBC\Element\Textbox("Ghi Chú", "khachhangthanhtoan[GhiChu]", $Option);
+        return new \PFBC\Element\Textarea("Ghi Chú", "khachhangthanhtoan[GhiChu]", $Option);
     }
 
-    public static function MaKhachHang($value = null) {
+    public static function MaKhachHang($value = null, $att = []) {
         $Option = self::$Option;
         $Option["value"] = $value;
-
-        $Option["ng-model"] = "MaKhachHang";
+        if ($att)
+            foreach ($att as $k => $val) {
+                $Option[$k] = $val;
+            }
         return new \PFBC\Element\Textbox("Mã Khách Hàng", "khachhangthanhtoan[MaKhachHang]", $Option);
     }
 

@@ -1,0 +1,7 @@
+ <phan-trang
+                        pages-index="_listProductByCatID.pagesIndex"
+                        pages-number="20"
+                        pages-total="_listProductByCatID.totalPages"
+                        pages-params='{"keyword":seachProduct}'
+                        on-click="TimKiemSanPham(Params, pagesIndex, pagesNumber)"
+                        ></phan-trang>

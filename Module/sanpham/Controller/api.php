@@ -15,6 +15,15 @@ class api extends \ApplicationM {
 
     }
 
+    function DanhSachTemSanPham() {
+        $pagesIndex = isset($this->getParam()[0]) ? $this->getParam()[0] : 1;
+        $pageNumber = isset($this->getParam()[1]) ? $this->getParam()[1] : 20;
+        $tong = 0;
+        $name = "";
+        $TemSanPhams = \Module\sanpham\Model\TemSanPham::GetRowsPT($name, $pagesIndex, $pageNumber, $tong);
+        echo \lib\APIs::ResApi($TemSanPhams, $pagesIndex, $pageNumber, $tong);
+    }
+
 }
 ?>
 

@@ -2,6 +2,7 @@
 $KhachHangs = \Module\khachhang\Model\KhachHang::KhachHangs();
 //var_dump($KhachHangs);
 ?>
+
 <script type="text/javascript" >
     app.controller("optionController", function($scope, $http) {
         $scope.optionInnit = function( ) {
@@ -10,60 +11,71 @@ $KhachHangs = \Module\khachhang\Model\KhachHang::KhachHangs();
         }
     });
 </script>
-<div class="row " >
-    <section class="col-md-12 mb-10" >
+<ol class="breadcrumb">
+    <li>
+        <a href="/dashboard/">Dashboad</a>
+    </li>
+    <li class="active">Đại lý bán hàng</li>
+</ol>
+<div class="" >
+    <section class="container-fluid" >
         <?php
         \Module\khachhang\Model\KhachHangForm::btnThem("Thêm Khách Hàng");
         ?>
         <a class="btn btn-primary" href='#ThemOptions'>Import</a>
     </section>
-    <section class="col-md-12 pb-10 mt-20" >
-        <div class="connectedSortable" >
-            <div class="box box-primary" >
-                <div class="box-body table-responsive" >
-                    <table class="table table-bordered dataTable " id="data"   >
-                        <thead>
-                            <tr>
-                                <th></th>
-                                <th>#</th>
-                                <th>Tên Khách Hàng</th>
-                                <th>Địa Chỉ</th>
-                                <th>Khu Vực</th>
-                                <th>SĐT</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <?php
-                            foreach ($KhachHangs as $index => $kh) {
-                                $Modelkh = new Module\khachhang\Model\KhachHang($kh);
-                                ?>
+    <div class="container-fluid">
+        <section class="pb-10 mt-20" >
+            <div class="connectedSortable" >
+                <div class="box box-primary" >
+                    <div class="box-body table-responsive" >
+                        <table class="table table-bordered dataTable " id="data"   >
+                            <thead>
                                 <tr>
-                                    <th><a href="/khachhang/index/edit/<?php echo $Modelkh->Id; ?>" class="btn btn-primary" >Xem</a></th>
+                                    <th style="width:100px;" ></th>
                                     <th>#</th>
-                                    <th><?php echo $Modelkh->Name ?></th>
-                                    <th><?php echo $Modelkh->DiaChi ?></th>
-                                    <th><?php echo $Modelkh->KhuVuc ?></th>
-                                    <th><?php echo $Modelkh->DiDong ?></th>
+                                    <th>Tên Khách Hàng</th>
+                                    <th>Tỉnh Thành</th>
+                                    <th>Quận Huyện</th>
+                                    <th>Khu Vực</th>
+                                    <th>SĐT</th>
                                 </tr>
+                            </thead>
+                            <tbody>
                                 <?php
-                            }
-                            ?>
-                        </tbody>
-                        <tfoot>
-                            <tr>
-                                <th></th>
-                                <th>#</th>
-                                <th>Tên Khách Hàng</th>
-                                <th>Địa Chỉ</th>
-                                <th>Khu Vực</th>
-                                <th>SĐT</th>
-                            </tr>
-                        </tfoot>
+                                foreach ($KhachHangs as $index => $kh) {
+                                    $Modelkh = new Module\khachhang\Model\KhachHang($kh);
+                                    ?>
+                                    <tr>
+                                        <th><a href="/khachhang/index/edit/<?php echo sha1($Modelkh->Id); ?>" class="btn btn-primary" >Xem</a></th>
+                                        <th>#</th>
+                                        <th><?php echo $Modelkh->Name ?></th>
+                                        <th><?php echo $Modelkh->TinhThanh()->Name; ?></th>
+                                        <th><?php echo $Modelkh->QuanHuyen()->Name; ?></th>
+                                        <th><?php echo $Modelkh->KhuVuc()->Name ?></th>
+                                        <th><?php echo $Modelkh->DiDong ?></th>
+                                    </tr>
+                                    <?php
+                                }
+                                ?>
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <th></th>
+                                    <th>#</th>
+                                    <th>Tên Khách Hàng</th>
+                                    <th>Địa Chỉ</th>
+                                    <th>Khu Vực</th>
+                                    <th>SĐT</th>
+                                </tr>
+                            </tfoot>
 
-                    </table>
+                        </table>
+                    </div>
                 </div>
-            </div>
 
-        </div>
-    </section>
+            </div>
+        </section>
+    </div>
+
 </div>

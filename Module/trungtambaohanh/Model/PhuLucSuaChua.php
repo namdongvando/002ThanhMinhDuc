@@ -35,6 +35,10 @@ class PhuLucSuaChua extends PhuLucSuaChuaData {
         return \Module\option\Model\Option::GetAll2OptionsByGroups(\Module\option\Model\Option::PhuLucLoai);
     }
 
+    public function DonGiaVND() {
+        return number_format($this->DonGia, 0, ",", ".") . "<sup>đ</sup>";
+    }
+
 }
 ?>
 

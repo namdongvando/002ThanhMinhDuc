@@ -8,7 +8,7 @@ class TemSanPham extends TemSanPhamData {
     const DeActive = 0;
     const Huy = -1;
 
-    public $Id, $Name, $MaSanPham, $KhachHangTieuDung, $NgayBatDau, $NgayKetThuc, $Status, $UserId, $CreateDate, $ModifyDate;
+    public $Id, $Name, $Code, $MaSanPham, $KhachHangTieuDung, $NgayBatDau, $ThangKetThuc, $NgayKetThuc, $Status, $UserId, $CreateDate, $ModifyDate;
 
     public function __construct($dv = null) {
         parent::__construct();
@@ -18,14 +18,18 @@ class TemSanPham extends TemSanPhamData {
             }
             $this->Id = !empty($dv["Id"]) ? $dv["Id"] : null;
             $this->Name = !empty($dv["Name"]) ? $dv["Name"] : null;
+            $this->Code = !empty($dv["Code"]) ? $dv["Code"] : null;
             $this->MaSanPham = !empty($dv["MaSanPham"]) ? $dv["MaSanPham"] : null;
             $this->KhachHangTieuDung = !empty($dv["KhachHangTieuDung"]) ? $dv["KhachHangTieuDung"] : null;
             $this->NgayBatDau = !empty($dv["NgayBatDau"]) ? $dv["NgayBatDau"] : date("Y-m-d H:i:s", time());
             $this->NgayKetThuc = !empty($dv["NgayKetThuc"]) ? $dv["NgayKetThuc"] : null;
+            $this->ThangKetThuc = !empty($dv["ThangKetThuc"]) ? $dv["ThangKetThuc"] : null;
             $this->Status = !empty($dv["Status"]) ? $dv["Status"] : 0;
             $this->UserId = !empty($dv["UserId"]) ? $dv["UserId"] : 0;
             $this->CreateDate = !empty($dv["CreateDate"]) ? $dv["CreateDate"] : null;
             $this->ModifyDate = !empty($dv["ModifyDate"]) ? $dv["ModifyDate"] : null;
+            $this->Parents = !empty($dv["Parents"]) ? $dv["Parents"] : null;
+            $this->IsPrint = !empty($dv["IsPrint"]) ? $dv["IsPrint"] : null;
         }
     }
 
@@ -62,6 +66,12 @@ class TemSanPham extends TemSanPhamData {
     public static function GetBySanPham($idSP) {
         $temsp = new TemSanPham();
         $where = "`MaSanPham` = {$idSP}";
+        return $temsp->GetRowByWhere($where);
+    }
+
+    public static function GetByCode($code) {
+        $temsp = new TemSanPham();
+        $where = "`Code` = '{$code}'";
         return $temsp->GetRowByWhere($where);
     }
 
@@ -119,6 +129,30 @@ class TemSanPham extends TemSanPhamData {
         if ($this->UserId > 0)
             return new \Module\user\Model\Admin($this->UserId);
         return new \Module\user\Model\Admin(null);
+    }
+
+    public function ModifyDate() {
+        return date("d-m-Y", strtotime($this->ModifyDate));
+    }
+
+    public function NgayKetThuc() {
+        if ($this->NgayKetThuc)
+            return date("d-m-Y", strtotime($this->NgayKetThuc));
+        return "Chưa cấu hình";
+    }
+
+    public function NgayBatDau() {
+        return date("d-m-Y", strtotime($this->NgayBatDau));
+    }
+
+    public function CreateDate() {
+        return date("d-m-Y", strtotime($this->CreateDate));
+    }
+
+    public function ThangKetThuc() {
+        if ($this->ThangKetThuc)
+            return $this->ThangKetThuc . ' Tháng';
+        return "Chưa cấu hình";
     }
 
 }

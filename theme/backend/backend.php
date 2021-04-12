@@ -15,8 +15,8 @@ class backend {
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
         <!-- Ionicons -->
         <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+        <link href="/public/admin/plugins/select2/select2.min.css" rel="stylesheet" type="text/css"/>
         <!-- Theme style -->
-        <link rel="stylesheet" href="/public/admin/dist/css/AdminLTE.min.css">
         <!-- AdminLTE Skins. Choose a skin from the css/skins
              folder instead of downloading all of them to reduce the load. -->
         <link rel="stylesheet" href="/public/admin/dist/css/skins/_all-skins.min.css">
@@ -32,9 +32,9 @@ class backend {
         <link rel="stylesheet" href="/public/admin/plugins/daterangepicker/daterangepicker-bs3.css">
         <!-- bootstrap wysihtml5 - text editor -->
         <link rel="stylesheet" href="/public/admin/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css">
-        <link href="/public/admin/plugins/select2/select2.min.css" rel="stylesheet" type="text/css"/>
         <link rel="stylesheet" href="/public/admin/plugins/datatables/dataTables.bootstrap.css">
         <link href="/public/admin/plugins/datatables/jquery.dataTables.min.css" rel="stylesheet" type="text/css"/>
+        <link rel="stylesheet" href="/public/admin/dist/css/AdminLTE.min.css">
         <link href="/public/admin/dist/Custom.css?v=<?php echo fileatime("public/admin/dist/Custom.css"); ?>" rel="stylesheet" type="text/css"/>
         <style type="text/css" >
             .alert{
@@ -121,27 +121,82 @@ class backend {
 
     function Menu() {
         ?>
-        <header class="main-header ">
-            <!-- Logo -->
-            <a href="/dashboard/" class="logo">
-                <span class="logo-mini"><b>TMĐ</b></span>
-                <span class="logo-lg text-uppercase"><b>Thành Minh Đức</b></span>
-            </a>
-            <nav class="navbar navbar-static-top " role="navigation">
-                <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
-                    <span class="sr-only">Toggle navigation</span>
-                </a>
-                <div class="navbar-custom-menu">
-                    <ul class="nav navbar-nav">
-                        <?php
-                        self::user_menu();
-                        ?>
-                    </ul>
-                </div>
+        <header class="main-header">
+            <nav class="navbar navbar-static-top">
+                <div class="container-fluid">
+                    <div class="navbar-header">
+                        <a href="/dashboard/" class="navbar-brand">TMD</a>
+                        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse">
+                            <i class="fa fa-bars"></i>
+                        </button>
+                    </div>
+                    <!-- Collect the nav links, forms, and other content for toggling -->
+                    <div class="collapse navbar-collapse pull-left" id="navbar-collapse">
+                        <ul class="nav navbar-nav">
+                            <?php
+                            \Common\Link::MenuQuanLy();
+                            \Common\Link::MenuDoiTac();
+                            ?>
+
+                        </ul>
+                    </div><!-- /.navbar-collapse -->
+                    <!-- Navbar Right Menu -->
+                    <div class="navbar-custom-menu">
+                        <ul class="nav navbar-nav">
+                            <li class="">
+                                <a href="/option/index">
+                                    <span><i class="fa fa-gears" ></i></span>
+                                </a>
+                            </li>
+                            <li class="dropdown user user-menu">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                    <span class="hidden-xs">Tìm Kiếm</span>
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <li class="">
+                                        <form action="" method="POST" class="navbar-form navbar-left" role="search">
+                                            <div class="form-group">
+                                                <input type="text" class="form-control" id="navbar-search-input" placeholder="Search">
+                                                <button type="submit" class="btn btn-primary" >
+                                                    <i class="fa fa-search" ></i>
+                                                </button>
+                                            </div>
+                                        </form>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li class="dropdown user user-menu">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                    <img src="/public/user_no_photo.png" class="user-image" alt="User Image">
+                                    <span class="hidden-xs"><?php echo $_SESSION[QuanTri]["Name"] ?></span>
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <!-- User image -->
+                                    <li class="user-header">
+                                        <img src="/public/user_no_photo.png" class="img-circle" alt="User Image">
+                                        <p>
+                                            <?php echo $_SESSION[QuanTri]["Name"] ?>
+                                            <small><?php echo $_SESSION[QuanTri]["Username"] ?></small>
+                                        </p>
+                                    </li>
+                                    <!-- Menu Footer-->
+                                    <li class="user-footer">
+                                        <div class="pull-left">
+                                            <a href="<?php echo \Common\Link::profile() ?>" class="btn btn-default btn-flat">Tài khoản</a>
+                                        </div>
+                                        <div class="pull-right">
+                                            <a href="<?php echo \Common\Link::logout() ?>" class="btn btn-default btn-flat">Đăng Xuất</a>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </li>
+                            `
+                        </ul>
+                    </div><!-- /.navbar-custom-menu -->
+                </div><!-- /.container-fluid -->
             </nav>
         </header>
-        <!-- Left side column. contains the logo and sidebar -->
-        <aside class="main-sidebar" >
+        <aside class="hidden main-sidebar" >
             <!-- sidebar: style can be found in sidebar.less -->
             <section class="sidebar ">
                 <!-- Sidebar user panel -->
@@ -258,6 +313,7 @@ class backend {
                 "https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.2/moment.min.js",
                 "/public/admin/plugins/daterangepicker/daterangepicker.js",
                 "/public/admin/plugins/datepicker/bootstrap-datepicker.js",
+                "/public/admin/plugins/datepicker/locales/bootstrap-datepicker.vi.js",
                 "/public/admin/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.min.js",
                 "/public/admin/plugins/slimScroll/jquery.slimscroll.min.js",
                 "/public/admin/plugins/fastclick/fastclick.min.js",

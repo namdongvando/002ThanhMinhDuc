@@ -75,16 +75,10 @@ class Controller_index extends Application {
 
         $ModelTemSanPham = new \Module\sanpham\Model\TemSanPham();
         $idSanPham = $this->getParam()[0];
-        $maKhachHangTieuDung = md5(time() . rand(1, time()));
-        $temSanPham = \Module\sanpham\Model\TemSanPham::GetByCodeSanPham($idSanPham);
+        $temSanPham = \Module\sanpham\Model\TemSanPham::GetByCode($idSanPham);
         $SanPham = Module\sanpham\Model\SanPham::GetItemByCode($idSanPham);
-        if ($temSanPham["KhachHangTieuDung"] == "") {
-            $khachHang = \Module\khachhang\Model\KhachHangTieuDung::TaoKhachHang($maKhachHangTieuDung);
-            $temSanPham["KhachHangTieuDung"] = $maKhachHangTieuDung;
-            $ModelTemSanPham->UpdateRowTable($temSanPham);
-        } else {
-            $khachHang = \Module\khachhang\Model\KhachHangTieuDung::GetKhachHangByCode($temSanPham["KhachHangTieuDung"]);
-        }
+
+        $khachHang = \Module\khachhang\Model\KhachHangTieuDung::GetKhachHangByCode($temSanPham["KhachHangTieuDung"]);
         $tsp = new \Module\sanpham\Model\TemSanPham($temSanPham);
         $kH = new \Module\khachhang\Model\KhachHangTieuDung($khachHang);
         return $this->ViewTheme(["temSanPham" => $tsp, "khachHang" => $kH, "sanPham" => $SanPham], null, "");

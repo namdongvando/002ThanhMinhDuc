@@ -46,6 +46,7 @@ class OptionForm extends \PFBC\Form {
         $Option = self::$Option;
         $Option["value"] = $value;
         $Option["required"] = true;
+        $Option["style"] = "width:100%;";
         $options = Option::GetGroupsOption();
         return new \PFBC\Element\Select("Nhóm", "option[Groups]", $options, $Option);
     }
@@ -54,7 +55,8 @@ class OptionForm extends \PFBC\Form {
         $Option = self::$Option;
         $Option["value"] = $value;
         $Option["required"] = true;
-        $options = Option::GetALL2Options();
+        $Option["style"] = "width:100%;";
+        $options = Option::GetALL2Options(["Id", "Name"]);
         array_unshift($options, "Là Cấp Cha");
         return new \PFBC\Element\Select("Cấp Cha", "option[Parents]", $options, $Option);
     }

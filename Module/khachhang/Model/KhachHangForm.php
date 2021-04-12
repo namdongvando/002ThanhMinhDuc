@@ -77,14 +77,7 @@ class KhachHangForm extends \PFBC\Form implements IKhachHangForm {
         $Option = self::$Option;
         $Option["value"] = $value;
         $Option["required"] = true;
-        return new \PFBC\Element\Textbox("Địa Chỉ", "khachhang[DiaChi]", $Option);
-    }
-
-    public static function TinhThanh($value = null) {
-        $Option = self::$Option;
-        $Option["value"] = $value;
-        $Option["required"] = true;
-        return new \PFBC\Element\Textbox("Tỉnh Thành", "khachhang[TinhThanh]", $Option);
+        return new \PFBC\Element\Textbox("Số Nhà, Đường, Phường/Xã", "khachhang[DiaChi]", $Option);
     }
 
     public static function LaChuKinhDoanh($value = null) {
@@ -158,16 +151,29 @@ Link;
         return new \PFBC\Element\Textbox("Nhóm Hàng Kinh Doanh", "khachhang[NhomHangKinhDoanh]", $Option);
     }
 
-    public static function PhuongXa($value = null) {
+    public static function PhuongXa($value = null, $quanhuyen = 1) {
         $Option = self::$Option;
         $Option["value"] = $value;
-        return new \PFBC\Element\Textbox("Phường Xã", "khachhang[PhuongXa]", $Option);
+        return new \PFBC\Element\Textbox("Phường Xã", "khachhang[PhuongXa]", $options, $Option);
     }
 
-    public static function QuanHuyen($value = null) {
+    public static function TinhThanh($value = null) {
         $Option = self::$Option;
         $Option["value"] = $value;
-        return new \PFBC\Element\Textbox("Quận Huyện", "khachhang[QuanHuyen]", $Option);
+        $Option["class"] = "form-control AjaxHTML";
+        $Option["data-url"] = "/option/api/TinhThanhTagOption/";
+        $Option["data-values"] = "true";
+        $Option["data-object"] = "#KhachHangQuanHuyen";
+        $options = \Module\option\Model\Option::GetTinhThanh2Option(0);
+        return new \PFBC\Element\Select("Tỉnh Thành", "khachhang[TinhThanh]", $options, $Option);
+    }
+
+    public static function QuanHuyen($value = null, $tinhThanh = 1) {
+        $Option = self::$Option;
+        $Option["value"] = $value;
+        $Option["id"] = "KhachHangQuanHuyen";
+        $options = \Module\option\Model\Option::GetTinhThanh2Option($tinhThanh);
+        return new \PFBC\Element\Select("Quận Huyện", "khachhang[QuanHuyen]", $options, $Option);
     }
 
     public static function Zalo($value = null) {

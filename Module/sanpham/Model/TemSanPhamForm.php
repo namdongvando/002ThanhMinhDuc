@@ -23,7 +23,7 @@ class TemSanPhamForm extends \PFBC\Form implements ITemSanPhamForm {
         $Option = self::$Option;
         $Option["value"] = $value;
         $Option["required"] = true;
-        return new \PFBC\Element\Textbox("Tên Sản Phẩm", "temsanpham[Name]", $Option);
+        return new \PFBC\Element\Textbox("Nội Dung Bảo Hành", "temsanpham[Name]", $Option);
     }
 
     public static function btnSave() {
@@ -60,22 +60,40 @@ class TemSanPhamForm extends \PFBC\Form implements ITemSanPhamForm {
 
     public static function NgayBatDau($value = null) {
         $Option = self::$Option;
-        $Option["value"] = $value;
-        $Option["type"] = "date";
+        $Option["value"] = date("d-m-Y", strtotime($value));
+        $Option["class"] = "date form-control";
+        $Option["autocomplete"] = "off";
+        $Option["type"] = "text";
         return new \PFBC\Element\Textbox("Ngày Bắt Đầu", "temsanpham[" . __FUNCTION__ . "]", $Option);
     }
 
     public static function NgayKetThuc($value = null) {
         $Option = self::$Option;
         $Option["value"] = $value;
-        $Option["type"] = "date";
-        $Option["min"] = date("Y-m-d", time());
+        $Option["type"] = "";
         return new \PFBC\Element\Textbox("Ngày Kết Thúc", "temsanpham[" . __FUNCTION__ . "]", $Option);
+    }
+
+    public static function ThangKetThuc($value = null) {
+        $Option = self::$Option;
+        $Option["value"] = $value;
+        $Option["type"] = "date";
+        $Option["class"] = "select2 form-control";
+        $Option["style"] = "width:100%";
+        $Option["min"] = date("Y-m-d", time());
+        $options[0] = " Chọn Thời Gian Bảo Hành";
+        $options[1] = (1) . " Tháng";
+        $options[3] = (3) . " Tháng";
+        for ($index = 1; $index < 6; $index++) {
+            $options[$index * 6] = ($index * 6) . " Tháng";
+        }
+        return new \PFBC\Element\Select("Thời Gian Bảo Hành", "temsanpham[" . __FUNCTION__ . "]", $options, $Option);
     }
 
     public static function Status($value = null) {
         $Option = self::$Option;
         $Option["value"] = $value;
+        $Option["style"] = "width: 100%";
         $options = TemSanPham::GetStatus();
         return new \PFBC\Element\Select("Tình Trạng", "temsanpham[" . __FUNCTION__ . "]", $options, $Option);
     }
@@ -89,6 +107,7 @@ class TemSanPhamForm extends \PFBC\Form implements ITemSanPhamForm {
     public static function Parents($value = null, $title = "Tem Chính", $hidder = false) {
         $Option = self::$Option;
         $Option["value"] = $value;
+
         if ($hidder == false)
             return new \PFBC\Element\Textbox($title, "temsanpham[" . __FUNCTION__ . "]", $Option);
         return new \PFBC\Element\Hidden("temsanpham[" . __FUNCTION__ . "]", $value);

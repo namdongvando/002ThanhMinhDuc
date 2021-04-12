@@ -1,15 +1,6 @@
 <?php
 $Options = Module\option\Model\Option::OptionByGroups(Module\option\Model\Option::DanhMucVatTu);
 ?>
-<script type="text/javascript" >
-    app.controller("optionController", function($scope, $http) {
-        $scope.optionInnit = function( ) {
-            $http.get("/option/api/options/").then(function(res) {
-            });
-        }
-    });
-</script>
-
 <div class="row " >
     <section class="col-md-12 mb-10" >
         <a class="btn btn-primary" href='/sanpham/taosanpham/'>Tạo Sản Phẩm</a>
@@ -23,8 +14,9 @@ $Options = Module\option\Model\Option::OptionByGroups(Module\option\Model\Option
                             <tr>
                                 <th></th>
                                 <th>#</th>
-                                <th>Name</th>
-                                <th>Giá Trị</th>
+                                <th>Mã Danh Mục</th>
+                                <th>Tên Danh Mục</th>
+                                <th>Chung Loại</th>
                                 <th>Ghi Chú</th>
                                 <th>Xắp Sếp</th>
                             </tr>
@@ -42,6 +34,7 @@ $Options = Module\option\Model\Option::OptionByGroups(Module\option\Model\Option
                                     <td><?php echo $k + 1; ?></td>
                                     <td><?php echo $_op->Code ?></td>
                                     <td><?php echo $_op->Name ?></td>
+                                    <td><?php echo $_op->Parents()->Name; ?></td>
                                     <td><?php echo $_op->Note ?></td>
                                     <td><?php echo $_op->OrderBy ?></td>
                                 </tr>
@@ -53,8 +46,9 @@ $Options = Module\option\Model\Option::OptionByGroups(Module\option\Model\Option
                             <tr>
                                 <th></th>
                                 <th>#</th>
-                                <th>Name</th>
-                                <th>Giá Trị</th>
+                                <th>Mã Danh Mục</th>
+                                <th>Tên Danh Mục</th>
+                                <th>Chung Loại</th>
                                 <th>Ghi Chú</th>
                                 <th>Xắp Sếp</th>
                             </tr>

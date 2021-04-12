@@ -129,26 +129,19 @@ class Functions {
                             <i class="fa fa-angle-right pull-right"></i>
                         </a>
                     </li>
-                    <li class="treeview">
-                        <a href="/option/index/groups/<?php echo self::$DoiTuongKhachHang; ?>/">
-                            <i class="fa fa-list-alt"></i> <span>ĐỐI TƯỢNG KHÁCH HÀNG</span>
-                            <i class="fa fa-angle-right pull-right"></i>
-                        </a>
-                    </li>
-                    <li class="treeview">
-                        <a href="/option/index/groups/<?php echo self::$DoiTuongKhachHang; ?>/">
-                            <i class="fa fa-list-alt"></i> <span>NHÓM KINH DOANH</span>
-                            <i class="fa fa-angle-right pull-right"></i>
-                        </a>
-                    </li>
-                    <li class="treeview">
-                        <a href="/option/index/groups/<?php echo self::$DoiTuongKhachHang; ?>">
-                            <i class="fa fa-list-alt"></i> <span>Khu Vực</span>
-                            <i class="fa fa-angle-right pull-right"></i>
-                        </a>
-                    </li>
-
-
+                    <?php
+                    $GetGroupsOption = Model\Option::GetGroupsOption();
+                    foreach ($GetGroupsOption as $key => $value) {
+                        ?>
+                        <li class="treeview">
+                            <a href="/option/index/groups/<?php echo $key; ?>/">
+                                <i class="fa fa-list-alt"></i> <span><?php echo $value; ?></span>
+                                <i class="fa fa-angle-right pull-right"></i>
+                            </a>
+                        </li>
+                        <?php
+                    }
+                    ?>
                 </ul>
             </section>
         </aside>

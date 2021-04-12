@@ -21,6 +21,16 @@ class api extends \ApplicationM {
         echo \lib\APIs::Json_encode($Options);
     }
 
+    function TinhThanhTagOption() {
+        $model_option = new \Module\option\Model\Option();
+        $groups = $this->getParam()[0];
+        $Options = $model_option->GetTinhThanh($groups);
+//        var_dump($Options);
+        foreach ($Options as $key => $tt) {
+            echo "<option value='{$tt["Id"]}' >{$tt["Name"]}</option>";
+        }
+    }
+
 }
 ?>
 

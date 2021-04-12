@@ -22,7 +22,6 @@ class KhachHangTieuDung extends KhachHangTieuDungData {
             $this->SubData = !empty($dv["SubData"]) ? $dv["SubData"] : null;
             $this->TinhThanh = !empty($dv["TinhThanh"]) ? $dv["TinhThanh"] : null;
             $this->QuanHuyen = !empty($dv["QuanHuyen"]) ? $dv["QuanHuyen"] : null;
-            $this->PhuongXa = !empty($dv["PhuongXa"]) ? $dv["PhuongXa"] : null;
             $this->KhuVuc = !empty($dv["KhuVuc"]) ? $dv["KhuVuc"] : null;
         }
     }

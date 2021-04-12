@@ -20,10 +20,27 @@ class login extends \ApplicationM {
     }
 
     function index() {
+        if (isset($_COOKIE["token"])) {
+            $token = $_COOKIE["token"];
+            $user = json_decode(base64_decode($token), JSON_OBJECT_AS_ARRAY);
+            if ($user) {
+                $_SESSION[QuanTri] = $user;
+            }
+            if ($_SESSION[QuanTri]) {
+                \Application\redirectTo::Url("/dashboard/");
+            }
+        }
         if (isset($_POST["dangnhap"])) {
             $Admin = new \Module\user\Model\Admin();
             $_SESSION[QuanTri] = $Admin->CheckLogin($_POST["Username"], $_POST["Password"]);
+//            var_dump($_SESSION[QuanTri]);
+//            die();
             if ($_SESSION[QuanTri] != null) {
+                // luu 1 tháng
+                $QuanTri = $_SESSION[QuanTri];
+                unset($QuanTri["Password"]);
+                $QuanTri["Time"] = time();
+                setcookie("token", base64_encode(json_encode($QuanTri, JSON_UNESCAPED_UNICODE)), time() + (86400 * 30), "/");
                 \Application\redirectTo::Url("/dashboard/");
                 exit();
             }

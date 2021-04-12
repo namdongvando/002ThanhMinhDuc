@@ -1,18 +1,18 @@
 <?php
 
-namespace Module\sanpham\Model;
+namespace Module\option\Model;
 
 use Zend\Db\Sql\Ddl;
 use Zend\Db\Sql\TableIdentifier;
 use Zend\Db\TableGateway\TableGateway;
 
-class TemSanPhamData extends \datatable\ZendData implements \Model\IModel {
+class TinhThanhData extends \datatable\ZendData implements \Model\IModel {
 
     private static $tableNews;
     private $TableName;
 
     public function __construct() {
-        $this->TableName = table_prefix . "tembaohanh";
+        $this->TableName = table_prefix . "tinhthanh";
         $this->setTableGateway($this->TableName);
         parent::__construct($this->TableName);
         if (!self::$tableNews)
@@ -27,6 +27,11 @@ class TemSanPhamData extends \datatable\ZendData implements \Model\IModel {
         return $this->GetRowByWhere("`Id` = '{$id}'");
     }
 
+    public function GetByIdP($id) {
+        $where = "`IdP` = '{$id}'";
+        return $this->GetRowsByWhere($where);
+    }
+
     public function GetByName($name) {
         return $this->GetRowsTableByName($name);
     }
@@ -39,16 +44,15 @@ class TemSanPhamData extends \datatable\ZendData implements \Model\IModel {
         return $this->UpdateRowTable($model);
     }
 
-    public function DeleteSubmit($id, $isMD5 = false) {
-        if ($isMD5)
-            return $this->DeleteRowByWhere(" md5(`Id`) = '{$id}' ");
+    public function DeleteSubmit($id) {
         return $this->DeleteRowById($id);
     }
 
-    function GetAll2Option($where = null) {
-        if ($where == null)
-            $where = " 1=1";
-        return $this->getColumnsOption(["Id", "Code", "Name"], $where);
+    function GetAll2Option($groups = 0, $array = null) {
+        $where = "`IdP` = '{$groups}' ";
+        if ($array == null)
+            return $this->getColumnsOption(["Id", "Name"], $where);
+        return $this->getColumnsOption($array, $where);
     }
 
 }

@@ -2,51 +2,37 @@
 
 namespace Module\excell\Model\excell;
 
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
+
 class ExcelReader {
 
     function __construct() {
 
     }
 
-    function CreateFile($full_path = 'public/excell/data.xlsx') {
-        require_once 'PHPExcel.php';
-        $objPHPExcel = new PHPExcel();
-        $Model_DanhMuc = new Model_DanhMuc();
-        $lists = $Model_DanhMuc->DSDanhMuc();
-        $objPHPExcel->setActiveSheetIndex(0)
-                ->setCellValue('A1', 'Mã Danh Mục')
-                ->setCellValue('B1', 'Loai Danh Mục')
-                ->setCellValue('C1', 'Tên Danh Mục')
-                ->setCellValue('D1', 'Tên Không Dấu')
-                ->setCellValue('E1', 'UrlHinh')
-                ->setCellValue('F1', 'STT')
-                ->setCellValue('G1', 'Nội Dung')
-                ->setCellValue('H1', 'Thuộc Tinh')
-                ->setCellValue('I1', 'CapCha');
-
-        $i = 2;
-        foreach ($lists as $DanhMuc) {
-            $_DanhMuc = new Model_DanhMuc($DanhMuc);
-            $objPHPExcel->setActiveSheetIndex(0)
-                    ->setCellValue('A' . $i, $_DanhMuc->MaDanhMuc)
-                    ->setCellValue('B' . $i, $_DanhMuc->LoaiDanhMuc)
-                    ->setCellValue('C' . $i, $_DanhMuc->TenDanhMuc)
-                    ->setCellValue('D' . $i, $_DanhMuc->TenKhongDau)
-                    ->setCellValue('E' . $i, $_DanhMuc->UrlHinh)
-                    ->setCellValue('F' . $i, $_DanhMuc->STT)
-                    ->setCellValue('G' . $i, $_DanhMuc->NoiDung)
-                    ->setCellValue('H' . $i, $_DanhMuc->_encode($_DanhMuc->ThuocTinh))
-                    ->setCellValue('I' . $i, $_DanhMuc->CapCha);
-            $i++;
+    function CreateFile($full_path = 'public/excell/data.xlsx', $data) {
+        $spreadsheet = new Spreadsheet();
+        $sheet = $spreadsheet->getActiveSheet();
+        foreach ($data as $index => $value) {
+            $rows = $index + 1;
+            $k = 0;
+            foreach ($value as $colName => $value) {
+                echo $col = self::getNameFromNumber($k);
+                $k++;
+                $cell = "{$col}{$rows}";
+                $sheet->setCellValue("{$col}{$rows}", $value);
+            }
         }
-        $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel2007');
-        $objWriter->save($full_path);
-        return BASE_URL . $full_path;
+        $writer = new Xlsx($spreadsheet);
+        $writer->save($full_path);
+        $full_path = "/{$full_path}?v=" . time();
+        header("Location: $full_path");
     }
 
     function import($File) {
         require_once 'PHPExcel.php';
-        $objReader = PHPExcel_IOFactory::createReader('Excel2007');
+        $objReader = \PHPExcel_IOFactory::createReader('Excel2007');
         $objReader->setReadDataOnly(true); //optional
         $full_path = $File;
         $objPHPExcel = $objReader->load($full_path);

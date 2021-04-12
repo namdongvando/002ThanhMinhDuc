@@ -64,9 +64,37 @@ class KhachHang extends KhachHangData {
         return $Kh->GetAll2Option();
     }
 
-    public static function GetKhachHangById($id) {
+    public static function GetKhachHangById($id, $isDecode = false) {
         $Kh = new KhachHang();
+        if ($isDecode) {
+            $where = "sha1(`id`) = '{$id}'";
+            return $Kh->GetRowByWhere($where);
+        }
         return $Kh->GetById($id);
+    }
+
+    public function KhachHangThanhToan() {
+        return new KhachHangThanhToan(KhachHangThanhToan::GetByMaKhachHang($this->Code));
+    }
+
+    public function KhuVuc() {
+        $options = new \Module\rmm\Model\Option();
+        $Groups = \Module\option\Model\Option::KhuVuc;
+        $where = "`Code` = '{$this->KhuVuc}' and `Groups`='{$Groups}'";
+        return new \Module\option\Model\Option($options->GetRowByWhere($where));
+//        return $options->;
+    }
+
+    public function TinhThanh() {
+        $tinhThanh = new \Module\option\Model\TinhThanh();
+        $tinhThanh = $tinhThanh->GetById($this->TinhThanh);
+        return new \Module\option\Model\TinhThanh($tinhThanh);
+    }
+
+    public function QuanHuyen() {
+        $tinhThanh = new \Module\option\Model\TinhThanh();
+        $tinhThanh = $tinhThanh->GetById($this->QuanHuyen);
+        return new \Module\option\Model\TinhThanh($tinhThanh);
     }
 
 }

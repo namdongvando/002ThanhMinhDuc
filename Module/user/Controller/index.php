@@ -16,6 +16,8 @@ class index extends \ApplicationM {
 
     function logout() {
 //        \Module\user\Model\user::logout();
+        setcookie("token", "", time() - 3600, "/");
+
         \Module\user\Model\Admin::Logout();
         \Common\Common::toUrl("/user/index/login/");
     }

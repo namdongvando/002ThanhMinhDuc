@@ -27,7 +27,7 @@ class KhachHangTieuDungForm extends \PFBC\Form implements IKhachHangTieuDungForm
         $Option["value"] = $value;
         $options = \Module\option\Model\Option::GetAll2OptionsByGroups(\Module\option\Model\Option::KhuVuc);
 //        return new \PFBC\Element\Select($label, $name, $options, $properties)
-        return new \PFBC\Element\Select("Khu Vực", "khachhangtieudung[KhuVuc]", $options, $Option);
+        return new \PFBC\Element\Select("Khu Vực Bảo Hành", "khachhangtieudung[KhuVuc]", $options, $Option);
     }
 
     public static function CMNN($value = null) {
@@ -41,7 +41,7 @@ class KhachHangTieuDungForm extends \PFBC\Form implements IKhachHangTieuDungForm
         $Option = self::$Option;
         $Option["class"] = $Option["class"] . " textareaHeight";
         $Option["value"] = $value;
-        return new \PFBC\Element\Textarea("Địa Chỉ", "khachhangtieudung[DiaChi]", $Option);
+        return new \PFBC\Element\Textbox("Địa Chỉ", "khachhangtieudung[DiaChi]", $Option);
     }
 
     public static function GhiChu($value = null) {
@@ -62,6 +62,25 @@ class KhachHangTieuDungForm extends \PFBC\Form implements IKhachHangTieuDungForm
         $Option = self::$Option;
         $Option["value"] = $value;
         return new \PFBC\Element\Textbox("Số Điện Thoại Bảo Hành", "khachhangtieudung[SubData]", $Option);
+    }
+
+    public static function TinhThanh($value) {
+        $Option = self::$Option;
+        $Option["value"] = $value;
+        $Option["class"] = "form-control AjaxHTML";
+        $Option["data-url"] = "/option/api/TinhThanhTagOption/";
+        $Option["data-values"] = "true";
+        $Option["data-object"] = "#QuanHuyen";
+        $options = \Module\option\Model\Option::GetTinhThanh2Option(0);
+        return new \PFBC\Element\Select("Tỉnh Thành Phố", "khachhangtieudung[TinhThanh]", $options, $Option);
+    }
+
+    public static function QuanHuyen($value, $tinhThanh = 1) {
+        $Option = self::$Option;
+        $Option["value"] = $value;
+        $Option["id"] = "QuanHuyen";
+        $options = \Module\option\Model\Option::GetTinhThanh2Option($tinhThanh);
+        return new \PFBC\Element\Select("Quận Huyện", "khachhangtieudung[QuanHuyen]", $options, $Option);
     }
 
 }

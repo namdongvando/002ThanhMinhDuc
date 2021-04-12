@@ -39,6 +39,7 @@ session_start();
 ob_start();
 
 include 'config.php';
+
 $pathAutoload = "vendor/autoload.php";
 if (file_exists($pathAutoload)) {
     include_once $pathAutoload;

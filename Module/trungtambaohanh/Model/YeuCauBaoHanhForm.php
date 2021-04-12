@@ -99,7 +99,7 @@ class YeuCauBaoHanhForm implements IYeuCauBaoHanh {
         $Option["value"] = $value;
         $Option["required"] = true;
         $nameForm = self::nameForm;
-        return new \PFBC\Element\Textarea($title, "{$nameForm}[" . __FUNCTION__ . "]", $Option);
+        return new \PFBC\Element\Textbox($title, "{$nameForm}[" . __FUNCTION__ . "]", $Option);
     }
 
     public static function SDT($value = null, $title = null) {

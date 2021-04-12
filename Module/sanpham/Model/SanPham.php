@@ -9,7 +9,7 @@ class SanPham extends SanPhamData {
     const DangOChiNhanh = 2;
     const DangSuDung = 3;
 
-    public $Id, $Name, $Code, $Mota, $Gia, $HinhAnh, $DanhMuc, $TinhTrang;
+    public $Id, $Name, $Code, $ChungLoaiSP, $Mota, $Gia, $HinhAnh, $DanhMuc, $TinhTrang;
 
     public function __construct($dv = null) {
         parent::__construct();
@@ -20,6 +20,7 @@ class SanPham extends SanPhamData {
             $this->Id = !empty($dv["Id"]) ? $dv["Id"] : null;
             $this->Name = !empty($dv["Name"]) ? $dv["Name"] : null;
             $this->Code = !empty($dv["Code"]) ? $dv["Code"] : null;
+            $this->ChungLoaiSP = !empty($dv["ChungLoaiSP"]) ? $dv["ChungLoaiSP"] : null;
             $this->Mota = !empty($dv["Mota"]) ? $dv["Mota"] : null;
             $this->Gia = !empty($dv["Gia"]) ? $dv["Gia"] : 0;
             $this->HinhAnh = !empty($dv["HinhAnh"]) ? $dv["HinhAnh"] : null;
@@ -94,7 +95,7 @@ class SanPham extends SanPhamData {
         $a = $tem->GetById($idSanPham);
         if ($a)
             return new SanPham($a);
-        return null;
+        return new SanPham();
     }
 
     public static function GetItemByCode($idSanPham) {
@@ -113,6 +114,29 @@ class SanPham extends SanPhamData {
             $options[$key] = $value;
         }
         return $options;
+    }
+
+    public function TaoSanPham($code) {
+        $a = self::GetByCode($code);
+        if ($a)
+            return;
+        $sanPham["Code"] = $code;
+        $sanPham["Name"] = "";
+        $sanPham["MoTa"] = "";
+        $sanPham["Gia"] = 0;
+        $sanPham["ChungLoaiSP"] = "";
+        $sanPham["HinhAnh"] = "";
+        $sanPham["DanhMuc"] = "";
+        $sanPham["idKhachHang"] = 0;
+        $sanPham["TinhTrang"] = SanPham::DangOCty;
+        return $this->InsertSubmit($sanPham);
+    }
+
+    public static function GetByCode($code) {
+        $where = "`Code` like '{$code}'";
+        $SanPham = new SanPham();
+        $a = $SanPham->GetRowByWhere($where);
+        return $a;
     }
 
 }

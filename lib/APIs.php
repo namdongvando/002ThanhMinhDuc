@@ -44,4 +44,12 @@ class APIs {
         return $jsonString;
     }
 
+    public static function ResApi($data, $pagesIndex, $pagesNumber, $pagesTotal) {
+        $a["data"] = $data;
+        $a["pagesIndex"] = $pagesIndex;
+        $a["pagesNumber"] = $pagesNumber;
+        $a["pagesTotal"] = $pagesTotal;
+        return self::Json_encode($a);
+    }
+
 }

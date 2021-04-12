@@ -31,7 +31,8 @@ class taosanpham extends \ApplicationM implements \Controller\IController {
                     $SanPham["Gia"] = 0;
                     $SanPham["TinhTrang"] = \Module\sanpham\Model\SanPham::DangOCty;
                     $SanPham["HinhAnh"] = "";
-                    $SanPham["DanhMuc"] = $_DanhMuc->Id;
+                    $SanPham["DanhMuc"] = $_DanhMuc->Code;
+                    $SanPham["ChungLoaiSP"] = $_DanhMuc->Parents;
                     $_SanPham->InsertSubmit($SanPham);
                 }
             } catch (\Exception $exc) {

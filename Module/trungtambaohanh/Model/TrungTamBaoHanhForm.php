@@ -59,31 +59,37 @@ class TrungTamBaoHanhForm extends \PFBC\Form implements ITrungTamBaoHanhForm {
         $Option["value"] = $value;
         $nameForm = self::nameForm;
         $Options = \Module\user\Model\Admin::GetUsersByGroups2Options([\Module\user\Model\Admin::TTBH]);
+
+        $Options = array_merge(["0" => "Chọn Tài Khoản"], $Options);
         return new \PFBC\Element\Select("Tài Khoản", "{$nameForm}[" . __FUNCTION__ . "]", $Options, $Option);
     }
 
-    public static function btnThem($btnThem) {
+    public static function btnThem(
+    $btnThem) {
         $link = <<<Link
                 <a href="/trungtambaohanh/index/add/" class="btn btn-success" >{$btnThem}</a>
 Link;
         return $link;
     }
 
-    public static function Sua($id) {
+    public static function Sua(
+    $id) {
         $link = <<<Link
                 <a href="/trungtambaohanh/index/edit/{$id}" class="btn btn-sm btn-success" >Sửa</a>
 Link;
         return $link;
     }
 
-    public static function Xoa($id) {
+    public static function Xoa(
+    $id) {
         $link = <<<Link
                 <a href="/trungtambaohanh/index/delete/{$id}" class="btn btn-sm btn-danger" >Xóa</a>
 Link;
         return $link;
     }
 
-    public static function btnTrungTamBaoHanh($btnThem) {
+    public static function btnTrungTamBaoHanh(
+    $btnThem) {
         $link = <<<Link
                 <a href="/trungtambaohanh/index/" class="btn btn-success" >{$btnThem}</a>
 Link;

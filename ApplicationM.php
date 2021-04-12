@@ -264,7 +264,6 @@ class ApplicationM {
         $_Controller = $this->getController();
         $_Action = $this->getAction();
         $view = "Module/{$_Module}/Views/" . $this->getController() . "/" . $this->getAction() . ".phtml";
-
         include_once $view;
     }
 

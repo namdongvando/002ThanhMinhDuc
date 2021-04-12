@@ -36,10 +36,10 @@ $KhachHangs = \Module\khachhang\Model\KhachHangTieuDung::KhachHangTieuDungsPt($p
                                 $_Kh = new Module\khachhang\Model\KhachHangTieuDung($kh);
                                 ?>
                                 <tr>
-                                    <th class="text-center" ><?php echo $index + 1; ?></th>
-                                    <th><?php echo $_Kh->Name; ?></th>
-                                    <th><?php echo $_Kh->Phone; ?></th>
-                                    <th><?php echo $_Kh->DiaChi; ?></th>
+                                    <td class="text-center" ><?php echo $index + 1; ?></td>
+                                    <td><?php echo $_Kh->Name; ?></td>
+                                    <td><?php echo $_Kh->Phone; ?></td>
+                                    <td><?php echo $_Kh->DiaChi; ?></td>
                                 </tr>
                                 <?php
                             }
@@ -50,7 +50,6 @@ $KhachHangs = \Module\khachhang\Model\KhachHangTieuDung::KhachHangTieuDungsPt($p
                                 <th class="text-center" style="width: 50px;" >#</th>
                                 <th style="width: 300px;" >Họ & Tên</th>
                                 <th>SĐT</th>
-                                <th>CMNN</th>
                                 <th>Địa Chỉ</th>
                             </tr>
                         </tfoot>

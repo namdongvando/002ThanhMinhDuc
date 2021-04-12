@@ -43,13 +43,15 @@ class OptionData extends \datatable\ZendData implements \Model\IModel {
         return $this->DeleteRowById($id);
     }
 
-    function GetAll2Option($groups = null) {
+    function GetAll2Option($groups = null, $array = null) {
         if ($groups) {
             $where = " `Groups` = '{$groups}' ";
         } else {
             $where = " 1=1";
         }
-        return $this->getColumnsOption(["Code", "Name"], $where);
+        if ($array == null)
+            return $this->getColumnsOption(["Code", "Name"], $where);
+        return $this->getColumnsOption($array, $where);
     }
 
 }

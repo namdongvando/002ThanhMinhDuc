@@ -43,8 +43,8 @@ if (online) {
     $INI['username'] = "thanh962_demo";
     $INI['password'] = "zaq@123Abc456";
     $INI['DBname'] = "thanh962_demo";
-    define("BASE_URL", "https://demo.thanhminhduc.com/");
-    define("Root_URL", "https://demo.thanhminhduc.com/");
+    define("BASE_URL", "https://cskh.thanhminhduc.com/");
+    define("Root_URL", "https://cskh.thanhminhduc.com/");
     define("DOMAIN", ".thanhminhduc.com");
 }
 define("table_prefix", "thanhminhduc_");

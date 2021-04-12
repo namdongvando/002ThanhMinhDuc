@@ -75,6 +75,7 @@ class Admin extends AdminTable {
 
     public static function Logout() {
         unset($_SESSION[QuanTri]);
+
         \Common\Common::toUrl("/dashboard/");
     }
 
@@ -169,9 +170,6 @@ class Admin extends AdminTable {
 
     public static function GetUsersByGroups2Options($user = []) {
         $admin = new Admin();
-        if (!$user) {
-            return null;
-        }
         if ($user) {
             $users = implode(",", $user);
             $where = " `Groups` in ($users) ";

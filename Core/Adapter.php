@@ -180,7 +180,6 @@ class Adapter {
     }
 
     function upload_image1($file, $folder, $tt = "sp-", $isNameFile = false) {
-        $this->mkdir_r($folder);
         if (!is_dir($folder)) {
             mkdir($folder, 0777);
         }

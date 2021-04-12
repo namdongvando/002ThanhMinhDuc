@@ -71,6 +71,23 @@ const ConfirnXoa = function() {
 }
 
 $(function() {
+    $("select.AjaxHTML").each(function() {
+        var dataHTML = $(this).data();
+        var self = $(this);
+        var object = dataHTML.object;
+//        console.log();
+        self.change(function() {
+            if (dataHTML.values == true) {
+                var url = dataHTML.url;
+                url = url + self.val();
+            }
+            $.ajax({url: url}).done(function(res) {
+//                console.log(res);
+                $(object).html(res);
+                $(object).select2();
+            });
+        });
+    });
     setInterval(function() {
         $(".alert").hide();
     }, 3000);
@@ -148,10 +165,6 @@ $(function() {
         } catch (e) {
             console.log(e.message);
         }
-
-
-
-
 
     });
     $(".dataTableAjax").each(function() {
@@ -300,7 +313,7 @@ $(function() {
         "autoWidth": false
     });
     if (typeof select2 == "function") {
-        $(".select2").select2();
+        $(".select2").select2({width: 'resolve'});
     }
     $(".owl-carousel").each(function(index, el) {
         var config = $(this).data();
@@ -380,6 +393,20 @@ $(function() {
             var config = self.data("config");
             self.datepicker(config);
         });
+        $("input.date").each(function() {
+            var self = $(this);
+            var config = {
+                format: "dd-mm-yyyy",
+                maxViewMode: 0,
+                todayBtn: "linked",
+                language: "vi",
+                calendarWeeks: true,
+                autoclose: true
+            };
+            self.datepicker(config).on("changeDate", function(e) {
+                self.children("input").val(new Date(e.timeStamp));
+            });
+        });
     } catch (e) {
         console.log(e.message);
     }
@@ -419,10 +446,20 @@ $(function() {
             var self = $(this);
             self.datetimepicker(self.data("config"));
         })
+
     } catch (e) {
         console.log(e.message);
     }
 
+
+
+
+    try {
+        $("select").select2();
+
+    } catch (e) {
+        console.log(e);
+    }
 
 
     var $windown = $(window);

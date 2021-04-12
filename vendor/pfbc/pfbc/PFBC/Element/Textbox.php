@@ -37,6 +37,17 @@ HTML;
         echo "</div>";
     }
 
+    public function renderDateHTML() {
+        $label = $this->getLabel();
+        $htmlTemplate = <<<HTML
+                <label >$label</label>
+                <div class="input-group date">
+HTML;
+        echo $htmlTemplate;
+        parent::render();
+        echo '<span class="input-group-addon"><i class="glyphicon glyphicon-th"></i></span></div>';
+    }
+
     protected function renderAddOn($type = "prepend") {
         $html = "";
         if (!empty($this->$type)) {

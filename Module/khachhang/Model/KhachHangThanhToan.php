@@ -2,9 +2,10 @@
 
 namespace Module\khachhang\Model;
 
-class KhachHangThanhToan extends KhachHangData {
+class KhachHangThanhToan extends KhachHangThanhToanData {
 
     public $Id, $Name, $MaKhachHang, $TenCongTy, $MaSoThue, $DiaChi, $STK, $NganHang, $Fax, $GhiChu;
+    public static $GetByMaKhachHang = null;
 
     public function __construct($dv = null) {
         parent::__construct();
@@ -23,6 +24,14 @@ class KhachHangThanhToan extends KhachHangData {
             $this->Fax = !empty($dv["Fax"]) ? $dv["Fax"] : null;
             $this->GhiChu = !empty($dv["GhiChu"]) ? $dv["GhiChu"] : null;
         }
+    }
+
+    public static function GetByMaKhachHang($param) {
+        if (self::$GetByMaKhachHang)
+            return self::$GetByMaKhachHang;
+        $KhachHangThanhToan = new KhachHangThanhToan();
+        $where = " `MaKhachHang` = '{$param}' ";
+        return $KhachHangThanhToan->GetRowByWhere($where);
     }
 
 }

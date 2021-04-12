@@ -17,6 +17,21 @@ class temsanpham extends \ApplicationM implements \Controller\IController {
 
     function index() {
 
+        if (isset($_POST["ThemTem"])) {
+            $TemSanPham = new \Module\sanpham\Model\TemSanPham();
+            for ($i = 0; $i < intval($_POST["SoLuong"]); $i++) {
+                $date = date("ymd");
+                $string = sha1(rand(1, time())) . microtime();
+                $string = substr($string, 0, 10);
+                $tem["Code"] = "{$date}{$string}";
+                $tem["Name"] = $tem["Code"];
+                $tem["Parents"] = 0;
+                $tem["IsPrint"] = 0;
+                $tem["CreateDate"] = date("Y-m-d H:i:s", time());
+                $tem["ModifyDate"] = date("Y-m-d H:i:s", time());
+                $TemSanPham->InsertSubmit($tem);
+            }
+        }
         return $this->ViewThemeModlue();
     }
 
@@ -34,69 +49,85 @@ class temsanpham extends \ApplicationM implements \Controller\IController {
     }
 
     public function delete() {
-        $ModelProject = new \Module\project\Model\Project();
-        if (\Module\project\Model\ProjectForm::onSubmit()) {
-            try {
-                $Password = $_POST["password"];
-                $user = \Module\user\Model\Admin::getCurentUser(true);
-                if (!$user->CheckPassword($Password)) {
-                    throw new \Exception("Mật Khẩu Không Đúng.");
-                }
-                $projectData = $this->getParam()[0];
-                $projectObjData = \Module\project\Model\Project::DecodeData($projectData);
-                $ModelProject->DeleteProject($projectObjData->Id);
-            } catch (\Exception $ex) {
-                \Common\Alert::setAlert("danger", $ex->getMessage());
-            }
-            \Application\redirectTo::Url("/project/index/");
-            exit();
-        }
-        $DataId = \Module\project\Model\Project::DecodeData($this->getParam()[0]);
-        $id = $DataId->Id;
-        \Module\project\Model\Project::SetEditProject($id);
-
-        $_Model = $ModelProject->GetById($id);
-        $this->ViewThemeModlue(["project" => $_Model], self::$UserLayout);
+        $temSanPham = new \Module\sanpham\Model\TemSanPham();
+        $temSanPham->DeleteSubmit($this->getParam()[0], true);
+        \Common\Common::toUrl($_SERVER["HTTP_REFERER"]);
     }
 
     public function detailbysanpham() {
 
-        if (\Common\Form::RequestPost("temsanpham", null)) {
+        if (\Common\Form::RequestPost("IsSubmit", null)) {
             $temSP = \Common\Form::RequestPost("temsanpham", []);
             $khachHanhTieuDung = \Common\Form::RequestPost("khachhangtieudung", []);
+            $sanPhamPost = \Common\Form::RequestPost("sanpham", []);
             $ModelTemSP = new \Module\sanpham\Model\TemSanPham();
+            $ModelSP = new \Module\sanpham\Model\SanPham();
             $ModelKhachHanhTieuDung = new \Module\khachhang\Model\KhachHangTieuDung();
-            $temSP["NgayBatDau"] = !empty($temSP["NgayBatDau"]) ? $temSP["NgayBatDau"] : null;
-            $temSP["NgayKetThuc"] = !empty($temSP["NgayKetThuc"]) ? $temSP["NgayKetThuc"] : null;
-            $temSP["ModifyDate"] = date("Y-m-d H:i:s");
+            $temSP["NgayBatDau"] = !empty($temSP["NgayBatDau"]) ? date("Y-m-d", strtotime($temSP["NgayBatDau"])) : null;
+            $temSP["ThangKetThuc"] = !empty($temSP["ThangKetThuc"]) ? $temSP["ThangKetThuc"] : 0;
+            $ngayBd = strtotime($temSP["NgayBatDau"]);
+            $soNgay = $temSP["ThangKetThuc"] * 30 * 24 * 3600;
+            $a = $ngayBd + $soNgay;
+            $temSP["NgayKetThuc"] = date("Y-m-d H:i:s", $a);
+            $temSP["ModifyDate"] = date("Y-m-d H:i:s", time());
             $ModelTemSP->UpdateRowTable($temSP);
+            $MSP = $ModelSP->GetById($sanPhamPost["Id"]);
+//            var_dump($sanPhamPost);
+            $MSP["Name"] = $sanPhamPost["Name"];
+            $MSP["Mota"] = $sanPhamPost["Mota"];
+            $MSP["ChungLoaiSP"] = $sanPhamPost["ChungLoaiSP"];
+            $MSP["DanhMuc"] = $sanPhamPost["DanhMuc"];
+            $MSP["Code"] = $sanPhamPost["Code"];
+            if ($_FILES["HinhAnhSanPham"]["error"] == 0) {
+                $adapter = new \Core\Adapter();
+                $img = "Module/sanpham/public/images/";
+                $imgName = $adapter->upload_image1($_FILES["HinhAnhSanPham"], $img, $sanPhamPost["Code"], false);
+                $imgName = "/{$imgName}";
+                $sanPhamPost["HinhAnh"] = $imgName;
+                $MSP["HinhAnh"] = $sanPhamPost["HinhAnh"];
+            }
+            unset($sanPhamPost["Code"]);
+            $ModelSP->UpdateSubmit($MSP);
+//            var_dump($MSP);
+//            die();
             $ModelKhachHanhTieuDung->UpdateRowTable($khachHanhTieuDung);
         }
+        if (\Common\Form::RequestPost("ThemTemPhu", null)) {
 
+        }
         $ModelTemSanPham = new \Module\sanpham\Model\TemSanPham();
+        // mã sản phẩm
         $idSanPham = $this->getParam(0);
         $maKhachHangTieuDung = md5(time() . rand(1, time()));
-        $temSanPham = \Module\sanpham\Model\TemSanPham::GetBySanPham($idSanPham);
-        // kiểm tra tem sản phẩm
-        if ($temSanPham == null) {
-            $temSanPham = \Module\sanpham\Model\TemSanPham::TaoTemSanPham($idSanPham);
-        }
-        if ($temSanPham["KhachHangTieuDung"] == "") {
-            $khachHang = \Module\khachhang\Model\KhachHangTieuDung::TaoKhachHang($maKhachHangTieuDung);
-            $temSanPham["KhachHangTieuDung"] = $maKhachHangTieuDung;
-            $ModelTemSanPham->UpdateRowTable($temSanPham);
-        } else {
-            $khachHang = \Module\khachhang\Model\KhachHangTieuDung::GetKhachHangByCode($temSanPham["KhachHangTieuDung"]);
-        }
-        $tsp = new \Module\sanpham\Model\TemSanPham($temSanPham);
-        $kH = new \Module\khachhang\Model\KhachHangTieuDung($khachHang);
+// mã khách hàng tiêu dung
+        $temSanPham = \Module\sanpham\Model\TemSanPham::GetByCode($idSanPham);
 
+        // kiểm tra tem sản phẩm
+        $sanPham = new \Module\sanpham\Model\SanPham();
+//        var_dump($temSanPham["MaSanPham"]);
+        if ($temSanPham["MaSanPham"] == 0) {
+            $idSP = $sanPham->TaoSanPham($temSanPham["Code"]);
+            $temSanPham["MaSanPham"] = $idSP;
+            $ModelTemSanPham->UpdateSubmit($temSanPham);
+        }
+        $khachHang = \Module\khachhang\Model\KhachHangTieuDung::GetKhachHangByCode($temSanPham["KhachHangTieuDung"]);
+        $tsp = new \Module\sanpham\Model\TemSanPham($temSanPham);
+
+        $kH = new \Module\khachhang\Model\KhachHangTieuDung($khachHang);
         return $this->ViewThemeModlue(["temSanPham" => $tsp, "khachHang" => $kH]);
     }
 
     public function detail() {
-
         return $this->ViewThemeModlue();
+    }
+
+    public function export() {
+        set_time_limit(0);
+        $Excell = new \Module\excell\Model\excell\ExcelReader();
+        $fileName = "public/temsanpham.xlsx";
+        $MTemSanPham = new \Module\sanpham\Model\TemSanPham();
+        $data = $MTemSanPham->GetAll();
+        $Excell->CreateFile($fileName, $data);
     }
 
     public function edit() {
@@ -110,6 +141,11 @@ class temsanpham extends \ApplicationM implements \Controller\IController {
         $id = $this->getParam(0);
         $option = new \Module\option\Model\Option($id);
         return $this->ModelView(["option" => $option], "");
+    }
+
+    function quanlytem() {
+
+        return $this->ViewThemeModlue();
     }
 
 }

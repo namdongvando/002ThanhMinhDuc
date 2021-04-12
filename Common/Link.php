@@ -82,101 +82,55 @@ class Link {
 
     public static function MenuQuanLy() {
         ?>
-        <li class="header text-center text-uppercase " style="color: #ddd;" ><b>Quản Lý Hệ Thống</b></li>
-        <li class="treeview">
+        <li class="">
             <a href="/trungtambaohanh/index">
-                <i class="fa fa-truck"></i> <span>Trung Tâm Bảo Hành</span>
-                <i class="fa fa-angle-right pull-right"></i>
+                <span>Trung Tâm Bảo Hành</span>
             </a>
         </li>
-        <li class="treeview">
+        <li class="">
             <a href="/khachhang/index">
-                <i class="fa fa-amazon"></i> <span>Khách Hàng</span>
-                <i class="fa fa-angle-right pull-right"></i>
+                <span>Đại Lý Bán Hàng</span>
+
             </a>
         </li>
-        <li class="treeview">
+        <li class="">
             <a href="/khachhang/khachhangtieudung/">
-                <i class="fa fa-user-plus"></i> <span>Khách Hàng Tiêu Dùng</span>
-                <i class="fa fa-angle-right pull-right"></i>
+                <span>Khách Hàng Tiêu Dùng</span>
             </a>
         </li>
 
-        <li class="treeview">
+        <li class="">
             <a href="/user/users/">
-                <i class="fa fa-user"></i> <span>Quản Lý Tài Khoản</span>
-                <i class="fa fa-angle-right pull-right"></i>
+                <span>Quản Lý Tài Khoản</span>
             </a>
         </li>
-        <li class="treeview">
-            <a href="/option/index">
-                <i class="fa fa-gears"></i> <span>Cài Đăt Chung</span>
-                <i class="fa fa-angle-right pull-right"></i>
-            </a>
-        </li>
-
         <?php
     }
 
     public static function MenuDoiTac() {
         ?>
-        <li class="header text-center text-uppercase " style="color: #ddd;" ><b>Quản Lý Sản Phẩm</b></li>
-        <li class="treeview">
-            <a href="/sanpham/index/">
-                <i class="fa fa-list-ol"></i> <span>Danh Mục Sản Phẩm</span>
-                <i class="fa fa-angle-right pull-right"></i>
-            </a>
-        </li>
-        <li class="treeview">
-            <a href="/sanpham/taosanpham/">
-                <i class="fa fa-list-ol"></i> <span>Tạo Sản Phẩm</span>
-                <i class="fa fa-angle-right pull-right"></i>
-            </a>
-        </li>
-        <li class="treeview">
-            <a href="/sanpham/temsanpham/">
-                <i class="fa fa-list-ol"></i> <span>Tem Sản Phẩm</span>
-                <i class="fa fa-angle-right pull-right"></i>
-            </a>
+        <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Quản Lý Sản Phẩm <span class="caret"></span></a>
+            <ul class="dropdown-menu" role="menu">
+                <li class="">
+                    <a href="/sanpham/index/">
+                        <span>Danh Mục Sản Phẩm</span>
+                    </a>
+                </li>
+                <li class="">
+                    <a href="/sanpham/taosanpham/">
+                        <span>Quản Lý Sản Phẩm</span>
+                    </a>
+                </li>
+                <li class="">
+                    <a href="/sanpham/temsanpham/">
+                        <span>Tem Sản Phẩm</span>
+                    </a>
+                </li>
+            </ul>
         </li>
 
-        <!--        <li class="header text-center text-uppercase " style="color: #ddd;" ><b>Quản Lý Dự Án</b></li>
-                <li class="treeview">
-                    <a href="/project/dashboard/dashboard/">
-                        <i class="fa fa-dashboard"></i> <span>Dashboard</span>
-                        <i class="fa fa-angle-right pull-right"></i>
-                    </a>
-                </li>
-                <li class="treeview">
-                    <a href="/project/dashboard/index/">
-                        <i class="fa fa-cubes"></i> <span>Dự Án</span>
-                        <i class="fa fa-angle-right pull-right"></i>
-                    </a>
-                </li>
-                <li class="treeview">
-                    <a href="/project/controller/">
-                        <i class="fa fa-wifi"></i> <span>Thiết Bị</span>
-                        <i class="fa fa-angle-right pull-right"></i>
-                    </a>
-                </li>
-                <li class="treeview">
-                    <a href="/project/users/">
-                        <i class="fa fa-users"></i> <span>Người Quản Trị</span>
-                        <i class="fa fa-angle-right pull-right"></i>
-                    </a>
-                </li>
-                <li class="treeview">
-                    <a href="/project/controller/datacontrollers/">
-                        <i class="fa fa-info"></i> <span>Thông Tin Khách Hàng</span>
-                        <i class="fa fa-angle-right pull-right"></i>
-                    </a>
-                </li>
-                <li class="treeview">
-                    <a href="/project/connect/">
-                        <i class="fa fa-globe"></i> <span>Liên Kết MXH</span>
 
-                    </a>
-                </li>-->
         <?php
     }
 

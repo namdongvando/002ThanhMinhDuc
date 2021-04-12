@@ -1,3 +1,7 @@
+<?php
+$groups = $_Param[0];
+$options = \Module\option\Model\Option::GetOptionsByGroups($groups);
+?>
 <script type="text/javascript" >
     app.controller("optionController", function($scope, $http) {
         $scope.optionInnit = function( ) {
@@ -9,9 +13,11 @@
     });
 </script>
 <div class="row " ng-controller="optionController" ng-init="optionInnit()" >
-    <section class="col-md-12 pb-10" >
+    <section class="col-md-12 mb-10" >
+        <a class="btn btn-primary" data-toggle="modal" href='#ThemOptions'>Thêm Tùy Chọn</a>
+    </section>
+    <section class="col-md-12 pb-10 mt-20" >
         <div class="connectedSortable" >
-            <a class="btn btn-primary" data-toggle="modal" href='#ThemOptions'>Thêm</a>
             <form method="POST" action="/option/index/create/" enctype="multipart/form-data" >
                 <div class="modal fade" data-backdrop="false" id="ThemOptions">
                     <div class="modal-dialog">
@@ -25,7 +31,9 @@
                                 \Module\option\Model\OptionForm::Code()->renderHTML();
                                 \Module\option\Model\OptionForm::Name()->renderHTML();
                                 \Module\option\Model\OptionForm::Groups()->renderHTML();
-                                \Module\option\Model\OptionForm::OrderBy()->renderHTML();
+                                \Module\option\Model\OptionForm::Note()->renderHTML();
+                                \Module\option\Model\OptionForm::Parents(0)->renderHTML();
+                                \Module\option\Model\OptionForm::OrderBy(0)->renderHTML();
                                 ?>
                             </div>
                             <div class="modal-footer">
@@ -35,16 +43,18 @@
                         </div>
                     </div>
                 </div>
+
             </form>
 
             <div class="box box-primary" >
                 <div class="box-header" >
-                    <h3 class="box-title" >Tùy Chỉnh</h3>
+                    <h3 class="box-title" >Tùy Chọn</h3>
                 </div>
                 <div class="box-body table-responsive" >
-                    <table class="table table-bordered" >
+                    <table class="table table-bordered dataTable " id="data"   >
                         <thead>
                             <tr>
+                                <th></th>
                                 <th>#</th>
                                 <th>Name</th>
                                 <th>Giá Trị</th>
@@ -53,16 +63,28 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr ng-repeat="item in _Options" >
-                                <td>{{$index + 1}}</td>
-                                <td>{{item.Name}}</td>
-                                <td>{{item.Code}}</td>
-                                <td>{{item.Groups}}</td>
-                                <td>{{item.OrderBy}}</td>
-                            </tr>
+                            <?php
+                            foreach ($options as $index => $op) {
+                                $_op = new \Module\option\Model\Option($op);
+                                ?>
+                                <tr >
+                                    <td>
+                                        <a href="/option/index/edit/<?php echo $_op->Id; ?>" class="btn btn-primary" >Sửa</a>
+                                    </td>
+                                    <td><?php echo $index + 1; ?></td>
+                                    <td><?php echo $_op->Name; ?></td>
+                                    <td><?php echo $_op->Code; ?></td>
+                                    <td><?php echo $_op->Groups; ?></td>
+                                    <td><?php echo $_op->OrderBy; ?></td>
+
+                                </tr>
+                                <?php
+                            }
+                            ?>
                         </tbody>
                         <tfoot>
                             <tr>
+                                <th></th>
                                 <th>#</th>
                                 <th>Name</th>
                                 <th>Giá Trị</th>

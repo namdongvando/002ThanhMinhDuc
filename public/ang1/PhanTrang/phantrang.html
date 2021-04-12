@@ -1,0 +1,18 @@
+<ul class="no-margin  pagination pull-right">
+    <li><a>{{pagesIndex}}/{{pagesTotal}}</a></li>
+    <li>
+        <a href="#" target="_self" ng-click="onClick(seachProduct, 1, pagesNumber)" >
+            Đầu
+        </a>
+    </li>
+    <li  class="{{(ptdataIndexpage == i) ? 'active' : ''}}" ng-repeat="i in  getArray(pagesIndex, pagesTotal) track by $index" >
+        <a href="#" target="_self" ng-click="onClick(seachProduct, i, pagesNumber)" >
+            {{i}}
+        </a>
+    </li>
+    <li>
+        <a href="#" target="_self" ng-click="onClick(seachProduct, ptdataTotalpage, pagesNumber)">
+            Cuối
+        </a>
+    </li>
+</ul>
