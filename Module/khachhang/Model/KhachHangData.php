@@ -23,7 +23,10 @@ class KhachHangData extends \datatable\ZendData implements \Model\IModel {
         return $this->GetRows();
     }
 
-    public function GetById($id) {
+    public function GetById($id, $mahoa = false) {
+        if ($mahoa == true) {
+            return $this->GetRowByWhere(" sha1(`Id`) = '{$id}'");
+        }
         return $this->GetRowByWhere("`Id` = '{$id}'");
     }
 
@@ -40,7 +43,10 @@ class KhachHangData extends \datatable\ZendData implements \Model\IModel {
     }
 
     public function DeleteSubmit($id, $maHoa = false) {
-        return $this->DeleteRowById($id, $maHoa);
+        $kh = $this->GetById($id, $maHoa);
+        $KHTT = new KhachHangThanhToan();
+        $this->DeleteRowById($id, $maHoa);
+        return $KHTT->DeleteByCode($kh["Code"]);
     }
 
     function GetAll2Option($where = null) {

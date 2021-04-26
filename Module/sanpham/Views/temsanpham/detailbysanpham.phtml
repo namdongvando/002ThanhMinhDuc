@@ -1,5 +1,5 @@
 <?php
-$link = "/public/phpqrcode/index.php?data= " . Root_URL . "baohanh/" . $temSanPham->Code;
+$link = "/public/phpqrcode/index.php?data=" . Root_URL . "baohanh/" . $temSanPham->Code;
 ?>
 <ol class="breadcrumb">
     <li>
@@ -13,39 +13,7 @@ $link = "/public/phpqrcode/index.php?data= " . Root_URL . "baohanh/" . $temSanPh
 <div class="" >
     <div class=""  >
         <section class="col-md-12 pb-10" >
-            <div class="btn-group" >
-                <a class="btn btn-primary" data-toggle="modal" href='#ThemTemPhu'>Thêm Tem Phụ</a>
 
-                <a class="btn btn-primary" data-toggle="modal" href='#MaBaoHanh'>Mã QR Code</a>
-
-                <div class="modal fade" id="ThemTemPhu">
-                    <form action="" method="POST" enctype="multipart/form-data" >
-                        <div class="modal-dialog">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                                    <h4 class="modal-title">Tem Bảo Hành Phụ</h4>
-                                </div>
-                                <div class="modal-body">
-                                    <?php
-                                    \Module\sanpham\Model\TemSanPhamForm::Name()->renderHTML();
-                                    \Module\sanpham\Model\TemSanPhamForm::MaSanPham()->renderHTML();
-                                    \Module\sanpham\Model\TemSanPhamForm::NgayBatDau(Date("d-m-Y", time()))->renderHTML();
-                                    \Module\sanpham\Model\TemSanPhamForm::ThangKetThuc()->renderHTML();
-                                    \Module\sanpham\Model\TemSanPhamForm::Status()->renderHTML();
-                                    \Module\sanpham\Model\TemSanPhamForm::Parents($temSanPham->Id, "", true)->renderHTML();
-                                    ?>
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                                    <button type="submit" name="ThenTemPhu" value="them" class="btn btn-primary">Lưu</button>
-                                </div>
-                            </div>
-                        </div>
-                    </form>
-
-                </div>
-            </div>
             <div class="modal fade" id="MaBaoHanh">
                 <div class="modal-dialog modal-sm">
                     <div class="modal-content">
@@ -100,6 +68,10 @@ $link = "/public/phpqrcode/index.php?data= " . Root_URL . "baohanh/" . $temSanPh
                                     \Module\sanpham\Model\TemSanPhamForm::KhachHangTieuDung($temSanPham->KhachHangTieuDung, true)->renderHTML();
                                     \Module\sanpham\Model\TemSanPhamForm::Status($temSanPham->Status)->renderHTML();
                                     ?>
+                                    <div class="btn-group" >
+                                        <a class="btn btn-primary" data-toggle="modal" href='#ThemTemPhu'>Thêm Tem Phụ</a>
+                                        <a class="btn btn-primary" data-toggle="modal" href='#MaBaoHanh'>Mã QR Code</a>
+                                    </div>
                                 </fieldset>
                                 <fieldset>
                                     <legend>Thông Tin Khách Hàng Tiêu Dùng</legend>
@@ -127,7 +99,7 @@ $link = "/public/phpqrcode/index.php?data= " . Root_URL . "baohanh/" . $temSanPh
                                         </div>
                                         <div class="col-md-4">
                                             <?php
-                                            Module\khachhang\Model\KhachHangTieuDungForm::QuanHuyen($khachHang->QuanHuyen)->renderHTML();
+                                            Module\khachhang\Model\KhachHangTieuDungForm::QuanHuyen($khachHang->QuanHuyen, $khachHang->TinhThanh)->renderHTML();
                                             ?>
                                         </div>
                                     </div>
@@ -143,11 +115,19 @@ $link = "/public/phpqrcode/index.php?data= " . Root_URL . "baohanh/" . $temSanPh
                                     <?php
                                     \Module\sanpham\Model\SanPhamForm::Id($temSanPham->SanPham()->Id)->render();
                                     \Module\sanpham\Model\SanPhamForm::Code($temSanPham->SanPham()->Code)->renderHTML();
-                                    \Module\sanpham\Model\SanPhamForm::Name($temSanPham->SanPham()->Name)->renderHTML();
+                                    ?>
+                                    <div class="">
+                                        <button type="button" class="btn btn-sm pull-right" data-toggle="modal" data-target='#ChonSanPham'>Chọn Sản Phẩm</button>
+                                        <?php
+                                        \Module\sanpham\Model\SanPhamForm::Name($temSanPham->SanPham()->Name)->renderHTML();
+                                        ?>
+                                    </div>
+                                    <?php
                                     \Module\sanpham\Model\SanPhamForm::Mota($temSanPham->SanPham()->Mota)->renderHTML();
                                     \Module\sanpham\Model\SanPhamForm::ChungLoaiSP($temSanPham->SanPham()->ChungLoaiSP)->renderHTML();
                                     \Module\sanpham\Model\SanPhamForm::DanhMuc($temSanPham->SanPham()->DanhMuc)->renderHTML();
                                     \Module\sanpham\Model\SanPhamForm::TinhTrang($temSanPham->SanPham()->TinhTrang)->renderHTML();
+                                    \Module\sanpham\Model\SanPhamForm::MaDaiLy($temSanPham->SanPham()->MaDaiLy)->renderHTML();
                                     ?>
                                     <div class="form-group">
                                         <img src="<?php echo $temSanPham->SanPham()->HinhAnh; ?>?v=<?php echo time(); ?>"  style="height: 80px;" class="img img-responsive" >
@@ -156,22 +136,73 @@ $link = "/public/phpqrcode/index.php?data= " . Root_URL . "baohanh/" . $temSanPh
                                         \Module\sanpham\Model\SanPhamForm::HinhAnh()->render();
                                         ?>
                                     </div>
-
                                 </fieldset>
-
                             </div>
                         </div>
-                        <div class="box-footer" >
+                        <div class="box-footer text-right" >
                             <?php
                             Module\rmm\Model\RoomForm::btnSave()->render();
                             ?>
+
                         </div>
                     </div>
                 </form>
             </div>
         </section>
+
     </div>
 </div>
+<div class="modal fade" id="ThemTemPhu">
+    <form action="" method="POST" enctype="multipart/form-data" >
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title">Tem Bảo Hành Phụ</h4>
+                </div>
+                <div class="modal-body">
+                    <?php
+                    \Module\sanpham\Model\TemSanPhamForm::Name()->renderHTML();
+                    \Module\sanpham\Model\TemSanPhamForm::MaSanPham()->renderHTML();
+                    \Module\sanpham\Model\TemSanPhamForm::NgayBatDau(Date("d-m-Y", time()))->renderHTML();
+                    \Module\sanpham\Model\TemSanPhamForm::ThangKetThuc()->renderHTML();
+                    \Module\sanpham\Model\TemSanPhamForm::Status()->renderHTML();
+                    \Module\sanpham\Model\TemSanPhamForm::Parents($temSanPham->Id, "", true)->renderHTML();
+                    ?>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="submit" name="ThenTemPhu" value="them" class="btn btn-primary">Lưu</button>
+                </div>
+            </div>
+        </div>
+    </form>
+
+</div>
+<!-- cập nhật thông tin sản phna -->
+<form action="" enctype="multipart/form-data" method="POST" >
+    <div class="modal fade" id="ChonSanPham">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title">Chọn Model Sản Phẩm</h4>
+                </div>
+                <div class="modal-body">
+                    <?php
+                    echo $temSanPham->SanPham()->Id;
+                    Module\option\Model\OptionForm::SelectGroups("Danh Mục Sản Phẩm", "Chon[MaDanhMuc]", "DanhMucVatTu")->renderHtml();
+                    Module\option\Model\OptionForm::Hidden("Chon[MaSanPham]", $temSanPham->SanPham()->Id)->render();
+                    ?>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="submit" name="ChonDanhMucSanPham" class="btn btn-primary">OK</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
 <div class="clearfix">
 
 </div>

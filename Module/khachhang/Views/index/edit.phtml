@@ -182,6 +182,7 @@ $KhachHang = new Module\khachhang\Model\KhachHang($KhachHang);
                             <?php
                             Module\rmm\Model\RoomForm::btnSave()->render();
                             ?>
+                            <a href="/khachhang/index/delete/<?php echo sha1($KhachHang->Id); ?>" data-confirm="Xóa Khách Hàng Này?" class="btn xoa btn-danger" >Xóa</a>
                         </div>
                     </div>
                 </div>

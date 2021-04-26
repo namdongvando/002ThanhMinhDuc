@@ -33,13 +33,14 @@ class api extends \ApplicationM {
     }
 
     function ycbhUpdate() {
-        var_dump($_POST);
-        $code = $_POST["Code"];
-        $status["Status"] = $_POST["Status"];
-        $status["IdTrungTamBaoHanh"] = $_POST["IdTrungTamBaoHanh"];
+        $postdata = file_get_contents("php://input");
+        $request = json_decode($postdata, JSON_OBJECT_AS_ARRAY);
+        $code = $request["Code"];
+        $status["Status"] = $request["Status"];
+        $status["IdTrungTamBaoHanh"] = $request["IdTrungTamBaoHanh"];
         $YeuCau = new \Module\trungtambaohanh\Model\YeuCauBaoHanh();
         $YeuCau->UpdateStatus($code, $status);
-        echo "{Status: {$status}}";
+        echo json_encode($status);
     }
 
     function getTTBH() {
@@ -49,7 +50,9 @@ class api extends \ApplicationM {
     }
 
     function thongtinkhachhang() {
-        var_dump($_POST);
+        $postdata = file_get_contents("php://input");
+        $request = json_decode($postdata, JSON_OBJECT_AS_ARRAY);
+        $_POST = $request;
         $khachHang = \Module\khachhang\Model\KhachHangTieuDung::GetKhachHangByCode($_POST["Code"]);
         $khachHang["Name"] = $_POST["Name"];
         $khachHang["KhuVuc"] = $_POST["KhuVuc"];

@@ -104,7 +104,8 @@ class DatabaseZend implements \Model\IModel {
     }
 
     public function GetAll() {
-        return $this->ToArray($this->Select());
+        $where = "`Groups` > 0";
+        return $this->ToArray($this->Select($where));
     }
 
     public function GetById($id) {

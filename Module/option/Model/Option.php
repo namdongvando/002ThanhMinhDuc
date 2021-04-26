@@ -81,6 +81,11 @@ class Option extends OptionData {
         return $Option->GetAll2Option($groups);
     }
 
+    public static function GetAll2OptionsByGroupsID($groups) {
+        $Option = new Option();
+        return $Option->GetAll2OptionId($groups);
+    }
+
     public static function GetOptions() {
         $Option = new Option();
         return $Option->GetAll();

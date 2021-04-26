@@ -72,8 +72,11 @@ Link;
         return $link;
     }
 
-    public static function Sua(
-    $id) {
+    public static function Sua($id) {
+
+        if (\Module\user\Model\Admin::CheckQuyen() == false) {
+            return;
+        }
         $link = <<<Link
                 <a href="/trungtambaohanh/index/edit/{$id}" class="btn btn-sm btn-success" >Sửa</a>
 Link;

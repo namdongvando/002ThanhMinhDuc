@@ -1,6 +1,7 @@
-<div>
-    <a href="/option/index/" class="btn btn-primary" >Dang Sách Sản Phẩm</a>
-</div>
+<ol class="breadcrumb" >
+    <li><a href="/sanpham/index/" >Danh Mục Sản Phẩm</a></li>
+    <li>Sửa </li>
+</ol>
 <div class="container" >
     <div class="row " ng-controller="rmmController" ng-init="rmmInnit()" >
         <section class="col-md-12 pb-10" >
@@ -8,23 +9,23 @@
                 <div class="connectedSortable" >
                     <div class="box box-solid">
                         <div class=" box-header bg-blue-gradient">
-                            <h3 class="box-title">Chi Tiết Phòng Họp</h3>
+                            <h3 class="box-title">Chi Tiết</h3>
                             <!-- tools box -->
                         </div>
                         <div class="box-body">
                             <?php
-                            \Module\option\Model\OptionForm::Id($option->Id)->render();
-                            \Module\option\Model\OptionForm::Code($option->Code)->renderHTML();
-                            \Module\option\Model\OptionForm::Name($option->Name)->renderHTML();
-                            \Module\option\Model\OptionForm::Groups($option->Groups)->renderHTML();
-                            \Module\option\Model\OptionForm::Note($option->Note)->renderHTML();
-                            \Module\option\Model\OptionForm::Parents($option->Parents)->renderHTML();
-                            \Module\option\Model\OptionForm::OrderBy($option->OrderBy)->renderHTML();
+                            \Module\sanpham\Model\DanhMucSanPhamForm::Id($option->Id)->render();
+                            \Module\sanpham\Model\DanhMucSanPhamForm::Code($option->Code)->renderHTML();
+                            \Module\sanpham\Model\DanhMucSanPhamForm::Name($option->Name)->renderHTML();
+                            \Module\sanpham\Model\DanhMucSanPhamForm::Groups($option->Groups)->render();
+                            \Module\sanpham\Model\DanhMucSanPhamForm::Note($option->Note)->renderHTML();
+                            \Module\sanpham\Model\DanhMucSanPhamForm::Parents($option->Parents)->renderHTML();
+                            \Module\sanpham\Model\DanhMucSanPhamForm::OrderBy(1)->renderHTML();
                             ?>
                         </div>
                         <div class="box-footer" >
                             <?php
-                            Module\rmm\Model\RoomForm::btnSave()->render();
+                            \Module\sanpham\Model\DanhMucSanPhamForm::btnSubmit()->render();
                             ?>
                         </div>
                     </div>

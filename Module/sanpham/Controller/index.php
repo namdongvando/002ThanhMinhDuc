@@ -34,29 +34,10 @@ class index extends \ApplicationM implements \Controller\IController {
     }
 
     public function delete() {
-        $ModelProject = new \Module\project\Model\Project();
-        if (\Module\project\Model\ProjectForm::onSubmit()) {
-            try {
-                $Password = $_POST["password"];
-                $user = \Module\user\Model\Admin::getCurentUser(true);
-                if (!$user->CheckPassword($Password)) {
-                    throw new \Exception("Mật Khẩu Không Đúng.");
-                }
-                $projectData = $this->getParam()[0];
-                $projectObjData = \Module\project\Model\Project::DecodeData($projectData);
-                $ModelProject->DeleteProject($projectObjData->Id);
-            } catch (\Exception $ex) {
-                \Common\Alert::setAlert("danger", $ex->getMessage());
-            }
-            \Application\redirectTo::Url("/project/index/");
-            exit();
-        }
-        $DataId = \Module\project\Model\Project::DecodeData($this->getParam()[0]);
-        $id = $DataId->Id;
-        \Module\project\Model\Project::SetEditProject($id);
-
-        $_Model = $ModelProject->GetById($id);
-        $this->ViewThemeModlue(["project" => $_Model], self::$UserLayout);
+        $id = intval($this->getParam()[0]);
+        $DanhMucSP = new \Module\sanpham\Model\DanhMucSanPham();
+        $DanhMucSP->DeleteSubmit($id);
+        \Common\Common::toUrl("/sanpham/index/");
     }
 
     public function detail() {
@@ -65,15 +46,15 @@ class index extends \ApplicationM implements \Controller\IController {
 
     public function edit() {
         if (\Common\Form::isPost()) {
-            $option = \Common\Form::RequestPost("option", []);
+            $option = \Common\Form::RequestPost("DanhMuc", []);
             if ($option) {
-                $ModelOption = new \Module\option\Model\Option();
-                $ModelOption->UpdateRowTable($option);
+                $ModelOption = new \Module\sanpham\Model\DanhMucSanPham();
+                $ModelOption->UpdateSubmit($option);
             }
         }
         $id = $this->getParam(0);
         $option = new \Module\option\Model\Option($id);
-        return $this->ModelView(["option" => $option], "");
+        return $this->ViewThemeModlue(["option" => $option], "");
     }
 
     public function form() {

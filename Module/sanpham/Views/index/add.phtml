@@ -1,193 +1,44 @@
-<div class="container-fluid" >
-    <div class="row" >
-        <section class="pb-10" >
-            <a href="/khachhang/index/" class="btn btn-primary" >Danh Sách Khác Hàng</a>
-        </section>
-        <div class="clearfix" ></div>
-        <section class="pb-10" >
+<?php
+if (isset($_POST["OnSave"])) {
+    try {
+        $DanhMuc = $_POST["DanhMuc"];
+        $DM = new Module\sanpham\Model\DanhMucSanPham();
+        $DM->Post($DanhMuc);
+        Common\Common::toUrl("/sanpham/index/");
+    } catch (Exception $exc) {
+        $ThongBao = $exc->getMessage();
+    }
+}
+$option = new \Module\option\Model\Option();
+?>
+<ol class="breadcrumb" >
+    <li><a href="/sanpham/index/" >Danh Mục Sản Phẩm</a></li>
+    <li>Thêm </li>
+</ol>
+<div class="container" >
+    <div class="row " ng-controller="rmmController" ng-init="rmmInnit()" >
+        <section class="col-md-12 pb-10" >
             <form action="" method="POST" enctype="multipart/form-data" >
                 <div class="connectedSortable" >
                     <div class="box box-solid">
                         <div class=" box-header bg-blue-gradient">
-                            <h3 class="box-title">Thêm Khách Hàng</h3>
+                            <h3 class="box-title">Thêm</h3>
                             <!-- tools box -->
                         </div>
                         <div class="box-body">
-                            <div role="tabpanel">
-                                <!-- Nav tabs -->
-                                <ul class="nav nav-tabs" role="tablist">
-                                    <li role="presentation" class="active">
-                                        <a href="#ThongTinChung" aria-controls="ThongTinChung" role="tab" data-toggle="tab">Thông Tin Chung</a>
-                                    </li>
-                                    <li class="hidden" role="presentation">
-                                        <a href="#ThongTinLienHe" aria-controls="ThongTinLienHe" role="tab" data-toggle="tab">Thông Tin Liên Hệ</a>
-                                    </li>
-                                    <li role="presentation">
-                                        <a href="#ThongTinThanhToan" aria-controls="ThongTinThanhToan" role="tab" data-toggle="tab">Thông Tin Thanh Toán</a>
-                                    </li>
-                                </ul>
-
-                                <!-- Tab panes -->
-                                <div class="tab-content">
-                                    <div role="tabpanel" class="tab-pane active" id="ThongTinChung">
-                                        <div class="row pt-15">
-                                            <div class="col-md-4">
-                                                <a class="pull-right" data-toggle="modal" href='#huongDan'>
-                                                    <i class="fa fa-question" ></i>
-                                                </a>
-                                                <?php
-                                                Module\khachhang\Model\KhachHangForm::Code()->renderHTML();
-                                                ?>
-                                                <div class="modal fade" id="huongDan">
-                                                    <div class="modal-dialog modal-lg">
-                                                        <div class="modal-content">
-                                                            <div class="modal-header">
-                                                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                                                                <h3 class="modal-title">Hướng Dẫn</h3>
-                                                            </div>
-                                                            <div class="modal-body center-block">
-                                                                <div class="text-center"  >
-                                                                    <img style="margin: auto;" class="img img-responsive" src="/public/duongdan/MaKhachHang.JPG" alt="hướng Dẫn"/>
-                                                                </div>
-                                                            </div>
-                                                            <div class="modal-footer">
-                                                                <button type="button" class="btn btn-default" data-dismiss="modal">Thoát</button>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-4">
-                                                <?php
-                                                Module\khachhang\Model\KhachHangForm::Name()->renderHTML();
-                                                ?>
-                                            </div>
-                                            <div class="col-md-4">
-                                                <?php
-                                                Module\khachhang\Model\KhachHangForm::Parents()->renderHTML();
-                                                ?>
-                                            </div>
-                                            <div class="col-md-4">
-                                                <?php
-                                                Module\khachhang\Model\KhachHangForm::KhuVuc()->renderHTML();
-                                                ?>
-                                            </div>
-                                            <div class="col-md-4">
-                                                <?php
-                                                Module\khachhang\Model\KhachHangForm::LoaiHinhKinhDoanh()->renderHTML();
-                                                ?>
-                                            </div>
-                                            <div class="col-md-4">
-                                                <?php
-                                                Module\khachhang\Model\KhachHangForm::DienThoai()->renderHTML();
-                                                ?>
-                                            </div>
-                                            <div class="col-md-12">
-                                                <?php
-                                                Module\khachhang\Model\KhachHangForm::DiaChi()->renderHTML();
-                                                ?>
-                                            </div>
-                                            <div class="col-md-4">
-                                                <?php
-                                                Module\khachhang\Model\KhachHangForm::PhuongXa()->renderHTML();
-                                                ?>
-                                            </div>
-                                            <div class="col-md-4">
-                                                <?php
-                                                Module\khachhang\Model\KhachHangForm::QuanHuyen()->renderHTML();
-                                                ?>
-                                            </div>
-                                            <div class="col-md-4">
-                                                <?php
-                                                Module\khachhang\Model\KhachHangForm::TinhThanh()->renderHTML();
-                                                ?>
-                                            </div>
-                                            <div class="col-md-4">
-                                                <?php
-                                                Module\khachhang\Model\KhachHangForm::LaChuKinhDoanh()->renderHTML();
-                                                ?>
-                                            </div>
-
-                                            <div class="col-md-4">
-                                                <?php
-                                                Module\khachhang\Model\KhachHangForm::DiDong()->renderHTML();
-                                                ?>
-                                            </div>
-                                            <div class="col-md-4">
-                                                <?php
-                                                Module\khachhang\Model\KhachHangForm::Zalo()->renderHTML();
-                                                ?>
-                                            </div>
-                                            <div class="col-md-4">
-                                                <?php
-                                                Module\khachhang\Model\KhachHangForm::MaSoThue()->renderHTML();
-                                                ?>
-                                            </div>
-                                            <div class="col-md-4">
-                                                <?php
-                                                Module\khachhang\Model\KhachHangForm::DiaChiGiaoHang()->renderHTML();
-                                                ?>
-                                            </div>
-                                            <div class="col-md-4">
-                                                <?php
-                                                Module\khachhang\Model\KhachHangForm::NhomHangKinhDoanh()->renderHTML();
-                                                ?>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div role="tabpanel" class="tab-pane" id="ThongTinLienHe">...</div>
-                                    <div role="tabpanel" class="tab-pane" id="ThongTinThanhToan">
-                                        <div class="row">
-                                            <div class="col-md-4">
-                                                <?php
-                                                Module\khachhang\Model\KhachHangThanhToanForm::MaKhachHang()->renderHTML();
-                                                ?>
-                                            </div>
-                                            <div class="col-md-4">
-                                                <?php
-                                                Module\khachhang\Model\KhachHangThanhToanForm::TenCongTy()->renderHTML();
-                                                ?>
-                                            </div>
-                                            <div class="col-md-4">
-                                                <?php
-                                                Module\khachhang\Model\KhachHangThanhToanForm::MaSoThue()->renderHTML();
-                                                ?>
-                                            </div>
-                                            <div class="col-md-4">
-                                                <?php
-                                                Module\khachhang\Model\KhachHangThanhToanForm::DiaChi()->renderHTML();
-                                                ?>
-                                            </div>
-                                            <div class="col-md-4">
-                                                <?php
-                                                Module\khachhang\Model\KhachHangThanhToanForm::STK()->renderHTML();
-                                                ?>
-                                            </div>
-                                            <div class="col-md-4">
-                                                <?php
-                                                Module\khachhang\Model\KhachHangThanhToanForm::NganHang()->renderHTML();
-                                                ?>
-                                            </div>
-                                            <div class="col-md-4">
-                                                <?php
-                                                Module\khachhang\Model\KhachHangThanhToanForm::Fax()->renderHTML();
-                                                ?>
-                                            </div>
-                                            <div class="col-md-4">
-                                                <?php
-                                                Module\khachhang\Model\KhachHangThanhToanForm::GhiChu()->renderHTML();
-                                                ?>
-                                            </div>
-
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
+                            <p><?php echo (!empty($ThongBao)) ? $ThongBao : "" ?></p>
+                            <?php
+                            \Module\sanpham\Model\DanhMucSanPhamForm::Code($option->Code)->renderHTML();
+                            \Module\sanpham\Model\DanhMucSanPhamForm::Name($option->Name)->renderHTML();
+                            \Module\sanpham\Model\DanhMucSanPhamForm::Groups($option->Groups)->render();
+                            \Module\sanpham\Model\DanhMucSanPhamForm::Note($option->Note)->renderHTML();
+                            \Module\sanpham\Model\DanhMucSanPhamForm::Parents($option->Parents)->renderHTML();
+                            \Module\sanpham\Model\DanhMucSanPhamForm::OrderBy(1)->renderHTML();
+                            ?>
                         </div>
                         <div class="box-footer" >
                             <?php
-                            Module\rmm\Model\RoomForm::btnSave()->render();
+                            \Module\sanpham\Model\DanhMucSanPhamForm::btnSubmit()->render();
                             ?>
                         </div>
                     </div>

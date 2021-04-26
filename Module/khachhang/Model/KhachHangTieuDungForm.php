@@ -70,7 +70,7 @@ class KhachHangTieuDungForm extends \PFBC\Form implements IKhachHangTieuDungForm
         $Option["class"] = "form-control AjaxHTML";
         $Option["data-url"] = "/option/api/TinhThanhTagOption/";
         $Option["data-values"] = "true";
-        $Option["data-object"] = "#QuanHuyen";
+        $Option["data-object"] = "#khachhangtieudungQuanHuyen";
         $options = \Module\option\Model\Option::GetTinhThanh2Option(0);
         return new \PFBC\Element\Select("Tỉnh Thành Phố", "khachhangtieudung[TinhThanh]", $options, $Option);
     }
@@ -78,7 +78,7 @@ class KhachHangTieuDungForm extends \PFBC\Form implements IKhachHangTieuDungForm
     public static function QuanHuyen($value, $tinhThanh = 1) {
         $Option = self::$Option;
         $Option["value"] = $value;
-        $Option["id"] = "QuanHuyen";
+        $Option["id"] = "khachhangtieudungQuanHuyen";
         $options = \Module\option\Model\Option::GetTinhThanh2Option($tinhThanh);
         return new \PFBC\Element\Select("Quận Huyện", "khachhangtieudung[QuanHuyen]", $options, $Option);
     }

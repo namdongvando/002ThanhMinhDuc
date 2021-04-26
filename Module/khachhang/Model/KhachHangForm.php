@@ -68,7 +68,6 @@ class KhachHangForm extends \PFBC\Form implements IKhachHangForm {
     public static function LoaiHinhKinhDoanh($value = null) {
         $Option = self::$Option;
         $Option["value"] = $value;
-
         $options = \Module\option\Model\Option::GetAll2OptionsByGroups(\Module\option\Model\Option::MaNhomKinhDoanh);
         return new \PFBC\Element\Select("Loại Hình Kinh Doanh", "khachhang[LoaiHinhKinhDoanh]", $options, $Option);
     }

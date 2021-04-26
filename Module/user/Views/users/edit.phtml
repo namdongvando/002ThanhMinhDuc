@@ -10,16 +10,18 @@ $admin = new Module\user\Model\Admin($admin);
         }
     });</script>
 
-<div class="" ng-controller="usersController" >
+<ol class="breadcrumb">
+    <li>
+        <a href="/user/users/"  >
+            Danh Sách Tài Khoản
+        </a>
+    </li>
+    <li class="active" >
+        Sửa
+    </li>
+</ol>
+<div class="container-fluid" ng-controller="usersController" >
     <form action="" method="post" enctype="multipart/form-data" >
-        <div class="breadcrumb">
-            <a href="/user/users/" class="btn-sm btn btn-primary" >
-                <i class="fa fa-angle-double-left" ></i>
-                Quay Lại
-            </a>
-            <input type="submit" class="btn-sm btn btn-success" value="Lưu" />
-            <button onclick="window.location.reload()" class ="pull-right btn-sm btn btn-primary"  ><i class="fa fa-refresh" ></i></button>
-        </div>
         <div class="row" >
             <section class="col-md-6 pb-10" >
                 <div class="connectedSortable" >
@@ -65,6 +67,19 @@ $admin = new Module\user\Model\Admin($admin);
                                     Module\user\Model\AdminForm::Groups($admin->Groups)->renderHTML();
                                     ?>
                                 </div>
+                                <div class="clearfix">
+
+                                </div>
+                                <div class="col-md-6 admin trungtambaohanh">
+                                    <?php
+                                    Module\user\Model\AdminForm::TrungTamBaoHanh($admin->TrungTamBaoHanh()->idKhachHang)->renderHTML();
+                                    ?>
+                                </div>
+                                <div class="col-md-6 admin khachhang">
+                                    <?php
+                                    Module\user\Model\AdminForm::KhachHang($admin->KhachHang()->idKhachHang)->renderHTML();
+                                    ?>
+                                </div>
                                 <div class="col-md-12">
                                     <?php
                                     Module\user\Model\AdminForm::Note($admin->Note)->renderHTML();
@@ -73,6 +88,9 @@ $admin = new Module\user\Model\Admin($admin);
 
                             </div>
 
+                        </div>
+                        <div class="box-footer" >
+                            <input type="submit" class="btn-sm btn btn-success" value="Lưu" />
                         </div>
                     </div>
                 </div>
@@ -93,3 +111,28 @@ $admin = new Module\user\Model\Admin($admin);
         </div>
     </form>
 </div>
+<script>
+    $(function() {
+        var HienThiNhom = () => {
+            console.log($("#Nhom").val());
+            var idNhom = $("#Nhom").val();
+            if (idNhom == '1' || idNhom == '2') {
+                $(".admin").hide();
+            }
+            if (idNhom == '3') {
+                $(".admin").hide();
+                $(".khachhang").show();
+            }
+            if (idNhom == '4') {
+                $(".admin").hide();
+                $(".trungtambaohanh").show();
+            }
+        }
+        $("#Nhom").change(() => {
+            HienThiNhom();
+        });
+        $("#Nhom").each(() => {
+            HienThiNhom();
+        });
+    });
+</script>

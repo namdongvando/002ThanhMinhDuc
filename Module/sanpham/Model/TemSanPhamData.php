@@ -9,6 +9,7 @@ use Zend\Db\TableGateway\TableGateway;
 class TemSanPhamData extends \datatable\ZendData implements \Model\IModel {
 
     private static $tableNews;
+    private static $GetAll;
     private $TableName;
 
     public function __construct() {
@@ -20,7 +21,18 @@ class TemSanPhamData extends \datatable\ZendData implements \Model\IModel {
     }
 
     public function GetAll() {
-        return $this->GetRows();
+        if (!self::$GetAll)
+            self::$GetAll = $this->GetRows();
+        return self::$GetAll;
+    }
+
+    public function GetAllPT($pagesIndex = 1, $number = 500, &$tong = 0) {
+        $pagesIndex = max($pagesIndex, 1);
+        $pagesIndex = $pagesIndex - 1;
+        $pagesIndex = $pagesIndex * $number;
+        $where = " 1=1 limit {$pagesIndex},{$number}";
+        $tong = $this->GetNumberRows(" 1=1 ");
+        return $this->GetRowsByWhere($where);
     }
 
     public function GetById($id) {

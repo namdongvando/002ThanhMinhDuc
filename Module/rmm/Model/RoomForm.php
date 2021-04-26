@@ -79,7 +79,7 @@ class RoomForm extends \PFBC\Form {
     }
 
     public static function btnSave() {
-        return new \PFBC\Element\Button("Lưu", "Submit", ["name" => "IsSubmit", "class" => "btn btn-primary"]);
+        return new \PFBC\Element\Button("OK", "Submit", ["name" => "IsSubmit", "class" => "btn btn-primary"]);
     }
 
     public static function btnEdit($options) {

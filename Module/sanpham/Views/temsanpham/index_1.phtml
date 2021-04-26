@@ -1,0 +1,156 @@
+<?php
+$pagesIndex = isset($_Param[0]) ? $_Param[0] : 1;
+$pageNumber = isset($_Param[1]) ? $_Param[1] : 20;
+$tong = 0;
+$name = "";
+$linkNumberIndex = '/sanpham/temsanpham/index/1/';
+$TemSanPhams = \Module\sanpham\Model\TemSanPham::GetRowsPT($name, $pagesIndex, $pageNumber, $tong);
+?>
+<script src="<?php echo \Module\sanpham\Functions::UrlModule; ?>public/TemsanphamController.js?v=<?php echo time(); ?>" type="text/javascript"></script>
+<ol class="breadcrumb ">
+    <li>
+        <a href="/dashboad/">Dashboad</a>
+    </li>
+    <li>
+        <a href="#">Quản Lý Sản Phẩm</a>
+    </li>
+    <li class="active">Tem Sản Phẩm</li>
+</ol>
+<div class="container-fluid" ng-controller="TemsanphamController" >
+    <div class="row " >
+        <section class="col-md-12 pb-10" >
+            <div class="box " >
+                <div class="box-header " >
+                    <h3 class="box-title" >
+                        Danh Sách Tem Sản Phẩm(<?php echo $tong; ?>)
+                    </h3>
+                    <div class="box-tools btn-group ">
+                        <a class="btn btn-primary"  data-toggle="modal" href='#XuatTemSanPham'>Export</a>
+                        <a class="btn btn-primary " data-toggle="modal" href='#ThemTemSanPham'>Thêm Tem Sản Phẩm</a>
+                    </div>
+                </div>
+                <div class="box-body " >
+
+                    <table class="table table-bordered  " id="data"  >
+                        <thead>
+                            <tr>
+                                <td colspan="11" >
+                                    <select style="width: 100px;" ng-model="expagesNumber" ng-change="TimKiemTemSanPham({TuKhoa: TuKhoa}, expagesIndex, expagesNumber)" >
+                                        <option value="10" >10 Dòng</option>
+                                        <option value="20" >20 Dòng</option>
+                                        <option value="50" >50 Dòng</option>
+                                        <option value="100">100 Dòng</option>
+                                    </select>
+                                    <div class="input-group pull-right" style="width: 150px;">
+                                        <input type="text" name="table_search" ng-model="TuKhoa" class="form-control input-sm pull-right" placeholder="Search">
+                                        <div class="input-group-btn">
+                                            <button class="btn btn-sm btn-default"><i class="fa fa-search"></i></button>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr class="btn-primary" >
+                                <th style="width: 120px;" ></th>
+                                <th>#</th>
+                                <th>Mã Tem</th>
+                                <th>Sản Phẩm</th>
+                                <th>Tình Trạng</th>
+                                <th>Ngày Bắt Đầu</th>
+                                <th>Thời Gian Bảo Hành</th>
+                                <th>Ngày Kết Thúc</th>
+                                <th>Tài Khoản</th>
+                                <th style="width: 100px;" >Ngày Tạo</th>
+                                <th style="width: 100px;" >Ngày Sửa</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="item in _ListItem.data" >
+                                <td class="" >
+                                    <a class="btn btn-sm btn-primary" href="/sanpham/temsanpham/detailbysanpham/{{item.Code}}/"  >Sửa</a>
+                                </td>
+                                <td>{{$index + 1}}</td>
+                                <td>{{item.Name}}</td>
+                                <td>{{item.SanPham.Name}}</td>
+                                <td>{{item.Status.Name}}</td>
+                                <td>{{item.NgayBatDau}}</td>
+                                <td>{{item.ThangKetThuc}}</td>
+                                <td>{{item.NgayKetThuc}}</td>
+                                <td>{{item.UserId.Name}}</td>
+                                <td>{{item.CreateDate}}</td>
+                                <td>{{item.ModifyDate}}</td>
+                            </tr>
+                        </tbody>
+                        <tfoot>
+                            <tr class="btn-primary">
+                                <th style="width: 120px;" ></th>
+                                <th>#</th>
+                                <th>Mã Tem</th>
+                                <th>Sản Phẩm</th>
+                                <th>Tình Trạng</th>
+                                <th>Ngày Bắt Đầu</th>
+                                <th>Thời Gian Bảo Hành</th>
+                                <th>Ngày Kết Thúc</th>
+                                <th>Tài Khoản</th>
+                                <th style="width: 100px;" >Ngày Tạo</th>
+                                <th style="width: 100px;" >Ngày Sửa</th>
+                            </tr>
+                        </tfoot>
+
+                    </table>
+                    <phan-trang
+                        pages-index="expagesIndex"
+                        pages-number="expagesNumber"
+                        pages-total="expagesTotal"
+                        pages-params='{"TuKhoa":TuKhoa}'
+                        on-click="TimKiemTemSanPham(Params, pagesIndex, pagesNumber)"
+                        ></phan-trang>
+                        <?php
+//                        $linkPagination = "/sanpham/temsanpham/index/[i]/{$pageNumber}";
+//                        echo Common\Common::PhanTrang(ceil($tong / $pageNumber), $pagesIndex, $linkPagination);
+                        ?>
+
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <form action="" enctype="multipart/form-data" method="POST" >
+        <div class="modal fade" id="ThemTemSanPham">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h4 class="modal-title">Thêm Tem Mới</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="">Số Lượng</label>
+                            <input type="text" class="form-control" name="SoLuong" value="100" >
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-primary" name="ThemTem" >Thêm</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+    <form action="" enctype="multipart/form-data" method="POST" >
+        <div class="modal fade" id="XuatTemSanPham">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h4 class="modal-title">Xuất Excell</h4>
+                    </div>
+                    <div class="modal-body">
+                        {{expagesIndex}}/{{expagesTotal}}
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-primary" ng-click="XuatExcell()" type="button" >Gửi</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>

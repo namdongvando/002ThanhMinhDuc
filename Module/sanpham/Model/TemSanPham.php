@@ -89,7 +89,13 @@ class TemSanPham extends TemSanPhamData {
     }
 
     function SanPham() {
-        return SanPham::GetItemById($this->MaSanPham);
+        $sp = SanPham::GetItemById($this->MaSanPham);
+        $sanPham = new SanPham();
+        if ($sp->Id == null) {
+            $sanPham->TaoSanPham($this->Code, $this->MaSanPham);
+            return SanPham::GetItemById($this->MaSanPham);
+        }
+        return $sp;
     }
 
     public function Status() {

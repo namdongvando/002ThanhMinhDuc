@@ -63,6 +63,7 @@ class users extends \ApplicationM implements \Controller\IController {
         $admin = new \Module\user\Model\Admin();
         if (\Module\user\Model\AdminForm::onSubmit()) {
             $userPost = $_POST["users"];
+            $taikhoanPost = $_POST["taikhoan"];
             $User = $admin->GetById($userPost["Id"]);
             if ($User) {
                 $User["Name"] = $userPost["Name"];
@@ -70,8 +71,23 @@ class users extends \ApplicationM implements \Controller\IController {
                 $User["Email"] = $userPost["Email"];
                 $User["Address"] = $userPost["Address"];
                 $User["Active"] = $userPost["Active"];
+                $User["Note"] = $userPost["Note"];
                 $User["Groups"] = $userPost["Groups"];
                 $admin->UpdateSubmit($User);
+                $TaiKhoan = new \Module\user\Model\TaiKhoan();
+                $TaiKhoanModel = $TaiKhoan->GetByIdUser($User["Id"], \Module\user\Model\TaiKhoan::CodeKhachHang);
+//                var_dump($TaiKhoanModel);
+                if ($TaiKhoanModel) {
+                    $TaiKhoanModel["idKhachHang"] = $taikhoanPost["KhachHang"];
+//                    var_dump($TaiKhoanModel);
+                    $TaiKhoan->Put($TaiKhoanModel);
+                }
+                $TaiKhoanModel = $TaiKhoan->GetByIdUser($User["Id"], \Module\user\Model\TaiKhoan::CodeTrungTamBaoHanh);
+                if ($TaiKhoanModel) {
+                    $TaiKhoanModel["idKhachHang"] = $taikhoanPost["TrungTamBaoHang"];
+                    var_dump($TaiKhoanModel);
+                    $TaiKhoan->Put($TaiKhoanModel);
+                }
                 \Application\redirectTo::Url($_SERVER["HTTP_REFERER"]);
                 exit();
             }

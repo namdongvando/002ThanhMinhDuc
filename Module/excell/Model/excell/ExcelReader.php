@@ -2,6 +2,7 @@
 
 namespace Module\excell\Model\excell;
 
+use PhpOffice\PhpSpreadsheet\Worksheet\Drawing;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 
@@ -12,22 +13,110 @@ class ExcelReader {
     }
 
     function CreateFile($full_path = 'public/excell/data.xlsx', $data) {
+        ini_set("memory_limit", "512M");
+        ini_set("max_execution_time", 5000);
         $spreadsheet = new Spreadsheet();
         $sheet = $spreadsheet->getActiveSheet();
         foreach ($data as $index => $value) {
             $rows = $index + 1;
             $k = 0;
-            foreach ($value as $colName => $value) {
-                echo $col = self::getNameFromNumber($k);
-                $k++;
+            foreach ($value as $colName => $val) {
+                $col = self::getNameFromNumber($k);
                 $cell = "{$col}{$rows}";
-                $sheet->setCellValue("{$col}{$rows}", $value);
+                if ($colName == "img") {
+                    $drawing = new \PhpOffice\PhpSpreadsheet\Worksheet\Drawing();
+                    $drawing->setName('Paid');
+                    $drawing->setDescription('Paid');
+                    $drawing->setPath($val);
+                    $drawing->setCoordinates($cell);
+                    $drawing->setOffsetX(10);
+                    $drawing->setOffsetY(10);
+                    $drawing->setWorksheet($spreadsheet->getActiveSheet());
+                    $spreadsheet->getActiveSheet()->getColumnDimension($col)->setWidth(70);
+                } else {
+                    $sheet->setCellValue($cell, $val);
+                    $spreadsheet->getActiveSheet()->getColumnDimension($col)->setWidth(20);
+                }
+                $spreadsheet->getActiveSheet()->getStyle($col)->getAlignment()->setVertical(\PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_DISTRIBUTED);
+                $spreadsheet->getActiveSheet()->getStyle($col)->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_DISTRIBUTED);
+                $spreadsheet->getActiveSheet()->getStyle($rows)->getAlignment()->setVertical(\PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_DISTRIBUTED);
+                $spreadsheet->getActiveSheet()->getStyle($rows)->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_DISTRIBUTED);
+                $spreadsheet->getActiveSheet()->getRowDimension($rows)->setRowHeight(340);
+                $k++;
             }
+            unset($data[$index]);
+            ob_clean();
         }
+
         $writer = new Xlsx($spreadsheet);
         $writer->save($full_path);
         $full_path = "/{$full_path}?v=" . time();
-        header("Location: $full_path");
+//        header("Location: $full_path");
+    }
+
+    function CreateFileDowload($full_path = 'public/excell/data.xlsx', $data) {
+        ini_set("memory_limit", "512M");
+        ini_set("max_execution_time", 5000);
+        $spreadsheet = new Spreadsheet();
+        $sheet = $spreadsheet->getActiveSheet();
+        foreach ($data as $index => $value) {
+            $rows = $index + 1;
+            $k = 0;
+            foreach ($value as $colName => $val) {
+                $col = self::getNameFromNumber($k);
+                $cell = "{$col}{$rows}";
+                if ($colName == "img") {
+                    $drawing = new \PhpOffice\PhpSpreadsheet\Worksheet\Drawing();
+                    $drawing->setName('Paid');
+                    $drawing->setDescription('Paid');
+                    $drawing->setPath($val);
+                    $drawing->setCoordinates($cell);
+                    $drawing->setOffsetX(10);
+                    $drawing->setOffsetY(10);
+                    $drawing->setWorksheet($spreadsheet->getActiveSheet());
+                    $spreadsheet->getActiveSheet()->getColumnDimension($col)->setWidth(70);
+                } else {
+                    $sheet->setCellValue($cell, $val);
+                    $spreadsheet->getActiveSheet()->getColumnDimension($col)->setWidth(20);
+                }
+                $spreadsheet->getActiveSheet()->getStyle($col)->getAlignment()->setVertical(\PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_DISTRIBUTED);
+                $spreadsheet->getActiveSheet()->getStyle($col)->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_DISTRIBUTED);
+                $spreadsheet->getActiveSheet()->getStyle($rows)->getAlignment()->setVertical(\PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_DISTRIBUTED);
+                $spreadsheet->getActiveSheet()->getStyle($rows)->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_DISTRIBUTED);
+                $spreadsheet->getActiveSheet()->getRowDimension($rows)->setRowHeight(340);
+                $k++;
+            }
+            unset($data[$index]);
+            ob_flush();
+            flush();
+        }
+
+        $writer = new Xlsx($spreadsheet);
+
+        header('Content-Description: File Transfer');
+        header('Expires: 0');
+        header('Cache-Control: must-revalidate');
+        header('Pragma: public');
+        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        header('Content-Disposition: attachment;filename=test.xlsx');
+        header('Cache-Control: max-age=0');
+        $writer->save('php://output');
+        $fp = fopen('php://output', 'a'); // open the output stream
+        fputcsv($fp, $columns); // xlsx format the data format and written to the output stream
+        $dataNum = count($arrData);
+        $perSize = 1000; // number of each exported
+        $pages = ceil($dataNum / $perSize);
+
+        for ($i = 1; $i <= $pages; $i++) {
+            foreach ($arrData as $item) {
+                fputcsv($fp, $item);
+            }
+            // Flush the output buffer to the browser
+            ob_flush();
+            flush(); // must use ob_flush () and flush () to flush the output buffer.
+        }
+        fclose($fp);
+        exit();
     }
 
     function import($File) {

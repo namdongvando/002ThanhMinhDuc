@@ -74,11 +74,35 @@ class AdminForm {
     public static function Groups($value = "") {
         $properties = self::$options;
         $properties["value"] = [$value];
+        $properties["style"] = "width:100%;";
+        $properties["id"] = "Nhom";
         $properties["required"] = true;
         $UserGroups = new userGroups();
         $options = $UserGroups->GetAll2Option();
 //        $options = array_merge($all, $options);
         return new Element\Select("Nhóm", "users[Groups]", $options, $properties);
+    }
+
+    public static function TrungTamBaoHanh($value = "") {
+        $properties = self::$options;
+        $properties["value"] = [$value];
+        $properties["style"] = "width:100%;";
+        $properties["required"] = true;
+        $TTBH = new \Module\trungtambaohanh\Model\TrungTamBaoHanh();
+        $options = $TTBH->getColumnsOption(["Id", "Name"]);
+        $options = array_merge(["Chọn Trung Tâm Bảo Hành"], $options);
+        return new Element\Select("Trung Tâm Bảo Hành", "taikhoan[TrungTamBaoHang]", $options, $properties);
+    }
+
+    public static function KhachHang($value = "") {
+        $properties = self::$options;
+        $properties["value"] = [$value];
+        $properties["style"] = "width:100%;";
+        $properties["required"] = true;
+        $KhachHang = new \Module\khachhang\Model\KhachHang();
+        $options = $KhachHang->GetALL2Options();
+        $options = array_merge(["Chọn Đại Lý/ Nhà Phân Phối"], $options);
+        return new Element\Select("Đại Lý/ Nhà Phân Phối", "taikhoan[KhachHang]", $options, $properties);
     }
 
     public static function Name($value = "") {
@@ -92,6 +116,7 @@ class AdminForm {
         $properties = self::$options;
         $properties["value"] = [$value];
         $properties["required"] = true;
+        $properties["style"] = "width:100%;";
         $ModelAdmin = new AdminStatus();
         $options = $ModelAdmin->Get2Option();
         return new Element\Select("Tình Trạng", "users[Active]", $options, $properties);

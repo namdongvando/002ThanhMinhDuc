@@ -97,11 +97,12 @@ function formyeucauController(appService, $scope, $rootScope, $http, $routeParam
             if (data.Status == null) {
                 throw "Bạn Chưa Chọn Tình Trạng";
             }
-            $param = data;
+            var $param = data;
             $scope.LuuThongTinKhachHang(data.ThongTinKhachHang, false);
             // cập nhật thông tin tem sản pham
             appService._Post(ApiWf.YeuCauBaoHanh.Update, $param).then(function(res) {
-                alert("Đã cập nhật thông tin");
+                console.log(res);
+//                alert("Đã cập nhật thông tin");
             });
 
         } catch (e) {

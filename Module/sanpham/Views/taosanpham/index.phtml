@@ -28,76 +28,66 @@ $SanPhams = Module\sanpham\Model\SanPham::SanPhamsPT("", 1, 200, $tong);
         </div>
     </div>
 </form>
+<ol class="breadcrumb" >
+    <li><a href="" class="" >Danh </a></li>
+</ol>
 
-
-<div class="row " >
-    <section class="col-md-12 pb-10 mt-20" >
-        <div class="box box-primary" >
-            <div class="box-header " >
-                <div class="btn-group pull-right" >
-                    <a class="btn btn-primary" data-toggle="modal" href='#ThemSanPham'>
-                        <i class="fa fa-plus" ></i>
-                        Thêm Sản Phẩm
-                    </a>
-                </div>
-                <h3  class="box-title" >
-                    Danh Sách Sản Phẩm
-                </h3>
+<div class="container-fluid " >
+    <div class="box box-primary" >
+        <div class="box-header " >
+            <div class="box-tools" >
+                <a class="btn btn-primary" data-toggle="modal" href='#ThemSanPham'>
+                    <i class="fa fa-plus" ></i>
+                    Thêm Sản Phẩm
+                </a>
             </div>
-            <div class="box-body table-responsive" >
-
-
-                <table class="table table-bordered dataTable " id="data"   >
-                    <thead>
-                        <tr>
-                            <th></th>
-                            <th>#</th>
-                            <th>Code</th>
-                            <th>Name</th>
-                            <th>Tem Bảo Hành</th>
-                            <th>Danh Mục</th>
-                            <th>Tình Trạng</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php
-                        foreach ($SanPhams as $k => $sp) {
-                            $_sp = new Module\sanpham\Model\SanPham($sp);
-                            ?>
-                            <tr>
-                                <td style="width: 100px;" >
-                                    <a href="/sanpham/taosanpham/edit/<?php echo $_sp->Id ?>/" class="" >Xem</a>|
-                                    <a href="/sanpham/taosanpham/edit/<?php echo $_sp->Id ?>/" class="" >Sửa</a>|
-                                    <a href="/sanpham/index/delete/" data-confirm="Xóa Danh Mục Sản Phẩm" class="xoa" >Xóa</a>
-
-                                </td>
-                                <td style="width: 50px;" ><?php echo $k + 1; ?></td>
-                                <td style="width: 150px;" ><?php echo $_sp->Code ?></td>
-                                <td><?php echo $_sp->Name ?></td>
-                                <td style="width: 150px;" >
-                                    <a href="/sanpham/temsanpham/detailbysanpham/<?php echo $_sp->Id ?>" >Tem Bảo Hành</a>
-                                </td>
-                                <td style="width: 200px;" ><?php echo $_sp->DanhMuc()->Name; ?></td>
-                                <td style="width: 200px;" ><?php echo $_sp->TinhTrang(); ?></td>
-                            </tr>
-                            <?php
-                        }
-                        ?>
-                    </tbody>
-                    <tfoot>
-                        <tr>
-                            <th></th>
-                            <th>#</th>
-                            <th>Code</th>
-                            <th>Name</th>
-                            <th>Tem Bảo Hành</th>
-                            <th>Danh Mục</th>
-                            <th>Tình Trạng</th>
-                        </tr>
-                    </tfoot>
-
-                </table>
-            </div>
+            <h3  class="box-title" >
+                Danh Sách Sản Phẩm
+            </h3>
         </div>
-    </section>
+        <div class="box-body table-responsive" >
+
+
+            <table class="table table-bordered dataTable " id="data"   >
+                <thead>
+                    <tr class="bg-blue">
+                        <th></th>
+                        <th>#</th>
+                        <th>Code</th>
+                        <th>Name</th>
+                        <th>Tem Bảo Hành</th>
+                        <th>Danh Mục</th>
+                        <th>Tình Trạng</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php
+                    foreach ($SanPhams as $k => $sp) {
+                        $_sp = new Module\sanpham\Model\SanPham($sp);
+                        ?>
+                        <tr>
+                            <td style="width: 100px;" >
+                                <a href="/sanpham/taosanpham/edit/<?php echo $_sp->Id ?>/" class="btn btn-sm btn-primary" >Sửa</a>
+                                <a href="/sanpham/taosanpham/edit/<?php echo $_sp->Id ?>/" class="btn btn-sm btn-default" >Xem</a>
+                                <a href="/sanpham/index/delete/" data-confirm="Xóa Danh Mục Sản Phẩm" class="xoa hidden" >Xóa</a>
+
+                            </td>
+                            <td style="width: 50px;" ><?php echo $k + 1; ?></td>
+                            <td style="width: 150px;" ><?php echo $_sp->Code ?></td>
+                            <td><?php echo $_sp->Name ?></td>
+                            <td style="width: 150px;" >
+                                <a href="/sanpham/temsanpham/detailbysanpham/<?php echo $_sp->Id ?>" >Tem Bảo Hành</a>
+                            </td>
+                            <td style="width: 200px;" ><?php echo $_sp->DanhMuc()->Name; ?></td>
+                            <td style="width: 200px;" ><?php echo $_sp->TinhTrang(); ?></td>
+                        </tr>
+                        <?php
+                    }
+                    ?>
+                </tbody>
+
+            </table>
+        </div>
+    </div>
+
 </div>

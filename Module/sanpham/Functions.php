@@ -1,8 +1,10 @@
 <?php
 
-namespace Module\khachhang;
+namespace Module\sanpham;
 
 class Functions {
+
+    const UrlModule = "/Module/sanpham/";
 
     public function __construct() {
 

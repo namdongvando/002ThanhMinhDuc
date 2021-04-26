@@ -71,7 +71,17 @@ class SanPhamForm extends \PFBC\Form implements ISanPhamForm {
     }
 
     public static function btnSave() {
-        return new \PFBC\Element\Button("Lưu", "Submit", ["name" => "IsSubmit", "class" => "btn btn-primary"]);
+        return new \PFBC\Element\Button("OK", "Submit", ["name" => "IsSubmit", "class" => "btn btn-primary"]);
+    }
+
+    public static function MaDaiLy($value = null) {
+        $Option = self::$Option;
+        $Option["value"] = $value;
+//        $ops = SanPham::ListTinhTrangToOptions();
+        $ops = \Module\khachhang\Model\KhachHang::GetALL2Options();
+        $TaiCty = ["Đang Ở Công Ty"];
+        $ops = array_merge($TaiCty, $ops);
+        return new \PFBC\Element\Select("Đại Lý", "sanpham[MaDaiLy]", $ops, $Option);
     }
 
 }

@@ -32,6 +32,8 @@ class KhachHangTieuDungData extends \datatable\ZendData implements \Model\IModel
     }
 
     public function InsertSubmit($model) {
+        if (isset($model["Id"]))
+            unset($model["Id"]);
         return $this->InsertRowsTable($model);
     }
 

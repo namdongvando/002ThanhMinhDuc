@@ -76,11 +76,7 @@
             <div class="form-group col-md-3">
                 <label for="">Họ & Tên</label>
                 <input type="text" ng-model="formdataDefaut.ThongTinKhachHang.Name" class="form-control" >
-            </div>
-            <div class="form-group col-md-3">
-                <label for="">CMND/Hộ Chiếu</label>
-                <input type="text" ng-model="formdataDefaut.ThongTinKhachHang.CMNN" class="form-control" >
-            </div>
+            </div> 
             <div class="form-group col-md-3">
                 <label for="">Số Điện Thoại</label>
                 <input type="text" ng-model="formdataDefaut.ThongTinKhachHang.Phone" class="form-control" >
@@ -106,24 +102,6 @@
             <select  ng-model="formdataDefaut.IdTrungTamBaoHanh" class="form-control"  >
                 <option ng-repeat="item in _TrungTamBaoHanh" value="{{item.Id}}" >{{item.Name}}</option>
             </select>
-            <!--            <a class="btn btn-primary" data-toggle="modal" href='#modal-id'>Chọn tung</a>
-                        <div class="modal fade" id="modal-id">
-                            <div class="modal-dialog">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                                        <h4 class="modal-title">Modal title</h4>
-                                    </div>
-                                    <div class="modal-body">
-
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                                        <button type="button" class="btn btn-primary">Save changes</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>-->
         </div>
     </fieldset>
     <div class="form-group text-center">

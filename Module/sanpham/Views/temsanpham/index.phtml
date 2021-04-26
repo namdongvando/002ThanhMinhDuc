@@ -1,140 +1,146 @@
 <?php
 $pagesIndex = isset($_Param[0]) ? $_Param[0] : 1;
-$pageNumber = isset($_Param[1]) ? $_Param[1] : 20;
+$pageNumber = isset($_Param[1]) ? $_Param[1] : 10;
 $tong = 0;
 $name = "";
 $linkNumberIndex = '/sanpham/temsanpham/index/1/';
 $TemSanPhams = \Module\sanpham\Model\TemSanPham::GetRowsPT($name, $pagesIndex, $pageNumber, $tong);
 ?>
-<ol class="breadcrumb ">
-    <li>
-        <a href="/dashboad/">Dashboad</a>
-    </li>
-    <li>
-        <a href="#">Quản Lý Sản Phẩm</a>
-    </li>
-    <li class="active">Tem Sản Phẩm</li>
-</ol>
-<div class="row " >
-    <section class="col-md-12 pb-10" >
-        <div class="box " >
-            <div class="box-header " >
-                <h3 class="box-title" >
-                    Danh Sách Tem Sản Phẩm(<?php echo $tong; ?>)
-                </h3>
-                <div class="btn-group pull-right">
-                    <a class="btn btn-primary"  data-toggle="modal" href='/sanpham/temsanpham/export'>Export</a>
-                    <a class="btn btn-primary " data-toggle="modal" href='#ThemTemSanPham'>Thêm Tem Sản Phẩm</a>
-                </div>
-            </div>
-            <div class="box-body table-responsive" >
-                <select style="width: 100px;"  name="" onchange="window.location.href = '<?php echo $linkNumberIndex; ?>' + this.value" >
-                    <option <?php echo $pageNumber == 10 ? "selected" : ""; ?>  value="10" >10 Dòng</option>
-                    <option <?php echo $pageNumber == 20 ? "selected" : ""; ?> value="20" >20 Dòng</option>
-                    <option <?php echo $pageNumber == 50 ? "selected" : ""; ?> value="50" >50 Dòng</option>
-                    <option <?php echo $pageNumber == 100 ? "selected" : ""; ?> value="100">100 Dòng</option>
-                </select>
-                <table class="table table-bordered  " id="data"  >
-                    <thead>
-                        <tr>
-                            <th style="width: 120px;" ></th>
-                            <th>#</th>
-                            <th>Mã Tem</th>
-                            <th>Sản Phẩm</th>
-                            <th>Tình Trạng</th>
-                            <th>Ngày Bắt Đầu</th>
-                            <th>Thời Gian Bảo Hành</th>
-                            <th>Ngày Kết Thúc</th>
-                            <th>Tài Khoản</th>
-                            <th style="width: 100px;" >Ngày Tạo</th>
-                            <th style="width: 100px;" >Ngày Sửa</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php
-                        if ($TemSanPhams)
-                            foreach ($TemSanPhams as $k => $op) {
-                                $_op = new \Module\sanpham\Model\TemSanPham($op);
-                                ?>
-                                <tr>
-                                    <td>
-                                        <a href="/sanpham/temsanpham/detailbysanpham/<?php echo $_op->Code; ?>/"  >Sửa</a>
-        <!--                                    | <a href="/sanpham/temsanpham/delete/<?php echo md5($_op->Id); ?>/" data-confirm="Bạn muốn xóa tem này?" class="xoa" >Xóa</a>-->
-                                    </td>
-                                    <td><?php echo $k + 1; ?></td>
-                                    <td><?php echo $_op->Name ?></td>
-                                    <td><?php echo $_op->SanPham()->Name; ?></td>
-                                    <td><?php echo $_op->Status()->Name; ?></td>
-                                    <td><?php echo $_op->NgayBatDau() ?></td>
-                                    <td><?php echo $_op->ThangKetThuc() ?></td>
-                                    <td><?php echo $_op->NgayKetThuc() ?></td>
-                                    <td><?php echo $_op->UserId()->Name; ?></td>
-                                    <td><?php echo $_op->CreateDate() ?></td>
-                                    <td><?php echo $_op->ModifyDate() ?></td>
-                                </tr>
-                                <?php
-                            }
-                        ?>
-                    </tbody>
-                    <tfoot>
-                        <tr>
-                            <th style="width: 120px;" ></th>
-                            <th>#</th>
-                            <th>Mã Tem</th>
-                            <th>Sản Phẩm</th>
-                            <th>Tình Trạng</th>
-                            <th>Ngày Bắt Đầu</th>
-                            <th>Thời Gian Bảo Hành</th>
-                            <th>Ngày Kết Thúc</th>
-                            <th>Tài Khoản</th>
-                            <th style="width: 100px;" >Ngày Tạo</th>
-                            <th style="width: 100px;" >Ngày Sửa</th>
-                        </tr>
-                    </tfoot>
-
-                </table>
-                <?php
-                $linkPagination = "/sanpham/temsanpham/index/[i]/{$pageNumber}";
-                echo Common\Common::PhanTrang(ceil($tong / $pageNumber), $pagesIndex, $linkPagination);
-                ?>
-
-            </div>
-        </div>
-    </section>
-</div>
-<form action="" enctype="multipart/form-data" method="POST" >
-    <div class="modal fade" id="ThemTemSanPham">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                    <h4 class="modal-title">Thêm Tem Mới</h4>
-                </div>
-                <div class="modal-body">
-                    <div class="form-group">
-                        <label for="">Số Lượng</label>
-                        <input type="text" class="form-control" name="SoLuong" value="100" >
+<script src="<?php echo \Module\sanpham\Functions::UrlModule; ?>public/TemsanphamController.js?v=<?php echo time(); ?>" type="text/javascript"></script>
+<div class="" ng-controller="TemsanphamController" >
+    <ol class="breadcrumb ">
+        <li>
+            <a href="/dashboad/">Dashboad</a>
+        </li>
+        <li>
+            <a href="#">Quản Lý Sản Phẩm</a>
+        </li>
+        <li class="active">Tem Sản Phẩm</li>
+    </ol>
+    <div class="row " >
+        <section class="col-md-12 pb-10" >
+            <div class="box " >
+                <div class="box-header " >
+                    <h3 class="box-title" >
+                        Danh Sách Tem Sản Phẩm(<?php echo $tong; ?>)
+                    </h3>
+                    <div class="btn-group pull-right">
+                        <a class="btn btn-primary"  data-toggle="modal" href='#XuatTemSanPham'>Export</a>
+                        <a class="btn btn-primary " data-toggle="modal" href='#ThemTemSanPham'>Thêm Tem Sản Phẩm</a>
                     </div>
                 </div>
-                <div class="modal-footer">
-                    <button class="btn btn-primary" name="ThemTem" >Thêm</button>
+                <div class="box-body table-responsive" >
+                    <select style="width: 100px;"  name="" onchange="window.location.href = '<?php echo $linkNumberIndex; ?>' + this.value" >
+                        <option <?php echo $pageNumber == 10 ? "selected" : ""; ?>  value="10" >10 Dòng</option>
+                        <option <?php echo $pageNumber == 20 ? "selected" : ""; ?> value="20" >20 Dòng</option>
+                        <option <?php echo $pageNumber == 50 ? "selected" : ""; ?> value="50" >50 Dòng</option>
+                        <option <?php echo $pageNumber == 100 ? "selected" : ""; ?> value="100">100 Dòng</option>
+                    </select>
+                    <table class="table table-bordered  " id="data"  >
+                        <thead>
+                            <tr class="bg-primary" >
+                                <th style="width: 120px;" ></th>
+                                <th>#</th>
+                                <th>Mã Tem</th>
+                                <th>Sản Phẩm</th>
+                                <th>Tình Trạng</th>
+                                <th>Ngày Bắt Đầu</th>
+                                <th>Thời Gian Bảo Hành</th>
+                                <th>Ngày Kết Thúc</th>
+                                <th>Tài Khoản</th>
+                                <th style="width: 100px;" >Ngày Tạo</th>
+                                <th style="width: 100px;" >Ngày Sửa</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php
+                            if ($TemSanPhams)
+                                foreach ($TemSanPhams as $k => $op) {
+                                    $_op = new \Module\sanpham\Model\TemSanPham($op);
+                                    ?>
+                                    <tr  >
+                                        <td  >
+                                            <a href="/sanpham/temsanpham/detailbysanpham/<?php echo $_op->Code; ?>/"  >Sửa</a>
+            <!--                                    | <a href="/sanpham/temsanpham/delete/<?php echo md5($_op->Id); ?>/" data-confirm="Bạn muốn xóa tem này?" class="xoa" >Xóa</a>-->
+                                        </td>
+                                        <td><?php echo $k + 1; ?></td>
+                                        <td><?php echo $_op->Name ?></td>
+                                        <td><?php echo $_op->SanPham()->Name; ?></td>
+                                        <td><?php echo $_op->Status()->Name; ?></td>
+                                        <td><?php echo $_op->NgayBatDau() ?></td>
+                                        <td><?php echo $_op->ThangKetThuc() ?></td>
+                                        <td><?php echo $_op->NgayKetThuc() ?></td>
+                                        <td><?php echo $_op->UserId()->Name; ?></td>
+                                        <td><?php echo $_op->CreateDate() ?></td>
+                                        <td><?php echo $_op->ModifyDate() ?></td>
+                                    </tr>
+                                    <?php
+                                }
+                            ?>
+                        </tbody>
+                        <tfoot>
+                            <tr class="bg-primary">
+                                <th style="width: 120px;" ></th>
+                                <th>#</th>
+                                <th>Mã Tem</th>
+                                <th>Sản Phẩm</th>
+                                <th>Tình Trạng</th>
+                                <th>Ngày Bắt Đầu</th>
+                                <th>Thời Gian Bảo Hành</th>
+                                <th>Ngày Kết Thúc</th>
+                                <th>Tài Khoản</th>
+                                <th style="width: 100px;" >Ngày Tạo</th>
+                                <th style="width: 100px;" >Ngày Sửa</th>
+                            </tr>
+                        </tfoot>
+
+                    </table>
+                    <?php
+                    $linkPagination = "/sanpham/temsanpham/index/[i]/{$pageNumber}";
+                    echo Common\Common::PhanTrang(ceil($tong / $pageNumber), $pagesIndex, $linkPagination);
+                    ?>
+
+                </div>
+            </div>
+        </section>
+    </div>
+    <form action="" enctype="multipart/form-data" method="POST" >
+        <div class="modal fade" id="ThemTemSanPham">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h4 class="modal-title">Thêm Tem Mới</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="">Số Lượng</label>
+                            <input type="text" class="form-control" name="SoLuong" value="100" >
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-primary" name="ThemTem" >Thêm</button>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-</form>
-<form action="" enctype="multipart/form-data" method="POST" >
-    <div class="modal fade" id="XuatTemSanPham">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                    <h4 class="modal-title">Xuất Excell</h4>
-                </div>
-                <div class="modal-footer">
-                    <button class="btn btn-primary" name="XuatExcell" >Thêm</button>
+    </form>
+    <form action="" enctype="multipart/form-data" method="POST" >
+        <div class="modal fade" id="XuatTemSanPham">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h4 class="modal-title">Xuất Excell</h4>
+                    </div>
+                    <div class="modal-body">
+                        {{expagesIndex}}/{{expagesTotal}}
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-primary" ng-click="XuatExcell()" type="button" >Gửi</button>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-</form>
+    </form>
+</div>

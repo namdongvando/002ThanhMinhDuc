@@ -99,7 +99,7 @@ class Admin extends AdminTable {
 
     public function GetUserActive() {
         $active = AdminStatus::sActive;
-        $Where = "`Active` = '{$active}'";
+        $Where = "`Active` = '{$active}' and `Groups` > 0";
         return $this->ToArray($this->Select($Where));
     }
 
@@ -177,6 +177,28 @@ class Admin extends AdminTable {
             $where = " 1=1";
         }
         return $admin->getColumnsOption(["Id", "Name"], $where);
+    }
+
+    public function TrungTamBaoHanh() {
+        $taiKhoan = new TaiKhoan();
+        $danhSachTaiKhoan = $taiKhoan->GetByIdUser($this->Id, TaiKhoan::CodeTrungTamBaoHanh);
+        if ($danhSachTaiKhoan) {
+            return new TaiKhoan($danhSachTaiKhoan);
+        }
+        return new TaiKhoan();
+    }
+
+    public function KhachHang() {
+        $taiKhoan = new TaiKhoan();
+        $danhSachTaiKhoan = $taiKhoan->GetByIdUser($this->Id, TaiKhoan::CodeKhachHang);
+        if ($danhSachTaiKhoan) {
+            return new TaiKhoan($danhSachTaiKhoan);
+        }
+        return new TaiKhoan();
+    }
+
+    public static function CheckQuyen($nhom = []) {
+        $user = \Module\user\Model\Admin::getCurentUser();
     }
 
 }

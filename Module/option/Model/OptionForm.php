@@ -76,7 +76,7 @@ class OptionForm extends \PFBC\Form {
     }
 
     public static function btnSubmit() {
-        return new \PFBC\Element\Button("Lưu", "submit", ["class" => "btn-succes", "Name" => "OnSave"]);
+        return new \PFBC\Element\Button("OK", "submit", ["class" => "btn-succes", "Name" => "OnSave"]);
     }
 
     public static function btnXoa($options) {
@@ -97,6 +97,27 @@ Link;
         $Option = self::$Option;
         $Option["value"] = $value;
         return new \PFBC\Element\Textarea("Ghi Chú", "option[Note]", $Option);
+    }
+
+    public static function SelectGroupsID($title, $name, $groups, $value = null) {
+        $Option = self::$Option;
+        $Option["required"] = true;
+        $Option["value"] = $value;
+        $Option["style"] = "width:100%;";
+        $options = Option::GetAll2OptionsByGroupsID($groups);
+        return new \PFBC\Element\Select($title, $name, $options, $Option);
+    }
+
+    public static function SelectGroups($title, $name, $groups) {
+        $Option = self::$Option;
+        $Option["required"] = true;
+        $Option["style"] = "width:100%;";
+        $options = Option::GetAll2OptionsByGroups($groups);
+        return new \PFBC\Element\Select($title, $name, $options, $Option);
+    }
+
+    public static function Hidden($name, $value) {
+        return new \PFBC\Element\Hidden($name, $value);
     }
 
 }

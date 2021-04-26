@@ -9,7 +9,9 @@ class SanPham extends SanPhamData {
     const DangOChiNhanh = 2;
     const DangSuDung = 3;
 
-    public $Id, $Name, $Code, $ChungLoaiSP, $Mota, $Gia, $HinhAnh, $DanhMuc, $TinhTrang;
+    public $Id, $Name, $Code, $ChungLoaiSP, $Mota, $Gia, $HinhAnh, $DanhMuc, $TinhTrang, $MaDaiLy;
+    public $idKhachHang;
+    public $isLook;
 
     public function __construct($dv = null) {
         parent::__construct();
@@ -19,6 +21,7 @@ class SanPham extends SanPhamData {
             }
             $this->Id = !empty($dv["Id"]) ? $dv["Id"] : null;
             $this->Name = !empty($dv["Name"]) ? $dv["Name"] : null;
+            $this->idKhachHang = !empty($dv["idKhachHang"]) ? $dv["idKhachHang"] : null;
             $this->Code = !empty($dv["Code"]) ? $dv["Code"] : null;
             $this->ChungLoaiSP = !empty($dv["ChungLoaiSP"]) ? $dv["ChungLoaiSP"] : null;
             $this->Mota = !empty($dv["Mota"]) ? $dv["Mota"] : null;
@@ -26,6 +29,8 @@ class SanPham extends SanPhamData {
             $this->HinhAnh = !empty($dv["HinhAnh"]) ? $dv["HinhAnh"] : null;
             $this->DanhMuc = !empty($dv["DanhMuc"]) ? $dv["DanhMuc"] : null;
             $this->TinhTrang = !empty($dv["TinhTrang"]) ? $dv["TinhTrang"] : 0;
+            $this->MaDaiLy = !empty($dv["MaDaiLy"]) ? $dv["MaDaiLy"] : "";
+            $this->isLook = !empty($dv["isLook"]) ? $dv["isLook"] : "";
         }
     }
 
@@ -36,9 +41,9 @@ class SanPham extends SanPhamData {
     public static function ListTinhTrang() {
         return [
             self::DangOCty => "Đang Ở Công Ty",
-            self::DangODaiLy => "Đang Ở Đại Lý",
-            self::DangOChiNhanh => "Đang Chi Nhánh",
-            self::DangSuDung => "Đang Sử Dụng",
+            self::DangODaiLy => "Nhà Phân Phối",
+            self::DangOChiNhanh => "Đại Lý",
+            self::DangSuDung => "Người Tiêu Dùng",
         ];
     }
 
@@ -116,10 +121,13 @@ class SanPham extends SanPhamData {
         return $options;
     }
 
-    public function TaoSanPham($code) {
+    public function TaoSanPham($code, $id = null) {
         $a = self::GetByCode($code);
         if ($a)
             return;
+        if ($id) {
+            $sanPham["Id"] = $id;
+        }
         $sanPham["Code"] = $code;
         $sanPham["Name"] = "";
         $sanPham["MoTa"] = "";
@@ -137,6 +145,22 @@ class SanPham extends SanPhamData {
         $SanPham = new SanPham();
         $a = $SanPham->GetRowByWhere($where);
         return $a;
+    }
+
+    public function ToArray() {
+
+        $sanPham["Id"] = $this->Id;
+        $sanPham["Code"] = $this->Code;
+        $sanPham["Name"] = $this->Name;
+        $sanPham["MoTa"] = $this->Mota;
+        $sanPham["Gia"] = $this->Gia;
+        $sanPham["ChungLoaiSP"] = $this->ChungLoaiSP;
+        $sanPham["HinhAnh"] = $this->HinhAnh;
+        $sanPham["DanhMuc"] = $this->DanhMuc;
+        $sanPham["idKhachHang"] = $this->idKhachHang;
+        $sanPham["TinhTrang"] = $this->TinhTrang;
+        $sanPham["isLook"] = $this->isLook;
+        return $sanPham;
     }
 
 }

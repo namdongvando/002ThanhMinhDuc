@@ -67,6 +67,10 @@ class ZendData {
         return (array) $this->fechRow($this->TableContext->select("`Id` = '{$id}'"));
     }
 
+    function GetNumberRows($where) {
+        return $this->TableContext->select($where)->count();
+    }
+
     function GetRows($where = "") {
         if ($where)
             return (array) $this->fechArray($this->TableContext->select($where));
@@ -82,6 +86,7 @@ class ZendData {
             $res = $this->fechArray($this->TableContext->select($where));
             if ($res)
                 return count($res);
+            return 0;
         }
         $res = $this->fechArray($this->TableContext->select());
         if ($res)

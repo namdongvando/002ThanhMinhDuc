@@ -25,10 +25,15 @@ class index extends \ApplicationM implements \Controller\IController {
         if (isset($_POST["khachhang"])) {
             $kh = $_POST["khachhang"];
             $khachHang = new \Module\khachhang\Model\KhachHang();
-            $khachHang->InsertSubmit($kh);
+            $khachHangThanhToan = new \Module\khachhang\Model\KhachHangThanhToan();
+            $id = $khachHang->InsertSubmit($kh);
             $khtt_POST = $_POST["khachhangthanhtoan"];
-            $khtt_POST["MaKhachHang"] = $khachHang["Code"];
-            $khachHangThanhToan->InsertSubmit($khtt_POST);
+            $khtt_POST["MaKhachHang"] = $kh["Code"];
+            $a = $khachHangThanhToan->GetByMaKhachHang($khtt_POST["MaKhachHang"]);
+            if ($a == null) {
+                $khachHangThanhToan->InsertSubmit($khtt_POST);
+            }
+            \Common\Common::toUrl("/khachhang/index/edit/" . sha1($id));
         }
         return $this->ViewThemeModlue();
     }
@@ -55,13 +60,13 @@ class index extends \ApplicationM implements \Controller\IController {
                     $model["Parents"] = 0;
                     $model["KhuVuc"] = 0;
                     $model["DiaChi"] = $rowuser["DiaChi"];
-                    $model["PhuongXa"] = $rowuser["MaKH"];
+                    $model["PhuongXa"] = 0;
                     $model["QuanHuyen"] = 0;
                     $model["TinhThanh"] = 0;
                     $model["LaChuKinhDoanh"] = 0;
-                    $model["DienThoai"] = $rowuser["SDT"];
-                    $model["DiDong"] = $rowuser["SDT"];
-                    $model["Zalo"] = $rowuser["SDT"];
+                    $model["DienThoai"] = !empty($rowuser["SDT"]) ? $rowuser["SDT"] : "";
+                    $model["DiDong"] = !empty($rowuser["SDT"]) ? $rowuser["SDT"] : "";
+                    $model["Zalo"] = !empty($rowuser["SDT"]) ? $rowuser["SDT"] : "";
                     $model["MaSoThue"] = "";
                     $model["DiaChiGiaoHang"] = "";
                     $model["NhomHangKinhDoanh"] = "";
@@ -91,7 +96,7 @@ class index extends \ApplicationM implements \Controller\IController {
         $idKachHang = $this->getParam()[0];
         $khachHang = new \Module\khachhang\Model\KhachHang();
         $khachHang->DeleteSubmit($idKachHang, true);
-        \Common\Common::toUrl($_SERVER["HTTP_REFERER"]);
+        \Common\Common::toUrl("/khachhang/index/");
     }
 
     public function detail() {
@@ -104,7 +109,7 @@ class index extends \ApplicationM implements \Controller\IController {
             $khachHang = new \Module\khachhang\Model\KhachHang();
             $khachHangThanhToan = new \Module\khachhang\Model\KhachHangThanhToan();
             $KHBYId = \Module\khachhang\Model\KhachHang::GetKhachHangById($kh["Id"]);
-            $KHBYId["Code"] = $kh["Code"];
+
             $KHBYId["Name"] = $kh["Name"];
             $KHBYId["Parents"] = $kh["Parents"];
             $KHBYId["KhuVuc"] = $kh["KhuVuc"];

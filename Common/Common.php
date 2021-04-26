@@ -148,7 +148,7 @@ class Common {
 
     public static function PhanTrang($TongTrang = 3, $TrangHienTai, $DuongDan) {
         $PhanTrang = ' <ul class="pagination">';
-
+        $PhanTrang .= "<li><a>{$TrangHienTai}/{$TongTrang}</a></li>";
         $tu = $TrangHienTai - 4;
         $den = $TrangHienTai + 4;
         $tu = $tu <= 0 ? 1 : $tu;

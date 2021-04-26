@@ -97,6 +97,20 @@ class KhachHang extends KhachHangData {
         return new \Module\option\Model\TinhThanh($tinhThanh);
     }
 
+    public static function KhachHangsPT($name = "", $pagesIndex, $pageNumber, &$tong) {
+        $Kh = new KhachHang();
+        $pagesIndex = max($pagesIndex, 1);
+        $pagesIndex = ($pagesIndex - 1) * $pageNumber;
+        $where = " 1";
+        if ($name != "") {
+            $where = "`Name` like '%{$name}%'";
+        }
+        $tong = $Kh->GetRowsNumber($where);
+        $where .= " limit {$pagesIndex},{$pageNumber}";
+
+        return $Kh->GetRowsByWhere($where);
+    }
+
 }
 ?>
 

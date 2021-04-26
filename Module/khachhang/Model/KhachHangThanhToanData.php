@@ -43,6 +43,10 @@ class KhachHangThanhToanData extends \datatable\ZendData implements \Model\IMode
         return $this->DeleteRowById($id);
     }
 
+    public function DeleteByCode($code) {
+        return $this->DeleteRowByWhere("`MaKhachHang` = '{$code}'");
+    }
+
 }
 ?>
 

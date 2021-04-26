@@ -18,7 +18,7 @@ if (isset($_REQUEST['data'])) {
     $filename = $PNG_TEMP_DIR . 'test' . md5($_REQUEST['data'] . '|' . $errorCorrectionLevel . '|' . $matrixPointSize) . '.png';
     QRcode::png($_REQUEST['data'], $filename, $errorCorrectionLevel, $matrixPointSize, 1);
 }
-$type = 'image/png';
+$type = 'image/jpg';
 header('Content-Type:' . $type);
 header('Content-Length: ' . filesize($filename));
 readfile($filename);

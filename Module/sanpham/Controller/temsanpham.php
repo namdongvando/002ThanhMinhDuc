@@ -56,6 +56,22 @@ class temsanpham extends \ApplicationM implements \Controller\IController {
 
     public function detailbysanpham() {
 
+        if (isset($_POST["ChonDanhMucSanPham"])) {
+            $Chon = $_POST["Chon"];
+            $MaDanhMuc = $Chon["MaDanhMuc"];
+            $MaSanPham = $Chon["MaSanPham"];
+            $SanPham = new \Module\sanpham\Model\SanPham($MaSanPham);
+            $Option = new \Module\option\Model\Option();
+            $op = new \Module\option\Model\Option($MaDanhMuc);
+            $SanPham->Name = $op->Name;
+            $SanPham->Code = $op->Code;
+            $SanPham->DanhMuc = $op->Code;
+            $SanPham->ChungLoaiSP = $op->Parents()->Code;
+            $SanPham->Mota = $op->Note;
+            $model = $SanPham->ToArray();
+            $SanPham->UpdateSubmit($model);
+        }
+
         if (\Common\Form::RequestPost("IsSubmit", null)) {
             $temSP = \Common\Form::RequestPost("temsanpham", []);
             $khachHanhTieuDung = \Common\Form::RequestPost("khachhangtieudung", []);
@@ -70,13 +86,14 @@ class temsanpham extends \ApplicationM implements \Controller\IController {
             $a = $ngayBd + $soNgay;
             $temSP["NgayKetThuc"] = date("Y-m-d H:i:s", $a);
             $temSP["ModifyDate"] = date("Y-m-d H:i:s", time());
-            $ModelTemSP->UpdateRowTable($temSP);
             $MSP = $ModelSP->GetById($sanPhamPost["Id"]);
 //            var_dump($sanPhamPost);
             $MSP["Name"] = $sanPhamPost["Name"];
+            $MSP["MaDaiLy"] = $sanPhamPost["MaDaiLy"];
             $MSP["Mota"] = $sanPhamPost["Mota"];
             $MSP["ChungLoaiSP"] = $sanPhamPost["ChungLoaiSP"];
             $MSP["DanhMuc"] = $sanPhamPost["DanhMuc"];
+            $MSP["TinhTrang"] = $sanPhamPost["TinhTrang"];
             $MSP["Code"] = $sanPhamPost["Code"];
             if ($_FILES["HinhAnhSanPham"]["error"] == 0) {
                 $adapter = new \Core\Adapter();
@@ -90,7 +107,18 @@ class temsanpham extends \ApplicationM implements \Controller\IController {
             $ModelSP->UpdateSubmit($MSP);
 //            var_dump($MSP);
 //            die();
-            $ModelKhachHanhTieuDung->UpdateRowTable($khachHanhTieuDung);
+//            var_dump($khachHanhTieuDung);
+//            die();
+            // chưa có thì thêm kh tieu dùng
+            if ($khachHanhTieuDung["Id"] == "") {
+                $khachHanhTieuDung["Code"] = "kh" . $khachHanhTieuDung["Phone"] . time();
+                $idKHTieuDung = $ModelKhachHanhTieuDung->InsertSubmit($khachHanhTieuDung);
+                $temSP["KhachHangTieuDung"] = $khachHanhTieuDung["Code"];
+            } else {
+                $ModelKhachHanhTieuDung->UpdateRowTable($khachHanhTieuDung);
+            }
+
+            $ModelTemSP->UpdateRowTable($temSP);
         }
         if (\Common\Form::RequestPost("ThenTemPhu", null)) {
 
@@ -122,11 +150,68 @@ class temsanpham extends \ApplicationM implements \Controller\IController {
     }
 
     public function export() {
+        return;
         set_time_limit(0);
-        $Excell = new \Module\excell\Model\excell\ExcelReader();
-        $fileName = "public/temsanpham.xlsx";
         $MTemSanPham = new \Module\sanpham\Model\TemSanPham();
-        $data = $MTemSanPham->GetAll();
+        $tong = 0;
+        $data = $MTemSanPham->GetAllPT(1, 500, $tong);
+        $page = ceil($tong / 500);
+        for ($i = 1; $i <= $page; $i++) {
+            $data = $MTemSanPham->GetAllPT($i, 500, $tong);
+            $fileName = "public/temsanpham/temsanpham{$i}.xlsx";
+            $this->exporttoFire($fileName, $data);
+            flush();
+        }
+        $this->zipfile("public/temsanpham/");
+        flush();
+        exit();
+    }
+
+    function zipfile($folder) {
+        $rootPath = realpath($folder);
+        $zip = new \ZipArchive();
+        $fileName = 'public/file.zip';
+        $zip->open($fileName, \ZipArchive::CREATE | \ZipArchive::OVERWRITE);
+        $files = new \RecursiveIteratorIterator(
+                new \RecursiveDirectoryIterator($rootPath), \RecursiveIteratorIterator::LEAVES_ONLY
+        );
+        foreach ($files as $name => $file) {
+            if (!$file->isDir()) {
+                $filePath = $file->getRealPath();
+                $relativePath = substr($filePath, strlen($rootPath) + 1);
+                $zip->addFile($filePath, $relativePath);
+            }
+        }
+        $zip->close();
+        header("Location: /" . $fileName);
+        exit();
+    }
+
+    function exporttoFire($fileName, $data) {
+        foreach ($data as $k => $value) {
+            $link = Root_URL . "public/phpqrcode/index.php?data=" . Root_URL . "baohanh/" . $value["Code"];
+            $imagesQr = "public/QRCode/{$value["Code"]}.png";
+            if (!file_exists($imagesQr)) {
+                $io = new \lib\io();
+                $io->writeFile($imagesQr, file_get_contents($link));
+            }
+            $data[$k]["Stt"] = $k + 1;
+            $data[$k]["img"] = $imagesQr;
+            $data[$k]["Code"] = $value["Code"];
+            unset($data[$k]["KhachHangTieuDung"]);
+            unset($data[$k]["NgayBatDau"]);
+            unset($data[$k]["Id"]);
+            unset($data[$k]["NgayKetThuc"]);
+            unset($data[$k]["ThangKetThuc"]);
+            unset($data[$k]["Status"]);
+            unset($data[$k]["UserId"]);
+            unset($data[$k]["Parents"]);
+            unset($data[$k]["CreateDate"]);
+            unset($data[$k]["ModifyDate"]);
+            unset($data[$k]["IsPrint"]);
+            unset($data[$k]["MaSanPham"]);
+        }
+        $Excell = new \Module\excell\Model\excell\ExcelReader();
         $Excell->CreateFile($fileName, $data);
     }
 

@@ -45,12 +45,23 @@ class OptionData extends \datatable\ZendData implements \Model\IModel {
 
     function GetAll2Option($groups = null, $array = null) {
         if ($groups) {
-            $where = " `Groups` = '{$groups}' ";
+            $where = " `Groups` = '{$groups}'  ORDER BY `OrderBy` ASC";
         } else {
-            $where = " 1=1";
+            $where = " 1=1 ORDER BY `OrderBy` ASC";
         }
         if ($array == null)
             return $this->getColumnsOption(["Code", "Name"], $where);
+        return $this->getColumnsOption($array, $where);
+    }
+
+    function GetAll2OptionId($groups = null, $array = null) {
+        if ($groups) {
+            $where = " `Groups` = '{$groups}'  ORDER BY `OrderBy` ASC";
+        } else {
+            $where = " 1=1 ORDER BY `OrderBy` ASC";
+        }
+        if ($array == null)
+            return $this->getColumnsOption(["Id", "Name"], $where);
         return $this->getColumnsOption($array, $where);
     }
 
