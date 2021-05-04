@@ -15,12 +15,14 @@ class api extends \ApplicationM {
 
     function GetYeuCauBaoHanhByCode() {
         $code = $this->getParam()[0];
+
         $a = \Module\trungtambaohanh\Model\YeuCauBaoHanh::GetByCode($code);
+        $yeuCau = new \Module\trungtambaohanh\Model\YeuCauBaoHanh($a);
         $a["ThongTinKhachHang"] = \Module\khachhang\Model\KhachHangTieuDung::GetKhachHangByCode($a["KhachHangTieuDung"]);
-        $CodeSamPham = $a["MaTem"];
-        $a["ThongTinSanPham"] = \Module\sanpham\Model\SanPham::GetItemByCode($CodeSamPham);
-        $sanPham = new \Module\sanpham\Model\SanPham($a["ThongTinSanPham"]);
-        $a["TemSanPham"] = $sanPham->TemBaoHanh();
+//        var_dump($yeuCau->TemSanPham());
+        $a["ThongTinSanPham"] = $yeuCau->TemSanPham()->SanPham()->ToArray();
+//        $sanPham = new \Module\sanpham\Model\SanPham($a["ThongTinSanPham"]);
+        $a["TemSanPham"] = $yeuCau->TemSanPham();
         $api = new \lib\APIs();
         $api->ArrayToApi($a);
     }
@@ -38,7 +40,9 @@ class api extends \ApplicationM {
         $code = $request["Code"];
         $status["Status"] = $request["Status"];
         $status["IdTrungTamBaoHanh"] = $request["IdTrungTamBaoHanh"];
+        $status["idNhanVien"] = $request["idNhanVien"];
         $YeuCau = new \Module\trungtambaohanh\Model\YeuCauBaoHanh();
+
         $YeuCau->UpdateStatus($code, $status);
         echo json_encode($status);
     }
@@ -60,6 +64,18 @@ class api extends \ApplicationM {
         $khachHang["CMNN"] = $_POST["CMNN"];
         $khachHang["DiaChi"] = $_POST["DiaChi"];
         \Module\khachhang\Model\KhachHangTieuDung::Update($khachHang);
+    }
+
+    function NhanVienBaoHang() {
+        $admin = new \Module\user\Model\Admin();
+        $user = $admin->GetUserByGroups(\Module\user\Model\Admin::NVKT);
+        $api = new \lib\APIs();
+        foreach ($user as $k => $value) {
+            $a["Id"] = $value["Id"];
+            $a["Name"] = $value["Name"];
+            $user[$k] = $a;
+        }
+        echo $api->ArrayToStringJson($user);
     }
 
 }

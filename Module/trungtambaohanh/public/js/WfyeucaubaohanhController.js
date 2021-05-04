@@ -27,6 +27,9 @@ const  ApiWf = {
     TrungTamBaoHanh: {
         Get: "/trungtambaohanh/api/getTTBH",
     }
+    , NhanVienBaohanh: {
+        Get: "/trungtambaohanh/api/NhanVienBaoHang",
+    }
     , Options: {
         KhuVuc: "/option/api/optionsbyGroups/khuvuc"
     }
@@ -51,7 +54,6 @@ app.directive("formXulyYeucauBaohanh", function() {
         }
     };
 });
-
 //app.component("formYeuCauBaoHanh", {
 //    templateUrl: "/trungtambaohanh/yeucaubaohanh/formcomposers",
 //    bindings: {
@@ -70,11 +72,15 @@ function formyeucauController(appService, $scope, $rootScope, $http, $routeParam
         $scope._TrungTamBaoHanh = res.data;
         console.log(res.data);
     });
+    appService._Get(ApiWf.NhanVienBaohanh.Get).then(function(res) {
+        $scope._NhanVienBaoHanh = res.data;
+        console.log(res.data);
+        console.log("++++");
+    });
     appService._Get(ApiWf.Options.KhuVuc).then(function(res) {
         $scope._KhuVuc = res.data;
         console.log(res.data);
     });
-
     $scope.LuuThongTinKhachHang = function(modelkhachhang, isCofirm) {
         try {
             if (isCofirm == true)
@@ -104,12 +110,21 @@ function formyeucauController(appService, $scope, $rootScope, $http, $routeParam
                 console.log(res);
 //                alert("Đã cập nhật thông tin");
             });
-
         } catch (e) {
             alert(e)
         }
 
     }
+    $("#imgInp").change(function() {
+        input = this;
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+            reader.onload = function(e) {
+                $('#imgpreview').attr('src', e.target.result);
+            }
+            reader.readAsDataURL(input.files[0]); // convert to base64 string
+        }
+    });
 }
 
 function yeucaubaohanhController(appService, $scope, $rootScope, $http, $routeParams) {
@@ -122,17 +137,19 @@ function yeucaubaohanhController(appService, $scope, $rootScope, $http, $routePa
     };
     appService._Get(ApiWf.YeuCauBaoHanh.GetByCode($routeParams.id)).then(function(res) {
         console.log(res.data);
+        console.log("====");
         $scope._Yeucaubaohanh = res.data;
         $scope._Yeucaubaohanh.CreateDate = new Date(Date.parse($scope._Yeucaubaohanh.CreateDate));
+//        $scope._Yeucaubaohanh.idNhanVien = parseInt($scope._Yeucaubaohanh.idNhanVien);
+        console.log($scope._Yeucaubaohanh.idNhanVien);
         $scope._Yeucaubaohanh.NgayBaoHanh = new Date(Date.parse($scope._Yeucaubaohanh.NgayBaoHanh));
-        $scope._Yeucaubaohanh.TemSanPham.NgayBatDau
-                = new Date(Date.parse($scope._Yeucaubaohanh.TemSanPham.NgayBatDau));
         $scope._Yeucaubaohanh.TemSanPham.NgayKetThuc
                 = new Date(Date.parse($scope._Yeucaubaohanh.TemSanPham.NgayKetThuc));
     });
     appService._Get(ApiWf.YeuCauBaoHanh.GetStatusYeuCauBaoHanh).then(function(res) {
         $scope._StatusYeucaubaohanh = res.data;
     });
-
-
 }
+
+
+

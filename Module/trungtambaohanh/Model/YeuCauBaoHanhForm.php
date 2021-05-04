@@ -95,11 +95,12 @@ class YeuCauBaoHanhForm implements IYeuCauBaoHanh {
     public static function NoiDung($value = null, $title = null) {
         if ($title == null)
             $title = "Sự Cố Mắc Phải";
-        $Option = self::$Option;
-        $Option["value"] = $value;
-        $Option["required"] = true;
+        $properties = self::$Option;
+        $properties["value"] = $value;
+        $properties["required"] = true;
         $nameForm = self::nameForm;
-        return new \PFBC\Element\Textbox($title, "{$nameForm}[" . __FUNCTION__ . "]", $Option);
+        $Options = \Module\option\Model\Option::GetAll2OptionsByGroups(\Module\option\Model\Option::SuCoMacPhai);
+        return new \PFBC\Element\Select("Sự Cố Mắc Phải", "{$nameForm}[" . __FUNCTION__ . "]", $Options, $properties);
     }
 
     public static function SDT($value = null, $title = null) {

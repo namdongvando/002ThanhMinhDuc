@@ -15,6 +15,10 @@ class Controller_index extends Application {
         return $this->ViewTheme([], null, "tmd");
     }
 
+    function cam() {
+
+    }
+
     function index1() {
         // danh sách table
         $a = Common\CoreCodePhp\ModelDataSytem\ModelTable::getTableName();
@@ -68,8 +72,9 @@ class Controller_index extends Application {
             $ModelYeuCau = $_POST[Module\trungtambaohanh\Model\YeuCauBaoHanhForm::nameForm];
             $MYeuCau = new Module\trungtambaohanh\Model\YeuCauBaoHanh();
             $ModelYeuCau["Code"] = md5(time() . rand(0, time()));
+            $ModelYeuCau["KhachHangTieuDung"] = $ModelYeuCau["KhachHangTieuDung"];
             $ModelYeuCau["Status"] = Module\trungtambaohanh\Model\YeuCauBaoHanh::MoiTao;
-            $ModelYeuCau["Name"] = "Yêu cầu bảo hành {$ModelYeuCau["MaTem"]}";
+            $ModelYeuCau["Name"] = \Module\option\Model\SuCoMacPhai::SuCoMacPhaiByCode($ModelYeuCau["NoiDung"])["Name"];
             $MYeuCau->InsertSubmit($ModelYeuCau);
         }
 

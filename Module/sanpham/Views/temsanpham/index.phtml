@@ -40,14 +40,13 @@ $TemSanPhams = \Module\sanpham\Model\TemSanPham::GetRowsPT($name, $pagesIndex, $
                         <thead>
                             <tr class="bg-primary" >
                                 <th style="width: 120px;" ></th>
-                                <th>#</th>
-                                <th>Mã Tem</th>
+                                <th style="width: 50px;" >STT</th>
+                                <th style="width: 150px;" >Mã Tem</th>
                                 <th>Sản Phẩm</th>
-                                <th>Tình Trạng</th>
-                                <th>Ngày Bắt Đầu</th>
-                                <th>Thời Gian Bảo Hành</th>
-                                <th>Ngày Kết Thúc</th>
-                                <th>Tài Khoản</th>
+                                <th  style="width: 150px;">Tình Trạng</th>
+                                <th  style="width: 130px;" >Ngày Bắt Đầu</th>
+                                <th style="width: 180px;" >Thời Gian Bảo Hành</th>
+                                <th style="width: 150px;" >Ngày Kết Thúc</th>
                                 <th style="width: 100px;" >Ngày Tạo</th>
                                 <th style="width: 100px;" >Ngày Sửa</th>
                             </tr>
@@ -60,7 +59,7 @@ $TemSanPhams = \Module\sanpham\Model\TemSanPham::GetRowsPT($name, $pagesIndex, $
                                     ?>
                                     <tr  >
                                         <td  >
-                                            <a href="/sanpham/temsanpham/detailbysanpham/<?php echo $_op->Code; ?>/"  >Sửa</a>
+                                            <a class="btn btn-sm btn-success" href="/sanpham/temsanpham/detailbysanpham/<?php echo $_op->Code; ?>/"  >Sửa</a>
             <!--                                    | <a href="/sanpham/temsanpham/delete/<?php echo md5($_op->Id); ?>/" data-confirm="Bạn muốn xóa tem này?" class="xoa" >Xóa</a>-->
                                         </td>
                                         <td><?php echo $k + 1; ?></td>
@@ -70,7 +69,6 @@ $TemSanPhams = \Module\sanpham\Model\TemSanPham::GetRowsPT($name, $pagesIndex, $
                                         <td><?php echo $_op->NgayBatDau() ?></td>
                                         <td><?php echo $_op->ThangKetThuc() ?></td>
                                         <td><?php echo $_op->NgayKetThuc() ?></td>
-                                        <td><?php echo $_op->UserId()->Name; ?></td>
                                         <td><?php echo $_op->CreateDate() ?></td>
                                         <td><?php echo $_op->ModifyDate() ?></td>
                                     </tr>
@@ -78,21 +76,6 @@ $TemSanPhams = \Module\sanpham\Model\TemSanPham::GetRowsPT($name, $pagesIndex, $
                                 }
                             ?>
                         </tbody>
-                        <tfoot>
-                            <tr class="bg-primary">
-                                <th style="width: 120px;" ></th>
-                                <th>#</th>
-                                <th>Mã Tem</th>
-                                <th>Sản Phẩm</th>
-                                <th>Tình Trạng</th>
-                                <th>Ngày Bắt Đầu</th>
-                                <th>Thời Gian Bảo Hành</th>
-                                <th>Ngày Kết Thúc</th>
-                                <th>Tài Khoản</th>
-                                <th style="width: 100px;" >Ngày Tạo</th>
-                                <th style="width: 100px;" >Ngày Sửa</th>
-                            </tr>
-                        </tfoot>
 
                     </table>
                     <?php

@@ -1,6 +1,11 @@
-<div>
-    <a href="/sanpham/taosanpham/" class="btn btn-primary" >Danh Sách Sảm Phẩm</a>
-</div>
+<?php
+
+use Module\user\Model\Admin;
+?>
+<ol class="breadcrumb" >
+    <li><a href="/sanpham/taosanpham/" >Danh Sách Sảm Phẩm</a></li>
+    <li>Chi tiết</li>
+</ol>
 <div class="container" >
     <div class="row " >
         <section class="col-md-12 pb-10" >
@@ -25,7 +30,6 @@
                                 </div>
                             </div>
                             <?php
-                            Module\sanpham\Model\SanPhamForm::Gia($SanPham->Gia)->renderHTML();
                             Module\sanpham\Model\SanPhamForm::Mota($SanPham->Mota)->renderHTML();
                             Module\sanpham\Model\SanPhamForm::HinhAnh($SanPham->HinhAnh)->renderHTML();
                             ?>
@@ -45,12 +49,56 @@
                                     Module\sanpham\Model\SanPhamForm::ChungLoaiSP($SanPham->ChungLoaiSP)->renderHTML();
                                     ?>
                                 </div>
+                                <?php
+                                if (Module\user\Model\Admin::CheckQuyen([Admin::Admin, Admin::SuperAdmin])) {
+                                    ?>
+                                    <div class="col-md-12" >
+                                        <?php
+                                        Module\sanpham\Model\SanPhamForm::MaDaiLy($SanPham->MaDaiLy)->renderHTML();
+                                        ?>
+                                    </div>
+                                    <?php
+                                }
+                                ?>
                             </div>
+                            <p>
+                                <?php
+                                $DaiLy = new Module\khachhang\Model\KhachHang($SanPham->MaDaiLy);
+                                echo $DaiLy->Name;
+                                echo "|";
+
+                                echo $DaiLy->Parents()->Name;
+                                ?>
+                            </p>
                         </div>
                         <div class="box-footer" >
                             <?php
                             Module\sanpham\Model\SanPhamForm::btnSave()->render();
                             ?>
+                        </div>
+                        <div class="">
+                            <table class="table table-bordered" >
+                                <tr class="bg-blue" >
+                                    <td>Ngày</td>
+                                    <td>Tình Trạng Sản Phẩm</td>
+                                    <td>Đại Lý/Nhà Cung Cấp</td>
+                                </tr>
+                                <?php
+                                $_SanPhamLog = $SanPham->SanPhamLog();
+                                foreach ($_SanPhamLog as $sanPham) {
+                                    $_sp = new \Module\sanpham\Model\SanPhamLog($sanPham);
+                                    ?>
+                                    <tr>
+                                        <td><?php echo $_sp->NgayTao ?></td>
+                                        <td><?php echo $_sp->SanPham()->TinhTrang(); ?></td>
+                                        <td><?php echo $_sp->SanPham()->DaiLy()->Name; ?></td>
+
+                                    </tr>
+                                    <?php
+                                }
+                                ?>
+
+                            </table>
                         </div>
                     </div>
                 </div>

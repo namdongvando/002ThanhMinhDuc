@@ -222,6 +222,124 @@ class backend {
         <?php
     }
 
+    function MenuDaiLy() {
+        ?>
+        <header class="main-header">
+            <nav class="navbar navbar-static-top">
+                <div class="container-fluid">
+                    <div class="navbar-header">
+                        <a href="/dashboard/" class="navbar-brand">TMD</a>
+                        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse">
+                            <i class="fa fa-bars"></i>
+                        </button>
+                    </div>
+                    <!-- Collect the nav links, forms, and other content for toggling -->
+                    <div class="collapse navbar-collapse pull-left" id="navbar-collapse">
+                        <ul class="nav navbar-nav">
+                            <li class="">
+                                <a href="/khachhang/khachhangtieudung/">
+                                    <span>Khách Hàng Tiêu Dùng</span>
+                                </a>
+                            </li>
+                            <li class="">
+                                <a href="/user/users/">
+                                    <span>Quản Lý Tài Khoản</span>
+                                </a>
+                            </li>
+                            <li class="dropdown">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Quản Lý Sản Phẩm <span class="caret"></span></a>
+                                <ul class="dropdown-menu" role="menu">
+                                    <li class="">
+                                        <a href="/sanpham/taosanpham/">
+                                            <span>Quản Lý Sản Phẩm</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div><!-- /.navbar-collapse -->
+                    <!-- Navbar Right Menu -->
+                    <div class="navbar-custom-menu">
+                        <ul class="nav navbar-nav">
+                            <li class="hidden">
+                                <a href="/option/index">
+                                    <span><i class="fa fa-gears" ></i></span>
+                                </a>
+                            </li>
+                            <li class="dropdown user user-menu">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                    <span class="hidden-xs">Tìm Kiếm</span>
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <li class="">
+                                        <form action="" method="POST" class="navbar-form navbar-left" role="search">
+                                            <div class="form-group">
+                                                <input type="text" class="form-control" id="navbar-search-input" placeholder="Search">
+                                                <button type="submit" class="btn btn-primary" >
+                                                    <i class="fa fa-search" ></i>
+                                                </button>
+                                            </div>
+                                        </form>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li class="dropdown user user-menu">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                    <img src="/public/user_no_photo.png" class="user-image" alt="User Image">
+                                    <span class="hidden-xs"><?php echo $_SESSION[QuanTri]["Name"] ?></span>
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <!-- User image -->
+                                    <li class="user-header">
+                                        <img src="/public/user_no_photo.png" class="img-circle" alt="User Image">
+                                        <p>
+                                            <?php echo $_SESSION[QuanTri]["Name"] ?>
+                                            <small><?php echo $_SESSION[QuanTri]["Username"] ?></small>
+                                        </p>
+                                    </li>
+                                    <!-- Menu Footer-->
+                                    <li class="user-footer">
+                                        <div class="pull-left">
+                                            <a href="<?php echo \Common\Link::profile() ?>" class="btn btn-default btn-flat">Tài khoản</a>
+                                        </div>
+                                        <div class="pull-right">
+                                            <a href="<?php echo \Common\Link::logout() ?>" class="btn btn-default btn-flat">Đăng Xuất</a>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </li>
+                            `
+                        </ul>
+                    </div><!-- /.navbar-custom-menu -->
+                </div><!-- /.container-fluid -->
+            </nav>
+        </header>
+        <aside class="hidden main-sidebar" >
+            <!-- sidebar: style can be found in sidebar.less -->
+            <section class="sidebar ">
+                <!-- Sidebar user panel -->
+                <div class="user-panel">
+                    <div class="pull-left image">
+                        <img src="/public/user_no_photo.png" class="img-circle" alt="User Image">
+                    </div>
+                    <div class="pull-left info">
+                        <p></p>
+                        <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
+                    </div>
+                </div>
+
+                <ul class="sidebar-menu ">
+                    <?php
+                    \Common\Link::LeftMenu();
+                    ?>
+                </ul>
+
+            </section>
+            <!-- /.sidebar -->
+        </aside>
+        <?php
+    }
+
     function Menuifame() {
         ?>
         <header class="main-header ">
@@ -362,6 +480,224 @@ class backend {
             </div>
             <strong>Copyright &copy; <?php echo date("Y", time()); ?> <a href="http://thanhminhduc.com.vn">thanhminhduc.com.vn</a>.</strong>
         </footer>
+        <?php
+    }
+
+    public function MenuTTBH() {
+        ?>
+        <header class="main-header">
+            <nav class="navbar navbar-static-top">
+                <div class="container-fluid">
+                    <div class="navbar-header">
+                        <a href="/dashboard/" class="navbar-brand">TMD</a>
+                        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse">
+                            <i class="fa fa-bars"></i>
+                        </button>
+                    </div>
+                    <!-- Collect the nav links, forms, and other content for toggling -->
+                    <div class="collapse navbar-collapse pull-left" id="navbar-collapse">
+                        <ul class="nav navbar-nav">
+                            <li class="">
+                                <a href="/sanpham/index/">
+                                    <span>Danh Mục Sản Phẩm</span>
+                                </a>
+                            </li>
+                            <li class="">
+                                <a href="/sanpham/taosanpham/">
+                                    <span>Quản Lý Sản Phẩm</span>
+                                </a>
+                            </li>
+                            <li class="">
+                                <a href="/sanpham/temsanpham/">
+                                    <span>Tem Sản Phẩm</span>
+                                </a>
+                            </li>
+
+                        </ul>
+                    </div><!-- /.navbar-collapse -->
+                    <!-- Navbar Right Menu -->
+                    <div class="navbar-custom-menu">
+                        <ul class="nav navbar-nav">
+                            <li class="">
+                                <a href="/option/index">
+                                    <span><i class="fa fa-gears" ></i></span>
+                                </a>
+                            </li>
+                            <li class="dropdown user user-menu">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                    <span class="hidden-xs">Tìm Kiếm</span>
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <li class="">
+                                        <form action="" method="POST" class="navbar-form navbar-left" role="search">
+                                            <div class="form-group">
+                                                <input type="text" class="form-control" id="navbar-search-input" placeholder="Search">
+                                                <button type="submit" class="btn btn-primary" >
+                                                    <i class="fa fa-search" ></i>
+                                                </button>
+                                            </div>
+                                        </form>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li class="dropdown user user-menu">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                    <img src="/public/user_no_photo.png" class="user-image" alt="User Image">
+                                    <span class="hidden-xs"><?php echo $_SESSION[QuanTri]["Name"] ?></span>
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <!-- User image -->
+                                    <li class="user-header">
+                                        <img src="/public/user_no_photo.png" class="img-circle" alt="User Image">
+                                        <p>
+                                            <?php echo $_SESSION[QuanTri]["Name"] ?>
+                                            <small><?php echo $_SESSION[QuanTri]["Username"] ?></small>
+                                        </p>
+                                    </li>
+                                    <!-- Menu Footer-->
+                                    <li class="user-footer">
+                                        <div class="pull-left">
+                                            <a href="<?php echo \Common\Link::profile() ?>" class="btn btn-default btn-flat">Tài khoản</a>
+                                        </div>
+                                        <div class="pull-right">
+                                            <a href="<?php echo \Common\Link::logout() ?>" class="btn btn-default btn-flat">Đăng Xuất</a>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </li>
+                            `
+                        </ul>
+                    </div><!-- /.navbar-custom-menu -->
+                </div><!-- /.container-fluid -->
+            </nav>
+        </header>
+        <aside class="hidden main-sidebar" >
+            <!-- sidebar: style can be found in sidebar.less -->
+            <section class="sidebar ">
+                <!-- Sidebar user panel -->
+                <div class="user-panel">
+                    <div class="pull-left image">
+                        <img src="/public/user_no_photo.png" class="img-circle" alt="User Image">
+                    </div>
+                    <div class="pull-left info">
+                        <p></p>
+                        <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
+                    </div>
+                </div>
+
+                <ul class="sidebar-menu ">
+                    <?php
+                    \Common\Link::LeftMenu();
+                    ?>
+                </ul>
+
+            </section>
+            <!-- /.sidebar -->
+        </aside>
+        <?php
+    }
+
+    public function MenuNVKT() {
+        ?>
+        <header class="main-header">
+            <nav class="navbar navbar-static-top">
+                <div class="container-fluid">
+                    <div class="navbar-header">
+                        <a href="/dashboard/" class="navbar-brand">TMD</a>
+                        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse">
+                            <i class="fa fa-bars"></i>
+                        </button>
+                    </div>
+                    <!-- Collect the nav links, forms, and other content for toggling -->
+                    <div class="collapse navbar-collapse pull-left" id="navbar-collapse">
+                        <ul class="nav navbar-nav">
+                            <li class="">
+                                <a href="/dashboard/">
+                                    <span>Danh Sách Công Việc</span>
+                                </a>
+                            </li>
+
+                        </ul>
+                    </div><!-- /.navbar-collapse -->
+                    <!-- Navbar Right Menu -->
+                    <div class="navbar-custom-menu">
+                        <ul class="nav navbar-nav">
+                            <li class="">
+                                <a href="/option/index">
+                                    <span><i class="fa fa-gears" ></i></span>
+                                </a>
+                            </li>
+                            <li class="dropdown user user-menu">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                    <span class="hidden-xs">Tìm Kiếm</span>
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <li class="">
+                                        <form action="" method="POST" class="navbar-form navbar-left" role="search">
+                                            <div class="form-group">
+                                                <input type="text" class="form-control" id="navbar-search-input" placeholder="Search">
+                                                <button type="submit" class="btn btn-primary" >
+                                                    <i class="fa fa-search" ></i>
+                                                </button>
+                                            </div>
+                                        </form>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li class="dropdown user user-menu">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                    <img src="/public/user_no_photo.png" class="user-image" alt="User Image">
+                                    <span class="hidden-xs"><?php echo $_SESSION[QuanTri]["Name"] ?></span>
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <!-- User image -->
+                                    <li class="user-header">
+                                        <img src="/public/user_no_photo.png" class="img-circle" alt="User Image">
+                                        <p>
+                                            <?php echo $_SESSION[QuanTri]["Name"] ?>
+                                            <small><?php echo $_SESSION[QuanTri]["Username"] ?></small>
+                                        </p>
+                                    </li>
+                                    <!-- Menu Footer-->
+                                    <li class="user-footer">
+                                        <div class="pull-left">
+                                            <a href="<?php echo \Common\Link::profile() ?>" class="btn btn-default btn-flat">Tài khoản</a>
+                                        </div>
+                                        <div class="pull-right">
+                                            <a href="<?php echo \Common\Link::logout() ?>" class="btn btn-default btn-flat">Đăng Xuất</a>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </li>
+                            `
+                        </ul>
+                    </div><!-- /.navbar-custom-menu -->
+                </div><!-- /.container-fluid -->
+            </nav>
+        </header>
+        <aside class="hidden main-sidebar" >
+            <!-- sidebar: style can be found in sidebar.less -->
+            <section class="sidebar ">
+                <!-- Sidebar user panel -->
+                <div class="user-panel">
+                    <div class="pull-left image">
+                        <img src="/public/user_no_photo.png" class="img-circle" alt="User Image">
+                    </div>
+                    <div class="pull-left info">
+                        <p></p>
+                        <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
+                    </div>
+                </div>
+
+                <ul class="sidebar-menu ">
+                    <?php
+                    \Common\Link::LeftMenu();
+                    ?>
+                </ul>
+
+            </section>
+            <!-- /.sidebar -->
+        </aside>
         <?php
     }
 

@@ -480,6 +480,18 @@ class ApplicationM {
         $_Controller = $this->getController();
         $_Action = $this->getAction();
         $_Param = $this->getParam();
+        $layout = [
+            \Module\user\Model\Admin::SuperAdmin => "",
+            \Module\user\Model\Admin::Admin => "",
+            \Module\user\Model\Admin::DaiLy => "daily",
+            \Module\user\Model\Admin::TTBH => "ttbh",
+            \Module\user\Model\Admin::NVKT => "nvkt",
+            \Module\user\Model\Admin::Customer => "customer",
+        ];
+        $admin = \Module\user\Model\Admin::getCurentUser(true);
+        if ($themelayout == "")
+            $themelayout = $layout[$admin->Groups];
+
         if ($data)
             extract($data);
         if (!$theme) {

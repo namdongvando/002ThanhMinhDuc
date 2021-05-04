@@ -2,10 +2,7 @@
 $YeuCauSuas = Module\trungtambaohanh\Model\YeuCauBaoHanh::YeuCauSuaChuas();
 ?>
 
-<div class="row " >
-    <section class="col-md-12 mb-10" >
-        <a class="btn btn-primary" href='/dashboard/'>Danh Sách Công Việc</a>
-    </section>
+<div class="container-fluid " >
     <section class="col-md-12 pb-10 mt-20" >
         <div class="connectedSortable" >
             <div class="box box-primary" >
@@ -16,6 +13,8 @@ $YeuCauSuas = Module\trungtambaohanh\Model\YeuCauBaoHanh::YeuCauSuaChuas();
                                 <th></th>
                                 <th>#</th>
                                 <th>Name</th>
+                                <th>Khách Hàng</th>
+                                <th>Tỉnh Thành</th>
                                 <th>Thơi Gian Tạo</th>
                                 <th>Thời Gian Cập Nhật</th>
                                 <th>Tình Trạng</th>
@@ -32,6 +31,16 @@ $YeuCauSuas = Module\trungtambaohanh\Model\YeuCauBaoHanh::YeuCauSuaChuas();
                                     <td>
                                         <?php
                                         echo $_Option->Name;
+                                        ?>
+                                    </td>
+                                    <td>
+                                        <?php
+                                        echo $_Option->KhachHangTieuDung()->Name;
+                                        ?>
+                                    </td>
+                                    <td>
+                                        <?php
+                                        echo $_Option->KhachHangTieuDung()->TinhThanh()->Name;
                                         ?>
                                     </td>
                                     <td>
@@ -54,16 +63,6 @@ $YeuCauSuas = Module\trungtambaohanh\Model\YeuCauBaoHanh::YeuCauSuaChuas();
                             }
                             ?>
                         </tbody>
-                        <tfoot>
-                            <tr>
-                                <th></th>
-                                <th>#</th>
-                                <th>Name</th>
-                                <th>Thơi Gian Tạo</th>
-                                <th>Thời Gian Cập Nhật</th>
-                                <th>Tình Trạng</th>
-                            </tr>
-                        </tfoot>
 
                     </table>
                 </div>

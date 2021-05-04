@@ -52,7 +52,7 @@ class KhachHangData extends \datatable\ZendData implements \Model\IModel {
     function GetAll2Option($where = null) {
         if ($where == null)
             $where = " 1=1";
-        return $this->getColumnsOption(["Id", "Code", "Name"], $where);
+        return $this->getColumnsOption(["Id", "Name"], $where);
     }
 
 }

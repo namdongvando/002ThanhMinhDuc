@@ -9,6 +9,7 @@ class userGroups extends userGroupsTable {
     const SupperAdmin = -1;
     const DaiLy = 3;
     const TrungTamBaoHanh = 4;
+    const NVKT = 5;
 
     public $Id;
     public $Name;

@@ -190,7 +190,6 @@ $link = "/public/phpqrcode/index.php?data=" . Root_URL . "baohanh/" . $temSanPha
                 </div>
                 <div class="modal-body">
                     <?php
-                    echo $temSanPham->SanPham()->Id;
                     Module\option\Model\OptionForm::SelectGroups("Danh Mục Sản Phẩm", "Chon[MaDanhMuc]", "DanhMucVatTu")->renderHtml();
                     Module\option\Model\OptionForm::Hidden("Chon[MaSanPham]", $temSanPham->SanPham()->Id)->render();
                     ?>

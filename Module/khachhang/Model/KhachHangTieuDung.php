@@ -10,7 +10,11 @@ class KhachHangTieuDung extends KhachHangTieuDungData {
         parent::__construct();
         if ($dv) {
             if (!is_array($dv)) {
-                $dv = $this->GetById($dv);
+                $code = $dv;
+                $dv = $this->GetById($code);
+                if (!$dv) {
+                    $dv = $this->GetByCode($code);
+                }
             }
             $this->Id = !empty($dv["Id"]) ? $dv["Id"] : null;
             $this->Name = !empty($dv["Name"]) ? $dv["Name"] : null;
@@ -24,6 +28,10 @@ class KhachHangTieuDung extends KhachHangTieuDungData {
             $this->QuanHuyen = !empty($dv["QuanHuyen"]) ? $dv["QuanHuyen"] : null;
             $this->KhuVuc = !empty($dv["KhuVuc"]) ? $dv["KhuVuc"] : null;
         }
+    }
+
+    function TinhThanh() {
+        return new \Module\option\Model\TinhThanh($this->TinhThanh);
     }
 
     public static function TaoKhachHang($maKhachHangTieuDung) {
@@ -59,6 +67,10 @@ class KhachHangTieuDung extends KhachHangTieuDungData {
         $Tong = $khachHang->GetRowsNumber($where);
         $where = "`Phone` is not null and `Phone` != '' limit {$start},{$Number}";
         return $khachHang->GetRowsByWhere($where);
+    }
+
+    public function GetByCode($dv) {
+        return $this->GetRowByWhere("`Code` = '{$dv}'");
     }
 
 }

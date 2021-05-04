@@ -14,7 +14,11 @@ class YeuCauBaoHanh extends YeuCauBaoHanhData {
         parent::__construct();
         if ($dv) {
             if (!is_array($dv)) {
-                $dv = $this->GetById($dv);
+                $code = $dv;
+                $dv = $this->GetById($code);
+                if (!$dv) {
+                    $dv = $this->GetByCode($code);
+                }
             }
             $this->Id = !empty($dv["Id"]) ? $dv["Id"] : null;
             $this->Code = !empty($dv["Code"]) ? $dv["Code"] : null;
@@ -32,11 +36,24 @@ class YeuCauBaoHanh extends YeuCauBaoHanhData {
         }
     }
 
+    function KhachHangTieuDung() {
+        return new \Module\khachhang\Model\KhachHangTieuDung($this->KhachHangTieuDung);
+    }
+
     public static function YeuCauSuaChuas() {
         $TTKH = new YeuCauBaoHanh();
-        $lisStaTus = [self::MoiTao, self::DangXuLy];
-        $lisStaTus = implode("','", $lisStaTus);
-        $where = "Status in ('{$lisStaTus}')  order by `CreateDate` DESC";
+
+        if (\Module\user\Model\Admin::CheckQuyen([\Module\user\Model\Admin::SuperAdmin, \Module\user\Model\Admin::TTBH, \Module\user\Model\Admin::Admin])) {
+            $lisStaTus = [self::MoiTao, self::DangXuLy, self::DaXuLy];
+            $lisStaTus = implode("','", $lisStaTus);
+            $where = "Status in ('{$lisStaTus}')  order by `CreateDate` DESC";
+        } else {
+            $lisStaTus = [self::MoiTao, self::DangXuLy];
+            $lisStaTus = implode("','", $lisStaTus);
+            $idNhanVien = \Module\user\Model\Admin::getCurentUser(true)->Id;
+            $where = "Status in ('{$lisStaTus}') and `idNhanVien` = '{$idNhanVien}' order by `CreateDate` DESC";
+        }
+
         return $TTKH->GetRowsByWhere($where);
     }
 
@@ -74,7 +91,17 @@ class YeuCauBaoHanh extends YeuCauBaoHanhData {
         $a = self::GetByCode($id);
         $a["Status"] = $ModelUpdate["Status"];
         $a["IdTrungTamBaoHanh"] = $ModelUpdate["IdTrungTamBaoHanh"];
+        $a["idNhanVien"] = $ModelUpdate["idNhanVien"];
         $this->UpdateRowTable($a, "`Code` = '{$id}'");
+    }
+
+    public function TemSanPham() {
+
+        return new \Module\sanpham\Model\TemSanPham($this->MaTem);
+    }
+
+    function ToArray() {
+        return (array) $this;
     }
 
 }

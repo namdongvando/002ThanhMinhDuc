@@ -3,22 +3,22 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
+            <file>file:/D:/backup/web.dev/1outtime/ThanhMinhDuc/002ThanhMinhDuc/Controller/index.php</file>
+            <file>file:/D:/backup/web.dev/1outtime/ThanhMinhDuc/002ThanhMinhDuc/lib/APIs.php</file>
+            <file>file:/D:/backup/web.dev/1outtime/ThanhMinhDuc/002ThanhMinhDuc/Module/sanpham/Controller/temsanpham.php</file>
+            <file>file:/D:/backup/web.dev/1outtime/ThanhMinhDuc/002ThanhMinhDuc/theme/thanhminhduc/index/baohanh.phtml</file>
+            <file>file:/D:/backup/web.dev/1outtime/ThanhMinhDuc/002ThanhMinhDuc/Module/trungtambaohanh/Controller/api.php</file>
+            <file>file:/D:/backup/web.dev/1outtime/ThanhMinhDuc/002ThanhMinhDuc/Module/sanpham/Model/SanPham.php</file>
+            <file>file:/D:/backup/web.dev/1outtime/ThanhMinhDuc/002ThanhMinhDuc/Module/trungtambaohanh/Model/YeuCauBaoHanh.php</file>
+            <file>file:/D:/backup/web.dev/1outtime/ThanhMinhDuc/002ThanhMinhDuc/Module/sanpham/Model/TemSanPhamData.php</file>
+            <file>file:/D:/backup/web.dev/1outtime/ThanhMinhDuc/002ThanhMinhDuc/Module/sanpham/Model/TemSanPham.php</file>
+            <file>file:/D:/backup/web.dev/1outtime/ThanhMinhDuc/002ThanhMinhDuc/Module/trungtambaohanh/Views/yeucaubaohanh/form.phtml</file>
+            <file>file:/D:/backup/web.dev/1outtime/ThanhMinhDuc/002ThanhMinhDuc/Module/trungtambaohanh/Views/index/edit.phtml</file>
+            <file>file:/D:/backup/web.dev/1outtime/ThanhMinhDuc/002ThanhMinhDuc/Module/sanpham/Views/temsanpham/detailbysanpham.phtml</file>
+            <file>file:/D:/backup/web.dev/1outtime/ThanhMinhDuc/002ThanhMinhDuc/Module/dashboard/Controller/index.php</file>
             <file>file:/D:/backup/web.dev/1outtime/ThanhMinhDuc/002ThanhMinhDuc/Module/user/Model/Admin.php</file>
-            <file>file:/D:/backup/web.dev/1outtime/ThanhMinhDuc/002ThanhMinhDuc/Module/user/Controller/api.php</file>
-            <file>file:/D:/backup/web.dev/1outtime/ThanhMinhDuc/002ThanhMinhDuc/Module/user/Views/users/index.phtml</file>
-            <file>file:/D:/backup/web.dev/1outtime/ThanhMinhDuc/002ThanhMinhDuc/Module/trungtambaohanh/Model/TrungTamBaoHanhForm.php</file>
-            <file>file:/D:/backup/web.dev/1outtime/ThanhMinhDuc/002ThanhMinhDuc/Application/Html/Js.php</file>
-            <file>file:/D:/backup/web.dev/1outtime/ThanhMinhDuc/002ThanhMinhDuc/Module/user/Model/AdminForm.php</file>
-            <file>file:/D:/backup/web.dev/1outtime/ThanhMinhDuc/002ThanhMinhDuc/Module/user/Model/TaiKhoan.php</file>
-            <file>file:/D:/backup/web.dev/1outtime/ThanhMinhDuc/002ThanhMinhDuc/Module/trungtambaohanh/Views/index/index.phtml</file>
-            <file>file:/D:/backup/web.dev/1outtime/ThanhMinhDuc/002ThanhMinhDuc/Module/user/Model/AdminTable.php</file>
-            <file>file:/D:/backup/web.dev/1outtime/ThanhMinhDuc/002ThanhMinhDuc/theme/backend/backend.php</file>
-            <file>file:/D:/backup/web.dev/1outtime/ThanhMinhDuc/002ThanhMinhDuc/Core/DatabaseZend.php</file>
-            <file>file:/D:/backup/web.dev/1outtime/ThanhMinhDuc/002ThanhMinhDuc/Module/user/Views/users/edit.phtml</file>
-            <file>file:/D:/backup/web.dev/1outtime/ThanhMinhDuc/002ThanhMinhDuc/theme/backend/layout.phtml</file>
-            <file>file:/D:/backup/web.dev/1outtime/ThanhMinhDuc/002ThanhMinhDuc/datatable/ZendData.php</file>
-            <file>file:/D:/backup/web.dev/1outtime/ThanhMinhDuc/002ThanhMinhDuc/Module/user/Model/userGroups.php</file>
-            <file>file:/D:/backup/web.dev/1outtime/ThanhMinhDuc/002ThanhMinhDuc/Module/user/Controller/users.php</file>
+            <file>file:/D:/backup/web.dev/1outtime/ThanhMinhDuc/002ThanhMinhDuc/Module/dashboard/Views/index/index.phtml</file>
+            <file>file:/D:/backup/web.dev/1outtime/ThanhMinhDuc/002ThanhMinhDuc/Module/trungtambaohanh/Controller/yeucaubaohanh.php</file>
         </group>
     </open-files>
 </project-private>

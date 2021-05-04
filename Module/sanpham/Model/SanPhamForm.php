@@ -80,7 +80,7 @@ class SanPhamForm extends \PFBC\Form implements ISanPhamForm {
 //        $ops = SanPham::ListTinhTrangToOptions();
         $ops = \Module\khachhang\Model\KhachHang::GetALL2Options();
         $TaiCty = ["Đang Ở Công Ty"];
-        $ops = array_merge($TaiCty, $ops);
+        $ops = $TaiCty + $ops;
         return new \PFBC\Element\Select("Đại Lý", "sanpham[MaDaiLy]", $ops, $Option);
     }
 

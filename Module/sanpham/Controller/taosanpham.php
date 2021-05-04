@@ -81,12 +81,31 @@ class taosanpham extends \ApplicationM implements \Controller\IController {
             $sanpham = \Common\Form::RequestPost("sanpham", []);
             if ($sanpham) {
                 $ModelSanPham = new \Module\sanpham\Model\SanPham();
-                $ModelSanPham->UpdateRowTable($sanpham);
+                $mSanPham = $ModelSanPham->GetById($sanpham["Id"]);
+                $mSanPham["Name"] = $sanpham["Name"];
+                $mSanPham["Code"] = $sanpham["Code"];
+                $mSanPham["Mota"] = $sanpham["Mota"];
+                $mSanPham["DanhMuc"] = $sanpham["DanhMuc"];
+                $mSanPham["TinhTrang"] = $sanpham["TinhTrang"];
+                $mSanPham["ChungLoaiSP"] = $sanpham["ChungLoaiSP"];
+                $mSanPham["MaDaiLy"] = $sanpham["MaDaiLy"];
+                $mSanPham["idKhachHang"] = $mSanPham["idKhachHang"] == null ? 0 : $mSanPham["idKhachHang"];
+                $ModelSanPham->UpdateSubmit($mSanPham);
             }
         }
         $id = $this->getParam(0);
         $option = new \Module\sanpham\Model\SanPham($id);
         return $this->ViewThemeModlue(["SanPham" => $option], self::$UserLayout);
+    }
+
+    function nhansp() {
+        $id = $this->getParam()[0];
+        $ModelSanPham = new \Module\sanpham\Model\SanPham();
+        $mSanPham = $ModelSanPham->GetById($id);
+        $mSanPham["Wfstatus"] = 1;
+        $mSanPham["idKhachHang"] = $mSanPham["idKhachHang"] == null ? 0 : $mSanPham["idKhachHang"];
+        $ModelSanPham->UpdateSubmit($mSanPham);
+        \Common\Common::toUrl($_SERVER["HTTP_REFERER"]);
     }
 
 }

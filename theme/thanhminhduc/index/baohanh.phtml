@@ -197,7 +197,7 @@ $link = "/public/phpqrcode/index.php?data=" . Root_URL . "baohanh/" . $sanPham->
                         </div>
                     </div>
                     <?php
-                    \Module\trungtambaohanh\Model\YeuCauBaoHanhForm::MaTem($temSanPham->SanPham()->Code, null, true)->render();
+                    \Module\trungtambaohanh\Model\YeuCauBaoHanhForm::MaTem($temSanPham->Code, null, true)->render();
                     \Module\trungtambaohanh\Model\YeuCauBaoHanhForm::KhachHangTieuDung($temSanPham->KhachHangTieuDung, null, true)->render();
                     ?>
                 </div>

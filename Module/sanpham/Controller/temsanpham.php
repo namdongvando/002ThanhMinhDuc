@@ -89,11 +89,13 @@ class temsanpham extends \ApplicationM implements \Controller\IController {
             $MSP = $ModelSP->GetById($sanPhamPost["Id"]);
 //            var_dump($sanPhamPost);
             $MSP["Name"] = $sanPhamPost["Name"];
-            $MSP["MaDaiLy"] = $sanPhamPost["MaDaiLy"];
+            if (\Module\user\Model\Admin::CheckQuyen([\Module\user\Model\Admin::Admin, \Module\user\Model\Admin::SuperAdmin])) {
+                $MSP["MaDaiLy"] = $sanPhamPost["MaDaiLy"];
+                $MSP["TinhTrang"] = $sanPhamPost["TinhTrang"];
+            }
             $MSP["Mota"] = $sanPhamPost["Mota"];
             $MSP["ChungLoaiSP"] = $sanPhamPost["ChungLoaiSP"];
             $MSP["DanhMuc"] = $sanPhamPost["DanhMuc"];
-            $MSP["TinhTrang"] = $sanPhamPost["TinhTrang"];
             $MSP["Code"] = $sanPhamPost["Code"];
             if ($_FILES["HinhAnhSanPham"]["error"] == 0) {
                 $adapter = new \Core\Adapter();

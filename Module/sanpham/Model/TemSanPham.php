@@ -14,7 +14,11 @@ class TemSanPham extends TemSanPhamData {
         parent::__construct();
         if ($dv) {
             if (!is_array($dv)) {
-                $dv = $this->GetById($dv);
+                $code = $dv;
+                $dv = $this->GetById($code);
+                if (!$dv) {
+                    $dv = $this->GetByCode($code);
+                }
             }
             $this->Id = !empty($dv["Id"]) ? $dv["Id"] : null;
             $this->Name = !empty($dv["Name"]) ? $dv["Name"] : null;
@@ -89,10 +93,11 @@ class TemSanPham extends TemSanPhamData {
     }
 
     function SanPham() {
+
         $sp = SanPham::GetItemById($this->MaSanPham);
         $sanPham = new SanPham();
         if ($sp->Id == null) {
-            $sanPham->TaoSanPham($this->Code, $this->MaSanPham);
+            $sanPham->TaoSanPham("sp" . time(), time());
             return SanPham::GetItemById($this->MaSanPham);
         }
         return $sp;

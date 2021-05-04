@@ -5,6 +5,7 @@ namespace Controller;
 class backend extends \Application {
 
     public $param;
+    public $Layout;
     public $Bread;
 
     function __construct() {
@@ -17,6 +18,7 @@ class backend extends \Application {
             "title" => "Dashboard",
             "link" => "/backend/"
         ];
+
 //        echo "asdas";
         \Core\ViewTheme::set_viewthene("backend");
 

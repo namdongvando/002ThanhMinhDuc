@@ -36,7 +36,13 @@ class SanPhamData extends \datatable\ZendData implements \Model\IModel {
     }
 
     public function UpdateSubmit($model) {
-        return $this->UpdateRowTable($model);
+        $this->UpdateRowTable($model);
+        $ModelLogSP = new \Module\sanpham\Model\SanPhamLog();
+        $model["NgayTao"] = date("Y-m-d H:i:s", time());
+        $model["NgaySua"] = date("Y-m-d H:i:s", time());
+        $model["idKhachHang"] = $model["idKhachHang"] == null ? 0 : $model["idKhachHang"];
+        $model["HinhAnh"] = $model["HinhAnh"] == null ? "" : $model["HinhAnh"];
+        return $ModelLogSP->InsertSubmit($model);
     }
 
     public function DeleteSubmit($id) {

@@ -22,6 +22,7 @@ class Admin extends AdminTable {
     const Customer = 2;
     const DaiLy = 3;
     const TTBH = 4;
+    const NVKT = 5;
 
     function __construct($NhanVien = NULL) {
         if ($NhanVien) {
@@ -103,6 +104,12 @@ class Admin extends AdminTable {
         return $this->ToArray($this->Select($Where));
     }
 
+    public function GetUserByGroups($group) {
+        $active = AdminStatus::sActive;
+        $Where = "`Active` = '{$active}' and `Groups` = '{$group}'";
+        return $this->ToArray($this->Select($Where));
+    }
+
     public function GetUserByActive($active) {
         $Where = "`Active` = '{$active}'";
         return $this->ToArray($this->Select($Where));
@@ -158,7 +165,7 @@ class Admin extends AdminTable {
         return $this->CheckLogin($this->Username, $Password);
     }
 
-    public static function GetUsersOptions() {
+    public static function GetUsersOptions($groups = null) {
         $admin = new Admin();
         if ($groups) {
             $where = " `Groups` = '{$groups}' ";
@@ -198,7 +205,8 @@ class Admin extends AdminTable {
     }
 
     public static function CheckQuyen($nhom = []) {
-        $user = \Module\user\Model\Admin::getCurentUser();
+        $user = \Module\user\Model\Admin::getCurentUser(true)->Groups;
+        return in_array($user, $nhom);
     }
 
 }

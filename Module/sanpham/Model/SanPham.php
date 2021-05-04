@@ -12,6 +12,7 @@ class SanPham extends SanPhamData {
     public $Id, $Name, $Code, $ChungLoaiSP, $Mota, $Gia, $HinhAnh, $DanhMuc, $TinhTrang, $MaDaiLy;
     public $idKhachHang;
     public $isLook;
+    public $Wfstatus;
 
     public function __construct($dv = null) {
         parent::__construct();
@@ -29,6 +30,7 @@ class SanPham extends SanPhamData {
             $this->HinhAnh = !empty($dv["HinhAnh"]) ? $dv["HinhAnh"] : null;
             $this->DanhMuc = !empty($dv["DanhMuc"]) ? $dv["DanhMuc"] : null;
             $this->TinhTrang = !empty($dv["TinhTrang"]) ? $dv["TinhTrang"] : 0;
+            $this->Wfstatus = !empty($dv["Wfstatus"]) ? $dv["Wfstatus"] : 0;
             $this->MaDaiLy = !empty($dv["MaDaiLy"]) ? $dv["MaDaiLy"] : "";
             $this->isLook = !empty($dv["isLook"]) ? $dv["isLook"] : "";
         }
@@ -54,6 +56,11 @@ class SanPham extends SanPhamData {
     public static function SanPhams() {
         $sanpham = new SanPham();
         $sanpham->GetRows();
+    }
+
+    function SanPhamLog() {
+        $SanPhamLog = new SanPhamLog();
+        return $SanPhamLog->GetByIdSP($this->Id);
     }
 
     public static function SanPhamsPT($name, $pagesIndex, $pageNumber, &$tong) {
@@ -161,6 +168,25 @@ class SanPham extends SanPhamData {
         $sanPham["TinhTrang"] = $this->TinhTrang;
         $sanPham["isLook"] = $this->isLook;
         return $sanPham;
+    }
+
+    function DaiLy() {
+        return new \Module\khachhang\Model\KhachHang($this->MaDaiLy);
+    }
+
+    public static function SanPhamsDaiLyPT($name, $pagesIndex, $pageNumber, $tong) {
+        $MaDaiLy = \Module\user\Model\Admin::getCurentUser(true)->KhachHang()->idKhachHang;
+        return self::GetSanPhamsDaiLyPT($MaDaiLy, $name, $pagesIndex, $pageNumber, $tong);
+    }
+
+    public static function GetSanPhamsDaiLyPT($MaDaiLy, $name, $pagesIndex, $pageNumber, &$tong) {
+        $pagesIndex = ($pagesIndex - 1) * $pageNumber;
+        $pagesIndex = max($pagesIndex, 0);
+        $SanPham = new SanPham();
+        $where = "`MaDaiLy` in ({$MaDaiLy})";
+        $tong = $SanPham->GetNumberRows($where);
+        $where = "`MaDaiLy` in ({$MaDaiLy}) limit {$pagesIndex},{$pageNumber}";
+        return $SanPham->GetRows($where);
     }
 
 }

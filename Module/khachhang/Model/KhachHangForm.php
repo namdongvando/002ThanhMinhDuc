@@ -46,7 +46,7 @@ class KhachHangForm extends \PFBC\Form implements IKhachHangForm {
         $Option["value"] = $value;
         $Option["required"] = true;
         $options = KhachHang::GetALL2Options();
-        array_unshift($options, "Là Cấp Cha");
+        $options = $options + ["Là Cấp Cha"];
         return new \PFBC\Element\Select("Cấp Cha", "khachhang[Parents]", $options, $Option);
     }
 
@@ -75,7 +75,6 @@ class KhachHangForm extends \PFBC\Form implements IKhachHangForm {
     public static function DiaChi($value = null) {
         $Option = self::$Option;
         $Option["value"] = $value;
-        $Option["required"] = true;
         return new \PFBC\Element\Textbox("Số Nhà, Đường, Phường/Xã", "khachhang[DiaChi]", $Option);
     }
 

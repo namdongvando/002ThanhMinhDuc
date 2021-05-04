@@ -1,10 +1,12 @@
 <?php
 $pagesIndex = !empty($_Param[0]) ? $_Param[0] : 1;
 $pagesNumber = !empty($_Param[1]) ? $_Param[1] : 10;
+$name = !empty($_Param[2]) ? $_Param[2] : "";
 $tong = 0;
-$KhachHangs = \Module\khachhang\Model\KhachHang::KhachHangsPT("", $pagesIndex, $pagesNumber, $tong);
+$KhachHangs = \Module\khachhang\Model\KhachHang::KhachHangsPT($name, $pagesIndex, $pagesNumber, $tong);
 //var_dump($KhachHangs);
 $linkNumberIndex = '/khachhang/index/index/1/';
+$linkTimKiem = '/khachhang/index/index/1/10/';
 ?>
 
 <script type="text/javascript" >
@@ -33,15 +35,27 @@ $linkNumberIndex = '/khachhang/index/index/1/';
             <div class="connectedSortable" >
                 <div class="box box-primary" >
                     <div class="box-body table-responsive" >
-                        <select style="width: 100px;"  name="" onchange="window.location.href = '<?php echo $linkNumberIndex; ?>' + this.value" >
-                            <option <?php echo $pagesNumber == 10 ? "selected" : ""; ?>  value="10" >10 Dòng</option>
-                            <option <?php echo $pagesNumber == 20 ? "selected" : ""; ?> value="20" >20 Dòng</option>
-                            <option <?php echo $pagesNumber == 50 ? "selected" : ""; ?> value="50" >50 Dòng</option>
-                            <option <?php echo $pagesNumber == 100 ? "selected" : ""; ?> value="100">100 Dòng</option>
-                        </select>
+
+
                         <table class="table table-bordered   "    >
                             <thead>
                                 <tr>
+                                    <th colspan="9" >
+                                        <select class="pull-left" style="width: 100px;"  name="" onchange="window.location.href = '<?php echo $linkNumberIndex; ?>' + this.value" >
+                                            <option <?php echo $pagesNumber == 10 ? "selected" : ""; ?>  value="10" >10 Dòng</option>
+                                            <option <?php echo $pagesNumber == 20 ? "selected" : ""; ?> value="20" >20 Dòng</option>
+                                            <option <?php echo $pagesNumber == 50 ? "selected" : ""; ?> value="50" >50 Dòng</option>
+                                            <option <?php echo $pagesNumber == 100 ? "selected" : ""; ?> value="100">100 Dòng</option>
+                                        </select>
+                                        <div class="pull-right input-group" style="width: 150px;">
+                                            <input value="<?php echo $name; ?>" onchange="window.location.href = '<?php echo $linkTimKiem; ?>' + this.value" type="text" name="table_search" class="form-control input-sm pull-right" placeholder="Search">
+                                            <div class="input-group-btn">
+                                                <button class="btn btn-sm btn-default"><i class="fa fa-search"></i></button>
+                                            </div>
+                                        </div>
+                                    </th>
+                                </tr>
+                                <tr class="bg-blue" >
                                     <th>#</th>
                                     <th>Mã</th>
                                     <th>Tên Khách Hàng</th>
@@ -76,19 +90,7 @@ $linkNumberIndex = '/khachhang/index/index/1/';
                                 }
                                 ?>
                             </tbody>
-                            <tfoot>
-                                <tr>
-                                    <th>#</th>
-                                    <th>Mã Khách Hàng</th>
-                                    <th>Tên Khách Hàng</th>
-                                    <th>Địa Chỉ</th>
-                                    <th>Tỉnh Thành</th>
-                                    <th>Quận Huyện</th>
-                                    <th>Khu Vực</th>
-                                    <th>SĐT</th>
-                                    <th style="width:100px;" ></th>
-                                </tr>
-                            </tfoot>
+
                         </table>
                         <?php
                         $linkPagination = "/khachhang/index/index/[i]/{$pagesNumber}";

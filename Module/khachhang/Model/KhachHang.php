@@ -64,6 +64,12 @@ class KhachHang extends KhachHangData {
         return $Kh->GetAll2Option();
     }
 
+    function Parents() {
+        if ($this->Parents == 0)
+            return new KhachHang();
+        return new KhachHang($this->Parents);
+    }
+
     public static function GetKhachHangById($id, $isDecode = false) {
         $Kh = new KhachHang();
         if ($isDecode) {
@@ -103,7 +109,7 @@ class KhachHang extends KhachHangData {
         $pagesIndex = ($pagesIndex - 1) * $pageNumber;
         $where = " 1";
         if ($name != "") {
-            $where = "`Name` like '%{$name}%'";
+            $where = "`Name` like '%{$name}%' or `Code` like '%{$name}%'";
         }
         $tong = $Kh->GetRowsNumber($where);
         $where .= " limit {$pagesIndex},{$pageNumber}";
