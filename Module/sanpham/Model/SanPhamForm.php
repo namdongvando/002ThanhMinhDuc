@@ -8,6 +8,8 @@ class SanPhamForm extends \PFBC\Form implements ISanPhamForm {
     public $Code;
     public $Name;
 
+    const formName = 'sanpham';
+
     public function __construct($dv = null) {
 
     }
@@ -48,10 +50,17 @@ class SanPhamForm extends \PFBC\Form implements ISanPhamForm {
         return new \PFBC\Element\Textarea("Mô Tả", "sanpham[Mota]", $Option);
     }
 
-    public static function DanhMuc($value = null) {
+    public static function DanhMuc($value = null, $pro = []) {
         $Option = self::$Option;
         $Option["value"] = $value;
+        if ($pro) {
+            foreach ($pro as $key => $value) {
+                $Option[$key] = $value;
+            }
+        }
         $ops = \Module\option\Model\Option::GetAll2OptionsByGroups(\Module\option\Model\Option::DanhMucVatTu);
+        $TaiCty = ["--Chọn Danh Mục-"];
+        $ops = $TaiCty + $ops;
         return new \PFBC\Element\Select("Danh Mục Sản Phẩm", "sanpham[DanhMuc]", $ops, $Option);
     }
 
@@ -59,6 +68,7 @@ class SanPhamForm extends \PFBC\Form implements ISanPhamForm {
         $Option = self::$Option;
         $Option["value"] = $value;
         $ops = SanPham::ListTinhTrangToOptions();
+        $Option["style"] = "width:100%;";
         return new \PFBC\Element\Select("Tình Trạng Sản Phẩm", "sanpham[TinhTrang]", $ops, $Option);
     }
 
@@ -77,6 +87,7 @@ class SanPhamForm extends \PFBC\Form implements ISanPhamForm {
     public static function MaDaiLy($value = null) {
         $Option = self::$Option;
         $Option["value"] = $value;
+        $Option["style"] = "width:100%;";
 //        $ops = SanPham::ListTinhTrangToOptions();
         $ops = \Module\khachhang\Model\KhachHang::GetALL2Options();
         $TaiCty = ["Đang Ở Công Ty"];

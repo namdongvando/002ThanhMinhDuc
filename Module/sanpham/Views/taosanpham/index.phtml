@@ -5,9 +5,9 @@
 $tong = 0;
 
 if (Module\user\Model\Admin::getCurentUser(TRUE)->Groups == Module\user\Model\Admin::Admin || Module\user\Model\Admin::getCurentUser(TRUE)->Groups == Module\user\Model\Admin::SuperAdmin) {
-    $SanPhams = Module\sanpham\Model\SanPham::SanPhamsPT("", 1, 20, $tong);
+    $SanPhams = Module\sanpham\Model\SanPham::SanPhamsPT("", 1, 200, $tong);
 } else {
-    $SanPhams = Module\sanpham\Model\SanPham::SanPhamsDaiLyPT("", 1, 20, $tong);
+    $SanPhams = Module\sanpham\Model\SanPham::SanPhamsDaiLyPT("", 1, 200, $tong);
 }
 ?>
 <form action="" method="POST" enctype="multipart/form-data" >
@@ -16,7 +16,7 @@ if (Module\user\Model\Admin::getCurentUser(TRUE)->Groups == Module\user\Model\Ad
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                    <h4 class="modal-title">Thêm Sản Phẩm</h4>
+                    <h4 class="modal-title">Thêm Sản Phẩm </h4>
                 </div>
                 <div class="modal-body">
                     <?php
@@ -45,7 +45,7 @@ if (Module\user\Model\Admin::getCurentUser(TRUE)->Groups == Module\user\Model\Ad
                 <?php
                 if (Module\user\Model\Admin::CheckQuyen([Module\user\Model\Admin::Admin, Module\user\Model\Admin::SuperAdmin])) {
                     ?>
-                    <a class="btn btn-primary" data-toggle="modal" href='#ThemSanPham'>
+                    <a class="btn btn-primary btn-sm" data-toggle="modal" href='#ThemSanPham'>
                         <i class="fa fa-plus" ></i>
                         Thêm Sản Phẩm
                     </a>
@@ -54,7 +54,7 @@ if (Module\user\Model\Admin::getCurentUser(TRUE)->Groups == Module\user\Model\Ad
                 ?>
             </div>
             <h3  class="box-title" >
-                Danh Sách Sản Phẩm
+                Danh Sách Sản Phẩm (<?php echo $tong; ?>)
             </h3>
         </div>
         <div class="box-body table-responsive" >

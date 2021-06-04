@@ -37,6 +37,11 @@ legend {
 .pt-15{
     padding-top: 15px;
 }
+.table>tbody>tr>td, .table>tbody>tr>th {
+    padding: 4px;
+    alignment-adjust: middle;
+}
+
 @font-face {
     font-family: VBARIAN;
     src: url("fonts/VBARIAN.TTF");

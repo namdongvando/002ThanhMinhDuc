@@ -8,7 +8,7 @@ class backend {
         ?>
         <meta http-equiv="cache-control" content="max-age=0" />
         <meta http-equiv="cache-control" content="no-cache" />
-        <link rel="shortcut icon" href="/public/no-image.jpg" />
+        <link rel="shortcut icon" href="/public/theme/TMD/images/logo.png" />
         <!-- Bootstrap 3.3.5 -->
         <link rel="stylesheet" href="/public/admin/bootstrap/css/bootstrap.min.css">
         <!-- Font Awesome -->
@@ -143,32 +143,11 @@ class backend {
                     <!-- Navbar Right Menu -->
                     <div class="navbar-custom-menu">
                         <ul class="nav navbar-nav">
-                            <li class="">
-                                <a href="/option/index">
-                                    <span><i class="fa fa-gears" ></i></span>
-                                </a>
-                            </li>
+
                             <li class="dropdown user user-menu">
-                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                                    <span class="hidden-xs">Tìm Kiếm</span>
-                                </a>
-                                <ul class="dropdown-menu">
-                                    <li class="">
-                                        <form action="" method="POST" class="navbar-form navbar-left" role="search">
-                                            <div class="form-group">
-                                                <input type="text" class="form-control" id="navbar-search-input" placeholder="Search">
-                                                <button type="submit" class="btn btn-primary" >
-                                                    <i class="fa fa-search" ></i>
-                                                </button>
-                                            </div>
-                                        </form>
-                                    </li>
-                                </ul>
-                            </li>
-                            <li class="dropdown user user-menu">
-                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                <a href="#" class="text-center dropdown-toggle" data-toggle="dropdown">
                                     <img src="/public/user_no_photo.png" class="user-image" alt="User Image">
-                                    <span class="hidden-xs"><?php echo $_SESSION[QuanTri]["Name"] ?></span>
+                                    <span class="hidden-xs">&nbsp;</span>
                                 </a>
                                 <ul class="dropdown-menu">
                                     <!-- User image -->
@@ -182,15 +161,19 @@ class backend {
                                     <!-- Menu Footer-->
                                     <li class="user-footer">
                                         <div class="pull-left">
-                                            <a href="<?php echo \Common\Link::profile() ?>" class="btn btn-default btn-flat">Tài khoản</a>
+                                            <a href="<?php echo \Common\Link::profile() ?>" class="btn btn-primary btn-flat">Tài khoản</a>
                                         </div>
                                         <div class="pull-right">
-                                            <a href="<?php echo \Common\Link::logout() ?>" class="btn btn-default btn-flat">Đăng Xuất</a>
+                                            <a href="<?php echo \Common\Link::logout() ?>" class="btn btn-danger btn-flat">Đăng Xuất</a>
                                         </div>
                                     </li>
                                 </ul>
                             </li>
-                            `
+                            ` <li class="">
+                                <a href="/option/index">
+                                    <span><i class="fa fa-gears" ></i></span>
+                                </a>
+                            </li>
                         </ul>
                     </div><!-- /.navbar-custom-menu -->
                 </div><!-- /.container-fluid -->

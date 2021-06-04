@@ -32,13 +32,15 @@ class Option extends OptionData {
                     $dv = $this->GetByCode($code);
                 }
             }
-            $this->Id = $dv["Id"];
-            $this->Name = $dv["Name"];
-            $this->Code = $dv["Code"];
-            $this->Groups = $dv["Groups"];
-            $this->Note = $dv["Note"];
-            $this->Parents = $dv["Parents"];
-            $this->OrderBy = $dv["OrderBy"];
+            if ($dv) {
+                $this->Id = $dv["Id"];
+                $this->Name = $dv["Name"];
+                $this->Code = $dv["Code"];
+                $this->Groups = $dv["Groups"];
+                $this->Note = $dv["Note"];
+                $this->Parents = $dv["Parents"];
+                $this->OrderBy = $dv["OrderBy"];
+            }
         }
     }
 

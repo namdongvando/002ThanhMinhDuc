@@ -40,7 +40,7 @@ class TemSanPham extends TemSanPhamData {
     public static function GetRowsPT($name, $pagesIndex, $pageNumber, &$tong) {
         $pagesIndex = ($pagesIndex - 1) * $pageNumber;
         $sanpham = new TemSanPham();
-        $where = " `Name` like '%{$name}%'";
+        $where = " `Name` like '%{$name}%' ";
         $tong = $sanpham->GetRowsNumber($where);
         $where .= " limit {$pagesIndex},{$pageNumber}";
         return $sanpham->GetRowsByWhere($where);
@@ -94,13 +94,21 @@ class TemSanPham extends TemSanPhamData {
 
     function SanPham() {
 
-        $sp = SanPham::GetItemById($this->MaSanPham);
+//if ($temSanPham["MaSanPham"] == 0) {
+//            $idSP = $sanPham->TaoSanPham($temSanPham["Code"]);
+//            $temSanPham["MaSanPham"] = $idSP;
+//            $ModelTemSanPham->UpdateSubmit($temSanPham);
+//        }
         $sanPham = new SanPham();
-        if ($sp->Id == null) {
-            $sanPham->TaoSanPham("sp" . time(), time());
-            return SanPham::GetItemById($this->MaSanPham);
+        if ($this->MaSanPham == 0) {
+            $ModelTemSanPham = new TemSanPham();
+            $temSanPham = \Module\sanpham\Model\TemSanPham::GetByCode($this->Code);
+            $idSP = $sanPham->TaoSanPham($temSanPham["Code"]);
+            $temSanPham["MaSanPham"] = $idSP;
+            $ModelTemSanPham->UpdateSubmit($temSanPham);
         }
-        return $sp;
+        $sp = $sanPham->GetById($this->MaSanPham);
+        return new SanPham($sp);
     }
 
     public function Status() {

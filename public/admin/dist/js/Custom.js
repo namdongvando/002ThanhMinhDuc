@@ -69,8 +69,40 @@ const ConfirnXoa = function() {
     }
 
 }
+const  websitetoggleKey = "websitetoggleKey";
+const websiteToggle = function() {
+    var websiteToggleLoal = window.localStorage.getItem(websitetoggleKey);
+    if (websiteToggleLoal) {
+        return  JSON.parse(websiteToggleLoal);
+    }
+    return  {
+        TimKiemtoggle: true
+    }
+}
 
 $(function() {
+    $(".btn-toggle").each(function() {
+        try {
+            var data = $(this).data();
+            var dataToggle = websiteToggle();
+            console.log(dataToggle);
+            if (dataToggle.TimKiemtoggle == true) {
+                $(data.target).show();
+            }
+            $(this).click(function() {
+                if (dataToggle.TimKiemtoggle == false) {
+                    $(data.target).show(500);
+                    dataToggle.TimKiemtoggle = true;
+                } else {
+                    $(data.target).hide(500);
+                    dataToggle.TimKiemtoggle = false;
+                }
+                window.localStorage.setItem(websitetoggleKey, JSON.stringify(dataToggle));
+            });
+        } catch (e) {
+            console.log(e);
+        }
+    });
     $("select.AjaxHTML").each(function() {
         var dataHTML = $(this).data();
         var self = $(this);
@@ -159,7 +191,6 @@ $(function() {
                         }
                         i++;
                     });
-
                 }
             });
         } catch (e) {
@@ -456,7 +487,6 @@ $(function() {
 
     try {
         $("select").select2();
-
     } catch (e) {
         console.log(e);
     }
@@ -467,6 +497,23 @@ $(function() {
     $windown.resize(function() {
         if (a != $windown.innerWidth())
             window.location.reload();
+    });
+    $('.ajaxAutoReload').each(function() {
+        var data = $(this).data();
+        var id = data.target;
+        setInterval(function() {
+            $.ajax({url: data.urlcheck}).done((res) => {
+                var coderefesh = window.localStorage.getItem(id);
+                console.log(coderefesh);
+                console.log(res.code);
+                window.localStorage.setItem(id, res.code);
+                if (coderefesh != res.code) {
+                    $.ajax({url: data.urldata}).done((res) => {
+                        $(id).html(res);
+                    });
+                }
+            });
+        }, parseInt(data.timeload));
     });
 });
 function getCookie(cname, macdinh) {

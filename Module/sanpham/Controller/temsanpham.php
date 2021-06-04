@@ -82,7 +82,7 @@ class temsanpham extends \ApplicationM implements \Controller\IController {
             $temSP["NgayBatDau"] = !empty($temSP["NgayBatDau"]) ? date("Y-m-d", strtotime($temSP["NgayBatDau"])) : null;
             $temSP["ThangKetThuc"] = !empty($temSP["ThangKetThuc"]) ? $temSP["ThangKetThuc"] : 0;
             $ngayBd = strtotime($temSP["NgayBatDau"]);
-            $soNgay = $temSP["ThangKetThuc"] * 30 * 24 * 3600;
+            $soNgay = $this->TinhSoNgay($temSP["ThangKetThuc"]);
             $a = $ngayBd + $soNgay;
             $temSP["NgayKetThuc"] = date("Y-m-d H:i:s", $a);
             $temSP["ModifyDate"] = date("Y-m-d H:i:s", time());
@@ -233,6 +233,18 @@ class temsanpham extends \ApplicationM implements \Controller\IController {
     function quanlytem() {
 
         return $this->ViewThemeModlue();
+    }
+
+    public function TinhSoNgay($thang) {
+        $nam = 0;
+        if ($thang > 12) {
+            $nam = floor($thang / 12);
+        }
+        if ($nam > 0) {
+            $thang = $thang - ($nam * 12);
+        }
+
+        return $thang * 30.5 * 24 * 3600 + $nam * 365 * 24 * 3600;
     }
 
 }

@@ -88,6 +88,11 @@ class Link {
             </a>
         </li>
         <li class="">
+            <a href="/dashboard/nhaptem/index">
+                <span>Nhập Tem</span>
+            </a>
+        </li>
+        <li class="">
             <a href="/khachhang/index">
                 <span>Đại Lý Bán Hàng</span>
 
@@ -112,6 +117,11 @@ class Link {
         <li class="dropdown">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">Quản Lý Sản Phẩm <span class="caret"></span></a>
             <ul class="dropdown-menu" role="menu">
+                <li class="">
+                    <a href="/sanpham/kho/">
+                        <span>Sản Phẩm</span>
+                    </a>
+                </li>
                 <li class="">
                     <a href="/sanpham/index/">
                         <span>Danh Mục Sản Phẩm</span>

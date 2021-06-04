@@ -20,24 +20,32 @@ class SanPham extends SanPhamData {
             if (!is_array($dv)) {
                 $dv = $this->GetById($dv);
             }
-            $this->Id = !empty($dv["Id"]) ? $dv["Id"] : null;
-            $this->Name = !empty($dv["Name"]) ? $dv["Name"] : null;
-            $this->idKhachHang = !empty($dv["idKhachHang"]) ? $dv["idKhachHang"] : null;
-            $this->Code = !empty($dv["Code"]) ? $dv["Code"] : null;
-            $this->ChungLoaiSP = !empty($dv["ChungLoaiSP"]) ? $dv["ChungLoaiSP"] : null;
-            $this->Mota = !empty($dv["Mota"]) ? $dv["Mota"] : null;
-            $this->Gia = !empty($dv["Gia"]) ? $dv["Gia"] : 0;
-            $this->HinhAnh = !empty($dv["HinhAnh"]) ? $dv["HinhAnh"] : null;
-            $this->DanhMuc = !empty($dv["DanhMuc"]) ? $dv["DanhMuc"] : null;
-            $this->TinhTrang = !empty($dv["TinhTrang"]) ? $dv["TinhTrang"] : 0;
-            $this->Wfstatus = !empty($dv["Wfstatus"]) ? $dv["Wfstatus"] : 0;
-            $this->MaDaiLy = !empty($dv["MaDaiLy"]) ? $dv["MaDaiLy"] : "";
-            $this->isLook = !empty($dv["isLook"]) ? $dv["isLook"] : "";
+            if ($dv) {
+                $this->Id = !empty($dv["Id"]) ? $dv["Id"] : null;
+                $this->Name = !empty($dv["Name"]) ? $dv["Name"] : null;
+                $this->idKhachHang = !empty($dv["idKhachHang"]) ? $dv["idKhachHang"] : null;
+                $this->Code = !empty($dv["Code"]) ? $dv["Code"] : null;
+                $this->ChungLoaiSP = !empty($dv["ChungLoaiSP"]) ? $dv["ChungLoaiSP"] : null;
+                $this->Mota = !empty($dv["Mota"]) ? $dv["Mota"] : null;
+                $this->Gia = !empty($dv["Gia"]) ? $dv["Gia"] : 0;
+                $this->HinhAnh = !empty($dv["HinhAnh"]) ? $dv["HinhAnh"] : null;
+                $this->DanhMuc = !empty($dv["DanhMuc"]) ? $dv["DanhMuc"] : null;
+                $this->TinhTrang = !empty($dv["TinhTrang"]) ? $dv["TinhTrang"] : 0;
+                $this->Wfstatus = !empty($dv["Wfstatus"]) ? $dv["Wfstatus"] : 0;
+                $this->MaDaiLy = !empty($dv["MaDaiLy"]) ? $dv["MaDaiLy"] : "";
+                $this->isLook = !empty($dv["isLook"]) ? $dv["isLook"] : "";
+            }
         }
     }
 
     function DanhMuc() {
-        return new \Module\option\Model\Option($this->DanhMuc);
+        if ($this->DanhMuc)
+            return new \Module\option\Model\Option($this->DanhMuc);
+        return new \Module\option\Model\Option();
+    }
+
+    function ChungLoaiSP() {
+        return new \Module\option\Model\Option($this->ChungLoaiSP);
     }
 
     public static function ListTinhTrang() {
@@ -50,7 +58,9 @@ class SanPham extends SanPhamData {
     }
 
     public function TinhTrang() {
-        return self::ListTinhTrang()[$this->TinhTrang];
+        if (isset(self::ListTinhTrang()[$this->TinhTrang]))
+            return self::ListTinhTrang()[$this->TinhTrang];
+        return self::ListTinhTrang()[self::DangOCty];
     }
 
     public static function SanPhams() {
@@ -63,13 +73,44 @@ class SanPham extends SanPhamData {
         return $SanPhamLog->GetByIdSP($this->Id);
     }
 
-    public static function SanPhamsPT($name, $pagesIndex, $pageNumber, &$tong) {
-        $pagesIndex = ($pagesIndex - 1) * $pageNumber;
+    public static function SanPhamsPT($option, $pagesIndex, $pageNumber, &$tong) {
         $sanpham = new SanPham();
-        $where = "`Name` like '%{$name}%'";
-        $tong = $sanpham->GetRowsNumber($where);
-        $where .= " limit {$pagesIndex},{$pageNumber}";
+        $pagesIndex = ($pagesIndex - 1) * $pageNumber;
+        if (is_array($option)) {
+            $name = $option["keyword"];
+            $danhmuc = $option["danhmuc"];
+            $danhmucSql = "";
+            if ($danhmuc != "0") {
+                $danhmucSql = "and `DanhMuc` = '{$danhmuc}'";
+            }
+            $where = "`Name` like '%{$name}%' and `Name` != '' $danhmucSql ";
+            $tong = $sanpham->GetRowsNumber($where);
+            $where .= " limit {$pagesIndex},{$pageNumber}";
+        } else {
+            $name = $option;
+            $where = "`Name` like '%{$name}%' and `Name` != '' ";
+            $tong = $sanpham->GetRowsNumber($where);
+            $where .= " limit {$pagesIndex},{$pageNumber}";
+        }
         return $sanpham->GetRowsByWhere($where);
+    }
+
+    function resettem() {
+        $where = "`Name` != ''";
+        $sanphams = $this->GetRowsByWhere($where);
+        foreach ($sanphams as $key => $sanPham) {
+            $sanPham["Name"] = "";
+            $sanPham["Mota"] = "";
+            $sanPham["Gia"] = 0;
+            $sanPham["MaDaiLy"] = "";
+            $sanPham["ChungLoaiSP"] = "";
+            $sanPham["HinhAnh"] = "";
+            $sanPham["DanhMuc"] = "";
+            $sanPham["idKhachHang"] = "";
+            $sanPham["TinhTrang"] = self::DangOCty;
+            $sanPham["isLook"] = false;
+            $this->UpdateSubmit($sanPham);
+        }
     }
 
     public function Code($code = null) {
@@ -128,10 +169,14 @@ class SanPham extends SanPhamData {
         return $options;
     }
 
+    /**
+     * Tao5 san pham
+     * @param {type} parameter
+     */
     public function TaoSanPham($code, $id = null) {
         $a = self::GetByCode($code);
         if ($a)
-            return;
+            return $a["Id"];
         if ($id) {
             $sanPham["Id"] = $id;
         }
@@ -147,6 +192,10 @@ class SanPham extends SanPhamData {
         return $this->InsertSubmit($sanPham);
     }
 
+    /**
+     * tim2 san pham them code
+     * @param {type} parameter
+     */
     public static function GetByCode($code) {
         $where = "`Code` like '{$code}'";
         $SanPham = new SanPham();
@@ -161,6 +210,7 @@ class SanPham extends SanPhamData {
         $sanPham["Name"] = $this->Name;
         $sanPham["MoTa"] = $this->Mota;
         $sanPham["Gia"] = $this->Gia;
+        $sanPham["MaDaiLy"] = $this->MaDaiLy;
         $sanPham["ChungLoaiSP"] = $this->ChungLoaiSP;
         $sanPham["HinhAnh"] = $this->HinhAnh;
         $sanPham["DanhMuc"] = $this->DanhMuc;
@@ -187,6 +237,18 @@ class SanPham extends SanPhamData {
         $tong = $SanPham->GetNumberRows($where);
         $where = "`MaDaiLy` in ({$MaDaiLy}) limit {$pagesIndex},{$pageNumber}";
         return $SanPham->GetRows($where);
+    }
+
+    public function LinkBaoHanh() {
+        return "https://cskhtmd.com/" . $this->TemBaoHang()->Code . "/";
+    }
+
+    public function LinkQRcodeBaoHanh() {
+        return "/public/phpqrcode/index.php?data=" . $this->LinkBaoHanh();
+    }
+
+    public function Id() {
+        return md5($this->Id);
     }
 
 }

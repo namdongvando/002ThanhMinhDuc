@@ -1,0 +1,75 @@
+<ol class="breadcrumb" >
+    <li><a href="/dashboard/index/scan" >Sanh Sách Nhập</a></li>
+    <li>Thêm </li>
+</ol>
+<div class="container">
+    <div class="row">
+        <div class="col-md-8">
+            <video style="width: 100%;margin: auto;" id="preview"></video>
+        </div>
+        <div class="col-md-4">
+            <div class="box box-primary">
+                <div class="box-header">
+                    <h3 class="box-title">Chọn Camera</h3>
+                </div>
+                <div class="box-body">
+                    <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                        <label class="btn btn-primary active">
+                            <input type="radio" name="options" value="0" autocomplete="off" checked> Camera 1
+                        </label>
+                        <label class="btn btn-primary ">
+                            <input type="radio" name="options" value="1" autocomplete="off" checked> Camera 2
+                        </label>
+                        <label class="btn btn-secondary">
+                            <input type="radio" name="options" value="2" autocomplete="off"> Camera 3
+                        </label>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="clearfix" ></div>
+<script src="/Module/dashboard/public/qrcode.js?v=<?php echo time(); ?>" type="text/javascript"></script>
+<?php
+$admin = \Module\user\Model\Admin::getCurentUser(true);
+$CodeQr = new \Model\CodeQR($admin->Username);
+$ds = $CodeQr->GetCodes();
+?>
+
+<div class="box box-primary">
+    <div class="box-header">
+        <h3 class="box-title">Danh Sách Mã</h3>
+        <div class="box-tools">
+            <a href="#" class="btn btn-primary" ><i class="fa fa-plus" ></i></a>
+        </div>
+    </div>
+    <div class="box-body">
+        <table class="table table-responsive" >
+            <thead>
+                <tr>
+                    <th style="width: 50px" >Stt</th>
+                    <th style="width: 150px"  >Mã Tem</th>
+                    <th>Tùy Chọn</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php
+                $index = 0;
+                foreach ($ds as $k => $code) {
+                    ?>
+                    <tr>
+                        <td><?php echo 1 + $index++; ?></td>
+                        <td><?php echo $code; ?></td>
+                        <td></td>
+                    </tr>
+                    <?php
+                }
+                ?>
+            </tbody>
+
+        </table>
+
+    </div>
+</div>

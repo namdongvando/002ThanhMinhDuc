@@ -24,7 +24,7 @@ class SanPhamData extends \datatable\ZendData implements \Model\IModel {
     }
 
     public function GetById($id) {
-        return $this->GetRowByWhere("`Id` = '{$id}'");
+        return $this->GetRowByWhere("`Id` = '{$id}' or md5(`Id`) = '{$id}'");
     }
 
     public function GetByName($name) {

@@ -1,0 +1,29 @@
+<ol class="breadcrumb" >
+    <li><a href="/dashboard/nhaptem/index" >Sanh Sách Nhập</a></li>
+    <li>Quét Mã</li>
+</ol>
+<div class="box box-primary">
+    <div class="box-body">
+        <video poster="/public/camera_loading.svg?v=<?php echo time(); ?>" style="width: 100%;margin: auto; max-height: 500px;" id="preview">
+            loadvideo
+        </video>
+    </div>
+    <div class="box-footer">
+        <div class="btn-group btn-group-toggle" data-toggle="buttons">
+            <label class="btn btn-primary active">
+                <input type="radio" name="options" value="0" autocomplete="off" checked> Camera 1
+            </label>
+            <label class="btn btn-primary ">
+                <input type="radio" name="options" value="1" autocomplete="off" checked> Camera 2
+            </label>
+            <label class="btn btn-primary">
+                <input type="radio" name="options" value="2" autocomplete="off"> Camera 3
+            </label>
+        </div>
+    </div>
+</div>
+<div id="Cams" class="">
+</div>
+<div class="thongbao bg-green" id="alertCode"></div>
+<div class="clearfix" ></div>
+<script src="/Module/dashboard/public/qrcode.js?v=<?php echo time(); ?>" type="text/javascript"></script>

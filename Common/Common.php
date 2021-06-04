@@ -13,6 +13,15 @@ class Common {
         exit();
     }
 
+    static function Actual_link() {
+        $actual_link = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
+        return $actual_link;
+    }
+
+    static function LinkQrcode($data) {
+        return "/public/phpqrcode/index.php?data=" . $data;
+    }
+
     static function RandomString($a) {
         $characters = "0123456789abcdefghjklzxcvbnmqwertyuiopasdfgh{}[]()!@#$%^&*";
         $randstring = "";
@@ -146,7 +155,7 @@ class Common {
         ;
     }
 
-    public static function PhanTrang($TongTrang = 3, $TrangHienTai, $DuongDan) {
+    public static function PhanTrang($TongTrang, $TrangHienTai, $DuongDan) {
         $PhanTrang = ' <ul class="pagination">';
         $PhanTrang .= "<li><a>{$TrangHienTai}/{$TongTrang}</a></li>";
         $tu = $TrangHienTai - 4;
