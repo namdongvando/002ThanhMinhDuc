@@ -61,7 +61,7 @@ $ds = $CodeQr->GetCodes();
                     <tbody id="DanhSachTem" class="ajaxAutoReload" data-target="#DanhSachTem" data-timeload="2000" data-urlcheck="/dashboard/nhaptem/coderefesh/" data-urldata="/dashboard/nhaptem/danhsachtem/"  >
                         <?php
                         $index = 0;
-                        if ($ds)
+                        if ($ds) {
                             foreach ($ds as $k => $code) {
                                 $temSP = new \Module\sanpham\Model\TemSanPham($code);
                                 if ($temSP->Code != "") {
@@ -78,6 +78,7 @@ $ds = $CodeQr->GetCodes();
                                     <?php
                                 }
                             }
+                        }
                         ?>
                     </tbody>
                 </table>

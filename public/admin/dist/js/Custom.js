@@ -81,6 +81,20 @@ const websiteToggle = function() {
 }
 
 $(function() {
+    $(".CheckAllCol").change(function() {
+        var self = $(this);
+        var role = $(this).attr("role");
+        var isCheck = self.prop("checked");
+        $("input[rolecol='" + role + "']").prop("checked", isCheck);
+
+    });
+    $(".CheckAllRows").change(function() {
+        var self = $(this);
+        var role = $(this).attr("role");
+        var isCheck = self.prop("checked");
+        $("input[rolerow='" + role + "']").prop("checked", isCheck);
+
+    });
     $(".btn-toggle").each(function() {
         try {
             var data = $(this).data();
@@ -88,7 +102,10 @@ $(function() {
             console.log(dataToggle);
             if (dataToggle.TimKiemtoggle == true) {
                 $(data.target).show();
+            } else {
+                $(data.target).hide();
             }
+
             $(this).click(function() {
                 if (dataToggle.TimKiemtoggle == false) {
                     $(data.target).show(500);

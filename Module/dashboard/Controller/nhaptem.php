@@ -4,10 +4,10 @@ namespace Module\dashboard\Controller;
 
 use Module\sanpham\Model\SanPhamForm;
 
-define("AppDir", "Module/dashboard");
-define("AppPath", "/Module/dashboard");
-
 class nhaptem extends \ApplicationM {
+
+    const AppDir = "Module/dashboard";
+    const AppPath = "/Module/dashboard";
 
     static public $UserLayout = "user";
 

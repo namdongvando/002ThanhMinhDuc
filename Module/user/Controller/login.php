@@ -2,13 +2,13 @@
 
 namespace Module\user\Controller;
 
-define("AppDir", "Module/user");
-define("Token", "Token");
-define("AppPath", "/Module/user");
-
 class login extends \ApplicationM {
 
     static public $UserLayout = "user";
+
+    const Token = 'Token';
+    const AppDir = "Module/user";
+    const AppPath = "/Module/user";
 
     function __construct() {
         \Core\ViewTheme::set_viewthene("backend");

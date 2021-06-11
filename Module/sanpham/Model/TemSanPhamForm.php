@@ -2,6 +2,8 @@
 
 namespace Module\sanpham\Model;
 
+use Module\user\Model\Admin;
+
 class TemSanPhamForm extends \PFBC\Form implements ITemSanPhamForm {
 
     public $Id;
@@ -23,6 +25,10 @@ class TemSanPhamForm extends \PFBC\Form implements ITemSanPhamForm {
         $Option = self::$Option;
         $Option["value"] = $value;
         $Option["required"] = true;
+        if (\Module\user\Model\Admin::CheckQuyen([Admin::Admin, Admin::SuperAdmin], true))
+            $Option["readonly"] = true;
+
+
         return new \PFBC\Element\Textbox("Nội Dung Bảo Hành", "temsanpham[Name]", $Option);
     }
 
@@ -64,6 +70,8 @@ class TemSanPhamForm extends \PFBC\Form implements ITemSanPhamForm {
         $Option["class"] = "date form-control";
         $Option["autocomplete"] = "off";
         $Option["type"] = "text";
+        if (\Module\user\Model\Admin::CheckQuyen([Admin::Admin, Admin::SuperAdmin], true))
+            $Option["readonly"] = true;
         return new \PFBC\Element\Textbox("Ngày Bắt Đầu", "temsanpham[" . __FUNCTION__ . "]", $Option);
     }
 
@@ -71,11 +79,15 @@ class TemSanPhamForm extends \PFBC\Form implements ITemSanPhamForm {
         $Option = self::$Option;
         $Option["value"] = $value;
         $Option["type"] = "";
+        if (\Module\user\Model\Admin::CheckQuyen([Admin::Admin, Admin::SuperAdmin], true))
+            $Option["readonly"] = true;
         return new \PFBC\Element\Textbox("Ngày Kết Thúc", "temsanpham[" . __FUNCTION__ . "]", $Option);
     }
 
     public static function ThangKetThuc($value = null) {
         $Option = self::$Option;
+        if (\Module\user\Model\Admin::CheckQuyen([Admin::Admin, Admin::SuperAdmin], true))
+            $Option["disabled"] = true;
         $Option["value"] = $value;
         $Option["type"] = "date";
         $Option["class"] = "select2 form-control";
@@ -93,6 +105,8 @@ class TemSanPhamForm extends \PFBC\Form implements ITemSanPhamForm {
     public static function Status($value = null) {
         $Option = self::$Option;
         $Option["value"] = $value;
+//        if (\Module\user\Model\Admin::CheckQuyen([Admin::Admin, Admin::SuperAdmin], true))
+//            $Option["disabled"] = true;
         $Option["style"] = "width: 100%";
         $options = TemSanPham::GetStatus();
         return new \PFBC\Element\Select("Tình Trạng", "temsanpham[" . __FUNCTION__ . "]", $options, $Option);

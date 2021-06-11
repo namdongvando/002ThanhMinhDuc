@@ -83,12 +83,12 @@ $KhachHang = new Module\khachhang\Model\KhachHang($KhachHang);
                                         ?>
                                     </div>
 
-                                    <div class="col-md-4">
+                                    <div class="col-md-4 hidden">
                                         <?php
                                         Module\khachhang\Model\KhachHangForm::DiDong($KhachHang->DiDong)->renderHTML();
                                         ?>
                                     </div>
-                                    <div class="col-md-4">
+                                    <div class="col-md-4 hidden">
                                         <?php
                                         Module\khachhang\Model\KhachHangForm::Zalo($KhachHang->Zalo)->renderHTML();
                                         ?>
@@ -110,7 +110,7 @@ $KhachHang = new Module\khachhang\Model\KhachHang($KhachHang);
                                 <legend>Địa Chỉ</legend>
                                 <div class="row">
 
-                                    <div class="col-md-4">
+                                    <div class="col-md-4 hidden">
                                         <?php
                                         Module\khachhang\Model\KhachHangForm::KhuVuc($KhachHang->KhuVuc)->renderHTML();
                                         ?>
@@ -160,7 +160,7 @@ $KhachHang = new Module\khachhang\Model\KhachHang($KhachHang);
                                         Module\khachhang\Model\KhachHangThanhToanForm::NganHang($KhachHang->KhachHangThanhToan()->NganHang)->renderHTML();
                                         ?>
                                     </div>
-                                    <div class="col-md-4">
+                                    <div class="col-md-4 hidden">
                                         <?php
                                         Module\khachhang\Model\KhachHangThanhToanForm::Fax($KhachHang->KhachHangThanhToan()->Fax)->renderHTML();
                                         ?>

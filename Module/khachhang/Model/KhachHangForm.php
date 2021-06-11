@@ -46,7 +46,7 @@ class KhachHangForm extends \PFBC\Form implements IKhachHangForm {
         $Option["value"] = $value;
         $Option["required"] = true;
         $options = KhachHang::GetALL2Options();
-        $options = $options + ["Là Cấp Cha"];
+        $options = ["Là Cấp Cha"] + $options;
         return new \PFBC\Element\Select("Cấp Cha", "khachhang[Parents]", $options, $Option);
     }
 

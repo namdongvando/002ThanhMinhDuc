@@ -16,18 +16,18 @@ class KhachHangTieuDung extends KhachHangTieuDungData {
                     $dv = $this->GetByCode($code);
                 }
             }
-            $this->Id = !empty($dv["Id"]) ? $dv["Id"] : null;
-            $this->Name = !empty($dv["Name"]) ? $dv["Name"] : null;
-            $this->Code = !empty($dv["Code"]) ? $dv["Code"] : "";
-            $this->Phone = !empty($dv["Phone"]) ? $dv["Phone"] : null;
-            $this->DiaChi = !empty($dv["DiaChi"]) ? $dv["DiaChi"] : null;
-            $this->CMNN = !empty($dv["CMNN"]) ? $dv["CMNN"] : null;
-            $this->GhiChu = !empty($dv["GhiChu"]) ? $dv["GhiChu"] : null;
-            $this->SubData = !empty($dv["SubData"]) ? $dv["SubData"] : null;
-            $this->TinhThanh = !empty($dv["TinhThanh"]) ? $dv["TinhThanh"] : null;
-            $this->QuanHuyen = !empty($dv["QuanHuyen"]) ? $dv["QuanHuyen"] : null;
-            $this->KhuVuc = !empty($dv["KhuVuc"]) ? $dv["KhuVuc"] : null;
         }
+        $this->Id = !empty($dv["Id"]) ? $dv["Id"] : null;
+        $this->Name = !empty($dv["Name"]) ? $dv["Name"] : null;
+        $this->Code = !empty($dv["Code"]) ? $dv["Code"] : "";
+        $this->Phone = !empty($dv["Phone"]) ? $dv["Phone"] : null;
+        $this->DiaChi = !empty($dv["DiaChi"]) ? $dv["DiaChi"] : null;
+        $this->CMNN = !empty($dv["CMNN"]) ? $dv["CMNN"] : null;
+        $this->GhiChu = !empty($dv["GhiChu"]) ? $dv["GhiChu"] : null;
+        $this->SubData = !empty($dv["SubData"]) ? $dv["SubData"] : null;
+        $this->TinhThanh = !empty($dv["TinhThanh"]) ? $dv["TinhThanh"] : 32;
+        $this->QuanHuyen = !empty($dv["QuanHuyen"]) ? $dv["QuanHuyen"] : null;
+        $this->KhuVuc = !empty($dv["KhuVuc"]) ? $dv["KhuVuc"] : null;
     }
 
     function TinhThanh() {

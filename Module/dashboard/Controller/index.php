@@ -2,10 +2,10 @@
 
 namespace Module\dashboard\Controller;
 
-define("AppDir", "Module/dashboard");
-define("AppPath", "/Module/dashboard");
-
 class index extends \ApplicationM {
+
+    const AppDir = "Module/dashboard";
+    const AppPath = "/Module/dashboard";
 
     static public $UserLayout = "user";
 

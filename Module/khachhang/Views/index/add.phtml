@@ -70,23 +70,23 @@ $KhachHang = new Module\khachhang\Model\KhachHang();
 
                                     <div class="col-md-4">
                                         <?php
-                                        Module\khachhang\Model\KhachHangForm::LoaiHinhKinhDoanh($KhachHang->LoaiHinhKinhDoanh)->renderHTML();
+                                        Module\khachhang\Model\KhachHangForm::LoaiHinhKinhDoanh('XD')->renderHTML();
                                         ?>
                                     </div>
 
 
                                     <div class="col-md-4">
                                         <?php
-                                        Module\khachhang\Model\KhachHangForm::LaChuKinhDoanh($KhachHang->LaChuKinhDoanh)->renderHTML();
+                                        Module\khachhang\Model\KhachHangForm::LaChuKinhDoanh(1)->renderHTML();
                                         ?>
                                     </div>
 
-                                    <div class="col-md-4">
+                                    <div class="col-md-4 hidden">
                                         <?php
                                         Module\khachhang\Model\KhachHangForm::DiDong($KhachHang->DiDong)->renderHTML();
                                         ?>
                                     </div>
-                                    <div class="col-md-4">
+                                    <div class="col-md-4 hidden">
                                         <?php
                                         Module\khachhang\Model\KhachHangForm::Zalo($KhachHang->Zalo)->renderHTML();
                                         ?>
@@ -96,7 +96,7 @@ $KhachHang = new Module\khachhang\Model\KhachHang();
                                         Module\khachhang\Model\KhachHangForm::MaSoThue($KhachHang->MaSoThue)->renderHTML();
                                         ?>
                                     </div>
-                                    <div class="col-md-4">
+                                    <div class="col-md-4 hidden">
                                         <?php
                                         Module\khachhang\Model\KhachHangForm::NhomHangKinhDoanh($KhachHang->NhomHangKinhDoanh)->renderHTML();
                                         ?>
@@ -108,19 +108,19 @@ $KhachHang = new Module\khachhang\Model\KhachHang();
                                 <legend>Địa Chỉ</legend>
                                 <div class="row">
 
-                                    <div class="col-md-4">
+                                    <div class="col-md-4 hidden">
                                         <?php
                                         Module\khachhang\Model\KhachHangForm::KhuVuc($KhachHang->KhuVuc)->renderHTML();
                                         ?>
                                     </div>
                                     <div class="col-md-4">
                                         <?php
-                                        Module\khachhang\Model\KhachHangForm::TinhThanh($KhachHang->TinhThanh)->renderHTML();
+                                        Module\khachhang\Model\KhachHangForm::TinhThanh(32)->renderHTML();
                                         ?>
                                     </div>
                                     <div class="col-md-4">
                                         <?php
-                                        Module\khachhang\Model\KhachHangForm::QuanHuyen($KhachHang->QuanHuyen)->renderHTML();
+                                        Module\khachhang\Model\KhachHangForm::QuanHuyen(null, 32)->renderHTML();
                                         ?>
                                     </div>
                                     <div class="col-md-12">
@@ -163,7 +163,7 @@ $KhachHang = new Module\khachhang\Model\KhachHang();
                                         Module\khachhang\Model\KhachHangThanhToanForm::NganHang($KhachHang->KhachHangThanhToan()->NganHang)->renderHTML();
                                         ?>
                                     </div>
-                                    <div class="col-md-4">
+                                    <div class="col-md-4 hidden">
                                         <?php
                                         Module\khachhang\Model\KhachHangThanhToanForm::Fax($KhachHang->KhachHangThanhToan()->Fax)->renderHTML();
                                         ?>

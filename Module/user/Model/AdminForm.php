@@ -53,6 +53,7 @@ class AdminForm {
         $properties["value"] = $value;
         $properties["type"] = "email";
         $properties["required"] = true;
+        $properties["autocomplete"] = "off";
         return new Element\Textbox("Email", "users[Email]", $properties);
     }
 
@@ -60,6 +61,7 @@ class AdminForm {
     $value = "") {
         $properties = self::$options;
         $properties["value"] = $value;
+        $properties["autocomplete"] = "off";
         return new Element\Textbox("SĐT", "users[Phone]", $properties);
     }
 
@@ -67,6 +69,7 @@ class AdminForm {
     $value = "", $custom = null) {
         $properties = self::$options;
         $properties[" value"] = $value;
+        $properties["autocomplete"] = "off";
         return new Element\Textbox("Địa Chỉ", "users[Address]", $properties);
     }
 
@@ -131,11 +134,30 @@ class AdminForm {
         $properties = self::$options;
         $properties["value"] = [$value];
         $properties["required"] = true;
-        $properties["style"] = "width:100%;
-                ";
+        $properties["style"] = "width:100%;";
         $ModelAdmin = new AdminStatus();
         $options = $ModelAdmin->Get2Option();
         return new Element\Select("Tình Trạng", "users[Active]", $options, $properties);
+    }
+
+    public static function LinkSua($id) {
+        if (Admin::CheckQuyen([Admin::Admin, Admin::SuperAdmin]) == false) {
+            return;
+        }
+        return <<<LINKSUA
+        <a href="/user/users/edit/{$id}" class="btn btn-xs btn-primary" >Sửa</a>
+
+LINKSUA;
+    }
+
+    public static function LinkXoa($id) {
+        if (Admin::CheckQuyen([Admin::Admin, Admin::SuperAdmin]) == false) {
+            return;
+        }
+        return <<<LINKSUA
+        <a href="/user/users/delete/{$id}" data-confirm="Bạn Muốn Xóa User Này" class="btn xoa btn-xs btn-danger" >Xóa</a>
+
+LINKSUA;
     }
 
 }

@@ -1,22 +1,14 @@
 <?php
-$pagesIndex = !empty($_Param[0]) ? $_Param[0] : 1;
-$pagesNumber = !empty($_Param[1]) ? $_Param[1] : 10;
-$name = !empty($_Param[2]) ? $_Param[2] : "";
 $tong = 0;
+$pagesIndex = isset($_GET["pagesIndex"]) ? intval($_GET["pagesIndex"]) : 1;
+$pagesNumber = isset($_GET["pagesNumber"]) ? intval($_GET["pagesNumber"]) : 10;
+$name = isset($_GET["keyword"]) ? $_GET["keyword"] : "";
 $KhachHangs = \Module\khachhang\Model\KhachHang::KhachHangsPT($name, $pagesIndex, $pagesNumber, $tong);
 //var_dump($KhachHangs);
 $linkNumberIndex = '/khachhang/index/index/1/';
 $linkTimKiem = '/khachhang/index/index/1/10/';
 ?>
 
-<script type="text/javascript" >
-    app.controller("optionController", function($scope, $http) {
-        $scope.optionInnit = function( ) {
-            $http.get("/option/api/options/").then(function(res) {
-            });
-        }
-    });
-</script>
 <ol class="breadcrumb">
     <li>
         <a href="/dashboard/">Dashboad</a>
@@ -24,78 +16,88 @@ $linkTimKiem = '/khachhang/index/index/1/10/';
     <li class="active">Đại lý bán hàng</li>
 </ol>
 <div class="" >
-    <section class="container-fluid" >
-        <?php
-        \Module\khachhang\Model\KhachHangForm::btnThem("Thêm Khách Hàng");
-        ?>
-        <button class="btn btn-primary" data-toggle="modal" data-target='#ImportModel'>Import</button>
-    </section>
     <div class="container-fluid">
-        <section class="pb-10 mt-20" >
-            <div class="connectedSortable" >
+        <section class="pb-10 " >
+            <div class=" " >
                 <div class="box box-primary" >
-                    <div class="box-body table-responsive" >
-
-
-                        <table class="table table-bordered   "    >
-                            <thead>
-                                <tr>
-                                    <th colspan="9" >
-                                        <select class="pull-left" style="width: 100px;"  name="" onchange="window.location.href = '<?php echo $linkNumberIndex; ?>' + this.value" >
-                                            <option <?php echo $pagesNumber == 10 ? "selected" : ""; ?>  value="10" >10 Dòng</option>
-                                            <option <?php echo $pagesNumber == 20 ? "selected" : ""; ?> value="20" >20 Dòng</option>
-                                            <option <?php echo $pagesNumber == 50 ? "selected" : ""; ?> value="50" >50 Dòng</option>
-                                            <option <?php echo $pagesNumber == 100 ? "selected" : ""; ?> value="100">100 Dòng</option>
-                                        </select>
-                                        <div class="pull-right input-group" style="width: 150px;">
-                                            <input value="<?php echo $name; ?>" onchange="window.location.href = '<?php echo $linkTimKiem; ?>' + this.value" type="text" name="table_search" class="form-control input-sm pull-right" placeholder="Search">
-                                            <div class="input-group-btn">
-                                                <button class="btn btn-sm btn-default"><i class="fa fa-search"></i></button>
-                                            </div>
-                                        </div>
-                                    </th>
-                                </tr>
-                                <tr class="bg-blue" >
-                                    <th>#</th>
-                                    <th>Mã</th>
-                                    <th>Tên Khách Hàng</th>
-                                    <th>Địa Chỉ</th>
-                                    <th>Tỉnh Thành</th>
-                                    <th>Quận Huyện</th>
-                                    <th>Khu Vực</th>
-                                    <th>SĐT</th>
-                                    <th style="width:180px;" ></th>
-                                </tr>
-                            </thead>
-                            <tbody>
+                    <div class="box-header">
+                        <h3 class="box-title" >Danh Sách Đại Lý</h3>
+                        <div class="box-tools">
+                            <?php
+                            \Module\khachhang\Model\KhachHangForm::btnThem("Thêm");
+                            ?>
+                            <button class="btn btn-primary" data-toggle="modal" data-target='#ImportModel'>Import</button>
+                            <button type="button" data-target="#TimKiem" class="btn-toggle btn btn-primary" ><i class="fa fa-search" ></i></button>
+                        </div>
+                    </div>
+                    <div class="box-body " >
+                        <div class="row">
+                            <div class="col-md-3 " style="display: none;" id="TimKiem" >
                                 <?php
-                                foreach ($KhachHangs as $index => $kh) {
-                                    $Modelkh = new Module\khachhang\Model\KhachHang($kh);
+                                Model\FormOptions::TimKiem($name, ["id" => "TuKhoa", "onchange" => "TimKiemSanPham()"])->renderHTMLIcon("search");
+                                ?>
+                            </div>
+                        </div>
+
+                        <div class="table-responsive">
+                            <table class="table table-hover table-bordered   "    >
+                                <thead>
+                                    <tr class="bg-blue" >
+                                        <th style="width: 50px;" >#</th>
+                                        <th>Mã</th>
+                                        <th>Tên Khách Hàng</th>
+                                        <th>Địa Chỉ</th>
+                                        <th>SĐT</th>
+                                        <th>Tỉnh Thành</th>
+                                        <th>Quận Huyện</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <?php
+                                    foreach ($KhachHangs as $index => $kh) {
+                                        $Modelkh = new Module\khachhang\Model\KhachHang($kh);
+                                        ?>
+                                        <tr>
+                                            <th><?php echo ($pagesNumber * ($pagesIndex - 1) ) + $index + 1; ?></th>
+                                            <th >
+                                                <a href="/khachhang/index/edit/<?php echo sha1($Modelkh->Id); ?>"  >
+                                                    <?php echo $Modelkh->Code ?>
+                                                </a>
+                                            </th>
+                                            <th >
+                                                <a href="/khachhang/index/edit/<?php echo sha1($Modelkh->Id); ?>"  >
+                                                    <?php echo $Modelkh->Name ?>
+                                                </a>
+                                            </th>
+                                            <th ><?php echo $Modelkh->DiaChi ?></th>
+                                            <th  ><?php echo $Modelkh->DienThoai ?></th>
+                                            <th><?php echo $Modelkh->TinhThanh()->Name; ?></th>
+                                            <th><?php echo $Modelkh->QuanHuyen()->Name; ?></th>
+                                        </tr>
+                                        <?php
+                                    }
                                     ?>
-                                    <tr>
-                                        <th><?php echo ($pagesNumber * ($pagesIndex - 1) ) + $index + 1; ?></th>
-                                        <th   ><?php echo $Modelkh->Code ?></th>
-                                        <th   ><?php echo $Modelkh->Name ?></th>
-                                        <th   ><?php echo $Modelkh->DiaChi ?></th>
-                                        <th><?php echo $Modelkh->TinhThanh()->Name; ?></th>
-                                        <th><?php echo $Modelkh->QuanHuyen()->Name; ?></th>
-                                        <th><?php echo $Modelkh->KhuVuc()->Name ?></th>
-                                        <th  ><?php echo $Modelkh->DienThoai ?></th>
-                                        <th>
-                                            <a href="/khachhang/index/edit/<?php echo sha1($Modelkh->Id); ?>" class="btn btn-primary" >Xem</a>
-                                            <a  href="/khachhang/index/delete/<?php echo sha1($Modelkh->Id); ?>" data-confirm="Xóa Khách Hàng Này?" class="btn xoa btn-danger" >Xóa</a>
+                                </tbody>
+                                <tfoot>
+                                    <tr >
+                                        <th colspan="7" class="no-padding" >
+                                            <div class="col-xs-2 col-md-1 mt-10" style="" >
+                                                <?php
+                                                Model\FormOptions::HienThi($pagesNumber, ["id" => "HienThi", "onchange" => "TimKiemSanPham()"])->render();
+                                                ?>
+                                            </div>
+                                            <div class="col-xs-10 col-md-11 "   >
+                                                <?php
+                                                $linkPagination = "/khachhang/index/index/?pagesIndex=[i]&pagesNumber={$pagesNumber}&keyword={$name}";
+                                                echo Common\Common::PhanTrang(ceil($tong / $pagesNumber), $pagesIndex, $linkPagination);
+                                                ?>
+                                            </div>
                                         </th>
                                     </tr>
-                                    <?php
-                                }
-                                ?>
-                            </tbody>
+                                </tfoot>
+                            </table>
+                        </div>
 
-                        </table>
-                        <?php
-                        $linkPagination = "/khachhang/index/index/[i]/{$pagesNumber}";
-                        echo Common\Common::PhanTrang(ceil($tong / $pagesNumber), $pagesIndex, $linkPagination);
-                        ?>
                     </div>
                 </div>
             </div>
@@ -125,3 +127,13 @@ $linkTimKiem = '/khachhang/index/index/1/10/';
         </div>
     </form>
 </div>
+<script type="text/javascript" >
+    function TimKiemSanPham() {
+        var path = "/khachhang/index/index/?pagesIndex=1&pagesNumber=[pn]&keyword=[key]";
+        var tukhoa = $("#TuKhoa").val();
+        var hienThi = $("#HienThi").val();
+        path = path.replace('[pn]', hienThi);
+        path = path.replace('[key]', tukhoa);
+        window.location.href = path;
+    }
+</script>

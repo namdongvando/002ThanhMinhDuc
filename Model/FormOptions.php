@@ -14,7 +14,7 @@ class FormOptions {
 
     private static $FormClass = ["class" => "form-control"];
 
-    static function HienThu($val, $pro = []) {
+    static function HienThi($val, $pro = []) {
         $properties = self::$FormClass;
         $properties["value"] = $val;
         if ($pro) {
@@ -42,6 +42,17 @@ class FormOptions {
         }
         $name = isset($properties["name"]) ? $properties["name"] : __FUNCTION__;
         return new FormRender(new Element\Search("Tìm Kiếm", $name, $properties));
+    }
+
+    public static function BtnModal($title, $target, $propertiesCustom = "") {
+        $properties["data-toggle"] = 'modal';
+        $properties["data-target"] = $target;
+        $properties["class"] = $propertiesCustom["class"];
+        if (!empty($propertiesCustom["permistion"])) {
+            $properties["disabled"] = $propertiesCustom["permistion"];
+        }
+
+        return new FormRender(new Element\Button($title, "button", $properties));
     }
 
 }

@@ -2,16 +2,24 @@
 
 namespace Module\user\Controller;
 
-define("AppDir", "Module/user");
 define("Token", "Token");
-define("AppPath", "/Module/user");
+
+use Module\user\Model\AdminStatus;
 
 class users extends \ApplicationM implements \Controller\IController {
+
+    const AppDir = "Module/user";
+    const AppPath = "/Module/user";
 
     static public $UserLayout = "user";
 
     function __construct() {
         new \Controller\backend();
+    }
+
+    public function index() {
+
+        return $this->ViewThemeModlue();
     }
 
     public function create() {
@@ -35,7 +43,7 @@ class users extends \ApplicationM implements \Controller\IController {
                     throw new \Exception("Email đã được sử dụng");
                 }
                 $user["Phone"] = $_newUser["Phone"];
-                if (strlen($user["Phone"]) > 10) {
+                if (strlen($user["Phone"]) > 13) {
                     throw new \Exception("Số Điện Thoại Quá Dài");
                 }
                 $user["Active"] = $_newUser["Active"];
@@ -52,7 +60,14 @@ class users extends \ApplicationM implements \Controller\IController {
     }
 
     public function delete() {
-
+        $id = $this->getParam()[0];
+        $admin = new \Module\user\Model\Admin();
+        $User = $admin->GetById($id);
+        if ($User) {
+            $User["Active"] = AdminStatus::sXoa;
+            $admin->updateUserInfor($User);
+        }
+        \Common\Common::toUrl();
     }
 
     public function detail() {
@@ -95,11 +110,6 @@ class users extends \ApplicationM implements \Controller\IController {
         $id = $this->getParam()[0];
         $admin = $admin->GetById($id);
         return $this->ViewThemeModlue(["admin" => $admin]);
-    }
-
-    public function index() {
-
-        return $this->ViewThemeModlue();
     }
 
     public function import() {

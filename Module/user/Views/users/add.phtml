@@ -1,0 +1,68 @@
+<?php
+$admin = new Module\user\Model\Admin();
+?>
+<ol class="breadcrumb">
+    <li><a href="/user/users/index"  >Danh Sách Tài Khoản</a></li>
+    <li><a   >Thêm Tài Khoản</a></li>
+</ol>
+<div class="container">
+    <form method="POST" action="/user/users/create/" enctype="multipart/form-data" >
+        <div class="box box-primary">
+            <div class="box-header">
+                <h4 class="box-title">Thêm Tài Khoản</h4>
+                <div class="box-tools">
+                    <!--<a href="" class="btn btn-primary" ><i class="fa fa-minus" ></i></a>-->
+                </div>
+            </div>
+            <div class="box-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <?php
+                        Module\user\Model\AdminForm::Name($admin->Name)->renderHTML();
+                        ?>
+                    </div>
+                    <div class="col-md-6">
+                        <?php
+                        Module\user\Model\AdminForm::Username($admin->Username)->renderHTML();
+                        ?>
+                    </div>
+                    <div class="col-md-6">
+                        <?php
+                        Module\user\Model\AdminForm::Email($admin->Email)->renderHTML();
+                        ?>
+                    </div>
+                    <div class="col-md-6">
+                        <?php
+                        Module\user\Model\AdminForm::Password($admin->Password)->renderHTML();
+                        ?>
+                    </div>
+                    <div class="col-md-6">
+                        <?php
+                        Module\user\Model\AdminForm::Phone($admin->Phone)->renderHTML();
+                        ?>
+                    </div>
+                    <div class="col-md-6">
+                        <?php
+                        Module\user\Model\AdminForm::Address($admin->Address)->renderHTML();
+                        ?>
+                    </div>
+                    <div class="col-md-6">
+                        <?php
+                        Module\user\Model\AdminForm::Active(\Module\user\Model\AdminStatus::sActive)->renderHTML();
+                        ?>
+                    </div>
+                    <div class="col-md-6">
+                        <?php
+                        Module\user\Model\AdminForm::Groups(\Module\user\Model\userGroups::DaiLy)->renderHTML();
+                        ?>
+                    </div>
+                </div>
+            </div>
+            <div class="box-footer">
+                <button type="button" class="btn btn-default" data-dismiss="box">Đóng</button>
+                <button type="submit" name="btnsave" class="pull-right btn btn-success">Thêm</button>
+            </div>
+        </div>
+
+    </form>
+</div>

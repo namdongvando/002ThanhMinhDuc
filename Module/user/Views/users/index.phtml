@@ -1,188 +1,110 @@
-<script type="text/javascript" >
-    app.controller("usersController", function($scope, $http) {
-        $scope.usersInnit = function( ) {
-            $http.get("/user/api/users/").then(function(res) {
-                $scope._Users = res.data;
-            });
-        }
-        $scope.usersActive = function() {
-            $http.get("/user/api/usersActive/").then(function(res) {
-                $scope._Users = res.data;
-            });
-        }
-        $scope.usersLocked = function() {
-            $http.get("/user/api/usersLocked/").then(function(res) {
-                $scope._Users = res.data;
-            });
-        }
-        $scope.usersDelete = function() {
-            $http.get("/user/api/usersDelete/").then(function(res) {
-                $scope._Users = res.data;
-            });
-        }
-
-    });
-
-</script>
-<div class="" ng-controller="usersController" ng-init="usersActive()" >
+<?php
+$ModelAdmin = new Module\user\Model\Admin();
+$name = !empty($_GET["keyword"]) ? $_GET["keyword"] : "";
+$pagesIndex = !empty($_GET["pagesIndex"]) ? $_GET["pagesIndex"] : 1;
+$pageNumber = !empty($_GET["pageNumber"]) ? $_GET["pageNumber"] : 10;
+$tong = 0;
+$TaiKhoans = $ModelAdmin->GetAllPT(["keyword" => $name, "Active" => [1, 2]], $pagesIndex, $pageNumber, $tong);
+$linkPhanTrang = "/user/users/index/?pagesIndex=[i]&pageNumber={$pageNumber}&keyword={$name}";
+?>
+<div class=""  >
     <ol class="breadcrumb">
-
+        <li><a href="#"  >Danh Sách Tài Khoản </a></li>
     </ol>
     <div class="container-fluid " >
         <section class="pb-10" >
             <div class="" >
-                <form method="POST" action="/user/users/create/" enctype="multipart/form-data" >
-                    <div class="modal fade" data-backdrop="false"  id="ThemOptions">
-                        <div class="modal-dialog modal-lg">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                                    <h4 class="modal-title">Thêm Tài Khoản</h4>
-                                </div>
-                                <div class="modal-body">
-                                    <div class="row">
-                                        <div class="col-md-6">
-                                            <?php
-                                            Module\user\Model\AdminForm::Name()->renderHTML();
-                                            ?>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <?php
-                                            Module\user\Model\AdminForm::Username()->renderHTML();
-                                            ?>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <?php
-                                            Module\user\Model\AdminForm::Email()->renderHTML();
-                                            ?>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <?php
-                                            Module\user\Model\AdminForm::Password()->renderHTML();
-                                            ?>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <?php
-                                            Module\user\Model\AdminForm::Phone()->renderHTML();
-                                            ?>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <?php
-                                            Module\user\Model\AdminForm::Address()->renderHTML();
-                                            ?>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <?php
-                                            Module\user\Model\AdminForm::Active()->renderHTML();
-                                            ?>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <?php
-                                            Module\user\Model\AdminForm::Groups()->renderHTML();
-                                            ?>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-default" data-dismiss="modal">Đóng</button>
-                                    <button type="submit" name="btnsave" class="btn btn-primary">Thêm</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </form>
                 <div class="box box-primary" >
                     <div class="box-header" >
-
                         <div class="box-tools" >
-                            <a class="btn btn-sm btn-primary" data-toggle="modal" href='#ThemOptions'>
+                            <a href="/user/users/add" class="btn btn-sm btn-primary" >
                                 <i class="fa fa-plus" ></i>
                                 Thêm
                             </a>
                             <a class="btn btn-sm btn-primary" data-toggle="modal" href='#importExcell'>Import</a>
+                            <button data-target="#TimKiem" class="btn btn-toggle btn-sm btn-primary" ><i class="fa fa-search-plus" ></i></button>
                         </div>
-                        <h3 class="box-title" >Tài Khoản </h3>
+                        <h3 class="box-title" >Danh Sách Tài Khoản (<?php echo $tong; ?>)</h3>
                     </div>
                     <div class="box-body table-responsive" >
+                        <div class="" id="TimKiem" >
+                            <div class="form-inline">
+                                <?php
+                                Model\FormOptions::TimKiem($name, ["id" => "TuKhoa", "onchange" => "TimKiemSanPham()"])->render();
+                                ?>
+                            </div>
+                        </div>
                         <table class="table table-bordered" >
                             <thead>
-                                <tr>
-                                    <td colspan="9" >
-                                        <div class="btn-group btn-group-sm pull-right" >
-                                            <button  type="button" ng-click="usersInnit()" class="btn  btn-sm btn-default" >Tất Cả</button>
-                                            <button  type="button" ng-click="usersActive()" class="btn btn-sm btn-success" >Kích Hoạt</button>
-                                            <button  type="button" ng-click="usersLocked()" class="btn btn-sm btn-warning" >Bị Khóa</button>
-                                            <button  type="button" ng-click="usersDelete()" class="btn btn-sm btn-danger" >Xóa</button>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <th></th>
-                                    <th>#</th>
+                                <tr class="bg-blue" >
+                                    <th style="width: 90px;" >Action</th>
+                                    <th class="text-center" style="width: 50px;" >#</th>
                                     <th>Tài Khoản</th>
                                     <th>Họ & Tên</th>
                                     <th>Email</th>
                                     <th>Nhóm</th>
-                                    <th>Tình Trạng</th>
                                     <th>SĐT</th>
-                                    <th>Address</th>
+                                    <th>Tình Trạng</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr ng-repeat="item in _Users" >
-                                    <td>
-                                        <a href="/user/users/edit/{{item.Id}}" class="btn-sm btn btn-success" >
-                                            <i class="fa fa-edit" ></i>
-                                        </a>
-                                    </td>
-                                    <td>{{$index + 1}}</td>
-                                    <td>{{item.Username}}</td>
-                                    <td>{{item.Name}}</td>
-                                    <td>{{item.Email}}</td>
-                                    <td>{{item.ProjectName}}</td>
-                                    <td>{{item.ActiveName}}</td>
-                                    <td>{{item.Phone}}</td>
-                                    <td>{{item.Address}}</td>
-                                </tr>
+                                <?php
+//                                var_dump($TaiKhoans);
+                                if ($TaiKhoans)
+                                    foreach ($TaiKhoans as $k => $value) {
+                                        $_Taikhoan = new Module\user\Model\Admin($value);
+                                        ?>
+                                        <tr >
+                                            <th>
+                                                <?php
+                                                echo \Module\user\Model\AdminForm::LinkSua($_Taikhoan->Id);
+                                                echo \Module\user\Model\AdminForm::LinkXoa($_Taikhoan->Id);
+                                                ?>
+                                            </th>
+                                            <th class="text-center" ><?php echo \Common\Common::GetIndex($k, $pagesIndex, $pageNumber); ?></th>
+                                            <th><?php echo $_Taikhoan->Username ?></th>
+                                            <th><?php echo $_Taikhoan->Name; ?></th>
+                                            <th><?php echo $_Taikhoan->Email ?></th>
+                                            <th><?php echo $_Taikhoan->Groups()->Name ?></th>
+                                            <th><?php echo $_Taikhoan->Phone ?></th>
+                                            <th><?php echo $_Taikhoan->Active()->Name; ?></th>
+                                        </tr>
+                                        <?php
+                                    }
+                                ?>
+
                             </tbody>
-                            <tfoot>
-                                <tr>
-                                    <th></th>
-                                    <th>#</th>
-                                    <th>Tài Khoản</th>
-                                    <th>Họ & Tên</th>
-                                    <th>Email</th>
-                                    <th>Nhóm</th>
-                                    <th>Tình Trạng</th>
-                                    <th>SĐT</th>
-                                    <th>Address</th>
-                                </tr>
-                            </tfoot>
 
                         </table>
+
+                    </div>
+                    <div class="box-footer" >
+                        <div class="row">
+
+                            <div class="col-md-1 col-sm-4 mt-10">
+                                <?php
+                                Model\FormOptions::HienThi($pageNumber, ["id" => "HienThi", "onchange" => "TimKiemSanPham()"])->render();
+                                ?>
+                            </div>
+                            <div class="col-md-11 col-sm-8 ">
+                                <?php
+                                echo \Common\Common::PhanTrang(ceil($tong / $pageNumber), $pagesIndex, $linkPhanTrang);
+                                ?>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
         </section>
     </div>
-    <div class="modal fade" id="importExcell">
-        <form action="/user/users/import/" enctype="multipart/form-data" method="post" >
-            <div class="modal-dialog ">
-                <div class="modal-content modal-success">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                        <h4 class="modal-title">Import Excell</h4>
-                    </div>
-                    <div class="modal-body">
-                        <p>Chọn file excell</p>
-                        <input type="file" name="file" >
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">Thoát</button>
-                        <button type="submit" class="btn btn-primary">Gửi</button>
-                    </div>
-                </div>
-            </div>
-        </form>
-    </div>
 </div>
+<script type="text/javascript" >
+    function TimKiemSanPham() {
+        var path = "/user/users/index/?pagesIndex=1&pageNumber=[pn]&keyword=[key]";
+        var tukhoa = $("#TuKhoa").val();
+        var hienThi = $("#HienThi").val();
+        path = path.replace('[pn]', hienThi);
+        path = path.replace('[key]', tukhoa);
+        window.location.href = path;
+    }
+</script>

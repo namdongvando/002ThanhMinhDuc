@@ -1,0 +1,103 @@
+<?php
+$Groups = Model\Permistion::GetAminGroups();
+$controllers = Model\Permistion::GetController();
+?>
+<ol class="breadcrumb" >
+    <li><a>Danh Sách Quyền</a></li>
+</ol>
+<div class="container-fluid">
+    <form action="" enctype="multipart/form-data" method="POST" >
+        <div class="box box-primary">
+            <div class="box-header">
+                <h3 class="box-title">Quyền</h3>
+                <div class="box-tools">
+                    <button name="Save" type="submit" class="btn btn-primary" ><i class="fa fa-save" ></i></button>
+                </div>
+            </div>
+            <div class="box-body">
+                <table class="table table-bordered" >
+                    <thead>
+                        <tr>
+                            <td >Mô Tả</td>
+                            <?php
+                            foreach ($Groups as $k => $value) {
+                                ?>
+                                <td style="width: 150px;" ><?php echo $value ?></td>
+                                <?php
+                            }
+                            ?>
+                            <td style="width: 80px;" >Chọn Hết</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php
+                        foreach ($controllers as $ModuleName => $ControllerNames) {
+                            ?>
+                            <tr class="bg-blue"  >
+                                <td >
+                                    <?php
+                                    echo $ModuleName;
+                                    ?>
+                                </td>
+                                <?php
+                                foreach ($Groups as $k => $value) {
+                                    ?>
+                                    <td >
+                                        <label>
+                                            <input class="CheckAllCol" role="<?php echo md5($ModuleName . md5($k)); ?>" type="checkbox" >
+                                            Chọn
+                                        </label>
+                                    </td>
+                                    <?php
+                                }
+                                ?>
+                                <td></td>
+                            </tr>
+                            <?php
+                            foreach ($ControllerNames as $ControllerName) {
+                                $ctrlName = explode(".", $ControllerName);
+                                $class_methods = Model\Permistion::GetMeThods($ModuleName, $ctrlName[0]);
+                                foreach ($class_methods as $actionName) {
+                                    ?>
+                                    <tr>
+                                        <td class="vertical-align-middle" >
+                                            <h4 class="no-padding no-margin" ><strong><?php echo $ControllerName; ?></strong></h4>
+                                            <p style="font-size: 12px;" ><?php $actionName ?></p>
+                                        </td>
+                                        <?php
+                                        foreach ($Groups as $k => $value) {
+                                            $ContentPreMistion = Model\Permistion::GetContentFile(md5($k));
+                                            ?>
+                                            <td class="vertical-align-middle"  >
+                                                <label>
+                                                    <input <?php echo Model\Permistion::CheckFunction($k, $ModuleName, $ControllerName, $actionName) ? 'checked' : ''; ?> value="1" name="Quyen[<?php echo md5($k); ?>][<?php echo $ModuleName ?>][<?php echo $ControllerName; ?>]" rolerow="<?php echo md5($ControllerName . $ModuleName); ?>" rolecol="<?php echo md5($ModuleName . md5($k)); ?>"  type="checkbox" >
+                                                    Chọn
+                                                </label>
+                                            </td>
+                                            <?php
+                                        }
+                                        ?>
+                                        <td>
+                                            <label>
+                                                <input type="checkbox" class="CheckAllRows" role="<?php echo md5($ControllerName . $ModuleName); ?>"  >
+                                                Tất Cả
+                                            </label>
+                                        </td>
+                                    </tr>
+                                    <?php
+                                }
+                            }
+                        }
+                        ?>
+
+                    </tbody>
+
+                </table>
+
+            </div>
+            <div class="box-footer" >
+                <button type="submit" name="Save" class="btn btn-primary pull-right" ><i class="fa fa-save" ></i></button>
+            </div>
+        </div>
+    </form>
+</div>

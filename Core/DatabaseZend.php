@@ -78,6 +78,14 @@ class DatabaseZend implements \Model\IModel {
         return $res->toArray();
     }
 
+    function GetRowsNumber($where) {
+        return $this->ConnetTable->select($where)->count();
+    }
+
+    function GetRowsByWhere($where) {
+        return $this->ToArray($this->Select($where));
+    }
+
     function Update($QA, $where = "") {
         if (!$where)
             $where = " `Id` = '{$QA["Id"]}' ";
@@ -119,6 +127,7 @@ class DatabaseZend implements \Model\IModel {
     }
 
     public function InsertSubmit($model) {
+        $model["Id"] = \Application\UUID::v4();
         return $this->Insert($model);
     }
 

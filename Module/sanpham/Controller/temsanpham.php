@@ -142,7 +142,6 @@ class temsanpham extends \ApplicationM implements \Controller\IController {
         }
         $khachHang = \Module\khachhang\Model\KhachHangTieuDung::GetKhachHangByCode($temSanPham["KhachHangTieuDung"]);
         $tsp = new \Module\sanpham\Model\TemSanPham($temSanPham);
-
         $kH = new \Module\khachhang\Model\KhachHangTieuDung($khachHang);
         return $this->ViewThemeModlue(["temSanPham" => $tsp, "khachHang" => $kH]);
     }

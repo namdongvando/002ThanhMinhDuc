@@ -63,6 +63,9 @@ class backend {
                 line-height: 18px;
                 width: auto;
             }
+            .vertical-align-middle{
+                vertical-align: middle !important;
+            }
             fieldset{
                 display: block;
                 margin-inline-start: 2px;
@@ -130,46 +133,31 @@ class backend {
                             <i class="fa fa-bars"></i>
                         </button>
                     </div>
-                    <!-- Collect the nav links, forms, and other content for toggling -->
                     <div class="collapse navbar-collapse pull-left" id="navbar-collapse">
                         <ul class="nav navbar-nav">
                             <?php
                             \Common\Link::MenuQuanLy();
                             \Common\Link::MenuDoiTac();
                             ?>
-
                         </ul>
-                    </div><!-- /.navbar-collapse -->
-                    <!-- Navbar Right Menu -->
+                    </div>
                     <div class="navbar-custom-menu">
                         <ul class="nav navbar-nav">
-
                             <li class="dropdown user user-menu">
                                 <a href="#" class="text-center dropdown-toggle" data-toggle="dropdown">
                                     <img src="/public/user_no_photo.png" class="user-image" alt="User Image">
                                     <span class="hidden-xs">&nbsp;</span>
                                 </a>
                                 <ul class="dropdown-menu">
-                                    <!-- User image -->
-                                    <li class="user-header">
-                                        <img src="/public/user_no_photo.png" class="img-circle" alt="User Image">
-                                        <p>
-                                            <?php echo $_SESSION[QuanTri]["Name"] ?>
-                                            <small><?php echo $_SESSION[QuanTri]["Username"] ?></small>
-                                        </p>
+                                    <li class="">
+                                        <a href="<?php echo \Common\Link::profile() ?>" ><i class="fa fa-info"  ></i> Tài khoản</a>
                                     </li>
-                                    <!-- Menu Footer-->
-                                    <li class="user-footer">
-                                        <div class="pull-left">
-                                            <a href="<?php echo \Common\Link::profile() ?>" class="btn btn-primary btn-flat">Tài khoản</a>
-                                        </div>
-                                        <div class="pull-right">
-                                            <a href="<?php echo \Common\Link::logout() ?>" class="btn btn-danger btn-flat">Đăng Xuất</a>
-                                        </div>
+                                    <li>
+                                        <a href="<?php echo \Common\Link::logout() ?>" ><i class="fa fa-sign-out"  ></i> Đăng Xuất</a>
                                     </li>
                                 </ul>
                             </li>
-                            ` <li class="">
+                            <li class="">
                                 <a href="/option/index">
                                     <span><i class="fa fa-gears" ></i></span>
                                 </a>
@@ -461,7 +449,7 @@ class backend {
             <div class="pull-right hidden-xs">
                 <b>Version</b> 1.0.1
             </div>
-            <strong>Copyright &copy; <?php echo date("Y", time()); ?> <a href="http://thanhminhduc.com.vn">thanhminhduc.com.vn</a>.</strong>
+            <strong>Copyright &copy; <?php echo date("Y", time()); ?> <a href="http://thanhminhduc.com">thanhminhduc.com</a></strong>
         </footer>
         <?php
     }

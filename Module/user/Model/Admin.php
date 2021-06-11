@@ -25,6 +25,7 @@ class Admin extends AdminTable {
     const NVKT = 5;
 
     function __construct($NhanVien = NULL) {
+        parent::__construct();
         if ($NhanVien) {
             $this->Id = isset($NhanVien['Id']) ? $NhanVien['Id'] : '';
             $this->Username = isset($NhanVien['Username']) ? $NhanVien['Username'] : '';
@@ -38,7 +39,6 @@ class Admin extends AdminTable {
             $this->Groups = isset($NhanVien['Groups']) ? $NhanVien['Groups'] : "";
             $this->Active = isset($NhanVien['Active']) ? $NhanVien['Active'] : 0;
         }
-        parent::__construct();
     }
 
     function CheckLogin($Username, $Password) {
@@ -204,9 +204,35 @@ class Admin extends AdminTable {
         return new TaiKhoan();
     }
 
-    public static function CheckQuyen($nhom = []) {
+    public static function CheckQuyen($nhom = [], $not = false) {
         $user = \Module\user\Model\Admin::getCurentUser(true)->Groups;
+        if ($not == true) {
+            return !in_array($user, $nhom);
+        }
         return in_array($user, $nhom);
+    }
+
+    public function GetAllPT($name = "", $pagesIndex, $pageNumber, &$tong) {
+        $where = " `Active` >= 0";
+        $ActiveSql = "";
+        if (is_array($name)) {
+            $Active = $name["Active"];
+            if (!empty($Active)) {
+                $Active = implode(",", $Active);
+                $ActiveSql = "AND `Active` in ({$Active}) ";
+            }
+            $name = $name["keyword"];
+        }
+
+        if ($name != "") {
+            $where = "(`Name` like '%{$name}%' or `Email` like '%{$name}%' or `Phone` like '%{$name}%') {$ActiveSql} ";
+        }
+        $pagesIndex = max($pagesIndex, 1);
+        $pagesIndex = ($pagesIndex - 1) * $pageNumber;
+        $Kh = new Admin();
+        $tong = $Kh->GetRowsNumber($where);
+        $where .= " limit {$pagesIndex},{$pageNumber}";
+        return $Kh->GetRowsByWhere($where);
     }
 
 }

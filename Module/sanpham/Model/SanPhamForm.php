@@ -2,6 +2,8 @@
 
 namespace Module\sanpham\Model;
 
+use Module\user\Model\Admin;
+
 class SanPhamForm extends \PFBC\Form implements ISanPhamForm {
 
     public $Id;
@@ -24,11 +26,17 @@ class SanPhamForm extends \PFBC\Form implements ISanPhamForm {
     public static function Name($value = null) {
         $Option = self::$Option;
         $Option["value"] = $value;
+        if (Admin::CheckQuyen([Admin::Admin, Admin::SuperAdmin], true)) {
+            $Option["readonly"] = true;
+        }
         return new \PFBC\Element\Textbox("Tên Sản Phẩm", "sanpham[Name]", $Option);
     }
 
     public static function Code($value = null) {
         $Option = self::$Option;
+        if (Admin::CheckQuyen([Admin::Admin, Admin::SuperAdmin], true)) {
+            $Option["readonly"] = true;
+        }
         $Option["value"] = $value;
         return new \PFBC\Element\Textbox("Mã Sản Phẩm", "sanpham[Code]", $Option);
     }
@@ -36,17 +44,27 @@ class SanPhamForm extends \PFBC\Form implements ISanPhamForm {
     public static function Gia($value = null) {
         $Option = self::$Option;
         $Option["value"] = $value;
+        if (Admin::CheckQuyen([Admin::Admin, Admin::SuperAdmin], true)) {
+            $Option["readonly"] = true;
+        }
         $Option["required"] = true;
         return new \PFBC\Element\Textbox("Giá", "sanpham[Gia]", $Option);
     }
 
     public static function HinhAnh($value = null) {
-        return new \PFBC\Element\File("Hình Ảnh", "HinhAnhSanPham");
+        $Option = [];
+        if (Admin::CheckQuyen([Admin::Admin, Admin::SuperAdmin], true)) {
+            $Option["disabled"] = true;
+        }
+        return new \PFBC\Element\File("Hình Ảnh", "HinhAnhSanPham", $Option);
     }
 
     public static function Mota($value = null) {
         $Option = self::$Option;
         $Option["value"] = $value;
+        if (Admin::CheckQuyen([Admin::Admin, Admin::SuperAdmin], true)) {
+            $Option["readonly"] = true;
+        }
         return new \PFBC\Element\Textarea("Mô Tả", "sanpham[Mota]", $Option);
     }
 
@@ -58,8 +76,11 @@ class SanPhamForm extends \PFBC\Form implements ISanPhamForm {
                 $Option[$key] = $value;
             }
         }
+        if (Admin::CheckQuyen([Admin::Admin, Admin::SuperAdmin], true)) {
+            $Option["disabled"] = true;
+        }
         $ops = \Module\option\Model\Option::GetAll2OptionsByGroups(\Module\option\Model\Option::DanhMucVatTu);
-        $TaiCty = ["--Chọn Danh Mục-"];
+        $TaiCty = ["--Chọn Danh Mục--"];
         $ops = $TaiCty + $ops;
         return new \PFBC\Element\Select("Danh Mục Sản Phẩm", "sanpham[DanhMuc]", $ops, $Option);
     }
@@ -67,6 +88,9 @@ class SanPhamForm extends \PFBC\Form implements ISanPhamForm {
     public static function TinhTrang($value = null) {
         $Option = self::$Option;
         $Option["value"] = $value;
+        if (Admin::CheckQuyen([Admin::Admin, Admin::SuperAdmin], true)) {
+            $Option["disabled"] = true;
+        }
         $ops = SanPham::ListTinhTrangToOptions();
         $Option["style"] = "width:100%;";
         return new \PFBC\Element\Select("Tình Trạng Sản Phẩm", "sanpham[TinhTrang]", $ops, $Option);
@@ -75,7 +99,9 @@ class SanPhamForm extends \PFBC\Form implements ISanPhamForm {
     public static function ChungLoaiSP($value = null) {
         $Option = self::$Option;
         $Option["value"] = $value;
-//        $ops = SanPham::ListTinhTrangToOptions();
+        if (Admin::CheckQuyen([Admin::Admin, Admin::SuperAdmin], true)) {
+            $Option["disabled"] = true;
+        }
         $ops = \Module\option\Model\Option::GetAll2OptionsByGroups(\Module\option\Model\Option::ChungLoaiSP);
         return new \PFBC\Element\Select("Chung Loại Sản Phẩm", "sanpham[ChungLoaiSP]", $ops, $Option);
     }
@@ -91,6 +117,9 @@ class SanPhamForm extends \PFBC\Form implements ISanPhamForm {
 //        $ops = SanPham::ListTinhTrangToOptions();
         $ops = \Module\khachhang\Model\KhachHang::GetALL2Options();
         $TaiCty = ["Đang Ở Công Ty"];
+        if (Admin::CheckQuyen([Admin::Admin, Admin::SuperAdmin], true)) {
+            $Option["disabled"] = true;
+        }
         $ops = $TaiCty + $ops;
         return new \PFBC\Element\Select("Đại Lý", "sanpham[MaDaiLy]", $ops, $Option);
     }

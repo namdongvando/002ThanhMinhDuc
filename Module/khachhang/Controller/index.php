@@ -29,6 +29,7 @@ class index extends \ApplicationM implements \Controller\IController {
             $id = $khachHang->InsertSubmit($kh);
             $khtt_POST = $_POST["khachhangthanhtoan"];
             $khtt_POST["MaKhachHang"] = $kh["Code"];
+            $khtt_POST["Fax"] = !empty($khtt_POST["Fax"]) ? $khtt_POST["Fax"] : "";
             $a = $khachHangThanhToan->GetByMaKhachHang($khtt_POST["MaKhachHang"]);
             if ($a == null) {
                 $khachHangThanhToan->InsertSubmit($khtt_POST);

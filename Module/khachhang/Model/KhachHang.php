@@ -43,7 +43,7 @@ class KhachHang extends KhachHangData {
             $this->DiaChi = !empty($dv["DiaChi"]) ? $dv["DiaChi"] : null;
             $this->PhuongXa = !empty($dv["PhuongXa"]) ? $dv["PhuongXa"] : null;
             $this->QuanHuyen = !empty($dv["QuanHuyen"]) ? $dv["QuanHuyen"] : null;
-            $this->TinhThanh = !empty($dv["TinhThanh"]) ? $dv["TinhThanh"] : null;
+            $this->TinhThanh = !empty($dv["TinhThanh"]) ? $dv["TinhThanh"] : 32;
             $this->LaChuKinhDoanh = !empty($dv["LaChuKinhDoanh"]) ? $dv["LaChuKinhDoanh"] : null;
             $this->DienThoai = !empty($dv["DienThoai"]) ? $dv["DienThoai"] : null;
             $this->DiDong = !empty($dv["DiDong"]) ? $dv["DiDong"] : null;

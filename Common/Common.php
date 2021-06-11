@@ -8,7 +8,10 @@ class Common {
 
     }
 
-    static function toUrl($url) {
+    static function toUrl($url = null) {
+        if ($url == null) {
+            $url = $_SERVER["HTTP_REFERER"];
+        }
         header("Location: " . $url);
         exit();
     }
@@ -156,7 +159,7 @@ class Common {
     }
 
     public static function PhanTrang($TongTrang, $TrangHienTai, $DuongDan) {
-        $PhanTrang = ' <ul class="pagination">';
+        $PhanTrang = ' <ul class="pagination mt-10 mb-0">';
         $PhanTrang .= "<li><a>{$TrangHienTai}/{$TongTrang}</a></li>";
         $tu = $TrangHienTai - 4;
         $den = $TrangHienTai + 4;
@@ -190,6 +193,10 @@ class Common {
 
         $PhanTrang .= '</ul>';
         return $PhanTrang;
+    }
+
+    public static function GetIndex($k, $pagesIndex, $pageNumber) {
+        return ($pageNumber * ($pagesIndex - 1)) + $k + 1;
     }
 
 //    function bodautv($str) {
