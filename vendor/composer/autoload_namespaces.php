@@ -7,4 +7,5 @@ $baseDir = dirname($vendorDir);
 
 return array(
     'PFBC' => array($vendorDir . '/pfbc/pfbc'),
+    'Google_Service_' => array($vendorDir . '/google/apiclient-services/src'),
 );
