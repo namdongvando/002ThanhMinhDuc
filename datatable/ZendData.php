@@ -169,6 +169,13 @@ class ZendData {
         return $this->fechArray($this->TableContext->select());
     }
 
+    function GetRowsTablePt($where, $indexPage, $numberPage, &$total) {
+        $indexPage = ($indexPage - 1) * $numberPage;
+        $indexPage = max(0, $indexPage);
+        $total = $this->GetNumberRows($where);
+        return $this->fechArray($this->TableContext->select($where));
+    }
+
     function DeleteRowById($id, $maHoa = false) {
         if ($maHoa) {
             return $this->TableContext->delete("sha1(`Id`) = '{$id}'");

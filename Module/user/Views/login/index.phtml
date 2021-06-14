@@ -1,3 +1,18 @@
+<script type="text/javascript" >
+    function onSignIn(googleUser) {
+        var id_token = googleUser.getAuthResponse().id_token;
+        console.log(id_token);
+        var xhr = new XMLHttpRequest();
+        xhr.open('POST', '/user/login/google/');
+        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+        xhr.onload = function() {
+//            console.log('Signed in as: ' + xhr.responseText);
+            window.location.href = "/dashboard/";
+        };
+        xhr.send('idtoken=' + id_token);
+    }
+</script>
+<script src="https://apis.google.com/js/platform.js" async defer></script>
 <div class="login-box">
     <div class="login-box-body">
         <div class="center-block" >
@@ -20,8 +35,11 @@
             </div>
         </form>
         <div class="text-center">
+            <br>
+            <div>--Hoặc--</div>
+            <br>
             <div class="g-signin2" data-onsuccess="onSignIn"></div>
         </div>
-        <script src="https://apis.google.com/js/platform.js" async defer></script>
+
     </div>
 </div>

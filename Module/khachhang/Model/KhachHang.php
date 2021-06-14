@@ -117,6 +117,10 @@ class KhachHang extends KhachHangData {
         return $Kh->GetRowsByWhere($where);
     }
 
+    public function LinkChiTiet() {
+        return "/khachhang/index/edit/" . sha1($this->Id);
+    }
+
 }
 ?>
 

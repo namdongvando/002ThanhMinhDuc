@@ -40,6 +40,10 @@ class YeuCauBaoHanh extends YeuCauBaoHanhData {
         return new \Module\khachhang\Model\KhachHangTieuDung($this->KhachHangTieuDung);
     }
 
+    function NoiDungBaoHanh() {
+        return new \Module\option\Model\Option(\Module\option\Model\Option::GetOptionByGroupsCode(\Module\option\Model\Option::SuCoMacPhai, $this->NoiDung));
+    }
+
     public static function YeuCauSuaChuas() {
         $TTKH = new YeuCauBaoHanh();
 

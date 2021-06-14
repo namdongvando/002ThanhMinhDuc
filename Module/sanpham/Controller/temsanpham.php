@@ -79,7 +79,7 @@ class temsanpham extends \ApplicationM implements \Controller\IController {
             $ModelTemSP = new \Module\sanpham\Model\TemSanPham();
             $ModelSP = new \Module\sanpham\Model\SanPham();
             $ModelKhachHanhTieuDung = new \Module\khachhang\Model\KhachHangTieuDung();
-            $temSP["NgayBatDau"] = !empty($temSP["NgayBatDau"]) ? date("Y-m-d", strtotime($temSP["NgayBatDau"])) : null;
+            $temSP["NgayBatDau"] = !empty($temSP["NgayBatDau"]) ? date("Y-m-d", strtotime($temSP["NgayBatDau"])) : date("Y-m-d", time());
             $temSP["ThangKetThuc"] = !empty($temSP["ThangKetThuc"]) ? $temSP["ThangKetThuc"] : 0;
             $ngayBd = strtotime($temSP["NgayBatDau"]);
             $soNgay = $this->TinhSoNgay($temSP["ThangKetThuc"]);
@@ -94,24 +94,21 @@ class temsanpham extends \ApplicationM implements \Controller\IController {
                 $MSP["TinhTrang"] = $sanPhamPost["TinhTrang"];
             }
             $MSP["Mota"] = $sanPhamPost["Mota"];
-            $MSP["ChungLoaiSP"] = $sanPhamPost["ChungLoaiSP"];
-            $MSP["DanhMuc"] = $sanPhamPost["DanhMuc"];
+            $MSP["ChungLoaiSP"] = !empty($sanPhamPost["ChungLoaiSP"]) ? $sanPhamPost["ChungLoaiSP"] : $MSP["ChungLoaiSP"];
+            $MSP["DanhMuc"] = !empty($sanPhamPost["DanhMuc"]) ? $sanPhamPost["DanhMuc"] : $MSP["DanhMuc"];
             $MSP["Code"] = $sanPhamPost["Code"];
-            if ($_FILES["HinhAnhSanPham"]["error"] == 0) {
-                $adapter = new \Core\Adapter();
-                $img = "Module/sanpham/public/images/";
-                $imgName = $adapter->upload_image1($_FILES["HinhAnhSanPham"], $img, $sanPhamPost["Code"], false);
-                $imgName = "/{$imgName}";
-                $sanPhamPost["HinhAnh"] = $imgName;
-                $MSP["HinhAnh"] = $sanPhamPost["HinhAnh"];
+            if (isset($_FILES["HinhAnhSanPham"])) {
+                if ($_FILES["HinhAnhSanPham"]["error"] == 0) {
+                    $adapter = new \Core\Adapter();
+                    $img = "Module/sanpham/public/images/";
+                    $imgName = $adapter->upload_image1($_FILES["HinhAnhSanPham"], $img, $sanPhamPost["Code"], false);
+                    $imgName = "/{$imgName}";
+                    $sanPhamPost["HinhAnh"] = $imgName;
+                    $MSP["HinhAnh"] = $sanPhamPost["HinhAnh"];
+                }
             }
             unset($sanPhamPost["Code"]);
             $ModelSP->UpdateSubmit($MSP);
-//            var_dump($MSP);
-//            die();
-//            var_dump($khachHanhTieuDung);
-//            die();
-            // chưa có thì thêm kh tieu dùng
             if ($khachHanhTieuDung["Id"] == "") {
                 $khachHanhTieuDung["Code"] = "kh" . $khachHanhTieuDung["Phone"] . time();
                 $idKHTieuDung = $ModelKhachHanhTieuDung->InsertSubmit($khachHanhTieuDung);
@@ -119,7 +116,6 @@ class temsanpham extends \ApplicationM implements \Controller\IController {
             } else {
                 $ModelKhachHanhTieuDung->UpdateRowTable($khachHanhTieuDung);
             }
-
             $ModelTemSP->UpdateRowTable($temSP);
         }
         if (\Common\Form::RequestPost("ThenTemPhu", null)) {

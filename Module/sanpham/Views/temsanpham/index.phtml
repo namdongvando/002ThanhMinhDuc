@@ -22,7 +22,7 @@ $TemSanPhams = \Module\sanpham\Model\TemSanPham::GetRowsPT($name, $pagesIndex, $
             <div class="box " >
                 <div class="box-header " >
                     <h3 class="box-title" >
-                        Danh Sách Tem Sản Phẩm(<?php echo $tong; ?>)
+                        Danh Sách Tem Sản Phẩm(<?php echo number_format($tong, 0, ".", ","); ?>)
                     </h3>
                     <div class="btn-group pull-right">
                         <a class="btn btn-primary"  data-toggle="modal" href='#XuatTemSanPham'>Export</a>
@@ -59,7 +59,7 @@ $TemSanPhams = \Module\sanpham\Model\TemSanPham::GetRowsPT($name, $pagesIndex, $
                                     ?>
                                     <tr  >
                                         <td  >
-                                            <a class="btn btn-sm btn-success" href="/sanpham/temsanpham/detailbysanpham/<?php echo $_op->Code; ?>/"  >Sửa</a>
+                                            <a class="btn btn-xs btn-success" href="/sanpham/temsanpham/detailbysanpham/<?php echo $_op->Code; ?>/"  >Sửa</a>
             <!--                                    | <a href="/sanpham/temsanpham/delete/<?php echo md5($_op->Id); ?>/" data-confirm="Bạn muốn xóa tem này?" class="xoa" >Xóa</a>-->
                                         </td>
                                         <td><?php echo $k + 1; ?></td>

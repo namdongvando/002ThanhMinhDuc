@@ -6,11 +6,11 @@ $link = "/public/phpqrcode/index.php?data=" . Root_URL . "baohanh/" . $temSanPha
 ?>
 <ol class="breadcrumb">
     <li>
-        <a href="#">Dashboard</a>
+        <a href="/dashboard/">Dashboard</a>
     </li>
-    <li>
-        <a href="/sanpham/temsanpham/">Danh Sách Tem</a>
-    </li>
+    <?php
+    \Module\sanpham\Model\Menu::BreadcrumbDanhSachTem();
+    ?>
     <li class="active">Tem Bảo Hành</li>
 </ol>
 <div class="" >
@@ -37,110 +37,120 @@ $link = "/public/phpqrcode/index.php?data=" . Root_URL . "baohanh/" . $temSanPha
                     <div class="box box-primary">
                         <div class="box-header">
                             <h3 class="box-title">Tem Bảo Hành</h3>
+                            <div class="box-tools" >
+                                <button class="btn hidden btn-xs btn-toggle" data-target="#ThongTinSanPham" >Xem Thông Tin Sản Phẩm</button>
+                                <a class="btn btn-xs btn-primary" data-toggle="modal" href='#ThemTemPhu'>Thêm Tem Phụ</a>
+                                <a class="btn btn-xs btn-primary" data-toggle="modal" href='#MaBaoHanh'>Mã QR Code</a>
+                            </div>
                         </div>
                         <div class="box-body">
+
                             <div class="col-md-6" >
-                                <fieldset>
-                                    <legend>Thông Tin Bảo Hành</legend>
-                                    <?php
-                                    \Module\sanpham\Model\TemSanPhamForm::Id($temSanPham->Id)->render();
-                                    \Module\sanpham\Model\TemSanPhamForm::Name($temSanPham->Name)->renderHTML();
-                                    \Module\sanpham\Model\TemSanPhamForm::MaSanPham($temSanPham->MaSanPham, false)->renderHTML();
-                                    ?>
-                                    <div class="row" >
-                                        <div class="col-md-4">
-                                            <?php
-                                            \Module\sanpham\Model\TemSanPhamForm::NgayBatDau($temSanPham->NgayBatDau)->renderHTML();
-                                            ?>
-                                        </div>
-                                        <div class="col-md-4">
-                                            <?php
-                                            \Module\sanpham\Model\TemSanPhamForm::ThangKetThuc($temSanPham->ThangKetThuc)->renderHTML();
-                                            ?>
-                                        </div>
-                                        <div class="col-md-4">
-                                            <div class="form-group">
-                                                <label for="">Ngày Kết Thúc</label>
-                                                <input type="text" readonly="" value="<?php echo $temSanPham->NgayKetThuc() ?>" class="form-control" >
+                                <div class="">
+                                    <fieldset style="width: 100%;" >
+                                        <legend>Thông Tin Bảo Hành</legend>
+                                        <?php
+                                        \Module\sanpham\Model\TemSanPhamForm::Id($temSanPham->Id)->render();
+                                        \Module\sanpham\Model\TemSanPhamForm::Name($temSanPham->Name)->renderHTML();
+                                        \Module\sanpham\Model\TemSanPhamForm::MaSanPham($temSanPham->MaSanPham, false)->renderHTML();
+                                        ?>
+                                        <div class="row" >
+                                            <div class="col-md-4">
+                                                <?php
+                                                \Module\sanpham\Model\TemSanPhamForm::NgayBatDau($temSanPham->Status == Module\sanpham\Model\TemSanPham::Active ? $temSanPham->NgayBatDau : date("Y-m-d", time()))->renderHTML();
+                                                ?>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <?php
+                                                \Module\sanpham\Model\TemSanPhamForm::ThangKetThuc($temSanPham->ThangKetThuc)->renderHTML();
+                                                ?>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="form-group">
+                                                    <label for="">Ngày Kết Thúc</label>
+                                                    <input type="text" readonly="" value="<?php echo $temSanPham->NgayKetThuc() ?>" class="form-control" >
+                                                </div>
+
                                             </div>
 
                                         </div>
+                                        <?php
+                                        \Module\sanpham\Model\TemSanPhamForm::KhachHangTieuDung($temSanPham->KhachHangTieuDung, true)->renderHTML();
+                                        \Module\sanpham\Model\TemSanPhamForm::Status($temSanPham->Status)->renderHTML();
+                                        ?>
 
-                                    </div>
-                                    <?php
-                                    \Module\sanpham\Model\TemSanPhamForm::KhachHangTieuDung($temSanPham->KhachHangTieuDung, true)->renderHTML();
-                                    \Module\sanpham\Model\TemSanPhamForm::Status($temSanPham->Status)->renderHTML();
-                                    ?>
-                                    <div class="btn-group" >
-                                        <a class="btn btn-primary" data-toggle="modal" href='#ThemTemPhu'>Thêm Tem Phụ</a>
-                                        <a class="btn btn-primary" data-toggle="modal" href='#MaBaoHanh'>Mã QR Code</a>
-                                    </div>
-                                </fieldset>
-                                <fieldset>
-                                    <legend>Thông Tin Khách Hàng Tiêu Dùng</legend>
-                                    <div class="row" >
-                                        <div class="col-md-6">
-                                            <?php
-                                            Module\khachhang\Model\KhachHangTieuDungForm::Id($khachHang->Id)->render();
-                                            Module\khachhang\Model\KhachHangTieuDungForm::Name($khachHang->Name)->renderHTML();
-                                            ?>
+                                    </fieldset>
+                                    <fieldset>
+                                        <legend>Thông Tin Khách Hàng Tiêu Dùng</legend>
+                                        <div class="row" >
+                                            <div class="col-md-6">
+                                                <?php
+                                                Module\khachhang\Model\KhachHangTieuDungForm::Id($khachHang->Id)->render();
+                                                Module\khachhang\Model\KhachHangTieuDungForm::Name($khachHang->Name)->renderHTML();
+                                                ?>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <?php
+                                                Module\khachhang\Model\KhachHangTieuDungForm::Phone($khachHang->Phone)->renderHTML();
+                                                ?>
+                                            </div>
+                                            <div class="col-md-4 hidden">
+                                                <?php
+                                                Module\khachhang\Model\KhachHangTieuDungForm::KhuVuc($khachHang->KhuVuc)->renderHTML();
+                                                ?>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <?php
+                                                Module\khachhang\Model\KhachHangTieuDungForm::TinhThanh($khachHang->TinhThanh)->renderHTML();
+                                                ?>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <?php
+                                                Module\khachhang\Model\KhachHangTieuDungForm::QuanHuyen($khachHang->QuanHuyen, $khachHang->TinhThanh)->renderHTML();
+                                                ?>
+                                            </div>
                                         </div>
-                                        <div class="col-md-6">
-                                            <?php
-                                            Module\khachhang\Model\KhachHangTieuDungForm::Phone($khachHang->Phone)->renderHTML();
-                                            ?>
-                                        </div>
-                                        <div class="col-md-4 hidden">
-                                            <?php
-                                            Module\khachhang\Model\KhachHangTieuDungForm::KhuVuc($khachHang->KhuVuc)->renderHTML();
-                                            ?>
-                                        </div>
-                                        <div class="col-md-4">
-                                            <?php
-                                            Module\khachhang\Model\KhachHangTieuDungForm::TinhThanh($khachHang->TinhThanh)->renderHTML();
-                                            ?>
-                                        </div>
-                                        <div class="col-md-4">
-                                            <?php
-                                            Module\khachhang\Model\KhachHangTieuDungForm::QuanHuyen($khachHang->QuanHuyen, $khachHang->TinhThanh)->renderHTML();
-                                            ?>
-                                        </div>
-                                    </div>
-                                    <?php
-                                    Module\khachhang\Model\KhachHangTieuDungForm::DiaChi($khachHang->DiaChi)->renderHTML();
-                                    Module\khachhang\Model\KhachHangTieuDungForm::GhiChu($khachHang->GhiChu)->renderHTML();
-                                    ?>
-                                </fieldset>
+                                        <?php
+                                        Module\khachhang\Model\KhachHangTieuDungForm::DiaChi($khachHang->DiaChi)->renderHTML();
+                                        Module\khachhang\Model\KhachHangTieuDungForm::GhiChu($khachHang->GhiChu)->renderHTML();
+                                        ?>
+                                    </fieldset>
+                                </div>
                             </div>
                             <div class="col-md-6" >
-                                <fieldset>
-                                    <legend>Thông Tin Sản Phẩm</legend>
-                                    <?php
-                                    \Module\sanpham\Model\SanPhamForm::Id($temSanPham->SanPham()->Id)->render();
-                                    \Module\sanpham\Model\SanPhamForm::Code($temSanPham->SanPham()->Code)->renderHTML();
-                                    ?>
-                                    <div class="">
+                                <div class="">
+
+                                    <fieldset id="ThongTinSanPham"  >
+                                        <legend>Thông Tin Sản Phẩm</legend>
                                         <?php
-                                        \Model\FormOptions::BtnModal("Chọn Sản Phẩm", "#ChonSanPham", ["class" => "btn btn-primary pull-right", "permistion" => Admin::CheckQuyen([Admin::Admin, Admin::SuperAdmin], true)])->render();
-                                        \Module\sanpham\Model\SanPhamForm::Name($temSanPham->SanPham()->Name)->renderHTML();
+                                        \Module\sanpham\Model\SanPhamForm::Id($temSanPham->SanPham()->Id)->render();
+                                        \Module\sanpham\Model\SanPhamForm::Code($temSanPham->SanPham()->Code)->renderHTML();
                                         ?>
-                                    </div>
-                                    <?php
-                                    \Module\sanpham\Model\SanPhamForm::Mota($temSanPham->SanPham()->Mota)->renderHTML();
-                                    \Module\sanpham\Model\SanPhamForm::ChungLoaiSP($temSanPham->SanPham()->ChungLoaiSP)->renderHTML();
-                                    \Module\sanpham\Model\SanPhamForm::DanhMuc($temSanPham->SanPham()->DanhMuc)->renderHTML();
-                                    \Module\sanpham\Model\SanPhamForm::TinhTrang($temSanPham->SanPham()->TinhTrang)->renderHTML();
-                                    \Module\sanpham\Model\SanPhamForm::MaDaiLy($temSanPham->SanPham()->MaDaiLy)->renderHTML();
-                                    ?>
-                                    <div class="form-group">
-                                        <img src="<?php echo $temSanPham->SanPham()->HinhAnh; ?>?v=<?php echo time(); ?>"  style="height: 80px;" class="img img-responsive" >
-                                        <label for="">Hình Sản Phẩm</label>
+                                        <div class="">
+                                            <?php
+                                            \Model\FormOptions::BtnModal("Chọn Sản Phẩm", "#ChonSanPham", ["class" => "btn btn-primary btn-xs pull-right", "permistion" => Admin::CheckQuyen([Admin::Admin, Admin::SuperAdmin], true)])->render();
+                                            \Module\sanpham\Model\SanPhamForm::Name($temSanPham->SanPham()->Name)->renderHTML();
+                                            ?>
+                                        </div>
                                         <?php
-                                        \Module\sanpham\Model\SanPhamForm::HinhAnh()->render();
+                                        \Module\sanpham\Model\SanPhamForm::Mota($temSanPham->SanPham()->Mota)->renderHTML();
+                                        \Module\sanpham\Model\SanPhamForm::ChungLoaiSP($temSanPham->SanPham()->ChungLoaiSP)->renderHTML();
+                                        \Module\sanpham\Model\SanPhamForm::DanhMuc($temSanPham->SanPham()->DanhMuc)->renderHTML();
+                                        \Module\sanpham\Model\SanPhamForm::TinhTrang($temSanPham->SanPham()->TinhTrang)->renderHTML();
+                                        \Module\sanpham\Model\SanPhamForm::MaDaiLy($temSanPham->SanPham()->MaDaiLy)->renderHTML();
                                         ?>
-                                    </div>
-                                </fieldset>
+                                        <div class="form-group">
+                                            <img src="<?php echo $temSanPham->SanPham()->HinhAnh; ?>?v=<?php echo time(); ?>"  style="height: 80px;" class="img img-responsive" >
+                                            <label for="">Hình Sản Phẩm</label>
+                                            <?php
+                                            \Module\sanpham\Model\SanPhamForm::HinhAnh()->render();
+                                            ?>
+                                        </div>
+                                    </fieldset>
+                                </div>
                             </div>
+
+
                         </div>
                         <div class="box-footer text-right" >
                             <?php

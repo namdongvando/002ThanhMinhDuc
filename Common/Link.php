@@ -81,35 +81,11 @@ class Link {
     }
 
     public static function MenuQuanLy() {
-        ?>
-        <li class="">
-            <a href="/trungtambaohanh/index">
-                <span>Trung Tâm Bảo Hành</span>
-            </a>
-        </li>
-        <li class="">
-            <a href="/dashboard/nhaptem/index">
-                <span>Nhập Tem</span>
-            </a>
-        </li>
-        <li class="">
-            <a href="/khachhang/index">
-                <span>Đại Lý Bán Hàng</span>
-
-            </a>
-        </li>
-        <li class="">
-            <a href="/khachhang/khachhangtieudung/">
-                <span>Khách Hàng Tiêu Dùng</span>
-            </a>
-        </li>
-
-        <li class="">
-            <a href="/user/users/">
-                <span>Quản Lý Tài Khoản</span>
-            </a>
-        </li>
-        <?php
+        \Module\trungtambaohanh\Model\Menu::linkTrungTamBaoHanh();
+        \Module\dashboard\Model\Menu::LinkNhapTem();
+        \Module\khachhang\Model\Menu::LinkDaiLyKhachHang();
+        \Module\khachhang\Model\Menu::LinkKhachHangTieuDung();
+        \Module\user\Model\Menu::LinkQuanLyKhachHang();
     }
 
     public static function MenuDoiTac() {
@@ -117,30 +93,14 @@ class Link {
         <li class="dropdown">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">Quản Lý Sản Phẩm <span class="caret"></span></a>
             <ul class="dropdown-menu" role="menu">
-                <li class="">
-                    <a href="/sanpham/kho/">
-                        <span>Sản Phẩm</span>
-                    </a>
-                </li>
-                <li class="">
-                    <a href="/sanpham/index/">
-                        <span>Danh Mục Sản Phẩm</span>
-                    </a>
-                </li>
-                <li class="">
-                    <a href="/sanpham/taosanpham/">
-                        <span>Quản Lý Sản Phẩm</span>
-                    </a>
-                </li>
-                <li class="">
-                    <a href="/sanpham/temsanpham/">
-                        <span>Tem Sản Phẩm</span>
-                    </a>
-                </li>
+                <?php
+//                \Module\sanpham\Model\Menu::LinkKhoSanPham();
+                \Module\sanpham\Model\Menu::LinkSanPham();
+                \Module\sanpham\Model\Menu::LinkDanhMucSanPham();
+                \Module\sanpham\Model\Menu::LinkTemSanPham();
+                ?>
             </ul>
         </li>
-
-
         <?php
     }
 

@@ -83,7 +83,13 @@ class SanPham extends SanPhamData {
             if ($danhmuc != "0") {
                 $danhmucSql = "and `DanhMuc` = '{$danhmuc}'";
             }
-            $where = "`Name` like '%{$name}%' and `Name` != '' $danhmucSql ";
+//            phân theo dai lý
+            $daily = !empty($option["daily"]) ? $option["daily"] : null;
+            $dailySql = "";
+            if ($daily != null) {
+                $dailySql = " and `MaDaiLy` = '{$daily}'";
+            }
+            $where = "`Name` like '%{$name}%' and `Name` != '' {$danhmucSql} {$dailySql}";
             $tong = $sanpham->GetRowsNumber($where);
             $where .= " limit {$pagesIndex},{$pageNumber}";
         } else {

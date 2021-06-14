@@ -14,11 +14,6 @@ class index extends \ApplicationM {
     }
 
     function index() {
-        $time = time();
-        $Js = <<<JS
-<script src="/Module/dashboard/public/ipnet.js?v={$time}" type="text/javascript"></script>
-JS;
-        \Application\Html\Js::AddJS($Js);
         return $this->ViewThemeModlue();
     }
 
@@ -68,5 +63,5 @@ JS;
     }
 
 }
-?>
 
+?>

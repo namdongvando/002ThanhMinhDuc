@@ -2,6 +2,8 @@
     <li>Danh Mục Sản Phẩm</li>
 </ol>
 <?php
+$isEdit = !empty($_GET["isEdit"]) ? intval($_GET["isEdit"]) : 0;
+
 if (Common\Form::isPost()) {
     $DanhMuc = Common\Form::RequestPost("DanhMuc", []);
 
@@ -20,10 +22,23 @@ $Options = Module\option\Model\Option::OptionByGroups(Module\option\Model\Option
             <div class="box-header" >
                 <h3 class="box-title" >Danh Mục Sản Phẩm</h3>
                 <div class="box-tools">
-                    <a href="/sanpham/index/add" class="btn btn-primary" >Thêm Danh Mục</a>
+                    <?php
+                    if ($isEdit == 0) {
+                        ?>
+                        <a href="/sanpham/index/index/?isEdit=1" class="btn btn-sm btn-primary" >Sửa Nhanh</a>
+                        <?php
+                    } else {
+                        ?>
+                        <a href="/sanpham/index/index/?isEdit=0" class="btn btn-sm btn-primary" >Bỏ Sửa Nhanh</a>
+                        <?php
+                    }
+                    ?>
+                    <a href="/sanpham/index/add" class="btn btn-sm btn-primary" >Thêm Danh Mục</a>
                 </div>
             </div>
             <div class="box-body " >
+                <?php
+                ?>
                 <table class="table table-bordered dataTable " id="data"   >
                     <thead>
                         <tr class="bg-blue" >
@@ -43,15 +58,19 @@ $Options = Module\option\Model\Option::OptionByGroups(Module\option\Model\Option
                             ?>
                             <tr>
                                 <td>
-                                    <a href="/sanpham/index/edit/<?php echo $_op->Id ?>/" class="btn btn-sm btn-primary" >Sửa</a>
-                                    <a href="/sanpham/index/delete/<?php echo $_op->Id; ?>" data-confirm="Xóa Danh Mục Sản Phẩm" class="btn-sm btn xoa btn-danger" >Xóa</a>
+                                    <a href="/sanpham/index/edit/<?php echo $_op->Id ?>/" class="btn btn-xs btn-primary" >Sửa</a>
+                                    <a href="/sanpham/index/delete/<?php echo $_op->Id; ?>" data-confirm="Xóa Danh Mục Sản Phẩm" class="btn-xs btn xoa btn-danger" >Xóa</a>
                                 </td>
                                 <td><?php echo $k + 1; ?></td>
                                 <td><?php echo $_op->Code ?></td>
                                 <td><?php echo $_op->Name ?></td>
                                 <td>
                                     <?php
-                                    Module\sanpham\Model\DanhMucSanPhamForm::SelectGroupsID("", "DanhMuc[" . $_op->Id . "][Parent]", "ChungLoaiSP", $_op->Parents)->render();
+                                    if ($isEdit == 1) {
+                                        Module\sanpham\Model\DanhMucSanPhamForm::SelectGroupsID("", "DanhMuc[" . $_op->Id . "][Parent]", "ChungLoaiSP", $_op->Parents)->render();
+                                    } else {
+                                        echo $_op->Parents()->Name;
+                                    }
                                     ?>
                                 </td>
                                 <td><?php echo $_op->Note ?></td>
@@ -62,7 +81,17 @@ $Options = Module\option\Model\Option::OptionByGroups(Module\option\Model\Option
                         ?>
                     </tbody>
                 </table>
-                <button class="btn btn-success" name="SaveAll" >Cập Nhật</button>
+
+                <?php
+                $DuongDan = "";
+                \Common\Common::PhanTrang(1, 1, $DuongDan);
+
+                if ($isEdit == 1) {
+                    ?>
+                    <button class="btn btn-success" name="SaveAll" >Cập Nhật</button>
+                    <?php
+                }
+                ?>
             </div>
         </div>
     </div>

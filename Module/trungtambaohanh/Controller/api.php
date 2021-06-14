@@ -15,14 +15,15 @@ class api extends \ApplicationM {
 
     function GetYeuCauBaoHanhByCode() {
         $code = $this->getParam()[0];
-
         $a = \Module\trungtambaohanh\Model\YeuCauBaoHanh::GetByCode($code);
         $yeuCau = new \Module\trungtambaohanh\Model\YeuCauBaoHanh($a);
+
         $a["ThongTinKhachHang"] = \Module\khachhang\Model\KhachHangTieuDung::GetKhachHangByCode($a["KhachHangTieuDung"]);
 //        var_dump($yeuCau->TemSanPham());
         $a["ThongTinSanPham"] = $yeuCau->TemSanPham()->SanPham()->ToArray();
 //        $sanPham = new \Module\sanpham\Model\SanPham($a["ThongTinSanPham"]);
         $a["TemSanPham"] = $yeuCau->TemSanPham();
+        $a["NoiDungBaoHanh"] = $yeuCau->NoiDungBaoHanh()->Name;
         $api = new \lib\APIs();
         $api->ArrayToApi($a);
     }

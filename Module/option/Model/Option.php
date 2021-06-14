@@ -59,6 +59,11 @@ class Option extends OptionData {
         return $Option->GetRowsByWhere("`Groups` = '{$groups}'");
     }
 
+    public static function OptionByGroupsPt($groups, $indexPage, $numberPage, &$total) {
+        $Option = new Option();
+        return $Option->GetRowsByWhere("`Groups` = '{$groups}'");
+    }
+
     public static function GetGroupsOption() {
         return [
             self::DanhMucVatTu => "Danh Mục Vật Tư",
@@ -104,6 +109,11 @@ class Option extends OptionData {
 
     public function Parents() {
         return new Option($this->GetById($this->Parents));
+    }
+
+    public static function GetOptionByGroupsCode($groups, $code) {
+        $op = new Option();
+        return $op->GetRowByWhere("`Groups` = '{$groups}' and `Code` = '{$code}'");
     }
 
 }

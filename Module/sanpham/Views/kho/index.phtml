@@ -3,7 +3,7 @@ $sanPham = new Module\sanpham\Model\SanPham();
 $tong = 0;
 $pagesIndex = isset($_GET["pagesIndex"]) ? intval($_GET["pagesIndex"]) : 1;
 $pageNumber = isset($_GET["pageNumber"]) ? intval($_GET["pageNumber"]) : 10;
-$DanhMuc = isset($_GET["dm"]) ? $_GET["dm"] : 0;
+$DanhMuc = isset($_GET["dm"]) ? $_GET["dm"] : "0";
 $keyword = isset($_GET["keyword"]) ? $_GET["keyword"] : "";
 $name["danhmuc"] = $DanhMuc;
 $name["keyword"] = $keyword;
@@ -66,9 +66,10 @@ $totalPage = ceil($tong / $pageNumber);
                                         <tr class="bg-blue" >
                                             <th  style="width: 100px;" ></th>
                                             <th style="width: 50px;" >STT</th>
-                                            <th style="width: 100px;" >Mã </th>
+                                            <th style="width: 150px;" >Model Sản Phẩm</th>
                                             <th  >Tên Sản Phẩm</th>
-                                            <th style="width: 240px;" >Danh Mục</th>
+                                            <th style="width: 150px;" >Danh Mục</th>
+                                            <th style="width: 150px;" >Tem Sản Phẩm</th>
                                             <th style="width: 160px;" >Tình Trạng</th>
                                             <th style="width: 150px;" >Tên Đại Lý</th>
                                         </tr>
@@ -79,8 +80,8 @@ $totalPage = ceil($tong / $pageNumber);
                                             $_sp = new Module\sanpham\Model\SanPham($sp);
                                             ?>
                                             <tr class="" >
-                                                <th class="text-center" >
-                                                    <a href="/sanpham/taosanpham/edit/<?php echo $_sp->Id(); ?>/" data-toggle="tooltip" data-placement="top" title="Chi Tiết" class="  btn btn-xs btn-success" >
+                                                <td class="text-center" >
+                                                    <a href="/sanpham/taosanpham/edit/<?php echo $_sp->Id(); ?>/" data-toggle="tooltip" data-placement="top" title="Xem" class="  btn btn-xs btn-success" >
                                                         <i class="fa fa-eye"  ></i>
                                                     </a>
                                                     <a  class="btn btn-xs btn-primary" data-toggle="modal" href='#modal<?php echo $_sp->Id(); ?>'>
@@ -99,17 +100,26 @@ $totalPage = ceil($tong / $pageNumber);
                                                             </div>
                                                         </div>
                                                     </div>
-                                                </th>
-                                                <th class="text-center" ><?php echo ($pagesIndex - 1) * $pageNumber + $k + 1; ?></th>
-                                                <th><?php echo $_sp->TemBaoHang()->Code; ?></th>
-                                                <th><?php echo $_sp->Name ?></th>
-                                                <th>
+                                                </td>
+                                                <td class="text-center" ><?php echo ($pagesIndex - 1) * $pageNumber + $k + 1; ?></td>
+                                                <td><?php echo $_sp->Code; ?></td>
+                                                <td><?php echo $_sp->Name ?></td>
+                                                <td class="text-nowrap" >
                                                     <?php
                                                     echo $_sp->DanhMuc()->Name;
                                                     ?>
-                                                </th>
-                                                <th><?php echo $_sp->TinhTrang(); ?></th>
-                                                <th><?php echo $_sp->DaiLy()->Name; ?></th>
+                                                </td>
+                                                <td style="width: 150px;" class="text-left" >
+                                                    <a data-toggle="tooltip" title="Xem Tem Bảo Hành" target="_blank" href="/sanpham/temsanpham/detailbysanpham/<?php echo $_sp->TemBaoHang()->Code; ?>" >
+                                                        <?php echo $_sp->TemBaoHang()->Code; ?>
+                                                    </a>
+                                                </td>
+                                                <td><?php echo $_sp->TinhTrang(); ?></td>
+                                                <td  >
+                                                    <a href="<?php echo $_sp->DaiLy()->LinkChiTiet(); ?>"  >
+                                                        <span class="overflow-hidden text-nowrap" ><?php echo $_sp->DaiLy()->Name; ?></span>
+                                                    </a>
+                                                </td>
                                             </tr>
                                             <?php
                                         }

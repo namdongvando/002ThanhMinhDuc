@@ -8,6 +8,7 @@ class backend {
         ?>
         <meta http-equiv="cache-control" content="max-age=0" />
         <meta http-equiv="cache-control" content="no-cache" />
+        <meta name="google-signin-client_id" content="<?php echo \Module\user\Model\GoogleConfig::GetGoogleClient_id(); ?>">
         <link rel="shortcut icon" href="/public/theme/TMD/images/logo.png" />
         <!-- Bootstrap 3.3.5 -->
         <link rel="stylesheet" href="/public/admin/bootstrap/css/bootstrap.min.css">
@@ -36,6 +37,30 @@ class backend {
         <link href="/public/admin/plugins/datatables/jquery.dataTables.min.css" rel="stylesheet" type="text/css"/>
         <link rel="stylesheet" href="/public/admin/dist/css/AdminLTE.min.css">
         <link href="/public/admin/dist/Custom.css?v=<?php echo fileatime("public/admin/dist/Custom.css"); ?>" rel="stylesheet" type="text/css"/>
+
+        <script>
+            function signOut() {
+                try {
+                    if (confirm("Bạn có Muốn Xóa Không") == false) {
+                        return false;
+                    }
+                    var auth2 = gapi.auth2.getAuthInstance();
+                    auth2.signOut().then(function() {
+                        console.log('User signed out.');
+                    });
+                    return true;
+                } catch (e) {
+                    console.error(e);
+                    return false;
+                }
+            }
+            function onLoad() {
+                gapi.load('auth2', function() {
+                    gapi.auth2.init();
+                });
+            }
+        </script>
+        <script src="https://apis.google.com/js/platform.js?onload=onLoad" async defer></script>
         <style type="text/css" >
             .alert{
                 position: fixed;
@@ -128,7 +153,7 @@ class backend {
             <nav class="navbar navbar-static-top">
                 <div class="container-fluid">
                     <div class="navbar-header">
-                        <a href="/dashboard/" class="navbar-brand">TMD</a>
+                        <a href="/dashboard/" class="navbar-brand">TMĐ</a>
                         <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse">
                             <i class="fa fa-bars"></i>
                         </button>
@@ -143,20 +168,9 @@ class backend {
                     </div>
                     <div class="navbar-custom-menu">
                         <ul class="nav navbar-nav">
-                            <li class="dropdown user user-menu">
-                                <a href="#" class="text-center dropdown-toggle" data-toggle="dropdown">
-                                    <img src="/public/user_no_photo.png" class="user-image" alt="User Image">
-                                    <span class="hidden-xs">&nbsp;</span>
-                                </a>
-                                <ul class="dropdown-menu">
-                                    <li class="">
-                                        <a href="<?php echo \Common\Link::profile() ?>" ><i class="fa fa-info"  ></i> Tài khoản</a>
-                                    </li>
-                                    <li>
-                                        <a href="<?php echo \Common\Link::logout() ?>" ><i class="fa fa-sign-out"  ></i> Đăng Xuất</a>
-                                    </li>
-                                </ul>
-                            </li>
+                            <?php
+                            self::usermenu();
+                            ?>
                             <li class="">
                                 <a href="/option/index">
                                     <span><i class="fa fa-gears" ></i></span>
@@ -237,48 +251,10 @@ class backend {
                                     <span><i class="fa fa-gears" ></i></span>
                                 </a>
                             </li>
-                            <li class="dropdown user user-menu">
-                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                                    <span class="hidden-xs">Tìm Kiếm</span>
-                                </a>
-                                <ul class="dropdown-menu">
-                                    <li class="">
-                                        <form action="" method="POST" class="navbar-form navbar-left" role="search">
-                                            <div class="form-group">
-                                                <input type="text" class="form-control" id="navbar-search-input" placeholder="Search">
-                                                <button type="submit" class="btn btn-primary" >
-                                                    <i class="fa fa-search" ></i>
-                                                </button>
-                                            </div>
-                                        </form>
-                                    </li>
-                                </ul>
-                            </li>
-                            <li class="dropdown user user-menu">
-                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                                    <img src="/public/user_no_photo.png" class="user-image" alt="User Image">
-                                    <span class="hidden-xs"><?php echo $_SESSION[QuanTri]["Name"] ?></span>
-                                </a>
-                                <ul class="dropdown-menu">
-                                    <!-- User image -->
-                                    <li class="user-header">
-                                        <img src="/public/user_no_photo.png" class="img-circle" alt="User Image">
-                                        <p>
-                                            <?php echo $_SESSION[QuanTri]["Name"] ?>
-                                            <small><?php echo $_SESSION[QuanTri]["Username"] ?></small>
-                                        </p>
-                                    </li>
-                                    <!-- Menu Footer-->
-                                    <li class="user-footer">
-                                        <div class="pull-left">
-                                            <a href="<?php echo \Common\Link::profile() ?>" class="btn btn-default btn-flat">Tài khoản</a>
-                                        </div>
-                                        <div class="pull-right">
-                                            <a href="<?php echo \Common\Link::logout() ?>" class="btn btn-default btn-flat">Đăng Xuất</a>
-                                        </div>
-                                    </li>
-                                </ul>
-                            </li>
+                            <?php
+                            self::usermenu();
+                            ?>
+
                             `
                         </ul>
                     </div><!-- /.navbar-custom-menu -->
@@ -615,31 +591,10 @@ class backend {
                                     </li>
                                 </ul>
                             </li>
-                            <li class="dropdown user user-menu">
-                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                                    <img src="/public/user_no_photo.png" class="user-image" alt="User Image">
-                                    <span class="hidden-xs"><?php echo $_SESSION[QuanTri]["Name"] ?></span>
-                                </a>
-                                <ul class="dropdown-menu">
-                                    <!-- User image -->
-                                    <li class="user-header">
-                                        <img src="/public/user_no_photo.png" class="img-circle" alt="User Image">
-                                        <p>
-                                            <?php echo $_SESSION[QuanTri]["Name"] ?>
-                                            <small><?php echo $_SESSION[QuanTri]["Username"] ?></small>
-                                        </p>
-                                    </li>
-                                    <!-- Menu Footer-->
-                                    <li class="user-footer">
-                                        <div class="pull-left">
-                                            <a href="<?php echo \Common\Link::profile() ?>" class="btn btn-default btn-flat">Tài khoản</a>
-                                        </div>
-                                        <div class="pull-right">
-                                            <a href="<?php echo \Common\Link::logout() ?>" class="btn btn-default btn-flat">Đăng Xuất</a>
-                                        </div>
-                                    </li>
-                                </ul>
-                            </li>
+                            <?php
+                            self::usermenu();
+                            ?>
+
                             `
                         </ul>
                     </div><!-- /.navbar-custom-menu -->
@@ -669,6 +624,25 @@ class backend {
             </section>
             <!-- /.sidebar -->
         </aside>
+        <?php
+    }
+
+    public static function usermenu() {
+        ?>
+        <li class="dropdown user user-menu">
+            <a href="#" class="text-center dropdown-toggle" data-toggle="dropdown">
+                <img src="/public/user_no_photo.png" class="user-image" alt="User Image">
+                <span class="hidden-xs">&nbsp;</span>
+            </a>
+            <ul class="dropdown-menu">
+                <li class="">
+                    <a  href="<?php echo \Common\Link::profile() ?>" ><i class="fa fa-info"  ></i> Tài khoản</a>
+                </li>
+                <li>
+                    <a onclick="return signOut()" href="<?php echo \Common\Link::logout() ?>" ><i class="fa fa-sign-out"  ></i> Đăng Xuất</a>
+                </li>
+            </ul>
+        </li>
         <?php
     }
 

@@ -70,7 +70,7 @@ class TemSanPhamForm extends \PFBC\Form implements ITemSanPhamForm {
         $Option["class"] = "date form-control";
         $Option["autocomplete"] = "off";
         $Option["type"] = "text";
-        if (\Module\user\Model\Admin::CheckQuyen([Admin::Admin, Admin::SuperAdmin], true))
+        if (\Module\user\Model\Admin::CheckQuyen([], false))
             $Option["readonly"] = true;
         return new \PFBC\Element\Textbox("Ngày Bắt Đầu", "temsanpham[" . __FUNCTION__ . "]", $Option);
     }
@@ -86,7 +86,7 @@ class TemSanPhamForm extends \PFBC\Form implements ITemSanPhamForm {
 
     public static function ThangKetThuc($value = null) {
         $Option = self::$Option;
-        if (\Module\user\Model\Admin::CheckQuyen([Admin::Admin, Admin::SuperAdmin], true))
+        if (\Module\user\Model\Admin::CheckQuyen([], false))
             $Option["disabled"] = true;
         $Option["value"] = $value;
         $Option["type"] = "date";

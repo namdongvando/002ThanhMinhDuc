@@ -84,8 +84,7 @@ class AdminForm {
     $value = "") {
         $properties = self::$options;
         $properties["value"] = [$value];
-        $properties["style"] = "width:100%;
-                ";
+        $properties["style"] = "width:100%;";
         $properties["id"] = "Nhom";
         $properties["required"] = true;
         $UserGroups = new userGroups();

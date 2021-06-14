@@ -16,6 +16,12 @@
         <link rel="stylesheet" href="/public/admin/dist/css/AdminLTE.min.css">
         <!-- iCheck -->
         <link rel="stylesheet" href="/public/admin/plugins/iCheck/square/blue.css">
+        <meta name="google-signin-client_id" content="<?php echo Module\user\Model\GoogleConfig::GetGoogleClient_id(); ?>">
+        <style type="text/css" >
+            .abcRioButton.abcRioButtonLightBlue{
+                width: 100% !important;
+            }
+        </style>
     </head>
     <body class="hold-transition login-page">
 
@@ -40,7 +46,6 @@
             $(function() {
                 setTimeout(function() {
                     $(".alert").hide();
-                    console.log("asda");
                 }, 3000);
                 $('input').iCheck({
                     checkboxClass: 'icheckbox_square-blue',

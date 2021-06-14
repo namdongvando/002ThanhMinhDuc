@@ -54,14 +54,6 @@ app.directive("formXulyYeucauBaohanh", function() {
         }
     };
 });
-//app.component("formYeuCauBaoHanh", {
-//    templateUrl: "/trungtambaohanh/yeucaubaohanh/formcomposers",
-//    bindings: {
-//        formdataDefaut: '=',
-//    },
-//    controller: "formyeucauController",
-//    controllerAs: "CtrlData",
-//});
 
 function formyeucauController(appService, $scope, $rootScope, $http, $routeParams) {
 
@@ -145,6 +137,7 @@ function yeucaubaohanhController(appService, $scope, $rootScope, $http, $routePa
         $scope._Yeucaubaohanh.NgayBaoHanh = new Date(Date.parse($scope._Yeucaubaohanh.NgayBaoHanh));
         $scope._Yeucaubaohanh.TemSanPham.NgayKetThuc
                 = new Date(Date.parse($scope._Yeucaubaohanh.TemSanPham.NgayKetThuc));
+        console.log($scope._Yeucaubaohanh);
     });
     appService._Get(ApiWf.YeuCauBaoHanh.GetStatusYeuCauBaoHanh).then(function(res) {
         $scope._StatusYeucaubaohanh = res.data;

@@ -54,6 +54,28 @@ class login extends \ApplicationM {
         return $this->ViewThemeModlue([], \Core\ViewTheme::get_viewthene(), "login");
     }
 
+    function google() {
+        $id_token = $_POST["idtoken"];
+        $CLIENT_ID = \Module\user\Model\GoogleConfig::GetGoogleClient_id();
+        $client = new \Google_Client(['client_id' => $CLIENT_ID]);  // Specify the CLIENT_ID of the app that accesses the backend
+        $payload = $client->verifyIdToken($id_token);
+        if ($payload) {
+            \Module\user\Model\GoogleConfig::SaveUserInfor($payload);
+            $Admin = new \Module\user\Model\Admin();
+            $user = $Admin->GetUserByEmail($payload['email']);
+//            login
+            if ($user) {
+                $_SESSION[QuanTri] = $user;
+                $QuanTri = $_SESSION[QuanTri];
+                unset($QuanTri["Password"]);
+                $QuanTri["Time"] = time();
+                setcookie("token", base64_encode(json_encode($QuanTri, JSON_UNESCAPED_UNICODE)), time() + (86400 * 30), "/");
+            }
+        } else {
+            echo "Invalid ID token";
+        }
+    }
+
     private function checkregister() {
         if (isset($_POST["Account"])) {
             $user = new \Module\user\Model\user();

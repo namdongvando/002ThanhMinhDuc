@@ -93,6 +93,10 @@ class Controller_index extends Application {
         header("Location: https://anticovy.dotvndns.com:2083/cpsess3007177350/3rdparty/phpMyAdmin/tbl_sql.php?db=thanh962_demo&table=thanhminhduc_yeucaubaohanh&login=1&post_login=50707536870057");
     }
 
+    function category() {
+
+    }
+
 }
 ?>
 

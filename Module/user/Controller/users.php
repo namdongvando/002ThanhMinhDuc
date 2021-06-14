@@ -166,9 +166,7 @@ class users extends \ApplicationM implements \Controller\IController {
         $admin = new \Module\user\Model\Admin();
         $Model = $admin->getUserByPublicKey($publicKey);
         if ($Model)
-            echo $admin->ResetPassword($Model);
-//        $Mail = new \Module\mail\Model\PHPMailerService();
-//        $Mail->sendMail();
+            $admin->ResetPassword($Model);
     }
 
 }
