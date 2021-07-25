@@ -55,4 +55,17 @@ class FormOptions {
         return new FormRender(new Element\Button($title, "button", $properties));
     }
 
+    public static function Select($val, $name, $options, $pro) {
+        $properties = self::$FormClass;
+        $properties["value"] = $val;
+        if ($pro) {
+            foreach ($pro as $key => $value) {
+                $properties[$key] = $value;
+            }
+        }
+        $properties["label"] = !empty($properties["label"]) ? $properties["label"] : '';
+        $name = isset($properties["name"]) ? $properties["name"] : __FUNCTION__;
+        return new FormRender(new Element\Select($properties["label"], $name, $options, $properties));
+    }
+
 }

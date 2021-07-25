@@ -4,9 +4,12 @@ $tong = 0;
 $pagesIndex = isset($_GET["pagesIndex"]) ? intval($_GET["pagesIndex"]) : 1;
 $pageNumber = isset($_GET["pageNumber"]) ? intval($_GET["pageNumber"]) : 10;
 $DanhMuc = isset($_GET["dm"]) ? $_GET["dm"] : "0";
+$TinhTrang = isset($_GET["TinhTrang"]) ? $_GET["TinhTrang"] : -1;
 $keyword = isset($_GET["keyword"]) ? $_GET["keyword"] : "";
 $name["danhmuc"] = $DanhMuc;
 $name["keyword"] = $keyword;
+$name["TinhTrang"] = $TinhTrang;
+
 $SanPhams = $sanPham->SanPhamsPT($name, $pagesIndex, $pageNumber, $tong);
 $totalPage = ceil($tong / $pageNumber);
 ?>
@@ -53,6 +56,15 @@ $totalPage = ceil($tong / $pageNumber);
                                     <?php
                                     Module\sanpham\Model\SanPhamForm::DanhMuc($DanhMuc, ["id" => "DanhMucSanPham", "onchange" => "TimKiemSanPham()"])->renderHTML();
                                     ?>
+                                </div>
+                                <div class="col-md-2" >
+                                    <?php
+                                    $options = \Module\sanpham\Model\SanPham::ListTinhTrangToOptions();
+                                    $options = [-1 => "Tất Cả"] + $options;
+                                    \Model\FormOptions::Select(
+                                            $TinhTrang, "TinhTrang", $options, ["label" => "Tình Trạng", "id" => "TinhTrang", "onchange" => "TimKiemSanPham()"])->renderHTML();
+                                    ?>
+
                                 </div>
                             </div>
                         </div>
@@ -156,13 +168,15 @@ $totalPage = ceil($tong / $pageNumber);
 </form>
 <script type="text/javascript" >
     function TimKiemSanPham() {
-        var path = "/sanpham/kho/index/?pagesIndex=1&pageNumber=[pn]&dm=[dm]&keyword=[key]";
+        var path = "/sanpham/kho/index/?pagesIndex=1&pageNumber=[pn]&dm=[dm]&keyword=[key]&TinhTrang=[tinhtrang]";
         var DM = $("#DanhMucSanPham").val();
         var tukhoa = $("#TuKhoa").val();
+        var TinhTrang = $("#TinhTrang").val();
         var hienThi = $("#HienThi").val();
         path = path.replace('[pn]', hienThi);
         path = path.replace('[dm]', DM);
         path = path.replace('[key]', tukhoa);
+        path = path.replace('[tinhtrang]', TinhTrang);
         window.location.href = path;
     }
 </script>

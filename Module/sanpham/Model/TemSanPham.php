@@ -27,7 +27,7 @@ class TemSanPham extends TemSanPhamData {
             $this->KhachHangTieuDung = !empty($dv["KhachHangTieuDung"]) ? $dv["KhachHangTieuDung"] : null;
             $this->NgayBatDau = !empty($dv["NgayBatDau"]) ? $dv["NgayBatDau"] : date("Y-m-d H:i:s", time());
             $this->NgayKetThuc = !empty($dv["NgayKetThuc"]) ? $dv["NgayKetThuc"] : null;
-            $this->ThangKetThuc = !empty($dv["ThangKetThuc"]) ? $dv["ThangKetThuc"] : null;
+            $this->ThangKetThuc = !empty($dv["ThangKetThuc"]) ? $dv["ThangKetThuc"] : 24;
             $this->Status = !empty($dv["Status"]) ? $dv["Status"] : 0;
             $this->UserId = !empty($dv["UserId"]) ? $dv["UserId"] : 0;
             $this->CreateDate = !empty($dv["CreateDate"]) ? $dv["CreateDate"] : null;

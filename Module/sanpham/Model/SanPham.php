@@ -77,11 +77,17 @@ class SanPham extends SanPhamData {
         $sanpham = new SanPham();
         $pagesIndex = ($pagesIndex - 1) * $pageNumber;
         if (is_array($option)) {
+
             $name = $option["keyword"];
+            $TinhTrang = intval($option["TinhTrang"]);
             $danhmuc = $option["danhmuc"];
             $danhmucSql = "";
             if ($danhmuc != "0") {
                 $danhmucSql = "and `DanhMuc` = '{$danhmuc}'";
+            }
+            $tinhTrangSql = "";
+            if ($TinhTrang > -1) {
+                $tinhTrangSql = "and `TinhTrang` = '{$TinhTrang}'";
             }
 //            phân theo dai lý
             $daily = !empty($option["daily"]) ? $option["daily"] : null;
@@ -89,7 +95,7 @@ class SanPham extends SanPhamData {
             if ($daily != null) {
                 $dailySql = " and `MaDaiLy` = '{$daily}'";
             }
-            $where = "`Name` like '%{$name}%' and `Name` != '' {$danhmucSql} {$dailySql}";
+            $where = "`Name` like '%{$name}%' and `Name` != '' {$danhmucSql} {$dailySql} $tinhTrangSql";
             $tong = $sanpham->GetRowsNumber($where);
             $where .= " limit {$pagesIndex},{$pageNumber}";
         } else {

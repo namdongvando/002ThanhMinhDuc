@@ -1,4 +1,5 @@
-//var data = "";
+console.log(log);
+////var data = "";
 //
 //var xhr = new XMLHttpRequest();
 //xhr.withCredentials = true;
