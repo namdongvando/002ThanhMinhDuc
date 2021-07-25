@@ -47,8 +47,7 @@ class AdminForm {
         return new Element\Textbox("Tài Khoản", "users[Username]", $properties);
     }
 
-    public static function Email(
-    $value = "") {
+    public static function Email($value = "") {
         $properties = self::$options;
         $properties["value"] = $value;
         $properties["type"] = "email";
@@ -57,31 +56,27 @@ class AdminForm {
         return new Element\Textbox("Email", "users[Email]", $properties);
     }
 
-    public static function Phone(
-    $value = "") {
+    public static function Phone($value = "") {
         $properties = self::$options;
         $properties["value"] = $value;
         $properties["autocomplete"] = "off";
         return new Element\Textbox("SĐT", "users[Phone]", $properties);
     }
 
-    public static function Address(
-    $value = "", $custom = null) {
+    public static function Address($value = "", $custom = null) {
         $properties = self::$options;
         $properties[" value"] = $value;
         $properties["autocomplete"] = "off";
         return new Element\Textbox("Địa Chỉ", "users[Address]", $properties);
     }
 
-    public static function Note(
-    $value = "") {
+    public static function Note($value = "") {
         $properties = self::$options;
         $properties["value"] = $value;
         return new Element\Textbox("Ghi Chú", "users[Note]", $properties);
     }
 
-    public static function Groups(
-    $value = "") {
+    public static function Groups($value = "") {
         $properties = self::$options;
         $properties["value"] = [$value];
         $properties["style"] = "width:100%;";
@@ -93,8 +88,7 @@ class AdminForm {
         return new Element\Select("Nhóm", "users[Groups]", $options, $properties);
     }
 
-    public static function TrungTamBaoHanh(
-    $value = "") {
+    public static function TrungTamBaoHanh($value = "") {
         $properties = self::$options;
         $properties["value"] = [$value];
         $properties["style"] = "width:100%;
@@ -108,11 +102,8 @@ class AdminForm {
 
     public static function KhachHang($value = "") {
         $properties = self::$options;
-        $properties["
-
-        value"] = [$value];
-        $properties["style"] = "width:100%;
-                ";
+        $properties["value"] = [$value];
+        $properties["style"] = "width:100%;";
         $properties["required"] = true;
         $KhachHang = new \Module\khachhang\Model\KhachHang();
         $options = $KhachHang->GetALL2Options();
@@ -120,16 +111,14 @@ class AdminForm {
         return new Element\Select("Đại Lý/ Nhà Phân Phối", "taikhoan[KhachHang]", $options, $properties);
     }
 
-    public static function Name(
-    $value = "") {
+    public static function Name($value = "") {
         $properties = self::$options;
         $properties["value"] = $value;
         $properties["required"] = true;
         return new Element\Textbox("Họ & Tên", "users[Name]", $properties);
     }
 
-    public static function Active(
-    $value = "") {
+    public static function Active($value = "") {
         $properties = self::$options;
         $properties["value"] = [$value];
         $properties["required"] = true;
