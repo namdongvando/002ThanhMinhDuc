@@ -2,9 +2,11 @@
 $sanPham = new Module\sanpham\Model\SanPham();
 $tong = 0;
 $pagesIndex = isset($_GET["pagesIndex"]) ? intval($_GET["pagesIndex"]) : 1;
+$TinhTrang = isset($_GET["TinhTrang"]) ? intval($_GET["TinhTrang"]) : -1;
 $pageNumber = isset($_GET["pageNumber"]) ? intval($_GET["pageNumber"]) : 10;
 $DanhMuc = isset($_GET["dm"]) ? $_GET["dm"] : "0";
 $keyword = isset($_GET["keyword"]) ? $_GET["keyword"] : "";
+$name["TinhTrang"] = $TinhTrang;
 $name["danhmuc"] = $DanhMuc;
 $name["keyword"] = $keyword;
 if (Module\user\Model\Admin::getCurentUser(TRUE)->Groups == Module\user\Model\Admin::DaiLy) {
@@ -60,8 +62,7 @@ $totalPage = ceil($tong / $pageNumber);
                                 </div>
                             </div>
                         </div>
-                    </div>
-
+                    </div> 
                     <div class="col-md-12">
                         <div class="row">
                             <div class="table-responsive">

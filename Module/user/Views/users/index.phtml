@@ -49,7 +49,6 @@ $linkPhanTrang = "/user/users/index/?pagesIndex=[i]&pageNumber={$pageNumber}&key
                             </thead>
                             <tbody>
                                 <?php
-//                                var_dump($TaiKhoans);
                                 if ($TaiKhoans)
                                     foreach ($TaiKhoans as $k => $value) {
                                         $_Taikhoan = new Module\user\Model\Admin($value);
@@ -72,11 +71,8 @@ $linkPhanTrang = "/user/users/index/?pagesIndex=[i]&pageNumber={$pageNumber}&key
                                         <?php
                                     }
                                 ?>
-
                             </tbody>
-
                         </table>
-
                     </div>
                     <div class="box-footer" >
                         <div class="row">

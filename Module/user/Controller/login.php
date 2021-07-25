@@ -32,6 +32,7 @@ class login extends \ApplicationM {
         }
         if (isset($_POST["dangnhap"])) {
             $Admin = new \Module\user\Model\Admin();
+            $_POST["Username"] = \Common\Common::CheckInput($_POST["Username"]);
             $_SESSION[QuanTri] = $Admin->CheckLogin($_POST["Username"], $_POST["Password"]);
 //            var_dump($_SESSION[QuanTri]);
 //            die();

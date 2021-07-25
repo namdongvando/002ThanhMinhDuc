@@ -3,58 +3,14 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/D:/backup/web.dev/1outtime/ThanhMinhDuc/002ThanhMinhDuc/theme/backend/layout_daily.phtml</file>
-            <file>file:/D:/backup/web.dev/1outtime/ThanhMinhDuc/002ThanhMinhDuc/Module/dashboard/Model/Menu.php</file>
-            <file>file:/D:/backup/web.dev/1outtime/ThanhMinhDuc/002ThanhMinhDuc/Module/trungtambaohanh/Controller/yeucaubaohanh.php</file>
-            <file>file:/D:/backup/web.dev/1outtime/ThanhMinhDuc/002ThanhMinhDuc/theme/thanhminhduc/layout.phtml</file>
-            <file>file:/D:/backup/web.dev/1outtime/ThanhMinhDuc/002ThanhMinhDuc/Module/user/Model/AdminForm.php</file>
-            <file>file:/D:/backup/web.dev/1outtime/ThanhMinhDuc/002ThanhMinhDuc/Module/user/Model/GoogleConfig.php</file>
-            <file>file:/D:/backup/web.dev/1outtime/ThanhMinhDuc/002ThanhMinhDuc/Module/khachhang/Model/Menu.php</file>
+            <file>file:/D:/backup/web.dev/1outtime/ThanhMinhDuc/002ThanhMinhDuc/Module/excell/Model/excell/ExcelReader.php</file>
             <file>file:/D:/backup/web.dev/1outtime/ThanhMinhDuc/002ThanhMinhDuc/Module/sanpham/Views/taosanpham/index.phtml</file>
-            <file>file:/D:/backup/web.dev/1outtime/ThanhMinhDuc/002ThanhMinhDuc/theme/backend/backend.php</file>
-            <file>file:/D:/backup/web.dev/1outtime/ThanhMinhDuc/002ThanhMinhDuc/theme/backend/layout.phtml</file>
-            <file>file:/D:/backup/web.dev/1outtime/ThanhMinhDuc/002ThanhMinhDuc/Module/user/Views/users/edit.phtml</file>
-            <file>file:/D:/backup/web.dev/1outtime/ThanhMinhDuc/002ThanhMinhDuc/Module/dashboard/Controller/index.php</file>
-            <file>file:/D:/backup/web.dev/1outtime/ThanhMinhDuc/002ThanhMinhDuc/Module/user/Controller/users.php</file>
-            <file>file:/D:/backup/web.dev/1outtime/ThanhMinhDuc/002ThanhMinhDuc/Module/trungtambaohanh/Views/yeucaubaohanh/detail.phtml</file>
-            <file>file:/D:/backup/web.dev/1outtime/ThanhMinhDuc/002ThanhMinhDuc/Controller/index.php</file>
-            <file>file:/D:/backup/web.dev/1outtime/ThanhMinhDuc/002ThanhMinhDuc/Module/trungtambaohanh/Views/yeucaubaohanh/index.phtml</file>
-            <file>file:/D:/backup/web.dev/1outtime/ThanhMinhDuc/002ThanhMinhDuc/Module/dashboard/Views/index/index.phtml</file>
-            <file>file:/D:/backup/web.dev/1outtime/ThanhMinhDuc/002ThanhMinhDuc/Module/user/Views/login/index.phtml</file>
-            <file>file:/D:/backup/web.dev/1outtime/ThanhMinhDuc/002ThanhMinhDuc/Module/sanpham/Views/temsanpham/index.phtml</file>
-            <file>file:/D:/backup/web.dev/1outtime/ThanhMinhDuc/002ThanhMinhDuc/Module/khachhang/Model/KhachHang.php</file>
-            <file>file:/D:/backup/web.dev/1outtime/ThanhMinhDuc/002ThanhMinhDuc/Module/user/Model/TaiKhoan.php</file>
-            <file>file:/D:/backup/web.dev/1outtime/ThanhMinhDuc/002ThanhMinhDuc/Module/option/Model/Option.php</file>
-            <file>file:/D:/backup/web.dev/1outtime/ThanhMinhDuc/002ThanhMinhDuc/Module/trungtambaohanh/public/js/WfyeucaubaohanhController.js</file>
-            <file>file:/D:/backup/web.dev/1outtime/ThanhMinhDuc/002ThanhMinhDuc/Module/user/Views/Layout/layout_login.phtml</file>
-            <file>file:/D:/backup/web.dev/1outtime/ThanhMinhDuc/002ThanhMinhDuc/composer.json</file>
-            <file>file:/D:/backup/web.dev/1outtime/ThanhMinhDuc/002ThanhMinhDuc/Module/sanpham/Views/kho/index.phtml</file>
-            <file>file:/D:/backup/web.dev/1outtime/ThanhMinhDuc/002ThanhMinhDuc/Module/user/Model/Menu.php</file>
-            <file>file:/D:/backup/web.dev/1outtime/ThanhMinhDuc/002ThanhMinhDuc/Module/sanpham/Model/TemSanPhamForm.php</file>
-            <file>file:/D:/backup/web.dev/1outtime/ThanhMinhDuc/002ThanhMinhDuc/theme/backend/layout_login.phtml</file>
-            <file>file:/D:/backup/web.dev/1outtime/ThanhMinhDuc/002ThanhMinhDuc/Module/user/Controller/login.php</file>
-            <file>file:/D:/backup/web.dev/1outtime/ThanhMinhDuc/002ThanhMinhDuc/Module/user/public/googleconfig.json</file>
-            <file>file:/D:/backup/web.dev/1outtime/ThanhMinhDuc/002ThanhMinhDuc/Model/Permistion.php</file>
-            <file>file:/D:/backup/web.dev/1outtime/ThanhMinhDuc/002ThanhMinhDuc/Module/option/Config.php</file>
-            <file>file:/D:/backup/web.dev/1outtime/ThanhMinhDuc/002ThanhMinhDuc/theme/backend/layout_nvkt.phtml</file>
+            <file>file:/D:/backup/web.dev/1outtime/ThanhMinhDuc/002ThanhMinhDuc/Module/sanpham/Controller/api.php</file>
             <file>file:/D:/backup/web.dev/1outtime/ThanhMinhDuc/002ThanhMinhDuc/Module/sanpham/Model/SanPham.php</file>
-            <file>file:/D:/backup/web.dev/1outtime/ThanhMinhDuc/002ThanhMinhDuc/Module/user/Views/Layout/layout.phtml</file>
-            <file>file:/D:/backup/web.dev/1outtime/ThanhMinhDuc/002ThanhMinhDuc/Module/option/Views/permistion/index.phtml</file>
-            <file>file:/D:/backup/web.dev/1outtime/ThanhMinhDuc/002ThanhMinhDuc/Module/sanpham/Views/index/index.phtml</file>
-            <file>file:/D:/backup/web.dev/1outtime/ThanhMinhDuc/002ThanhMinhDuc/Common/Link.php</file>
-            <file>file:/D:/backup/web.dev/1outtime/ThanhMinhDuc/002ThanhMinhDuc/Module/trungtambaohanh/Views/yeucaubaohanh/formcomposers.phtml</file>
-            <file>file:/D:/backup/web.dev/1outtime/ThanhMinhDuc/002ThanhMinhDuc/Module/sanpham/Model/TemSanPham.php</file>
-            <file>file:/D:/backup/web.dev/1outtime/ThanhMinhDuc/002ThanhMinhDuc/Module/trungtambaohanh/Model/YeuCauBaoHanh.php</file>
-            <file>file:/D:/backup/web.dev/1outtime/ThanhMinhDuc/002ThanhMinhDuc/Module/trungtambaohanh/Views/yeucaubaohanh/form.phtml</file>
-            <file>file:/D:/backup/web.dev/1outtime/ThanhMinhDuc/002ThanhMinhDuc/Module/user/Model/Admin.php</file>
-            <file>file:/D:/backup/web.dev/1outtime/ThanhMinhDuc/002ThanhMinhDuc/Module/trungtambaohanh/Model/Menu.php</file>
-            <file>file:/D:/backup/web.dev/1outtime/ThanhMinhDuc/002ThanhMinhDuc/Module/sanpham/Views/taosanpham/index_1.phtml</file>
-            <file>file:/D:/backup/web.dev/1outtime/ThanhMinhDuc/002ThanhMinhDuc/Module/sanpham/Model/Menu.php</file>
-            <file>file:/D:/backup/web.dev/1outtime/ThanhMinhDuc/002ThanhMinhDuc/Module/sanpham/Model/SanPhamForm.php</file>
-            <file>file:/D:/backup/web.dev/1outtime/ThanhMinhDuc/002ThanhMinhDuc/Module/sanpham/Controller/temsanpham.php</file>
-            <file>file:/D:/backup/web.dev/1outtime/ThanhMinhDuc/002ThanhMinhDuc/Module/sanpham/Views/temsanpham/detailbysanpham.phtml</file>
-            <file>file:/D:/backup/web.dev/1outtime/ThanhMinhDuc/002ThanhMinhDuc/datatable/ZendData.php</file>
-            <file>file:/D:/backup/web.dev/1outtime/ThanhMinhDuc/002ThanhMinhDuc/Module/trungtambaohanh/Controller/api.php</file>
+            <file>file:/D:/backup/web.dev/1outtime/ThanhMinhDuc/002ThanhMinhDuc/Module/sanpham/Views/kho/index.phtml</file>
+            <file>file:/D:/backup/web.dev/1outtime/ThanhMinhDuc/002ThanhMinhDuc/Module/sanpham/Views/temsanpham/index.phtml</file>
+            <file>file:/D:/backup/web.dev/1outtime/ThanhMinhDuc/002ThanhMinhDuc/Model/FormOptions.php</file>
+            <file>file:/D:/backup/web.dev/1outtime/ThanhMinhDuc/002ThanhMinhDuc/Module/sanpham/public/TemsanphamController.js</file>
         </group>
     </open-files>
 </project-private>

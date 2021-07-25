@@ -213,7 +213,9 @@ class Admin extends AdminTable {
     }
 
     public function GetAllPT($name = "", $pagesIndex, $pageNumber, &$tong) {
-        $where = " `Active` >= 0";
+        $superId = userGroups::SupperAdmin;
+        $idGroupSql = " `Groups` != '$superId' and ";
+        $where = "$idGroupSql `Active` >= 0 ";
         $ActiveSql = "";
         if (is_array($name)) {
             $Active = $name["Active"];
@@ -223,9 +225,8 @@ class Admin extends AdminTable {
             }
             $name = $name["keyword"];
         }
-
         if ($name != "") {
-            $where = "(`Name` like '%{$name}%' or `Email` like '%{$name}%' or `Phone` like '%{$name}%') {$ActiveSql} ";
+            $where = "$idGroupSql  (`Name` like '%{$name}%' or `Email` like '%{$name}%' or `Phone` like '%{$name}%') {$ActiveSql} ";
         }
         $pagesIndex = max($pagesIndex, 1);
         $pagesIndex = ($pagesIndex - 1) * $pageNumber;
