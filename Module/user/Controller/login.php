@@ -11,6 +11,8 @@ class login extends \ApplicationM {
     const AppPath = "/Module/user";
 
     function __construct() {
+
+
         \Core\ViewTheme::set_viewthene("backend");
     }
 
@@ -20,6 +22,7 @@ class login extends \ApplicationM {
     }
 
     function index() {
+
         if (isset($_COOKIE["token"])) {
             $token = $_COOKIE["token"];
             $user = json_decode(base64_decode($token), JSON_OBJECT_AS_ARRAY);

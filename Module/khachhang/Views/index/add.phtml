@@ -62,7 +62,7 @@ $KhachHang = new Module\khachhang\Model\KhachHang();
                                         Module\khachhang\Model\KhachHangForm::DienThoai($KhachHang->DienThoai)->renderHTML();
                                         ?>
                                     </div>
-                                    <div class="col-md-4">
+                                    <div class="col-md-4 hidden">
                                         <?php
                                         Module\khachhang\Model\KhachHangForm::Parents($KhachHang->Parents)->renderHTML();
                                         ?>
@@ -91,7 +91,7 @@ $KhachHang = new Module\khachhang\Model\KhachHang();
                                         Module\khachhang\Model\KhachHangForm::Zalo($KhachHang->Zalo)->renderHTML();
                                         ?>
                                     </div>
-                                    <div class="col-md-4">
+                                    <div class="col-md-4 hidden">
                                         <?php
                                         Module\khachhang\Model\KhachHangForm::MaSoThue($KhachHang->MaSoThue)->renderHTML();
                                         ?>
@@ -123,7 +123,7 @@ $KhachHang = new Module\khachhang\Model\KhachHang();
                                         Module\khachhang\Model\KhachHangForm::QuanHuyen(null, 32)->renderHTML();
                                         ?>
                                     </div>
-                                    <div class="col-md-12">
+                                    <div class="col-md-4">
                                         <?php
                                         Module\khachhang\Model\KhachHangForm::DiaChi($KhachHang->DiaChi)->renderHTML();
                                         ?>
@@ -135,7 +135,7 @@ $KhachHang = new Module\khachhang\Model\KhachHang();
                                     </div>
                                 </div>
                             </fieldset>
-                            <fieldset>
+                            <fieldset hidden="" >
                                 <legend>Thông Tin Thanh Toán</legend>
                                 <div class="row">
                                     <div class="col-md-4">

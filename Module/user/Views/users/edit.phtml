@@ -5,7 +5,7 @@ $admin = new Module\user\Model\Admin($admin);
     app.controller("usersController", function($scope, $http) {
         $scope.resetMail = function(id) {
             try {
-                if (window.confirm('Bạn có muốn sửa tài khoản không?') == false) {
+                if (window.confirm('Bạn có muốn reset mật khẩu tài khoản này không?') == false) {
                     return  false;
                 }
                 $http.post("/user/users/resetpassword/", $.param({"publicKey": id})).then(function(res) {
@@ -107,10 +107,30 @@ $admin = new Module\user\Model\Admin($admin);
                 <div class="" >
                     <div class="box box-primary" >
                         <div class="box-header" >
-                            <h3 class="box-title" >Thuộc Đơn Vị </h3>
+                            <h3 class="box-title" >Các Đơn Vị Được Cấp Quyền</h3>
                         </div>
                         <div class="box-body" >
+                            <?php
+                            $DSKhachHang = $admin->KhachHangs();
+                            ?>
+                            <table class="table table-bordered" >
+                                <thead>
+                                    <tr>
+                                        <th>Header</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>Cell</td>
+                                    </tr>
+                                </tbody>
+                                <tfoot>
+                                    <tr>
+                                        <td>Cell</td>
+                                    </tr>
+                                </tfoot>
 
+                            </table>
                         </div>
                     </div>
                 </div>

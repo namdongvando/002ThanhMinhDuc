@@ -20,7 +20,7 @@ class backend {
         <!-- Theme style -->
         <!-- AdminLTE Skins. Choose a skin from the css/skins
              folder instead of downloading all of them to reduce the load. -->
-        <link rel="stylesheet" href="/public/admin/dist/css/skins/_all-skins.min.css">
+
         <!-- iCheck -->
         <link rel="stylesheet" href="/public/admin/plugins/iCheck/flat/blue.css">
         <!-- Morris chart -->
@@ -33,24 +33,26 @@ class backend {
         <link rel="stylesheet" href="/public/admin/plugins/daterangepicker/daterangepicker-bs3.css">
         <!-- bootstrap wysihtml5 - text editor -->
         <link rel="stylesheet" href="/public/admin/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css">
+        <!--<link href="/public/admin/plugins/datatables/jquery.dataTables.min.css" rel="stylesheet" type="text/css"/>-->
         <link rel="stylesheet" href="/public/admin/plugins/datatables/dataTables.bootstrap.css">
-        <link href="/public/admin/plugins/datatables/jquery.dataTables.min.css" rel="stylesheet" type="text/css"/>
         <link rel="stylesheet" href="/public/admin/dist/css/AdminLTE.min.css">
+        <link href="/public/admin/dist/css/skins/_all-skins.min.css?v=<?php echo time(); ?>" rel="stylesheet" type="text/css"/>
         <link href="/public/admin/dist/Custom.css?v=<?php echo fileatime("public/admin/dist/Custom.css"); ?>" rel="stylesheet" type="text/css"/>
-
+        <script src="https://apis.google.com/js/platform.js?onload=onLoad" async defer></script>
         <script>
             function signOut() {
                 try {
-                    if (confirm("Bạn có Muốn Xóa Không") == false) {
+                    if (confirm("Bạn có Muốn Thoát Không") == false) {
                         return false;
                     }
+                    return true;
                     var auth2 = gapi.auth2.getAuthInstance();
                     auth2.signOut().then(function() {
                         console.log('User signed out.');
                     });
                     return true;
                 } catch (e) {
-                    console.error(e);
+                    console.log(e);
                     return false;
                 }
             }
@@ -60,7 +62,7 @@ class backend {
                 });
             }
         </script>
-        <script src="https://apis.google.com/js/platform.js?onload=onLoad" async defer></script>
+
         <style type="text/css" >
             .alert{
                 position: fixed;
@@ -221,17 +223,17 @@ class backend {
                     <!-- Collect the nav links, forms, and other content for toggling -->
                     <div class="collapse navbar-collapse pull-left" id="navbar-collapse">
                         <ul class="nav navbar-nav">
-                            <li class="">
+                            <li class="hidden">
                                 <a href="/khachhang/khachhangtieudung/">
                                     <span>Khách Hàng Tiêu Dùng</span>
                                 </a>
                             </li>
-                            <li class="">
+                            <li class="hidden">
                                 <a href="/user/users/">
                                     <span>Quản Lý Tài Khoản</span>
                                 </a>
                             </li>
-                            <li class="dropdown">
+                            <li class="hidden dropdown">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">Quản Lý Sản Phẩm <span class="caret"></span></a>
                                 <ul class="dropdown-menu" role="menu">
                                     <li class="">
@@ -360,10 +362,8 @@ class backend {
 
     function js() {
         ?>
+
         <script type="text/javascript" >
-            /*
-             "/public/admin/plugins/jQuery/jQuery-2.1.4.min.js",
-             */
             var linkArray = [
                 "https://code.jquery.com/ui/1.11.4/jquery-ui.min.js",
                 "/public/admin/bootstrap/js/bootstrap.min.js",
@@ -382,6 +382,7 @@ class backend {
                 "/public/admin/plugins/slimScroll/jquery.slimscroll.min.js",
                 "/public/admin/plugins/fastclick/fastclick.min.js",
                 "/public/admin/plugins/datatables/jquery.dataTables.min.js",
+                "/public/admin/plugins/datatables/dataTables.bootstrap.min.js",
                 "/public/admin/dist/js/app.min.js",
                 "/public/admin/dist/js/pages/dashboard.js",
                 "/public/admin/dist/js/demo.js",
@@ -392,7 +393,6 @@ class backend {
             for (var i = 0; i < linkArray.length; i++) {
                 document.write('<script type="text/javascript" src="' + linkArray[i] + '"><\/script>');
             }
-
 
         </script>
         <style type="text/css" >
@@ -595,7 +595,6 @@ class backend {
                             self::usermenu();
                             ?>
 
-                            `
                         </ul>
                     </div><!-- /.navbar-custom-menu -->
                 </div><!-- /.container-fluid -->

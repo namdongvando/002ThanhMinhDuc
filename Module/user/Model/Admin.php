@@ -236,6 +236,11 @@ class Admin extends AdminTable {
         return $Kh->GetRowsByWhere($where);
     }
 
+    public function KhachHangs() {
+        $ModelTaiKhoan = new TaiKhoan();
+        return $ModelTaiKhoan->GetByKhachHangIdUser($this->Id);
+    }
+
 }
 
 ?>

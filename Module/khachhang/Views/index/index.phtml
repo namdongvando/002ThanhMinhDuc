@@ -32,15 +32,15 @@ $linkTimKiem = '/khachhang/index/index/1/10/';
                     </div>
                     <div class="box-body " >
                         <div class="row">
-                            <div class="col-md-3 " style="display: none;" id="TimKiem" >
+                            <div class="col-md-2 " style="display: none;" id="TimKiem" >
                                 <?php
                                 Model\FormOptions::TimKiem($name, ["id" => "TuKhoa", "onchange" => "TimKiemSanPham()"])->renderHTMLIcon("search");
                                 ?>
                             </div>
                         </div>
 
-                        <div class="table-responsive">
-                            <table class="table table-hover table-bordered   "    >
+                        <div class="">
+                            <table class="table table-hover table-striped table-bordered   "    >
                                 <thead>
                                     <tr class="bg-blue" >
                                         <th style="width: 50px;" >#</th>
@@ -58,21 +58,21 @@ $linkTimKiem = '/khachhang/index/index/1/10/';
                                         $Modelkh = new Module\khachhang\Model\KhachHang($kh);
                                         ?>
                                         <tr>
-                                            <th><?php echo ($pagesNumber * ($pagesIndex - 1) ) + $index + 1; ?></th>
-                                            <th >
+                                            <td><?php echo ($pagesNumber * ($pagesIndex - 1) ) + $index + 1; ?></td>
+                                            <td >
                                                 <a href="/khachhang/index/edit/<?php echo sha1($Modelkh->Id); ?>"  >
                                                     <?php echo $Modelkh->Code ?>
                                                 </a>
-                                            </th>
-                                            <th >
+                                            </td>
+                                            <td >
                                                 <a href="/khachhang/index/edit/<?php echo sha1($Modelkh->Id); ?>"  >
                                                     <?php echo $Modelkh->Name ?>
                                                 </a>
-                                            </th>
-                                            <th ><?php echo $Modelkh->DiaChi ?></th>
-                                            <th  ><?php echo $Modelkh->DienThoai ?></th>
-                                            <th><?php echo $Modelkh->TinhThanh()->Name; ?></th>
-                                            <th><?php echo $Modelkh->QuanHuyen()->Name; ?></th>
+                                            </td>
+                                            <td ><?php echo $Modelkh->DiaChi ?></td>
+                                            <td  ><?php echo $Modelkh->DienThoai ?></td>
+                                            <td><?php echo $Modelkh->TinhThanh()->Name; ?></td>
+                                            <td><?php echo $Modelkh->QuanHuyen()->Name; ?></td>
                                         </tr>
                                         <?php
                                     }

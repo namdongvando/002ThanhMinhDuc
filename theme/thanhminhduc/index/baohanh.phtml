@@ -9,6 +9,27 @@
             margin: 0px;
             font-weight: bold;
         }
+
+    }
+    legend{
+        font-size: 14px;
+        display: block;
+        width: auto;
+        padding-left: 2px;
+        padding-right: 2px;
+        border: none;
+        margin-bottom: 0px;
+    }
+    fieldset {
+        display: block;
+        margin-left: 2px;
+        margin-right: 2px;
+        padding-top: 0.35em;
+        padding-bottom: 0.625em;
+        padding-left: 0.75em;
+        padding-right: 0.75em;
+        border: 1px solid ;
+        margin-bottom: 15px;
     }
 </style>
 <?php
@@ -18,7 +39,6 @@ $sanPham = new Module\sanpham\Model\SanPham($sanPham);
 $link = "/public/phpqrcode/index.php?data=" . Root_URL . "baohanh/" . $sanPham->Code . "/";
 ?>
 <div class="container" style="margin-top: 15px;" >
-
     <div class="row" >
         <div class="col-xs-4" >
             <a href="/">
@@ -43,101 +63,160 @@ $link = "/public/phpqrcode/index.php?data=" . Root_URL . "baohanh/" . $sanPham->
                         <div class="panel-body">
                             <div class="row" >
                                 <h3 class="text-center title-tembaohanh" >Tem Bảo Hành</h3>
-                                <div class="col-md-6" >
-                                    <fieldset>
-                                        <legend>Thông Tin Bảo Hành</legend>
-                                        <table class="table table-bordered" >
-                                            <tr>
-                                                <th style="width: 200px;" >Tên Sản Phẩm</th>
-                                                <td>
-                                                    <?php
-                                                    echo $temSanPham->SanPham()->Name;
-                                                    ?>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <th style="width: 100px;" >Mã Sản Phẩm</th>
-                                                <td>
-                                                    <?php
-                                                    echo $temSanPham->SanPham()->Name;
-                                                    ?>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <th colspan="2" >
-                                                    <label>Ngày Bắt Đầu Bảo Hành:</label>
-                                                    <?php
-                                                    echo $temSanPham->NgayBatDau();
-                                                    ?>
-                                                </th>
-                                            </tr>
-                                            <tr>
-                                                <th colspan="2" >
-                                                    <label>Thời Gian Bảo Hành:</label>
-                                                    <?php
-                                                    echo $temSanPham->ThangKetThuc();
-                                                    ?>
-                                                </th>
-                                            </tr>
-                                            <tr>
-                                                <th colspan="2" >
-                                                    <label>Ngày Kết Thúc:</label>
-                                                    <?php
-                                                    echo $temSanPham->NgayKetThuc();
-                                                    ?>
-                                                </th>
-                                            </tr>
-                                            <tr>
-                                                <th colspan="2" >
-                                                    <label>Tình Trạng:</label>
-                                                    <?php
-                                                    echo $temSanPham->Status()->Name;
-                                                    ?>
-                                                </th>
-                                            </tr>
-                                        </table>
+                                <div class="col-md-12" >
+                                    <div class="row">
+                                        <fieldset>
+                                            <legend>Thông Tin Bảo Hành</legend>
+                                            <table class="table table-bordered" >
+                                                <tr>
+                                                    <td style="width: 100px;" >Mã Sản Phẩm:
+                                                        <b>
+                                                            <?php
+                                                            echo $temSanPham->SanPham()->Code;
+                                                            ?>
+                                                        </b>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="width: 200px;" >
+                                                        Tên Sản Phẩm:
+                                                        <b>
+                                                            <?php
+                                                            echo $temSanPham->SanPham()->Name;
+                                                            ?>
+                                                        </b>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="width: 200px;" >
+                                                        Tình Trạng Sản Phẩm:
+                                                        <b>
+                                                            <?php
+                                                            echo $temSanPham->SanPham()->TinhTrang();
+                                                            ?>
+                                                        </b>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="width: 200px;" >
+                                                        Đại Lý:
+                                                        <b>
+                                                            <?php
+                                                            echo $temSanPham->SanPham()->DaiLy()->Name;
+                                                            ?>
+                                                        </b>
+                                                    </td>
+                                                </tr>
+                                            </table>
 
-                                    </fieldset>
+                                        </fieldset>
+                                    </div>
+
                                 </div>
-                                <div class="col-md-6" >
-                                    <fieldset>
-                                        <legend>Thông Tin Khách</legend>
-                                        <table class="table table-bordered" >
-                                            <tr>
-                                                <th style="width: 100px;" >Họ & Tên</th>
-                                                <td>
-                                                    <?php
-                                                    echo $khachHang->Name;
-                                                    ?>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <th>SĐT</th>
-                                                <td>
-                                                    <?php
-                                                    echo $khachHang->Phone;
-                                                    ?>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td colspan="2" >
-                                                    <label>Địa Chỉ</label>
-                                                    <?php
-                                                    echo $khachHang->DiaChi;
-                                                    ?>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td colspan="2" >
-                                                    <label>Ghi Chú: </label>
-                                                    <?php
-                                                    echo $khachHang->GhiChu;
-                                                    ?>
-                                                </td>
-                                            </tr>
-                                        </table>
+                                <div class="col-md-12" >
+                                    <div class="row">
+                                        <fieldset>
+                                            <legend>
+                                                <label style="font-weight: normal;cursor: pointer" >
+                                                    Thông Tin Khách
+                                                    <input ng-checked="true" ng-model="showmore" type="checkbox" style="display: none;" >
+                                                    <i ng-show="showmore == true" class="fa fa-angle-up" ></i>
+                                                    <i ng-show="showmore != true" class="fa fa-angle-down" ></i>
+                                                </label>
+                                            </legend>
 
-                                    </fieldset>
+                                            <table  style="margin-bottom: 0px;" ng-show="showmore"  class="table table-bordered"  >
+                                                <tr>
+                                                    <td style="width: 100px;" >Họ & Tên</td>
+                                                    <td>
+                                                        <b>
+                                                            <?php
+                                                            echo $khachHang->Name;
+                                                            ?>
+                                                        </b>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td  >SĐT </td>
+                                                    <td>
+                                                        <b>
+                                                            <?php
+                                                            echo $khachHang->Phone;
+                                                            ?>
+                                                        </b>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td colspan="2" >
+                                                        Địa Chỉ:
+                                                        <b >
+                                                            <?php
+                                                            echo $khachHang->DiaChi;
+                                                            ?>
+                                                        </b>
+
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td colspan="2" >
+                                                        Ghi Chú:
+                                                        <b>
+                                                            <?php
+                                                            echo $khachHang->GhiChu;
+                                                            ?>
+                                                        </b>
+                                                    </td>
+                                                </tr>
+                                            </table>
+
+                                        </fieldset>
+                                        <fieldset>
+                                            <legend>Thông Tin Bảo Hành</legend>
+                                            <table class="table table-bordered" >
+                                                <tr>
+                                                    <td colspan="2" >
+                                                        Ngày Bắt Đầu Bảo Hành:
+                                                        <b>
+                                                            <?php
+                                                            echo $temSanPham->NgayBatDau();
+                                                            ?>
+                                                        </b>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td colspan="2" >
+                                                        Thời Gian Bảo Hành:
+                                                        <b>
+                                                            <?php
+                                                            echo $temSanPham->ThangKetThuc();
+                                                            ?>
+                                                        </b>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td colspan="2" >
+                                                        Ngày Kết Thúc:
+                                                        <b>
+                                                            <?php
+                                                            echo $temSanPham->NgayKetThuc();
+                                                            ?>
+                                                        </b>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td colspan="2" >
+                                                        Tình Trạng:
+                                                        <b>
+                                                            <?php
+                                                            echo $temSanPham->Status()->Name;
+                                                            ?>
+                                                        </b>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </fieldset>
+                                    </div>
+
                                 </div>
                             </div>
                         </div>

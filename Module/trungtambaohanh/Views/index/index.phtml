@@ -13,19 +13,18 @@ $KhachHangs = \Module\trungtambaohanh\Model\TrungTamBaoHanh::TrungTamBaoHanhs();
         }
     });
 </script>
-<div class="row " ng-controller="ttbhController" >
-
+<div class="container-fluid  " ng-controller="ttbhController" >
     <section class="col-md-12 pb-10 " >
         <div class="connectedSortable" >
             <div class="box box-primary" >
-                <div class="box-body table-responsive" >
+                <div class="box-body  " >
                     <div class="btn-group pull-left" >
                         <?php
                         echo \Module\trungtambaohanh\Model\TrungTamBaoHanhForm::btnThem("Thêm Trung Tâm");
                         echo \Module\trungtambaohanh\Model\PhuLucSuaChuaForm::btnPhuLucSuaChua("Phụ Lục Sửa Chữa");
                         ?>
                     </div>
-                    <table class="table table-bordered dataTable " id="data"   >
+                    <table class="table table-striped table-bordered dataTable " id="data"   >
                         <thead>
                             <tr>
                                 <th></th>
@@ -42,20 +41,19 @@ $KhachHangs = \Module\trungtambaohanh\Model\TrungTamBaoHanh::TrungTamBaoHanhs();
                                 $_op = new \Module\trungtambaohanh\Model\TrungTamBaoHanh($op);
                                 ?>
                                 <tr>
-                                    <th>
+                                    <td>
                                         <?php
                                         echo Module\trungtambaohanh\Model\TrungTamBaoHanhForm::Sua($_op->Id);
                                         echo Module\trungtambaohanh\Model\TrungTamBaoHanhForm::Xoa($_op->Id);
                                         ?>
-
-                                    </th>
-                                    <th><?php echo $index + 1 ?></th>
-                                    <th><?php echo $_op->Name ?></th>
-                                    <th><?php echo $_op->Hotline ?></th>
-                                    <th><?php
+                                    </td>
+                                    <td><?php echo $index + 1 ?></td>
+                                    <td><?php echo $_op->Name ?></td>
+                                    <td><?php echo $_op->Hotline ?></td>
+                                    <td><?php
                                         echo $_op->KhuVuc()->Name;
-                                        ?></th>
-                                    <th><?php echo $_op->Address; ?></th>
+                                        ?></td>
+                                    <td><?php echo $_op->Address; ?></td>
                                 </tr>
                                 <?php
                             }

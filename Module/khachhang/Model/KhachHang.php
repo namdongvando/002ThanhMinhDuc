@@ -109,11 +109,10 @@ class KhachHang extends KhachHangData {
         $pagesIndex = ($pagesIndex - 1) * $pageNumber;
         $where = " 1";
         if ($name != "") {
-            $where = "`Name` like '%{$name}%' or `Code` like '%{$name}%'";
+            $where = "`DienThoai` like '%{$name}%' or  `Name` like '%{$name}%' or `Code` like '%{$name}%'";
         }
         $tong = $Kh->GetRowsNumber($where);
         $where .= " limit {$pagesIndex},{$pageNumber}";
-
         return $Kh->GetRowsByWhere($where);
     }
 

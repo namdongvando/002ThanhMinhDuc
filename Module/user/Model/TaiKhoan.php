@@ -50,4 +50,9 @@ class TaiKhoan extends TaiKhoanTable {
         return $this->UpdateSubmit($TaiKhoanModel);
     }
 
+    public function GetByKhachHangIdUser($Id) {
+        $where = "`idUser` = '{$Id}'";
+        return $this->ToArray($this->Select($where));
+    }
+
 }
