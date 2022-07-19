@@ -2,13 +2,15 @@
 
 namespace Controller;
 
-class backend extends \Application {
+class backend extends \Application
+{
 
     public $param;
     public $Layout;
     public $Bread;
 
-    function __construct() {
+    function __construct()
+    {
         $this->param = $this->getParam();
 
         if (!\Module\user\Model\Admin::IsLogin()) {
@@ -19,19 +21,21 @@ class backend extends \Application {
             "link" => "/backend/"
         ];
 
-//        echo "asdas";
+        //        echo "asdas";
         \Core\ViewTheme::set_viewthene("backend");
 
-//        var_dump(Model_ViewTheme::get_viewthene());
+        //        var_dump(Model_ViewTheme::get_viewthene());
     }
 
-    function index() {
+    function index()
+    {
         $Bread = new \Model\Breadcrumb();
         $Bread->setBreadcrumb($this->Bread);
         $this->ViewTheme("", Model_ViewTheme::get_viewthene(), "main");
     }
 
-    function index1() {
+    function index1()
+    {
         $Bread = new \Model\Breadcrumb();
         $Bread->setBreadcrumb($this->Bread);
 
@@ -39,45 +43,51 @@ class backend extends \Application {
         $this->ViewTheme("", Model_ViewTheme::get_viewthene(), "main1");
     }
 
-    function tieudiem() {
+    function tieudiem()
+    {
         $this->ViewTheme("", Model_ViewTheme::get_viewthene(), "nolayout");
     }
 
-    function wellcome() {
+    function wellcome()
+    {
         if ($this->is_mobile())
             Model_ViewTheme::set_viewthene("cms");
         $this->ViewTheme("", Model_ViewTheme::get_viewthene(), "nolayout");
     }
 
-    function timkiem() {
+    function timkiem()
+    {
 
         $Bread = new \Model\Breadcrumb();
         $Bread->setBreadcrumb($this->Bread);
         $this->ViewTheme("", Model_ViewTheme::get_viewthene(), "nolayout");
     }
 
-    function logout($param = "") {
+    function logout($param = "")
+    {
         try {
             unset($_SESSION[QuanTri]);
             Model\Common::_header("/mlogin");
         } catch (Exception $ex) {
-
         }
     }
 
-    function cattegorydetail() {
+    function cattegorydetail()
+    {
         $cat = new \Model\Category();
         $a = $cat->Category4Id($this->param[0]);
         echo $cat->_encode($a);
     }
 
-    function getCategorys() {
+    function getCategorys()
+    {
         $cat = new \Model\Category();
         $a = $cat->AllCategorys(FALSE);
         echo $cat->_encode($a);
     }
 
-    function getCategorysByParentID() {
+    function getCategorysByParentID()
+    {
         $cat = new \Model\Category();
         $listCatID = [];
         $cat->AllCategoryByParentID([$this->param[0]], $listCatID);
@@ -88,20 +98,23 @@ class backend extends \Application {
         echo $cat->_encode($a);
     }
 
-    function getThemes() {
+    function getThemes()
+    {
         $cat = new Model_Adapter();
         $a = ["home"];
         echo $cat->_encode($a);
     }
 
-    function getThemeAlFileconfig() {
+    function getThemeAlFileconfig()
+    {
         $cat = new Model_Adapter();
         $Lib = new \lib\redDirectory();
         $Lib->redDirectoryByPath(__DIR__ . "\..\\theme\\" . $this->param[0] . "\\config\\", $a);
         echo $cat->_encode($a);
     }
 
-    function getConfig() {
+    function getConfig()
+    {
         $cat = new Model_Adapter();
         $Lib = new \lib\io();
         $filename = __DIR__ . "/../theme/" . $this->param[0] . "/config/" . $this->param[1];
@@ -109,7 +122,8 @@ class backend extends \Application {
         echo $a;
     }
 
-    function CreateApi($array) {
+    function CreateApi($array)
+    {
         $a = new \Model_Adapter();
         if ($array) {
             echo $a->_encode($array);
@@ -118,30 +132,36 @@ class backend extends \Application {
         }
     }
 
-    function ifame() {
+    function ifame()
+    {
         $this->ViewTheme("", Model_ViewTheme::get_viewthene(), "main");
     }
 
-    function test() {
+    function test()
+    {
         $this->ViewTheme("", Model_ViewTheme::get_viewthene(), "nolayout");
     }
 
-    function getMenuByuser() {
+    function getMenuByuser()
+    {
         $admin = new \datatable\Admin($_SESSION[QuanTri]);
         $menu = \Application\Model\Permission::getMenuByUser($admin->Groups);
         echo json_encode($menu);
     }
 
-    function danhsachtin() {
+    function danhsachtin()
+    {
         $this->ViewTheme("", Model_ViewTheme::get_viewthene(), "nolayout");
     }
 
-    function tinxemnhieu() {
+    function tinxemnhieu()
+    {
 
         $this->ViewTheme("", Model_ViewTheme::get_viewthene(), "nolayout");
     }
 
-    function tindangviet() {
+    function tindangviet()
+    {
 
         if ($this->is_mobile()) {
             Model_ViewTheme::set_viewthene("cms");
@@ -149,17 +169,18 @@ class backend extends \Application {
         $this->ViewTheme("", Model_ViewTheme::get_viewthene(), "nolayout");
     }
 
-    function backendhomeapi() {
+    function backendhomeapi()
+    {
         $dataJ = [];
         $data = [];
         /**
          * Them bài viết
          * @param {type} parameter
          */
-        $data ["number"] = "";
-        $data ["title"] = "Thêm Bài Viết";
-        $data ["icon"] = "fa fa-edit";
-        $data ["link"] = "/mnews/addnews/";
+        $data["number"] = "";
+        $data["title"] = "Thêm Bài Viết";
+        $data["icon"] = "fa fa-edit";
+        $data["link"] = "/mnews/addnews/";
         $dataJ[] = $data;
 
         /**
@@ -169,7 +190,7 @@ class backend extends \Application {
         $news = new \datatable\News();
         $data["number"] = $news->getTongSoTinTheoAnHienUser(datatable\AnHien::DangDang, Permission::NhomQuenSuaTatCa());
         $data["title"] = "Tin Đang Đăng";
-        $data ["icon"] = "fa fa-list";
+        $data["icon"] = "fa fa-list";
         $data["link"] = "/backend/danhsachtin/";
         $dataJ[] = $data;
         /**
@@ -177,18 +198,18 @@ class backend extends \Application {
          * @param {type} parameter
          */
         $data = [];
-        $data ["number"] = 10;
-        $data ["title"] = "Tin Xem Nhiều Nhất";
-        $data ["link"] = "/backend/tinxemnhieu/";
+        $data["number"] = 10;
+        $data["title"] = "Tin Xem Nhiều Nhất";
+        $data["link"] = "/backend/tinxemnhieu/";
         $dataJ[] = $data;
         /**
          * tin tieu diem
          * @param {type} parameter
          */
         $data = [];
-        $data ["number"] = count($news->getNewsHot());
-        $data ["title"] = "Tin Tiêu Điểm";
-        $data ["link"] = "/backend/tieudiem/";
+        $data["number"] = count($news->getNewsHot());
+        $data["title"] = "Tin Tiêu Điểm";
+        $data["link"] = "/backend/tieudiem/";
         $dataJ[] = $data;
         /**
          * tài khoản
@@ -196,31 +217,31 @@ class backend extends \Application {
          */
         if (Application\Model\Permission::QuenXemTaiKhoan()) {
             $data = [];
-            $data ["number"] = datatable\Admin::getTongSoUser();
-            $data ["title"] = "Tài Khoản";
-            $data ["link"] = "/backend/wellcome/";
+            $data["number"] = datatable\Admin::getTongSoUser();
+            $data["title"] = "Tài Khoản";
+            $data["link"] = "/backend/wellcome/";
             $dataJ[] = $data;
         }
 
         $data = [];
-        $data ["number"] = $news->getTongSoTinTheoAnHienUser(\datatable\AnHien::DangCapNhat);
-        $data ["title"] = "Tin Đang Viết";
-        $data ["link"] = "/backend/tindangviet/";
+        $data["number"] = $news->getTongSoTinTheoAnHienUser(\datatable\AnHien::DangCapNhat);
+        $data["title"] = "Tin Đang Viết";
+        $data["link"] = "/backend/tindangviet/";
         $dataJ[] = $data;
         $data = [];
-        $data ["number"] = count($news->ThongBao());
-        $data ["title"] = "Thông Báo";
-        $data ["icon"] = "fa-bullhorn fa";
-        $data ["link"] = "/backend/thongbao/";
+        $data["number"] = count($news->ThongBao());
+        $data["title"] = "Thông Báo";
+        $data["icon"] = "fa-bullhorn fa";
+        $data["link"] = "/backend/thongbao/";
         $dataJ[] = $data;
         $data = [];
         /**
          * danh sach tin dang cho duyet
          * @param {type} parameter
          */
-        $data ["number"] = $news->getTongSoTinTheoAnHien(\datatable\AnHien::ChoDuyet);
-        $data ["title"] = "Tin Chờ Duyệt";
-        $data ["link"] = "/duyettin/";
+        $data["number"] = $news->getTongSoTinTheoAnHien(\datatable\AnHien::ChoDuyet);
+        $data["title"] = "Tin Chờ Duyệt";
+        $data["link"] = "/duyettin/";
         if (datatable\Admin::CurerntUser(true)->Groups != Application\Model\Permission::BienTap)
             $dataJ[] = $data;
         $data = [];
@@ -228,15 +249,16 @@ class backend extends \Application {
          * danh sach tin dang cho duyet
          * @param {type} parameter
          */
-        $data ["number"] = $news->getTongSoTinTheoAnHien(\datatable\AnHien::ChoDuyet);
-        $data ["title"] = "Tin Đã Gửi Duyệt";
-        $data ["link"] = "/backend/tindagui/";
+        $data["number"] = $news->getTongSoTinTheoAnHien(\datatable\AnHien::ChoDuyet);
+        $data["title"] = "Tin Đã Gửi Duyệt";
+        $data["link"] = "/backend/tindagui/";
         $dataJ[] = $data;
         $data = [];
         echo json_encode($dataJ);
     }
 
-    private function DeNghiSuaTin() {
+    private function DeNghiSuaTin()
+    {
 
         $new = new \datatable\News();
         $a = $new->getNewsByAnHienUser(datatable\AnHien::YeuCauSua);
@@ -263,7 +285,8 @@ Name;
         return $b;
     }
 
-    private function DuyetTin() {
+    private function DuyetTin()
+    {
 
         $new = new \datatable\News();
         $a = $new->getNewsByAnHienAndLevelUser([datatable\AnHien::ChoDuyet]);
@@ -271,12 +294,12 @@ Name;
         if ($a) {
             foreach ($a as $k => $value) {
                 $value = new \datatable\News($value);
-//                if (Permission::QuyenDuyetBaiViet($value)) {
-//                } else {
-//                    $Name = <<<Name
-//<span class="bg-success" >[{$value->AnHien()}]</span> {$value->Name}
-//Name;
-//                }
+                //                if (Permission::QuyenDuyetBaiViet($value)) {
+                //                } else {
+                //                    $Name = <<<Name
+                //<span class="bg-success" >[{$value->AnHien()}]</span> {$value->Name}
+                //Name;
+                //                }
 
                 $Name = <<<Name
 <a href="/duyettin/xem/{$value->Id}"   ><span class="bg-success" >[{$value->AnHien()}]</span> {$value->Name}</a>
@@ -291,7 +314,8 @@ Name;
         return $b;
     }
 
-    private function BaiDaDang() {
+    private function BaiDaDang()
+    {
 
         $new = new \datatable\News();
         $a = $new->getNewsByAnHienAndLevelUser([datatable\AnHien::DangDang]);
@@ -302,11 +326,11 @@ Name;
                 $Name = <<<Name
 <span class="bg-success" >[{$value->AnHien()}]</span> {$value->Name}
 Name;
-//                if (Permission::QuyenGoDangBaiViet($value)) {
+                //                if (Permission::QuyenGoDangBaiViet($value)) {
                 $Name = <<<Name
 <a href="/duyettin/xem/{$value->Id}"   >{$Name}</a>
 Name;
-//                }
+                //                }
                 $b[$k][] = $k + 1;
                 $b[$k][] = $Name;
                 $b[$k][] = $value->Username;
@@ -317,7 +341,8 @@ Name;
         return $b;
     }
 
-    private function TinDangCapNhat() {
+    private function TinDangCapNhat()
+    {
 
         $new = new \datatable\News();
         $a = $new->getNewsByAnHienUser([datatable\AnHien::DangCapNhat, datatable\AnHien::YeuCauSua]);
@@ -339,7 +364,8 @@ Name;
         return $b;
     }
 
-    function getCongViec() {
+    function getCongViec()
+    {
         $a = $this->DuyetTin();
         $b = $this->DeNghiSuaTin();
         $d = [];
@@ -352,7 +378,8 @@ Name;
         echo json_encode($c);
     }
 
-    function getCongViecMobie() {
+    function getCongViecMobie()
+    {
         $a = $this->DuyetTinMobie();
         $b = $this->DeNghiSuaTinMobie();
         $d = $this->TinChoDangMobie();
@@ -362,16 +389,19 @@ Name;
         echo json_encode($c);
     }
 
-    function libimg() {
+    function libimg()
+    {
 
         $this->ViewTheme("", Model_ViewTheme::get_viewthene(), "nolayout");
     }
 
-    function thongbao() {
+    function thongbao()
+    {
         $this->ViewTheme("", Model_ViewTheme::get_viewthene(), "nolayout");
     }
 
-    function thuvien() {
+    function thuvien()
+    {
         if (Permission::QuyenXemThuVienKhac()) {
 
             $Code = Model\Site::getCurentSite(true)->Code;
@@ -383,7 +413,8 @@ Name;
         $this->ViewTheme("", Model_ViewTheme::get_viewthene(), "nolayout");
     }
 
-    public function DuyetTinMobie() {
+    public function DuyetTinMobie()
+    {
         if (datatable\Admin::CurerntUser(true)->Groups == Application\Model\Permission::BienTap)
             return [];
         $new = new \datatable\News();
@@ -410,7 +441,8 @@ Name;
         return $b;
     }
 
-    public function DeNghiSuaTinMobie() {
+    public function DeNghiSuaTinMobie()
+    {
         $new = new \datatable\News();
         $a = $new->getNewsByAnHienUser(datatable\AnHien::YeuCauSua);
         $b = [];
@@ -436,7 +468,8 @@ Name;
         return $b;
     }
 
-    public function TinChoDangMobie() {
+    public function TinChoDangMobie()
+    {
         $new = new \datatable\News();
         $a = $new->getNewsByAnHienUser(datatable\AnHien::ChoDang);
         $b = [];
@@ -461,11 +494,12 @@ Name;
         return $b;
     }
 
-    public function danhsachtinuser() {
-
+    public function danhsachtinuser()
+    {
     }
 
-    public function TinChoDang() {
+    public function TinChoDang()
+    {
         $new = new \datatable\News();
         /**
          * lay bai viet cua user có quyền thấp hơn
@@ -484,13 +518,13 @@ Name;
                 $Name = <<<Name
     <span class="bg-danger" >[{$value->AnHien()}] </span>{$value->Name}
 Name;
-//                if (Permission::QuyenDangNgay($value)) {
+                //                if (Permission::QuyenDangNgay($value)) {
                 $Name = <<<Name
 <a class="linktotab" data-target="tindangdang{$value->Id}" href="/duyettin/xem/{$value->Id}"   >
     <span class="bg-danger" >[{$value->AnHien()}] </span>{$value->Name}
 </a>
 Name;
-//                }
+                //                }
 
 
 
@@ -504,11 +538,12 @@ Name;
         return $b;
     }
 
-    function TinGoDang() {
-
+    function TinGoDang()
+    {
     }
 
-    function tindagui() {
+    function tindagui()
+    {
         $this->ViewTheme("", Model_ViewTheme::get_viewthene(), "nolayout");
     }
 
@@ -516,7 +551,8 @@ Name;
      * tin chờ duỵet
      * @param {type} parameter
      */
-    function gettinchouyet() {
+    function gettinchouyet()
+    {
         $a = $this->DuyetTin();
         $c["data"] = $a;
         echo json_encode($c);
@@ -526,7 +562,8 @@ Name;
      * bài viet dang cho đăng
      * @param {type} parameter
      */
-    function gettinchodang() {
+    function gettinchodang()
+    {
         $a = $this->TinChoDang();
         $c["data"] = $a;
         echo json_encode($c);
@@ -536,7 +573,8 @@ Name;
      * bài viết dang chờ cập nhật
      * @param {type} parameter
      */
-    function gettindangcapnhat() {
+    function gettindangcapnhat()
+    {
         $a = $this->TinDangCapNhat();
         $c["data"] = $a;
 
@@ -547,12 +585,10 @@ Name;
      * bài viết dang đăng
      * @param {type} parameter
      */
-    function gettindangdang() {
+    function gettindangdang()
+    {
         $a = $this->BaiDaDang();
         $c["data"] = $a;
         echo json_encode($c);
     }
-
 }
-
-?>

@@ -28,13 +28,17 @@ $_SESSION[UserApp] = isset($_SESSION[UserApp]) ? $_SESSION[UserApp] : null;
 $_SESSION['TenHienThi'] = 0;
 global $INI;
 
-define("online", false);
-
-if (online) {
+$online =  false;
+// echo $_SERVER["HTTP_HOST"];
+// if (strpos($_SERVER["HTTP_HOST"], "dev1")) {
+//     $online = false;
+// }
+// var_dump($online);
+if ($online == false) {
     $INI['host'] = "localhost";
     $INI['username'] = "root";
     $INI['password'] = "";
-    $INI['DBname'] = "thanhminhduc";
+    $INI['DBname'] = "thanh962_demo";
     define("BASE_URL", "http://002thanhminhduc.dev1:8080/");
     define("Root_URL", "http://002thanhminhduc.dev1:8080/");
     define("DOMAIN", ".002thanhminhduc.dev1");
@@ -48,6 +52,3 @@ if (online) {
     define("DOMAIN", ".thanhminhduc.com");
 }
 define("table_prefix", "thanhminhduc_");
-?>
-
-

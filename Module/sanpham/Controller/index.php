@@ -2,11 +2,15 @@
 
 namespace Module\sanpham\Controller;
 
-class index extends \ApplicationM implements \Controller\IController {
+use Exception;
+
+class index extends \ApplicationM implements \Controller\IController
+{
 
     static public $UserLayout = "backend";
 
-    function __construct() {
+    function __construct()
+    {
         new \Controller\backend();
         try {
             \Core\ViewTheme::set_viewthene("backend");
@@ -15,12 +19,14 @@ class index extends \ApplicationM implements \Controller\IController {
         }
     }
 
-    function index() {
+    function index()
+    {
 
         return $this->ViewThemeModlue();
     }
 
-    public function create() {
+    public function create()
+    {
         if (\Common\Form::RequestPost("TaoMaSanPham", null)) {
             try {
                 $project = $_POST["project"];
@@ -33,18 +39,20 @@ class index extends \ApplicationM implements \Controller\IController {
         }
     }
 
-    public function delete() {
+    public function delete()
+    {
         $id = intval($this->getParam()[0]);
         $DanhMucSP = new \Module\sanpham\Model\DanhMucSanPham();
         $DanhMucSP->DeleteSubmit($id);
         \Common\Common::toUrl("/sanpham/index/");
     }
 
-    public function detail() {
-
+    public function detail()
+    {
     }
 
-    public function edit() {
+    public function edit()
+    {
         if (\Common\Form::isPost()) {
             $option = \Common\Form::RequestPost("DanhMuc", []);
             if ($option) {
@@ -57,9 +65,9 @@ class index extends \ApplicationM implements \Controller\IController {
         return $this->ViewThemeModlue(["option" => $option], "");
     }
 
-    public function form() {
-
+    public function form()
+    {
+        $option = [];
         return $this->AView(["option" => $option], "");
     }
-
 }

@@ -2,11 +2,15 @@
 
 namespace Module\khachhang\Controller;
 
-class khachhangtieudung extends \ApplicationM implements \Controller\IController {
+use Exception;
+
+class khachhangtieudung extends \ApplicationM implements \Controller\IController
+{
 
     static public $UserLayout = "backend";
 
-    function __construct() {
+    function __construct()
+    {
         new \Controller\backend();
         try {
             \Core\ViewTheme::set_viewthene("backend");
@@ -15,12 +19,14 @@ class khachhangtieudung extends \ApplicationM implements \Controller\IController
         }
     }
 
-    function index() {
+    function index()
+    {
 
         return $this->ViewThemeModlue();
     }
 
-    public function create() {
+    public function create()
+    {
         if (\Module\project\Model\ProjectForm::onSubmit()) {
             try {
                 $project = $_POST["project"];
@@ -33,7 +39,8 @@ class khachhangtieudung extends \ApplicationM implements \Controller\IController
         }
     }
 
-    public function delete() {
+    public function delete()
+    {
         $ModelProject = new \Module\project\Model\Project();
         if (\Module\project\Model\ProjectForm::onSubmit()) {
             try {
@@ -59,11 +66,12 @@ class khachhangtieudung extends \ApplicationM implements \Controller\IController
         $this->ViewThemeModlue(["project" => $_Model], self::$UserLayout);
     }
 
-    public function detail() {
-
+    public function detail()
+    {
     }
 
-    public function edit() {
+    public function edit()
+    {
         $ModelProject = new \Module\project\Model\Project();
         if (\Module\project\Model\ProjectForm::onSubmit()) {
             try {
@@ -93,5 +101,4 @@ class khachhangtieudung extends \ApplicationM implements \Controller\IController
         $_Model = $ModelProject->GetById($id);
         $this->ViewThemeModlue(["project" => $_Model], self::$UserLayout);
     }
-
 }

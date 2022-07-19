@@ -2,7 +2,8 @@
 
 namespace Module\user\Controller;
 
-class index extends \ApplicationM {
+class index extends \ApplicationM
+{
 
     static public $UserLayout = "user";
 
@@ -10,30 +11,33 @@ class index extends \ApplicationM {
     const AppDir = "Module/user";
     const AppPath = "/Module/user";
 
-    function __construct() {
-
+    function __construct()
+    {
     }
 
-    function logout() {
-//        \Module\user\Model\user::logout();
+    function logout()
+    {
+        //        \Module\user\Model\user::logout();
         setcookie("token", "", time() - 3600, "/");
-
         \Module\user\Model\Admin::Logout();
         \Common\Common::toUrl("/user/index/login/");
     }
 
-    function index() {
+    function index()
+    {
 
         return $this->ViewThemeModlue([], \Core\ViewTheme::get_viewthene(), "");
     }
 
-    function login() {
+    function login()
+    {
 
         return $this->ViewThemeModlue([], \Core\ViewTheme::get_viewthene(), "login");
-//        return $this->ViewTheme([], NUll, "userlogin");
+        //        return $this->ViewTheme([], NUll, "userlogin");
     }
 
-    private function checkregister() {
+    private function checkregister()
+    {
         if (isset($_POST["Account"])) {
             $user = new \Module\user\Model\user();
             $Account = $_POST["Account"];
@@ -55,7 +59,7 @@ class index extends \ApplicationM {
                 return FALSE;
             }
             $GoogleAuthenticator = new \lib\GoogleAuthenticator\GoogleAuthenticator();
-//            echo $GoogleAuthenticator->createSecret();
+            //            echo $GoogleAuthenticator->createSecret();
             $_user = $_POST["Account"];
             $_user["Code"] = \Common\Common::RandomString(30);
             $_user["Google2Fa"] = $GoogleAuthenticator->createSecret();
@@ -72,42 +76,49 @@ class index extends \ApplicationM {
         }
     }
 
-    function register() {
+    function register()
+    {
 
 
         if ($this->checkregister()) {
             \Common\Alert::setAlert("success", "Đăng ký thành công");
             \Common\Common::toUrl("/category/dich-vu-san-pham/");
         }
-//        echo "aa";
-//        print_r($this->getParam());
+        //        echo "aa";
+        //        print_r($this->getParam());
         return $this->ViewThemeModlue([], \Model_ViewTheme::get_viewthene(), "full");
     }
 
-    function profile() {
+    function profile()
+    {
         return $this->ModelView([], "");
     }
 
-    function resetpassword() {
+    function resetpassword()
+    {
         return $this->ModelView([], "login");
     }
 
-    function savetoken() {
+    function savetoken()
+    {
         $_SESSION[Token] = $_POST;
     }
 
-    function getToken() {
+    function getToken()
+    {
         $api = new \lib\APIs();
         $_SESSION[Token]['expires_in'] = intval($_SESSION[Token]['expires_in']);
         $api->ArrayToApi($_SESSION[Token]);
     }
 
-    function saveuserinfor() {
+    function saveuserinfor()
+    {
         $_SESSION[UserApp] = base64_encode(json_encode($_POST));
         print_r($_POST);
     }
 
-    function getUserInfor() {
+    function getUserInfor()
+    {
 
         $api = new \lib\APIs();
         \Module\user\Model\user::getCurentUserInfor(true);
@@ -121,7 +132,4 @@ class index extends \ApplicationM {
 
         return null;
     }
-
 }
-?>
-

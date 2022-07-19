@@ -2,15 +2,17 @@
 
 date_default_timezone_set('Asia/Ho_Chi_Minh');
 
-define("debug", TRUE);
-if (debug) {
+define("debug", true);
+if (true) {
     ini_set('display_errors', 1);
     ini_set('display_startup_errors', 1);
     error_reporting(E_ALL);
 }
+
 date_default_timezone_set('Asia/Ho_Chi_Minh');
 
-function minify_output($buffer) {
+function minify_output($buffer)
+{
     $search = array(
         '/\>[^\S ]+/s',
         '/[^\S ]+\</s',
@@ -66,6 +68,11 @@ if (empty($_GET["ctr"])) {
     $Application->setAction($action);
     $Application->setParam($params);
 }
+
+// echo $cnameV;
+// echo $action;
+// var_dump($params);
+// echo $cname;
 if (class_exists($cname, TRUE)) {
 
     if (method_exists($cname, $action)) {
@@ -86,16 +93,14 @@ if (class_exists($cname, TRUE)) {
     $action = $_Action;
     $c = new Controller_index();
     $c->$action($TieuDeKD);
-//    controler mặc định lấy
+    //    controler mặc định lấy
 }
 
-
-//echo $Application->getController();
-//echo $Application->getAction();
-//if (true) {
-//echo $Application->getController();
-//echo $Application->getAction();
-//}
-//$etime = time() + microtime();
-//echo $etime - $stime;
-?>
+// echo $Application->getController();
+// echo $Application->getAction();
+if (true) {
+    echo $Application->getController();
+    echo $Application->getAction();
+}
+// $etime = time() + microtime();
+// echo $etime - $stime;

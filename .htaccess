@@ -19,20 +19,18 @@ RewriteRule fonts -  [L]
 RewriteRule public - [L]
 RewriteRule confix -  [L]
 RewriteRule robots.txt -  [L]
-RewriteRule smarty -  [L]
-#RewriteRule .* - [E=noabort:1]
-#RewriteRule .* - [E=noconntimeout:1]
-SetOutputFilter DEFLATE
-#Redirect ^backend/ /
-RewriteCond %{HTTPS} off
-RewriteRule (.*) https://%{SERVER_NAME}/$1 [L]
+RewriteRule smarty -  [L] 
+SetOutputFilter DEFLATE 
+
+# RewriteCond %{HTTPS} off
+# RewriteRule (.*) https://%{SERVER_NAME}/$1 [L]
  
 RewriteRule ^baohanh/(.*)/ /index.php?ctr=index&action=baohanh&param=$1 [L]
 RewriteRule ^baohanh/(.*) /index.php?ctr=index&action=baohanh&param=$1 [L]
 
-RewriteRule ^(dashboard|khachhang|excell|mail|option|project|rmm|sanpham|trungtambaohanh|user)  indexm.php  [L]
+RewriteRule ^(dashboard|khachhang|excell|mail|option|project|rmm|sanpham|trungtambaohanh|user)  indexm.php [L]
 
-RewriteRule ^ /index.php [L]
+RewriteRule (.*) /index.php [L]
 #
 ErrorDocument 404 /index.php?ctr=index&action=loi404
 #
