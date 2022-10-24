@@ -1,0 +1,84 @@
+ <?php
+    $aLink = [
+        [
+            "Id" => "1",
+            "Link" => "/dashboard/baocao/baocao1/",
+            "Name" => "Báo cáo về danh sách tem kích hoạt",
+            "Icon" => "",
+        ],
+        // [
+        //     "Link" => "/dashboard/baocao/baocao2/",
+        //     "Name" => "Báo cáo về tem hủy kích hoạt",
+        //     "Icon" => "",
+        // ],
+        // [
+        //     "Link" => "/dashboard/baocao/baocao3/",
+        //     "Name" => "Báo cáo về sản phẩm đã kích hoạt để xuất cho đại lý nhưng khách hàng chưa kích hoạt sử dụng",
+        //     "Icon" => "",
+        // ],
+        [
+            "Id" => "4",
+            "Link" => "/dashboard/baocao/baocao4/",
+            "Name" => "Báo cáo danh sách thông tin người sử dụng",
+            "Icon" => "",
+        ],
+        [
+            "Id" => "5",
+            "Link" => "/dashboard/baocao/baocao5/",
+            "Name" => "Báo cáo về thông tin bảo hành sản phẩm phản hồi từ khách hàng",
+            "Icon" => "",
+        ],
+        // [
+        //     "Link" => "/dashboard/baocao/baocao6/",
+        //     "Name" => "Báo cáo danh sách thông tin khách hàng đại lý đã phát sinh đơn hàng",
+        //     "Icon" => "",
+        // ],
+        [
+            "Id" => "7",
+            "Link" => "/dashboard/baocao/baocao7/",
+            "Name" => "Báo cáo danh sách số lượng tem chưa kích hoạt",
+            "Icon" => "",
+        ],
+    ]
+
+    ?>
+ <ol class="breadcrumb">
+     <li>
+         <a href="/dashboard/">Dashboard</a>
+     </li>
+     <li class="active">Báo Cáo</li>
+ </ol>
+
+ <div class="container-fluid ">
+     <section class="col-md-12 pb-10 mt-20">
+         <div class="connectedSortable">
+             <div class="box box-primary">
+                 <div class="box-header">
+                     <h2 class="box-title">
+                         Danh sách báo cáo
+                     </h2>
+                 </div>
+                 <div class="box-body">
+
+                     <table class="table table-bordered">
+                         <?php
+                            foreach ($aLink as $key => $value) {
+                            ?>
+                             <tr>
+                                 <td class="text-center"><?php echo $key + 1 ?></td>
+                                 <td>
+                                     <a href="<?php echo $value["Link"]; ?>">
+                                         <i class="fa fa-download" aria-hidden="true"></i>
+                                         <?php echo $value["Name"]; ?>
+                                     </a>
+                                 </td>
+                             </tr>
+                         <?php
+                            }
+                            ?>
+                     </table>
+                 </div>
+             </div>
+         </div>
+     </section>
+ </div>

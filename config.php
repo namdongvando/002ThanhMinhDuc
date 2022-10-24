@@ -10,7 +10,7 @@ spl_autoload_register(function ($class) {
 });
 define("DEFAULT_MODULE", "dashboard");
 define("DEFAULT_CONTROLLER", "index");
-define("DataBaseName", "thanh962_demo");
+define("DataBaseName", "thanh962_demo1");
 define("DEFAULT_ACTION", "index");
 define("BASE_DIR", "/");
 define("ROOT_DIR", __DIR__);
@@ -38,10 +38,10 @@ if ($online == false) {
     $INI['host'] = "localhost";
     $INI['username'] = "root";
     $INI['password'] = "";
-    $INI['DBname'] = "thanh962_demo";
-    define("BASE_URL", "http://002thanhminhduc.dev1:8080/");
-    define("Root_URL", "http://002thanhminhduc.dev1:8080/");
-    define("DOMAIN", ".002thanhminhduc.dev1");
+    $INI['DBname'] = "thanh962_demo1";
+    define("BASE_URL", "http://002thanhminhduc.dev2/");
+    define("Root_URL", "http://002thanhminhduc.dev2/");
+    define("DOMAIN", ".002thanhminhduc.dev2");
 } else {
     $INI['host'] = "localhost";
     $INI['username'] = "thanh962_demo";

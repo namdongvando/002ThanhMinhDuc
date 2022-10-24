@@ -19,7 +19,7 @@ class TinhThanh extends TinhThanhData {
         if ($dv) {
             if (!is_array($dv)) {
                 $dv = $this->GetById($dv);
-            }
+            } 
             $this->Id = $dv["Id"];
             $this->Name = $dv["Name"];
             $this->FullName = $dv["FullName"];

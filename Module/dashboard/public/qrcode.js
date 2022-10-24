@@ -7,17 +7,19 @@ class NhapMa {
     }
     GetCodeByQrcode() {
         var res = this.content.split("/");
-        return res[res.length - 1];
+        // alert(this.content);
+        // alert(res[3]);
+        return res[3];
     }
-    async   SaveCode() {
+    async SaveCode() {
         this.code = this.GetCodeByQrcode();
         var CodeTem = this.code;
-        var url = "/dashboard/index/savecode/" + this.code;
-        await  $.ajax({
+        var url = `/dashboard/index/savecode/` + CodeTem + `/`;
+        await $.ajax({
             "url": url,
-        }).done(function(result) {
-            $("#alertCode").append("<div class='bg-green timeout'  >Đã Quét Code: " + CodeTem + "</div>");
-            $(".timeout").each(function() {
+        }).done(function (result) {
+            $("#alertCode").append("<div  class='bg-green timeout'  ><span style='font-size:30px' >Đã Quét Code: " + CodeTem + "</span></div>");
+            $(".timeout").each(function () {
                 $(this).hide(2000);
             });
         });
@@ -40,18 +42,18 @@ try {
         return stream;
     };
     var scanner = new Instascan.Scanner(opts);
-    scanner.addListener('scan', function(content) {
-//        new ScanOption().GetCode(content);
-//        alert(content);
+    scanner.addListener('scan', function (content) {
+        //        new ScanOption().GetCode(content);
+        // alert(content);
         var nhapMa = new NhapMa(content);
         nhapMa.SaveCode();
     });
-    Instascan.Camera.getCameras().then(function(cameras) {
-//        console.log(cameras.length);
-//        console.log(Object.values(cameras));
-//        for (index in cameras) {
-//            $("#Cams").append(Object.values(cameras[index]).toString());
-//        }
+    Instascan.Camera.getCameras().then(function (cameras) {
+        //        console.log(cameras.length);
+        //        console.log(Object.values(cameras));
+        //        for (index in cameras) {
+        //            $("#Cams").append(Object.values(cameras[index]).toString());
+        //        }
         if (cameras.length > 0) {
             var CamIndex = 0;
             var CameraIndex = window.localStorage.getItem("Camera");
@@ -59,7 +61,7 @@ try {
                 CamIndex = parseInt(CameraIndex);
             }
             scanner.start(cameras[CamIndex]);
-            $('[name="options"]').on('change', function() {
+            $('[name="options"]').on('change', function () {
                 scanner.stop();
                 var $vtCam = $(this).val();
                 if (cameras[$vtCam] != "") {
@@ -72,7 +74,7 @@ try {
         } else {
             console.error('No cameras found.');
         }
-    }).catch(function(e) {
+    }).catch(function (e) {
         console.error(e);
         alert(e);
     });

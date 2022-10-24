@@ -2,15 +2,31 @@
 
 namespace Module\trungtambaohanh\Model;
 
-class YeuCauBaoHanh extends YeuCauBaoHanhData {
+class YeuCauBaoHanh extends YeuCauBaoHanhData
+{
 
-    public $Id, $Code, $Name, $IdTrungTamBaoHanh, $Status, $KhachHangTieuDung, $MaTem, $SDT, $DiaChi, $NgayBaoHanh, $NoiDung, $CreateDate, $UpdateDate;
+    public $Id,
+        $Code,
+        $Name,
+        $IdTrungTamBaoHanh,
+        $Status,
+        $TinhThanh,
+        $QuanHuyen,
+        $KhachHangTieuDung,
+        $MaTem,
+        $SDT,
+        $DiaChi,
+        $NgayBaoHanh,
+        $NoiDung,
+        $CreateDate,
+        $UpdateDate;
 
     const MoiTao = "MoiTao";
     const DangXuLy = "DangXuLy";
     const DaXuLy = "DaXuLy";
 
-    public function __construct($dv = null) {
+    public function __construct($dv = null)
+    {
         parent::__construct();
         if ($dv) {
             if (!is_array($dv)) {
@@ -23,6 +39,8 @@ class YeuCauBaoHanh extends YeuCauBaoHanhData {
             $this->Id = !empty($dv["Id"]) ? $dv["Id"] : null;
             $this->Code = !empty($dv["Code"]) ? $dv["Code"] : null;
             $this->Name = !empty($dv["Name"]) ? $dv["Name"] : null;
+            $this->TinhThanh = !empty($dv["TinhThanh"]) ? $dv["TinhThanh"] : null;
+            $this->QuanHuyen = !empty($dv["QuanHuyen"]) ? $dv["QuanHuyen"] : null;
             $this->KhachHangTieuDung = !empty($dv["KhachHangTieuDung"]) ? $dv["KhachHangTieuDung"] : null;
             $this->SDT = !empty($dv["SDT"]) ? $dv["SDT"] : null;
             $this->Status = !empty($dv["Status"]) ? $dv["Status"] : null;
@@ -36,15 +54,18 @@ class YeuCauBaoHanh extends YeuCauBaoHanhData {
         }
     }
 
-    function KhachHangTieuDung() {
+    function KhachHangTieuDung()
+    {
         return new \Module\khachhang\Model\KhachHangTieuDung($this->KhachHangTieuDung);
     }
 
-    function NoiDungBaoHanh() {
+    function NoiDungBaoHanh()
+    {
         return new \Module\option\Model\Option(\Module\option\Model\Option::GetOptionByGroupsCode(\Module\option\Model\Option::SuCoMacPhai, $this->NoiDung));
     }
-
-    public static function YeuCauSuaChuas() {
+    
+    public static function YeuCauSuaChuas()
+    {
         $TTKH = new YeuCauBaoHanh();
 
         if (\Module\user\Model\Admin::CheckQuyen([\Module\user\Model\Admin::SuperAdmin, \Module\user\Model\Admin::TTBH, \Module\user\Model\Admin::Admin])) {
@@ -61,7 +82,8 @@ class YeuCauBaoHanh extends YeuCauBaoHanhData {
         return $TTKH->GetRowsByWhere($where);
     }
 
-    public static function ListStatusToOption() {
+    public static function ListStatusToOption()
+    {
         $listStatus = self::ListStatus();
         $options = [];
         foreach ($listStatus as $key => $value) {
@@ -72,7 +94,8 @@ class YeuCauBaoHanh extends YeuCauBaoHanhData {
         return $options;
     }
 
-    public static function ListStatus() {
+    public static function ListStatus()
+    {
         return [
             self::MoiTao => "Mới Tạo",
             self::DangXuLy => "Đang Xử Lý",
@@ -80,18 +103,21 @@ class YeuCauBaoHanh extends YeuCauBaoHanhData {
         ];
     }
 
-    public function Status() {
+    public function Status()
+    {
         if (isset(self::ListStatus()[$this->Status]))
             return self::ListStatus()[$this->Status];
     }
 
-    public static function GetByCode($code) {
+    public static function GetByCode($code)
+    {
         $TTKH = new YeuCauBaoHanh();
         $where = "`Code` = '{$code}' ";
         return $TTKH->GetRowByWhere($where);
     }
 
-    public function UpdateStatus($id, $ModelUpdate) {
+    public function UpdateStatus($id, $ModelUpdate)
+    {
         $a = self::GetByCode($id);
         $a["Status"] = $ModelUpdate["Status"];
         $a["IdTrungTamBaoHanh"] = $ModelUpdate["IdTrungTamBaoHanh"];
@@ -99,15 +125,14 @@ class YeuCauBaoHanh extends YeuCauBaoHanhData {
         $this->UpdateRowTable($a, "`Code` = '{$id}'");
     }
 
-    public function TemSanPham() {
+    public function TemSanPham()
+    {
 
         return new \Module\sanpham\Model\TemSanPham($this->MaTem);
     }
 
-    function ToArray() {
+    function ToArray()
+    {
         return (array) $this;
     }
-
 }
-?>
-

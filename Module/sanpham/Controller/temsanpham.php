@@ -2,11 +2,16 @@
 
 namespace Module\sanpham\Controller;
 
-class temsanpham extends \ApplicationM implements \Controller\IController {
+use Exception;
+use Module\sanpham\Model\SanPham;
+
+class temsanpham extends \ApplicationM implements \Controller\IController
+{
 
     static public $UserLayout = "backend";
 
-    function __construct() {
+    function __construct()
+    {
         new \Controller\backend();
         try {
             \Core\ViewTheme::set_viewthene("backend");
@@ -15,7 +20,8 @@ class temsanpham extends \ApplicationM implements \Controller\IController {
         }
     }
 
-    function index() {
+    function index()
+    {
 
         if (isset($_POST["ThemTem"])) {
             $TemSanPham = new \Module\sanpham\Model\TemSanPham();
@@ -35,7 +41,8 @@ class temsanpham extends \ApplicationM implements \Controller\IController {
         return $this->ViewThemeModlue();
     }
 
-    public function create() {
+    public function create()
+    {
         if (\Module\project\Model\ProjectForm::onSubmit()) {
             try {
                 $project = $_POST["project"];
@@ -48,13 +55,15 @@ class temsanpham extends \ApplicationM implements \Controller\IController {
         }
     }
 
-    public function delete() {
+    public function delete()
+    {
         $temSanPham = new \Module\sanpham\Model\TemSanPham();
         $temSanPham->DeleteSubmit($this->getParam()[0], true);
         \Common\Common::toUrl($_SERVER["HTTP_REFERER"]);
     }
 
-    public function detailbysanpham() {
+    public function detailbysanpham()
+    {
 
         if (isset($_POST["ChonDanhMucSanPham"])) {
             $Chon = $_POST["Chon"];
@@ -69,6 +78,7 @@ class temsanpham extends \ApplicationM implements \Controller\IController {
             $SanPham->ChungLoaiSP = $op->Parents()->Code;
             $SanPham->Mota = $op->Note;
             $model = $SanPham->ToArray();
+            // var_dump($model);
             $SanPham->UpdateSubmit($model);
         }
 
@@ -87,11 +97,11 @@ class temsanpham extends \ApplicationM implements \Controller\IController {
             $temSP["NgayKetThuc"] = date("Y-m-d H:i:s", $a);
             $temSP["ModifyDate"] = date("Y-m-d H:i:s", time());
             $MSP = $ModelSP->GetById($sanPhamPost["Id"]);
-//            var_dump($sanPhamPost);
+            //            var_dump($sanPhamPost);
             $MSP["Name"] = $sanPhamPost["Name"];
             if (\Module\user\Model\Admin::CheckQuyen([\Module\user\Model\Admin::Admin, \Module\user\Model\Admin::SuperAdmin])) {
                 $MSP["MaDaiLy"] = $sanPhamPost["MaDaiLy"];
-                $MSP["TinhTrang"] = $sanPhamPost["TinhTrang"];
+                $MSP["TinhTrang"] = $sanPhamPost["TinhTrang"] ?? SanPham::DangODaiLy;
             }
             $MSP["Mota"] = $sanPhamPost["Mota"];
             $MSP["ChungLoaiSP"] = !empty($sanPhamPost["ChungLoaiSP"]) ? $sanPhamPost["ChungLoaiSP"] : $MSP["ChungLoaiSP"];
@@ -119,18 +129,17 @@ class temsanpham extends \ApplicationM implements \Controller\IController {
             $ModelTemSP->UpdateRowTable($temSP);
         }
         if (\Common\Form::RequestPost("ThenTemPhu", null)) {
-
         }
         $ModelTemSanPham = new \Module\sanpham\Model\TemSanPham();
         // mã sản phẩm
         $idSanPham = $this->getParam(0);
         $maKhachHangTieuDung = md5(time() . rand(1, time()));
-// mã khách hàng tiêu dung
+        // mã khách hàng tiêu dung
         $temSanPham = \Module\sanpham\Model\TemSanPham::GetByCode($idSanPham);
 
         // kiểm tra tem sản phẩm
         $sanPham = new \Module\sanpham\Model\SanPham();
-//        var_dump($temSanPham["MaSanPham"]);
+        //        var_dump($temSanPham["MaSanPham"]);
         if ($temSanPham["MaSanPham"] == 0) {
             $idSP = $sanPham->TaoSanPham($temSanPham["Code"]);
             $temSanPham["MaSanPham"] = $idSP;
@@ -142,11 +151,13 @@ class temsanpham extends \ApplicationM implements \Controller\IController {
         return $this->ViewThemeModlue(["temSanPham" => $tsp, "khachHang" => $kH]);
     }
 
-    public function detail() {
+    public function detail()
+    {
         return $this->ViewThemeModlue();
     }
 
-    public function export() {
+    public function export()
+    {
         return;
         set_time_limit(0);
         $MTemSanPham = new \Module\sanpham\Model\TemSanPham();
@@ -164,13 +175,15 @@ class temsanpham extends \ApplicationM implements \Controller\IController {
         exit();
     }
 
-    function zipfile($folder) {
+    function zipfile($folder)
+    {
         $rootPath = realpath($folder);
         $zip = new \ZipArchive();
         $fileName = 'public/file.zip';
         $zip->open($fileName, \ZipArchive::CREATE | \ZipArchive::OVERWRITE);
         $files = new \RecursiveIteratorIterator(
-                new \RecursiveDirectoryIterator($rootPath), \RecursiveIteratorIterator::LEAVES_ONLY
+            new \RecursiveDirectoryIterator($rootPath),
+            \RecursiveIteratorIterator::LEAVES_ONLY
         );
         foreach ($files as $name => $file) {
             if (!$file->isDir()) {
@@ -184,7 +197,8 @@ class temsanpham extends \ApplicationM implements \Controller\IController {
         exit();
     }
 
-    function exporttoFire($fileName, $data) {
+    function exporttoFire($fileName, $data)
+    {
         foreach ($data as $k => $value) {
             $link = Root_URL . "public/phpqrcode/index.php?data=" . Root_URL . "baohanh/" . $value["Code"];
             $imagesQr = "public/QRCode/{$value["Code"]}.png";
@@ -212,7 +226,8 @@ class temsanpham extends \ApplicationM implements \Controller\IController {
         $Excell->CreateFile($fileName, $data);
     }
 
-    public function edit() {
+    public function edit()
+    {
         if (\Common\Form::isPost()) {
             $option = \Common\Form::RequestPost("option", []);
             if ($option) {
@@ -225,12 +240,14 @@ class temsanpham extends \ApplicationM implements \Controller\IController {
         return $this->ModelView(["option" => $option], "");
     }
 
-    function quanlytem() {
+    function quanlytem()
+    {
 
         return $this->ViewThemeModlue();
     }
 
-    public function TinhSoNgay($thang) {
+    public function TinhSoNgay($thang)
+    {
         $nam = 0;
         if ($thang > 12) {
             $nam = floor($thang / 12);
@@ -241,5 +258,4 @@ class temsanpham extends \ApplicationM implements \Controller\IController {
 
         return $thang * 30.5 * 24 * 3600 + $nam * 365 * 24 * 3600;
     }
-
 }

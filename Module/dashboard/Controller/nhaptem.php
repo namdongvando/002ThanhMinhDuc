@@ -2,20 +2,25 @@
 
 namespace Module\dashboard\Controller;
 
+use Module\sanpham\Model\SanPham;
 use Module\sanpham\Model\SanPhamForm;
+use Module\sanpham\Model\TemSanPham;
 
-class nhaptem extends \ApplicationM {
+class nhaptem extends \ApplicationM
+{
 
     const AppDir = "Module/dashboard";
     const AppPath = "/Module/dashboard";
 
     static public $UserLayout = "user";
 
-    function __construct() {
+    function __construct()
+    {
         new \Controller\backend();
     }
 
-    function index() {
+    function index()
+    {
 
         if (isset($_POST["ChonDanhMucSanPham"])) {
             try {
@@ -37,7 +42,7 @@ class nhaptem extends \ApplicationM {
                         $MaSanPham = $tenSp->SanPham()->Id;
                         $SanPham = new \Module\sanpham\Model\SanPham($MaSanPham);
                         $SanPham->Name = $op->Name;
-                        $SanPham->TinhTrang = $sanphamPost["TinhTrang"];
+                        $SanPham->TinhTrang = SanPham::DangODaiLy;
                         $SanPham->MaDaiLy = $sanphamPost["MaDaiLy"];
                         $SanPham->Code = $op->Code;
                         $SanPham->DanhMuc = $op->Code;
@@ -45,6 +50,9 @@ class nhaptem extends \ApplicationM {
                         $SanPham->Mota = $op->Note;
                         $model = $SanPham->ToArray();
                         $SanPham->UpdateSubmit($model);
+                        $tenSp = new \Module\sanpham\Model\TemSanPham();
+                        $model_Tem["Status"] = TemSanPham::DeActive;
+                        $tenSp->UpdateSubmit($model_Tem);
                     }
                 }
             } catch (\Exception $exc) {
@@ -54,11 +62,13 @@ class nhaptem extends \ApplicationM {
         return $this->ViewThemeModlue([], null, "qr");
     }
 
-    function scan() {
+    function scan()
+    {
         return $this->ViewThemeModlue([], null, "qr");
     }
 
-    function savecode() {
+    function savecode()
+    {
         $user = "admin";
         if (\Module\user\Model\Admin::getCurentUser(false)) {
             $user = \Module\user\Model\Admin::getCurentUser(true)->Username;
@@ -69,7 +79,8 @@ class nhaptem extends \ApplicationM {
         var_dump($a);
     }
 
-    function clear() {
+    function clear()
+    {
         $user = "admin";
         if (\Module\user\Model\Admin::getCurentUser(false)) {
             $user = \Module\user\Model\Admin::getCurentUser(true)->Username;
@@ -79,7 +90,8 @@ class nhaptem extends \ApplicationM {
         \Common\Common::toUrl($_SERVER["HTTP_REFERER"]);
     }
 
-    function coderefesh() {
+    function coderefesh()
+    {
         header('Content-Type: application/json');
         $admin = \Module\user\Model\Admin::getCurentUser(true);
         $CodeQr = new \Model\CodeQR($admin->Username);
@@ -88,7 +100,8 @@ class nhaptem extends \ApplicationM {
         echo json_encode(["code" => $str]);
     }
 
-    function danhsachtem() {
+    function danhsachtem()
+    {
         $admin = \Module\user\Model\Admin::getCurentUser(true);
         $CodeQr = new \Model\CodeQR($admin->Username);
         $ds = $CodeQr->GetCodes();
@@ -96,20 +109,18 @@ class nhaptem extends \ApplicationM {
         $index = 0;
         foreach ($ds as $k => $code) {
             $temSP = new \Module\sanpham\Model\TemSanPham($code);
-            ?>
+?>
             <tr>
                 <td><?php echo 1 + $index++; ?></td>
                 <td><?php echo $temSP->Code; ?></td>
                 <td>
-                    <p style="margin: 0px;" ><?php echo $temSP->SanPham()->Name; ?></p>
-                    <p style="margin: 0px;" ><?php echo $temSP->SanPham()->TinhTrang(); ?></p>
-                    <p style="margin: 0px;" ><?php echo $temSP->SanPham()->DaiLy()->Name; ?></p>
+                    <p style="margin: 0px;"><?php echo $temSP->SanPham()->Name; ?></p>
+                    <p style="margin: 0px;"><?php echo $temSP->SanPham()->TinhTrang(); ?></p>
+                    <p style="margin: 0px;"><?php echo $temSP->SanPham()->DaiLy()->Name; ?></p>
                 </td>
             </tr>
-            <?php
+<?php
         }
     }
-
 }
 ?>
-

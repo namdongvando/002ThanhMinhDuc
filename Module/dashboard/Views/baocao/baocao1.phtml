@@ -1,0 +1,70 @@
+<?php
+ini_set('memory_limit', '-1');
+
+use Module\sanpham\Model\TemSanPham;
+use Module\excell\Model\excell\ExcelReader;
+
+$TemSamPham = new TemSanPham();
+$DSTem =  $TemSamPham->GetByStatus(TemSanPham::Active);
+?>
+<ol class="breadcrumb">
+    <li><a href="/dashboard/baocao/">Danh sách báo cáo</a></li>
+    <li>Báo cáo về danh sách tem kích hoạt bảo hành </li>
+</ol>
+
+<div class="container-fluid ">
+    <section class="col-md-12 pb-10 mt-20">
+        <div class="row">
+            <div class=" ">
+                <div class="box box-primary">
+                    <div class="box-header">
+                        <h2 class="box-title">
+                            Danh sách tem kích hoạt bảo hành
+                        </h2>
+                    </div>
+                    <div class="box-body">
+                        <table>
+                            <tr>
+                                <td>Tên đại lý</td>
+                                <td>Địa chỉ đại lý</td>
+                                <td>Số điện thoại đại lý</td>
+                                <td>Tên sản phẩm</td>
+                                <td>Mã SP</td>
+                                <td>Mã code</td>
+                                <td>Thời gian kích hoạt</td>
+                                <td>Tình trạng sản phẩm</td>
+                            </tr>
+                            <?php
+                            $dataRow = [];
+                            $dataRow[] = "Tên đại lý";
+                            $dataRow[] = "Địa chỉ đại lý";
+                            $dataRow[] = "Số điện thoại đại lý";
+                            $dataRow[] = "Tên sản phẩm";
+                            $dataRow[] = "Mã SP";
+                            $dataRow[] = "Mã code";
+                            $dataRow[] = "Thời gian kích hoạt";
+                            $dataRow[] = "Tình trạng sản phẩm";
+
+                            $data[]  = $dataRow;
+                            foreach ($DSTem as $key => $value) {
+                                $dataRow = [];
+                                $_tem = new TemSanPham($value);
+                                $dataRow[] = $_tem->SanPham()->DaiLy()->Name;
+                                $dataRow[] = $_tem->SanPham()->DaiLy()->DiaChi;
+                                $dataRow[] = $_tem->SanPham()->DaiLy()->DienThoai;
+                                $dataRow[] = $_tem->SanPham()->Name;
+                                $dataRow[] = $_tem->Code;
+                                $dataRow[] = $_tem->NgayBatDau;
+                                $dataRow[] = $_tem->NgayKetThuc();
+                                $dataRow[] = $_tem->Status()->Name;
+                                $data[] = $dataRow;
+                            }
+                            ExcelReader::Export($data, "public/baocao1.xlsx");
+                            ?>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>

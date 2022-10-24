@@ -48,5 +48,3 @@ class YeuCauBaoHanhData extends \datatable\ZendData implements \Model\IModel {
     }
 
 }
-?>
-

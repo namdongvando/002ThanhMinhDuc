@@ -184,7 +184,7 @@ class Adapter {
             mkdir($folder, 0777);
         }
         if (!$isNameFile) {
-            $tienTo = $tt . time() . rand(1, 2000);
+            $tienTo = $tt . time() . rand(1000, 9999);
         } else {
             $tienTo = $tt;
         }
@@ -245,5 +245,3 @@ class Adapter {
     }
 
 }
-
-?>

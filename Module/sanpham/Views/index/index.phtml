@@ -1,4 +1,4 @@
-<ol class="breadcrumb" >
+<ol class="breadcrumb">
     <li>Danh Mục Sản Phẩm</li>
 </ol>
 <?php
@@ -16,50 +16,50 @@ if (Common\Form::isPost()) {
 }
 $Options = Module\option\Model\Option::OptionByGroups(Module\option\Model\Option::DanhMucVatTu);
 ?>
-<form action="" enctype="multipart/form-data" method="POST" >
-    <div class="container-fluid" >
-        <div class="box box-primary" >
-            <div class="box-header" >
-                <h3 class="box-title" >Danh Mục Sản Phẩm</h3>
+<form action="" enctype="multipart/form-data" method="POST">
+    <div class="container-fluid">
+        <div class="box box-primary">
+            <div class="box-header">
+                <h3 class="box-title">Danh Mục Sản Phẩm</h3>
                 <div class="box-tools">
                     <?php
                     if ($isEdit == 0) {
-                        ?>
-                        <a href="/sanpham/index/index/?isEdit=1" class="btn btn-sm btn-primary" >Sửa Nhanh</a>
-                        <?php
+                    ?>
+                        <a href="/sanpham/index/index/?isEdit=1" class="btn btn-sm btn-primary">Sửa Nhanh</a>
+                    <?php
                     } else {
-                        ?>
-                        <a href="/sanpham/index/index/?isEdit=0" class="btn btn-sm btn-primary" >Bỏ Sửa Nhanh</a>
-                        <?php
+                    ?>
+                        <a href="/sanpham/index/index/?isEdit=0" class="btn btn-sm btn-primary">Bỏ Sửa Nhanh</a>
+                    <?php
                     }
                     ?>
-                    <a href="/sanpham/index/add" class="btn btn-sm btn-primary" >Thêm Danh Mục</a>
+                    <a href="/sanpham/index/add" class="btn btn-sm btn-primary">Thêm Danh Mục</a>
                 </div>
             </div>
-            <div class="box-body " >
+            <div class="box-body  table-responsive">
                 <?php
                 ?>
-                <table class="table table-bordered dataTable " id="data"   >
+                <table class="table table-bordered dataTable " id="data">
                     <thead>
-                        <tr class="bg-blue" >
+                        <tr class="bg-blue">
                             <th></th>
                             <th>#</th>
-                            <th>Mã Danh Mục</th>
-                            <th>Tên Danh Mục</th>
-                            <th>Chung Loại</th>
-                            <th>Ghi Chú</th>
-                            <th>Xắp Sếp</th>
+                            <th style="white-space: nowrap;">Mã Danh Mục</th>
+                            <th style="white-space: nowrap;">Tên Danh Mục</th>
+                            <th style="white-space: nowrap;">Chung Loại</th>
+                            <th style="white-space: nowrap;">Ghi Chú</th>
+                            <th style="white-space: nowrap;">Xắp Sếp</th>
                         </tr>
                     </thead>
                     <tbody>
                         <?php
                         foreach ($Options as $k => $op) {
                             $_op = new Module\option\Model\Option($op);
-                            ?>
+                        ?>
                             <tr>
-                                <td>
-                                    <a href="/sanpham/index/edit/<?php echo $_op->Id ?>/" class="btn btn-xs btn-primary" >Sửa</a>
-                                    <a href="/sanpham/index/delete/<?php echo $_op->Id; ?>" data-confirm="Xóa Danh Mục Sản Phẩm" class="btn-xs btn xoa btn-danger" >Xóa</a>
+                                <td style="white-space: nowrap;">
+                                    <a href="/sanpham/index/edit/<?php echo $_op->Id ?>/" class="btn btn-xs btn-primary">Sửa</a>
+                                    <a href="/sanpham/index/delete/<?php echo $_op->Id; ?>" data-confirm="Xóa Danh Mục Sản Phẩm" class="btn-xs btn xoa btn-danger">Xóa</a>
                                 </td>
                                 <td><?php echo $k + 1; ?></td>
                                 <td><?php echo $_op->Code ?></td>
@@ -76,7 +76,7 @@ $Options = Module\option\Model\Option::OptionByGroups(Module\option\Model\Option
                                 <td><?php echo $_op->Note ?></td>
                                 <td><?php echo $_op->OrderBy ?></td>
                             </tr>
-                            <?php
+                        <?php
                         }
                         ?>
                     </tbody>
@@ -87,9 +87,9 @@ $Options = Module\option\Model\Option::OptionByGroups(Module\option\Model\Option
                 \Common\Common::PhanTrang(1, 1, $DuongDan);
 
                 if ($isEdit == 1) {
-                    ?>
-                    <button class="btn btn-success" name="SaveAll" >Cập Nhật</button>
-                    <?php
+                ?>
+                    <button class="btn btn-success" name="SaveAll">Cập Nhật</button>
+                <?php
                 }
                 ?>
             </div>

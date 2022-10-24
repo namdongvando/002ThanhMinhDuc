@@ -2,10 +2,12 @@
 
 namespace theme\backend;
 
-class backend {
+class backend
+{
 
-    function head() {
-        ?>
+    function head()
+    {
+?>
         <meta http-equiv="cache-control" content="max-age=0" />
         <meta http-equiv="cache-control" content="no-cache" />
         <meta name="google-signin-client_id" content="<?php echo \Module\user\Model\GoogleConfig::GetGoogleClient_id(); ?>">
@@ -16,7 +18,7 @@ class backend {
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
         <!-- Ionicons -->
         <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
-        <link href="/public/admin/plugins/select2/select2.min.css" rel="stylesheet" type="text/css"/>
+        <link href="/public/admin/plugins/select2/select2.min.css" rel="stylesheet" type="text/css" />
         <!-- Theme style -->
         <!-- AdminLTE Skins. Choose a skin from the css/skins
              folder instead of downloading all of them to reduce the load. -->
@@ -36,8 +38,8 @@ class backend {
         <!--<link href="/public/admin/plugins/datatables/jquery.dataTables.min.css" rel="stylesheet" type="text/css"/>-->
         <link rel="stylesheet" href="/public/admin/plugins/datatables/dataTables.bootstrap.css">
         <link rel="stylesheet" href="/public/admin/dist/css/AdminLTE.min.css">
-        <link href="/public/admin/dist/css/skins/_all-skins.min.css?v=<?php echo time(); ?>" rel="stylesheet" type="text/css"/>
-        <link href="/public/admin/dist/Custom.css?v=<?php echo fileatime("public/admin/dist/Custom.css"); ?>" rel="stylesheet" type="text/css"/>
+        <link href="/public/admin/dist/css/skins/_all-skins.min.css?v=<?php echo time(); ?>" rel="stylesheet" type="text/css" />
+        <link href="/public/admin/dist/Custom.css?v=<?php echo fileatime("public/admin/dist/Custom.css"); ?>" rel="stylesheet" type="text/css" />
         <script src="https://apis.google.com/js/platform.js?onload=onLoad" async defer></script>
         <script>
             function signOut() {
@@ -56,6 +58,7 @@ class backend {
                     return false;
                 }
             }
+
             function onLoad() {
                 gapi.load('auth2', function() {
                     gapi.auth2.init();
@@ -63,37 +66,43 @@ class backend {
             }
         </script>
 
-        <style type="text/css" >
-            .alert{
+        <style type="text/css">
+            .alert {
                 position: fixed;
                 top: 20%;
             }
-            .alert-fixed-top-right{
+
+            .alert-fixed-top-right {
                 position: fixed;
                 right: 0px;
                 min-width: 300px;
                 top: 40px;
                 z-index: 9999;
             }
-            .dataTables_length{
+
+            .dataTables_length {
                 float: left;
             }
+
             fieldset legend {
                 margin: 0;
                 padding: 0;
                 position: static;
                 border: 0;
-                top: auto; left: auto;
+                top: auto;
+                left: auto;
                 float: none;
                 display: table;
                 font-size: 14px;
                 line-height: 18px;
                 width: auto;
             }
-            .vertical-align-middle{
+
+            .vertical-align-middle {
                 vertical-align: middle !important;
             }
-            fieldset{
+
+            fieldset {
                 display: block;
                 margin-inline-start: 2px;
                 margin-inline-end: 2px;
@@ -108,19 +117,23 @@ class backend {
                 border-image: initial;
 
             }
+
             .nav-tabs>li>a,
-            .nav-tabs>li.active>a,s .nav-tabs>li.active>a:focus, .nav-tabs>li.active>a:hover{
+            .nav-tabs>li.active>a,
+            s .nav-tabs>li.active>a:focus,
+            .nav-tabs>li.active>a:hover {
                 font-weight: bold;
                 overflow: hidden;
 
             }
         </style>
 
-        <?php
+    <?php
     }
 
-    public static function user_menu() {
-        ?>
+    public static function user_menu()
+    {
+    ?>
         <li class="dropdown user user-menu">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                 <img src="/public/user_no_photo.png" class="user-image" alt="User Image">
@@ -146,11 +159,12 @@ class backend {
                 </li>
             </ul>
         </li>
-        <?php
+    <?php
     }
 
-    function Menu() {
-        ?>
+    function Menu()
+    {
+    ?>
         <header class="main-header">
             <nav class="navbar navbar-static-top">
                 <div class="container-fluid">
@@ -163,9 +177,71 @@ class backend {
                     <div class="collapse navbar-collapse pull-left" id="navbar-collapse">
                         <ul class="nav navbar-nav">
                             <?php
-                            \Common\Link::MenuQuanLy();
-                            \Common\Link::MenuDoiTac();
+                            // \Common\Link::MenuQuanLy();
+                            //  \Common\Link::MenuDoiTac();
+
                             ?>
+                            <li class="dropdown">
+                                <a target="_self" class="dropdown-toggle" data-toggle="dropdown">
+                                    Thống kê, đánh giá
+                                    <span class="caret"></span>
+                                </a>
+                                <ul class="dropdown-menu" role="menu">
+                                    <?php
+                                    \Module\dashboard\Model\Menu::ThongKeBaoCao();
+                                    \Module\dashboard\Model\Menu::DanhGia();
+                                    ?>
+                                </ul>
+                            </li>
+                            <li class="dropdown">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                    Quản lý tem
+                                    <span class="caret"></span>
+                                </a>
+                                <ul class="dropdown-menu" role="menu">
+                                    <?php
+                                    \Module\dashboard\Model\Menu::LinkNhapTem();
+                                    \Module\dashboard\Model\Menu::YeuCauKichHoatTem();
+                                    ?>
+                                </ul>
+                            </li>
+                            <li class="dropdown">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                    Quản lý bảo hành
+                                    <span class="caret"></span>
+                                </a>
+                                <ul class="dropdown-menu" role="menu">
+                                    <?php
+                                    \Module\trungtambaohanh\Model\Menu::linkThongTinBaoHanh();
+                                    \Module\trungtambaohanh\Model\Menu::linkTrungTamBaoHanh();
+                                    ?>
+                                </ul>
+                            </li>
+                            <li class="dropdown">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                    Quản lý khách hàng
+                                    <span class="caret"></span>
+                                </a>
+                                <ul class="dropdown-menu" role="menu">
+                                    <?php
+                                    \Module\khachhang\Model\Menu::LinkDaiLyKhachHang();
+                                    \Module\khachhang\Model\Menu::LinkKhachHangTieuDung();
+                                    ?>
+                                </ul>
+                            </li>
+                            <li class="dropdown">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                    Quản lý sản phẩm
+                                    <span class="caret"></span>
+                                </a>
+                                <ul class="dropdown-menu" role="menu">
+                                    <?php
+                                    \Module\sanpham\Model\Menu::LinkSanPham();
+                                    \Module\sanpham\Model\Menu::LinkDanhMucSanPham();
+                                    \Module\sanpham\Model\Menu::LinkTemSanPham();
+                                    ?>
+                                </ul>
+                            </li>
                         </ul>
                     </div>
                     <div class="navbar-custom-menu">
@@ -175,7 +251,7 @@ class backend {
                             ?>
                             <li class="">
                                 <a href="/option/index">
-                                    <span><i class="fa fa-gears" ></i></span>
+                                    <span><i class="fa fa-gears"></i></span>
                                 </a>
                             </li>
                         </ul>
@@ -183,7 +259,7 @@ class backend {
                 </div><!-- /.container-fluid -->
             </nav>
         </header>
-        <aside class="hidden main-sidebar" >
+        <aside class="hidden main-sidebar">
             <!-- sidebar: style can be found in sidebar.less -->
             <section class="sidebar ">
                 <!-- Sidebar user panel -->
@@ -206,11 +282,12 @@ class backend {
             </section>
             <!-- /.sidebar -->
         </aside>
-        <?php
+    <?php
     }
 
-    function MenuDaiLy() {
-        ?>
+    function MenuDaiLy()
+    {
+    ?>
         <header class="main-header">
             <nav class="navbar navbar-static-top">
                 <div class="container-fluid">
@@ -250,7 +327,7 @@ class backend {
                         <ul class="nav navbar-nav">
                             <li class="hidden">
                                 <a href="/option/index">
-                                    <span><i class="fa fa-gears" ></i></span>
+                                    <span><i class="fa fa-gears"></i></span>
                                 </a>
                             </li>
                             <?php
@@ -263,7 +340,7 @@ class backend {
                 </div><!-- /.container-fluid -->
             </nav>
         </header>
-        <aside class="hidden main-sidebar" >
+        <aside class="hidden main-sidebar">
             <!-- sidebar: style can be found in sidebar.less -->
             <section class="sidebar ">
                 <!-- Sidebar user panel -->
@@ -286,11 +363,12 @@ class backend {
             </section>
             <!-- /.sidebar -->
         </aside>
-        <?php
+    <?php
     }
 
-    function Menuifame() {
-        ?>
+    function Menuifame()
+    {
+    ?>
         <header class="main-header ">
             <nav class="navbar navbar-static-top">
                 <div class="container-fluid">
@@ -303,8 +381,8 @@ class backend {
                     <!-- Collect the nav links, forms, and other content for toggling -->
                     <div class="collapse navbar-collapse pull-left" id="navbar-collapse">
                         <ul class="nav navbar-nav">
-                            <li class="dropdown " >
-                                <a href="/mpage/index" class="dropdown-toggle" data-toggle="dropdown" >
+                            <li class="dropdown ">
+                                <a href="/mpage/index" class="dropdown-toggle" data-toggle="dropdown">
                                     <i class="fa fa-list-alt"></i> <span>Quản Lý Bài Viết</span>
                                 </a>
                                 <ul class="dropdown-menu">
@@ -320,11 +398,11 @@ class backend {
                         <ul class="nav navbar-nav">
                             <!-- Messages: style can be found in dropdown.less-->
                             <li>
-                                <a href="/backend/timkiem/" >
+                                <a href="/backend/timkiem/">
                                     <span class="fa fa-search"></span>
                                 </a>
                             </li>
-                            <li><a href="/" target="_blank"  >Xem Website</a></li>
+                            <li><a href="/" target="_blank">Xem Website</a></li>
                             <!-- User Account: style can be found in dropdown.less -->
                             <li class="dropdown user user-menu">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">
@@ -357,13 +435,14 @@ class backend {
                 </div><!-- /.container-fluid -->
             </nav>
         </header>
-        <?php
+    <?php
     }
 
-    function js() {
-        ?>
+    function js()
+    {
+    ?>
 
-        <script type="text/javascript" >
+        <script type="text/javascript">
             var linkArray = [
                 "https://code.jquery.com/ui/1.11.4/jquery-ui.min.js",
                 "/public/admin/bootstrap/js/bootstrap.min.js",
@@ -393,45 +472,48 @@ class backend {
             for (var i = 0; i < linkArray.length; i++) {
                 document.write('<script type="text/javascript" src="' + linkArray[i] + '"><\/script>');
             }
-
         </script>
-        <style type="text/css" >
-            .toolbardatatable{
+        <style type="text/css">
+            .toolbardatatable {
                 float: left;
             }
         </style>
-        <?php
+    <?php
         $str = ob_get_clean();
         echo $str;
     }
 
-    function Breadcrumb() {
-//        $brea = new \Model\Breadcrumb();
-//        $brea->backend();
+    function Breadcrumb()
+    {
+        //        $brea = new \Model\Breadcrumb();
+        //        $brea->backend();
     }
 
-    function menumcategory() {
-
+    function menumcategory()
+    {
     }
 
-    function DecodeHTML() {
+    function DecodeHTML()
+    {
         $str = ob_get_clean();
         echo $str;
     }
 
-    public function footer() {
-        ?>
+    public function footer()
+    {
+    ?>
         <footer class="main-footer ">
             <div class="pull-right hidden-xs">
                 <b>Version</b> 1.0.1
             </div>
             <strong>Copyright &copy; <?php echo date("Y", time()); ?> <a href="http://thanhminhduc.com">thanhminhduc.com</a></strong>
         </footer>
-        <?php
+    <?php
     }
 
-    public function MenuTTBH() {
-        ?>
+    public function MenuTTBH()
+    {
+    ?>
         <header class="main-header">
             <nav class="navbar navbar-static-top">
                 <div class="container-fluid">
@@ -467,7 +549,7 @@ class backend {
                         <ul class="nav navbar-nav">
                             <li class="">
                                 <a href="/option/index">
-                                    <span><i class="fa fa-gears" ></i></span>
+                                    <span><i class="fa fa-gears"></i></span>
                                 </a>
                             </li>
                             <li class="dropdown user user-menu">
@@ -479,8 +561,8 @@ class backend {
                                         <form action="" method="POST" class="navbar-form navbar-left" role="search">
                                             <div class="form-group">
                                                 <input type="text" class="form-control" id="navbar-search-input" placeholder="Search">
-                                                <button type="submit" class="btn btn-primary" >
-                                                    <i class="fa fa-search" ></i>
+                                                <button type="submit" class="btn btn-primary">
+                                                    <i class="fa fa-search"></i>
                                                 </button>
                                             </div>
                                         </form>
@@ -518,7 +600,7 @@ class backend {
                 </div><!-- /.container-fluid -->
             </nav>
         </header>
-        <aside class="hidden main-sidebar" >
+        <aside class="hidden main-sidebar">
             <!-- sidebar: style can be found in sidebar.less -->
             <section class="sidebar ">
                 <!-- Sidebar user panel -->
@@ -541,11 +623,12 @@ class backend {
             </section>
             <!-- /.sidebar -->
         </aside>
-        <?php
+    <?php
     }
 
-    public function MenuNVKT() {
-        ?>
+    public function MenuNVKT()
+    {
+    ?>
         <header class="main-header">
             <nav class="navbar navbar-static-top">
                 <div class="container-fluid">
@@ -571,7 +654,7 @@ class backend {
                         <ul class="nav navbar-nav">
                             <li class="">
                                 <a href="/option/index">
-                                    <span><i class="fa fa-gears" ></i></span>
+                                    <span><i class="fa fa-gears"></i></span>
                                 </a>
                             </li>
                             <li class="dropdown user user-menu">
@@ -583,8 +666,8 @@ class backend {
                                         <form action="" method="POST" class="navbar-form navbar-left" role="search">
                                             <div class="form-group">
                                                 <input type="text" class="form-control" id="navbar-search-input" placeholder="Search">
-                                                <button type="submit" class="btn btn-primary" >
-                                                    <i class="fa fa-search" ></i>
+                                                <button type="submit" class="btn btn-primary">
+                                                    <i class="fa fa-search"></i>
                                                 </button>
                                             </div>
                                         </form>
@@ -600,7 +683,7 @@ class backend {
                 </div><!-- /.container-fluid -->
             </nav>
         </header>
-        <aside class="hidden main-sidebar" >
+        <aside class="hidden main-sidebar">
             <!-- sidebar: style can be found in sidebar.less -->
             <section class="sidebar ">
                 <!-- Sidebar user panel -->
@@ -623,11 +706,12 @@ class backend {
             </section>
             <!-- /.sidebar -->
         </aside>
-        <?php
+    <?php
     }
 
-    public static function usermenu() {
-        ?>
+    public static function usermenu()
+    {
+    ?>
         <li class="dropdown user user-menu">
             <a href="#" class="text-center dropdown-toggle" data-toggle="dropdown">
                 <img src="/public/user_no_photo.png" class="user-image" alt="User Image">
@@ -635,14 +719,13 @@ class backend {
             </a>
             <ul class="dropdown-menu">
                 <li class="">
-                    <a  href="<?php echo \Common\Link::profile() ?>" ><i class="fa fa-info"  ></i> Tài khoản</a>
+                    <a href="<?php echo \Common\Link::profile() ?>"><i class="fa fa-info"></i> Tài khoản</a>
                 </li>
                 <li>
-                    <a onclick="return signOut()" href="<?php echo \Common\Link::logout() ?>" ><i class="fa fa-sign-out"  ></i> Đăng Xuất</a>
+                    <a onclick="return signOut()" href="<?php echo \Common\Link::logout() ?>"><i class="fa fa-sign-out"></i> Đăng Xuất</a>
                 </li>
             </ul>
         </li>
-        <?php
+<?php
     }
-
 }

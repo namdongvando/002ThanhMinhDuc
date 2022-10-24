@@ -64,5 +64,3 @@ class TemSanPhamData extends \datatable\ZendData implements \Model\IModel {
     }
 
 }
-?>
-

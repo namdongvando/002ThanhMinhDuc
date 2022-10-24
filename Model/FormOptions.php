@@ -9,12 +9,15 @@
 namespace Model;
 
 use PFBC\Element;
+use PFBC\Element\Hidden;
 
-class FormOptions {
+class FormOptions
+{
 
     private static $FormClass = ["class" => "form-control"];
 
-    static function HienThi($val, $pro = []) {
+    static function HienThi($val, $pro = [])
+    {
         $properties = self::$FormClass;
         $properties["value"] = $val;
         if ($pro) {
@@ -23,16 +26,14 @@ class FormOptions {
             }
         }
         $options = [
-            10 => "10 dòng"
-            , 20 => "20 dòng"
-            , 50 => "50 dòng"
-            , 100 => "100 dòng"
+            10 => "10 dòng", 20 => "20 dòng", 50 => "50 dòng", 100 => "100 dòng"
         ];
         $properties["name"] = isset($properties["name"]) ? $properties["name"] : __FUNCTION__;
         return new FormRender(new Element\Select("Hiện Thị", $properties["name"], $options, $properties));
     }
 
-    public static function TimKiem($val = null, $pro = []) {
+    public static function TimKiem($val = null, $pro = [])
+    {
         $properties = self::$FormClass;
         $properties["value"] = $val;
         if ($pro) {
@@ -43,8 +44,31 @@ class FormOptions {
         $name = isset($properties["name"]) ? $properties["name"] : __FUNCTION__;
         return new FormRender(new Element\Search("Tìm Kiếm", $name, $properties));
     }
+    public static function SapXep($val = null, $pro = [])
+    {
+        $properties = self::$FormClass;
+        $properties["value"] = $val;
+        if ($pro) {
+            foreach ($pro as $key => $value) {
+                $properties[$key] = $value;
+            }
+        }
+        $name = isset($properties["name"]) ? $properties["name"] : __FUNCTION__;
+        $options = ["1" => "Ngày mới nhất", "0" => "Ngày cũ nhất"];
+        return new FormRender(new Element\Select("Sắp Xếp", $name, $options, $properties));
+    }
+    //indexPage=[i]&numberPage
+    public static function indexPage($val = null)
+    {
+        return new FormRender(new Hidden(__FUNCTION__, $val));
+    }
+    public static function numberPage($val = null)
+    {
+        return new FormRender(new Hidden(__FUNCTION__, $val));
+    }
 
-    public static function BtnModal($title, $target, $propertiesCustom = "") {
+    public static function BtnModal($title, $target, $propertiesCustom = "")
+    {
         $properties["data-toggle"] = 'modal';
         $properties["data-target"] = $target;
         $properties["class"] = $propertiesCustom["class"];
@@ -55,7 +79,8 @@ class FormOptions {
         return new FormRender(new Element\Button($title, "button", $properties));
     }
 
-    public static function Select($val, $name, $options, $pro) {
+    public static function Select($val, $name, $options, $pro)
+    {
         $properties = self::$FormClass;
         $properties["value"] = $val;
         if ($pro) {
@@ -63,9 +88,8 @@ class FormOptions {
                 $properties[$key] = $value;
             }
         }
-        $properties["label"] = !empty($properties["label"]) ? $properties["label"] : '';
+        $properties["label"] =  $properties["label"] ?? '';
         $name = isset($properties["name"]) ? $properties["name"] : __FUNCTION__;
         return new FormRender(new Element\Select($properties["label"], $name, $options, $properties));
     }
-
 }

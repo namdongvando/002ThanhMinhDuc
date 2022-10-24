@@ -99,8 +99,8 @@ if (class_exists($cname, TRUE)) {
 // echo $Application->getController();
 // echo $Application->getAction();
 if (true) {
-    echo $Application->getController();
-    echo $Application->getAction();
+      $Application->getController();
+      $Application->getAction();
 }
 // $etime = time() + microtime();
 // echo $etime - $stime;

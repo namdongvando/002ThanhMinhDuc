@@ -13,6 +13,11 @@ class index extends \ApplicationM {
         new \Controller\backend();
     }
 
+    public function test()
+    { 
+        
+        return $this->ViewThemeModlue(); 
+    }
     function index() {
         return $this->ViewThemeModlue();
     }

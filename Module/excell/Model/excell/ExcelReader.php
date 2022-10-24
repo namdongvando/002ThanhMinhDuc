@@ -2,17 +2,20 @@
 
 namespace Module\excell\Model\excell;
 
+use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\Worksheet\Drawing;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 
-class ExcelReader {
+class ExcelReader
+{
 
-    function __construct() {
-
+    function __construct()
+    {
     }
 
-    function CreateFile($full_path = 'public/excell/data.xlsx', $data) {
+    function CreateFile($full_path = 'public/excell/data.xlsx', $data)
+    {
         ini_set("memory_limit", "512M");
         ini_set("max_execution_time", 5000);
         $spreadsheet = new Spreadsheet();
@@ -51,12 +54,13 @@ class ExcelReader {
         $writer = new Xlsx($spreadsheet);
         $writer->save($full_path);
         $full_path = "/{$full_path}?v=" . time();
-//        header("Location: $full_path");
+        //        header("Location: $full_path");
     }
 
-    function CreateFileDowload($full_path = 'public/excell/data.xlsx', $data) {
-        ini_set("memory_limit", "512M");
-        ini_set("max_execution_time", 5000);
+    function CreateFileDowload($full_path = 'public/excell/data.xlsx', $data)
+    {
+        // ini_set("memory_limit", "512M");
+        // ini_set("max_execution_time", 5000);
         $spreadsheet = new Spreadsheet();
         $sheet = $spreadsheet->getActiveSheet();
         foreach ($data as $index => $value) {
@@ -119,7 +123,55 @@ class ExcelReader {
         exit();
     }
 
-    function import($File) {
+    static  public function Export($data, $fileName)
+    {
+        $spreadsheet = new Spreadsheet();
+        $spreadsheet->setActiveSheetIndex(0);
+        $sheet0 = $spreadsheet->getActiveSheet();
+        // Set kiểu chữ
+        $spreadsheet->getDefaultStyle()->getFont()->setName('Times New Roman');
+        $spreadsheet->getDefaultStyle()->getFont()->setSize('14');
+        foreach ($data[0] as $r  => $v) {
+            $sheet0->getColumnDimension(self::GetCollums($r))->setAutoSize(true);
+        }
+        foreach ($data as $row => $colums) {
+            $colIndex = 0;
+            foreach ($colums as  $value) {
+                // echo $colIndex;
+
+                $sheet0->setCellValue(
+                    self::GetCellName(
+                        $colIndex,
+                        $row + 1
+                    ),
+                    $value
+                );
+                $colIndex++;
+            }
+        }
+        $writer = IOFactory::createWriter($spreadsheet, "Xlsx");
+        $writer->save($fileName);
+        header("Location: /{$fileName}");
+    }
+    static  public function GetCollums($num)
+    {
+        $numeric = $num % 26;
+        $letter = chr(65 + $numeric);
+        $num2 = intval($num / 26);
+        if ($num2 > 0) {
+            return self::GetCollums($num2 - 1) . $letter;
+        } else {
+            return $letter;
+        }
+    }
+    static  public function GetCellName($col, $row)
+    {
+        $row = max($row, 1);
+        $colName = self::GetCollums($col);
+        return "{$colName}{$row}";
+    }
+    function import($File)
+    {
         require_once 'PHPExcel.php';
         $objReader = \PHPExcel_IOFactory::createReader('Excel2007');
         $objReader->setReadDataOnly(true); //optional
@@ -145,7 +197,8 @@ class ExcelReader {
         return $DanhMucs;
     }
 
-    public static function ReadFile($FilePath = "", $StructArray) {
+    public static function ReadFile($FilePath = "", $StructArray)
+    {
         if (is_array($FilePath)) {
             if ($FilePath["error"] == 0) {
                 $FilePath = $FilePath["tmp_name"];
@@ -176,7 +229,8 @@ class ExcelReader {
         return $DanhMucs;
     }
 
-    static function getNameFromNumber($num) {
+    static function getNameFromNumber($num)
+    {
         $numeric = $num % 26;
         $letter = chr(65 + $numeric);
         $num2 = intval($num / 26);
@@ -186,7 +240,4 @@ class ExcelReader {
             return $letter;
         }
     }
-
 }
-
-?>

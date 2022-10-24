@@ -1,24 +1,43 @@
 <?php
 
 // api này không cần dang nhap
-class Controller_api extends Application {
+class Controller_api extends Application
+{
 
     public $param;
     public $Api;
 
-    function __construct() {
+    function __construct()
+    {
         $this->param = $this->getParam();
         $this->Api = new \lib\APIs();
     }
-
-    function getNewsHot() {
+    function TinhThanhTagOption()
+    {
+        $model_option = new \Module\option\Model\Option();
+        $groups = $this->getParam()[0];
+        $Options = $model_option->GetTinhThanh($groups);
+        foreach ($Options as $key => $tt) {
+            echo "<option value='{$tt["Id"]}' >{$tt["Name"]}</option>";
+        }
+    }
+    public function testapi()
+    {
+        $infor = [
+            "hoTen" => "Tèo Nguyễn",
+        ];
+        echo json_encode($infor);
+    }
+    function getNewsHot()
+    {
         $new = new \datatable\News();
         $a = $new->getNewsHot();
         var_dump($a);
         echo json_encode($a);
     }
 
-    function getMenus() {
+    function getMenus()
+    {
         Model_SaveCache::startCache();
 
         $Menu = new Model\Menu();
@@ -30,20 +49,23 @@ class Controller_api extends Application {
         exit();
     }
 
-    function getMenuByGroups() {
+    function getMenuByGroups()
+    {
         $position = $this->getParam()[0];
         $Menu = new Model\Menu();
         $ds = $Menu->MenusByGroup($position);
         $this->Api->ArrayToApi($ds);
     }
 
-    function index() {
+    function index()
+    {
         $cat = new Model\Category();
         $a = $cat->Categorys4IDParent(0);
         $cat->_encode($a);
     }
 
-    function getMainMenu() {
+    function getMainMenu()
+    {
         $cat = new Model\Category();
         $a = $cat->Categorys4IDParent(0);
         if ($a)
@@ -57,24 +79,27 @@ class Controller_api extends Application {
         echo $cat->_encode($a);
     }
 
-    function getAdvByGroup() {
+    function getAdvByGroup()
+    {
         $cat = new \Model\adv();
         $a = $cat->AdvsByGroup($this->param[0], FALSE);
         echo $cat->_encode($a);
     }
 
-    function getPages() {
+    function getPages()
+    {
         $Pa = new \Model\pages();
         $Apis = new \lib\APIs();
         $a = $Pa->PagesByType(1, FALSE);
         $Apis->ArrayToApi($a);
     }
 
-    function getMainMenuThong($param) {
-
+    function getMainMenuThong($param)
+    {
     }
 
-    function getPagesLink() {
+    function getPagesLink()
+    {
         $M_Pages = new \Model\pages();
         $lib = new lib\APIs();
         $a = $M_Pages->PagesMin(FALSE);
@@ -87,7 +112,8 @@ class Controller_api extends Application {
         $lib->ArrayToApi($b);
     }
 
-    function getCatLink() {
+    function getCatLink()
+    {
         $M_Cat = new \Model\Category();
         $lib = new lib\APIs();
         $a = $M_Cat->AllCategorys(FALSE);
@@ -100,10 +126,11 @@ class Controller_api extends Application {
         $lib->ArrayToApi($b);
     }
 
-    function counter() {
+    function counter()
+    {
         $api = new lib\APIs();
         $oi = new \lib\io();
-//        $this->luuThongtin();
+        //        $this->luuThongtin();
         $filename = "data/counter.txt";
         $a = json_decode($oi->readFile($filename), JSON_OBJECT_AS_ARRAY);
         $api->ArrayToApi($a);
@@ -111,7 +138,8 @@ class Controller_api extends Application {
         $this->luuThongtin();
     }
 
-    function luuThongtin() {
+    function luuThongtin()
+    {
         $filename = "data/counter.txt";
 
 
@@ -148,7 +176,7 @@ class Controller_api extends Application {
         $sql = "DELETE FROM " . table_prefix . "sessions WHERE unix_timestamp()-lastVisit >=$sessionTime*60";
         $DB->Query($sql);
         $DB->Luu();
-// số người xem
+        // số người xem
         $sql = "select count(*) from " . table_prefix . "sessions";
         $DB->query($sql);
         $rs = $DB->fetchRows();
@@ -167,23 +195,22 @@ class Controller_api extends Application {
 
         $io = new \lib\io();
 
-        $a = ["online" => $rs[0]
-            , "today" => $homnay[0]
-            , "Homqua" => $homqua[0] == "" ? 0 : $homqua[0]
-            , "Thang" => $ThangNay[0] == "" ? 0 : $ThangNay[0]
-            , "total" => $tong[0]
+        $a = [
+            "online" => $rs[0], "today" => $homnay[0], "Homqua" => $homqua[0] == "" ? 0 : $homqua[0], "Thang" => $ThangNay[0] == "" ? 0 : $ThangNay[0], "total" => $tong[0]
         ];
         $io->writeFile($filename, json_encode($a));
         return $a;
     }
 
-    function QuanCao() {
+    function QuanCao()
+    {
         $QuanCao = new Model\adv();
         $DS = $QuanCao->AdvsByGroup($this->getParam()[0]);
         $this->Api->ArrayToApi($DS);
     }
 
-    function gettinhthanh() {
+    function gettinhthanh()
+    {
         $param = self::getParam();
         $tinhThanh = new datatable\TinhThanh();
         $a = $tinhThanh->getTinhThanhByParent($param[0]);
@@ -191,7 +218,8 @@ class Controller_api extends Application {
         exit();
     }
 
-    function getRSSAPI() {
+    function getRSSAPI()
+    {
         Model_SaveCache::startCache(3600 * 2);
         $RSS = \Model\RssSoYTe::getTinTuc();
         $data[0] = ["Title" => "Tin Tức", "Id" => "TinTuc"];
@@ -215,7 +243,8 @@ class Controller_api extends Application {
         exit();
     }
 
-    function getAdvSlide() {
+    function getAdvSlide()
+    {
         $QuangCao = new \Model\adv();
 
         \lib\imageComp::SetImagesDefault(\datatable\News::Noimages);
@@ -228,7 +257,8 @@ class Controller_api extends Application {
         echo json_encode($Advs);
     }
 
-    function getLinkLienKet() {
+    function getLinkLienKet()
+    {
         Model_SaveCache::startCache(5000);
         $QuangCao = new \Model\adv();
         $Advs = $QuangCao->AdvsByGroup("linklienket", FALSE);
@@ -239,13 +269,15 @@ class Controller_api extends Application {
         exit();
     }
 
-    function getHomerightarea() {
+    function getHomerightarea()
+    {
         $QuangCao = new \Model\adv();
         $Advs = $QuangCao->AdvsByGroup("homerightarea", FALSE);
         echo json_encode($Advs);
     }
 
-    function timkiem() {
+    function timkiem()
+    {
         ini_set('display_errors', 1);
         ini_set('display_startup_errors', 1);
         error_reporting(E_ALL);
@@ -268,7 +300,8 @@ class Controller_api extends Application {
         echo json_encode($newsDataJson);
     }
 
-    function AppData() {
+    function AppData()
+    {
         $Menu = new Model\Menu();
         $imageComp = new \lib\imageComp();
 
@@ -305,9 +338,9 @@ class Controller_api extends Application {
         $data["TinMoiNhat"] = $tinMoiNhat;
 
         $Hotnews = $News->getNewsHot();
-//        var_dump($Hotnews);
+        //        var_dump($Hotnews);
         foreach ($Hotnews as $key => $value) {
-//            echo urldecode($value["UrlHinh"]);
+            //            echo urldecode($value["UrlHinh"]);
             $value = new datatable\News($value);
             $Hotnews[$key] = $value->newToArrayApi();
         }
@@ -319,7 +352,8 @@ class Controller_api extends Application {
         echo json_encode($data);
     }
 
-    function getnewbydanhmuc() {
+    function getnewbydanhmuc()
+    {
         $Pages = new \datatable\Pages();
         $_Page = new \datatable\Pages($Pages->getPageById($this->getParam()[0]));
         $news = $_Page->getNewsByPagesHomeNumber(6);
@@ -331,21 +365,24 @@ class Controller_api extends Application {
         echo json_encode($b);
     }
 
-    function getdanhmuc() {
+    function getdanhmuc()
+    {
         $Mpages = new \datatable\Pages();
         $a = $Mpages->Pages();
         $b["owl"] = $a;
         echo json_encode($b);
     }
 
-    function test() {
+    function test()
+    {
         $url = "Images%3A%2Fnews/";
         $url = str_replace("%2F", "/", $url);
         $url = str_replace("%3A", ":", $url);
         echo $url;
     }
 
-    function getLinkTrungTamYTe() {
+    function getLinkTrungTamYTe()
+    {
         Model_SaveCache::startCache(5000);
         $QuangCao = new \Model\adv();
         $Advs = $QuangCao->AdvsByGroup("trungtamyte", FALSE);
@@ -356,17 +393,15 @@ class Controller_api extends Application {
         exit();
     }
 
-    function couter() {
+    function couter()
+    {
 
         echo json_encode(
-                [
-                    "online" => rand(100, 120)
-                    , "today" => 900
-                    , "total" => 1000
-        ]);
+            [
+                "online" => rand(100, 120), "today" => 900, "total" => 1000
+            ]
+        );
     }
 
-//luuthongtin
+    //luuthongtin
 }
-
-?>

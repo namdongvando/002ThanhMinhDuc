@@ -1,17 +1,33 @@
 <style>
-    @media screen and (max-width: 600px){
-        .TenCongTy{
+    .ResetTable.table tr td {
+        padding: 0px 10px;
+        vertical-align: middle;
+    }
+
+    .form-control {
+        border-radius: 0px;
+    }
+
+    .ResetFormGroups .form-group {
+        margin-bottom: 0px;
+
+    }
+
+    @media screen and (max-width: 600px) {
+        .TenCongTy {
             font-size: 16px;
             font-weight: bold;
             margin-top: 16px;
         }
-        .title-tembaohanh{
+
+        .title-tembaohanh {
             margin: 0px;
             font-weight: bold;
         }
 
     }
-    legend{
+
+    legend {
         font-size: 14px;
         display: block;
         width: auto;
@@ -20,6 +36,7 @@
         border: none;
         margin-bottom: 0px;
     }
+
     fieldset {
         display: block;
         margin-left: 2px;
@@ -28,48 +45,82 @@
         padding-bottom: 0.625em;
         padding-left: 0.75em;
         padding-right: 0.75em;
-        border: 1px solid ;
+        border: 1px solid;
         margin-bottom: 15px;
+    }
+
+    .alert-fixed {
+        position: fixed;
+        width: 50%;
+        top: 20%;
+        left: 0px;
+        z-index: 99999;
+        min-width: 300px;
     }
 </style>
 <?php
 //$temSanPham = new \Module\sanpham\Model\TemSanPham();
 
+use Model\FormTieuTriDanhGia;
+use Module\option\Model\Option;
+
+$idSanPham = $_Param[0];
+// var_dump($idSanPham);
 $sanPham = new Module\sanpham\Model\SanPham($sanPham);
-$link = "/public/phpqrcode/index.php?data=" . Root_URL . "baohanh/" . $sanPham->Code . "/";
+$link = "/public/phpqrcode/index.php?data=" . Root_URL . "baohanh/" . $idSanPham . "/"
 ?>
-<div class="container" style="margin-top: 15px;" >
-    <div class="row" >
-        <div class="col-xs-4" >
+<script src="/theme/thanhminhduc/public/baohanhController.js"></script>
+<?php
+$alert = $data["alert"];
+if ($alert) {
+?>
+    <div class="alert-fixed alert alert-<?php echo $alert["type"] ?>">
+        <?php echo $alert["content"] ?>
+    </div>
+<?php
+}
+?>
+
+<div ng-controller="baohanhController" class="container" style="margin-top: 15px;">
+    <div class="row">
+        <div class="col-xs-4">
             <a href="/">
                 <img src="/public/Logo2.svg" alt="webname" style="height: 80px;" class="img img-responsive">
             </a>
         </div>
-        <div class="col-xs-8" >
-            <h1 class="text-center TenCongTy" >CÔNG TY CỔ PHẦN TMDV <br> THÀNH MINH ĐỨC</h1>
+        <div class="col-xs-8">
+            <h1 class="text-center TenCongTy">CÔNG TY CỔ PHẦN TMDV <br> THÀNH MINH ĐỨC</h1>
+            <div class="clearfix"> </div>
         </div>
-        <div class="col-md-12" >
-            <div class="clearfix" >  </div>
-            <p class="text-center" style="margin-top: 10px;" ><i class="glyphicon glyphicon-map-marker" ></i>113/49/21 Đường TCH05, Khu phố 10, Phường Tân Chánh Hiệp, Quận 12, Thành phố Hồ Chí Minh, Việt Nam</p>
-            <p class="text-center" style="color: red;text-transform: capitalize" >hotline: 08 3620 6226 | Email: smartkitchenware.tmd@gmail.com | Zalo: 08 3620 6226</p>
+        <div class="col-md-4 col-xs-12"></div>
+        <div class="col-md-8 col-xs-12">
+            <p class="text-center" style="margin-top: 10px;"><i class="glyphicon glyphicon-map-marker"></i>
+                113 Lâm Thị Hố. Phường Tân Chánh Hiệp, <br> Quận 12, TP. Hồ Chí Minh
+            </p>
+            <p class="text-center" style="color: red;">
+                Hotline, zalo: 0836.206.226 <br>
+                Website: https://thanhminhduc.vn
+            </p>
         </div>
-        <section class="col-md-12 pb-10" >
-            <form action="" method="POST" enctype="multipart/form-data" >
-
-                <div class="connectedSortable" >
+        <div class="clearfix"></div>
+        <div class="col-md-12 pb-10">
+            <form action="" method="POST" enctype="multipart/form-data">
+                <div class="connectedSortable">
                     <div class="panel-primary">
-                        <div class=" ">
-                        </div>
                         <div class="panel-body">
-                            <div class="row" >
-                                <h3 class="text-center title-tembaohanh" >Tem Bảo Hành</h3>
-                                <div class="col-md-12" >
+                            <div class="row">
+                                <h4 style="font-weight: bold;" class="text-center title-tembaohanh">Tem Bảo Hành</h4>
+                                <div class="col-md-12">
                                     <div class="row">
                                         <fieldset>
-                                            <legend>Thông Tin Bảo Hành</legend>
-                                            <table class="table table-bordered" >
+                                            <legend>
+                                                <b style="font-size: 18px;">
+                                                    Thông Tin Sản Phẩm
+                                                </b>
+                                            </legend>
+                                            <table class="table table-bordered">
                                                 <tr>
-                                                    <td style="width: 100px;" >Mã Sản Phẩm:
+                                                    <td style="width: 100px;">Mã Sản Phẩm:
                                                         <b>
                                                             <?php
                                                             echo $temSanPham->SanPham()->Code;
@@ -78,7 +129,7 @@ $link = "/public/phpqrcode/index.php?data=" . Root_URL . "baohanh/" . $sanPham->
                                                     </td>
                                                 </tr>
                                                 <tr>
-                                                    <td style="width: 200px;" >
+                                                    <td style="width: 200px;">
                                                         Tên Sản Phẩm:
                                                         <b>
                                                             <?php
@@ -87,47 +138,24 @@ $link = "/public/phpqrcode/index.php?data=" . Root_URL . "baohanh/" . $sanPham->
                                                         </b>
                                                     </td>
                                                 </tr>
-                                                <tr>
-                                                    <td style="width: 200px;" >
-                                                        Tình Trạng Sản Phẩm:
-                                                        <b>
-                                                            <?php
-                                                            echo $temSanPham->SanPham()->TinhTrang();
-                                                            ?>
-                                                        </b>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td style="width: 200px;" >
-                                                        Đại Lý:
-                                                        <b>
-                                                            <?php
-                                                            echo $temSanPham->SanPham()->DaiLy()->Name;
-                                                            ?>
-                                                        </b>
-                                                    </td>
-                                                </tr>
                                             </table>
-
                                         </fieldset>
                                     </div>
-
                                 </div>
-                                <div class="col-md-12" >
+                                <div class="col-md-12">
                                     <div class="row">
                                         <fieldset>
                                             <legend>
-                                                <label style="font-weight: normal;cursor: pointer" >
-                                                    Thông Tin Khách
-                                                    <input ng-checked="true" ng-model="showmore" type="checkbox" style="display: none;" >
-                                                    <i ng-show="showmore == true" class="fa fa-angle-up" ></i>
-                                                    <i ng-show="showmore != true" class="fa fa-angle-down" ></i>
+                                                <label style="font-weight: normal;cursor: pointer">
+                                                    <b style="font-size: 18px;"> Thông Tin Khách</b>
+                                                    <input ng-checked="true" ng-model="showmore" type="checkbox" style="display: none;">
+                                                    <i ng-show="showmore == true" class="fa-2x fa fa-angle-up"></i>
+                                                    <i ng-show="showmore != true" class="fa-2x fa fa-angle-down"></i>
                                                 </label>
                                             </legend>
-
-                                            <table  style="margin-bottom: 0px;" ng-show="showmore"  class="table table-bordered"  >
+                                            <table style="margin-bottom: 0px;" ng-show="showmore" class="table table-bordered">
                                                 <tr>
-                                                    <td style="width: 100px;" >Họ & Tên</td>
+                                                    <td style="width: 100px;">Họ & Tên</td>
                                                     <td>
                                                         <b>
                                                             <?php
@@ -137,7 +165,7 @@ $link = "/public/phpqrcode/index.php?data=" . Root_URL . "baohanh/" . $sanPham->
                                                     </td>
                                                 </tr>
                                                 <tr>
-                                                    <td  >SĐT </td>
+                                                    <td>SĐT </td>
                                                     <td>
                                                         <b>
                                                             <?php
@@ -147,18 +175,18 @@ $link = "/public/phpqrcode/index.php?data=" . Root_URL . "baohanh/" . $sanPham->
                                                     </td>
                                                 </tr>
                                                 <tr>
-                                                    <td colspan="2" >
+                                                    <td colspan="2">
                                                         Địa Chỉ:
-                                                        <b >
+                                                        <b>
                                                             <?php
-                                                            echo $khachHang->DiaChi;
+                                                            echo $khachHang->DiaChi();
                                                             ?>
                                                         </b>
 
                                                     </td>
                                                 </tr>
                                                 <tr>
-                                                    <td colspan="2" >
+                                                    <td colspan="2">
                                                         Ghi Chú:
                                                         <b>
                                                             <?php
@@ -171,10 +199,14 @@ $link = "/public/phpqrcode/index.php?data=" . Root_URL . "baohanh/" . $sanPham->
 
                                         </fieldset>
                                         <fieldset>
-                                            <legend>Thông Tin Bảo Hành</legend>
-                                            <table class="table table-bordered" >
+                                            <legend>
+                                                <b style="font-size: 18px;">
+                                                    Thông Tin Bảo Hành
+                                                </b>
+                                            </legend>
+                                            <table class="table table-bordered">
                                                 <tr>
-                                                    <td colspan="2" >
+                                                    <td colspan="2">
                                                         Ngày Bắt Đầu Bảo Hành:
                                                         <b>
                                                             <?php
@@ -184,7 +216,7 @@ $link = "/public/phpqrcode/index.php?data=" . Root_URL . "baohanh/" . $sanPham->
                                                     </td>
                                                 </tr>
                                                 <tr>
-                                                    <td colspan="2" >
+                                                    <td colspan="2">
                                                         Thời Gian Bảo Hành:
                                                         <b>
                                                             <?php
@@ -194,7 +226,7 @@ $link = "/public/phpqrcode/index.php?data=" . Root_URL . "baohanh/" . $sanPham->
                                                     </td>
                                                 </tr>
                                                 <tr>
-                                                    <td colspan="2" >
+                                                    <td colspan="2">
                                                         Ngày Kết Thúc:
                                                         <b>
                                                             <?php
@@ -204,7 +236,7 @@ $link = "/public/phpqrcode/index.php?data=" . Root_URL . "baohanh/" . $sanPham->
                                                     </td>
                                                 </tr>
                                                 <tr>
-                                                    <td colspan="2" >
+                                                    <td colspan="2">
                                                         Tình Trạng:
                                                         <b>
                                                             <?php
@@ -215,28 +247,90 @@ $link = "/public/phpqrcode/index.php?data=" . Root_URL . "baohanh/" . $sanPham->
                                                 </tr>
                                             </table>
                                         </fieldset>
+
                                     </div>
 
                                 </div>
                             </div>
                         </div>
-                        <div class="" >
+                        <div class="">
                             <a class="btn btn-primary" data-toggle="modal" href='#MaBaoHanh'>Mã QR Code</a>
                             <?php
                             if ($temSanPham->Status == Module\sanpham\Model\TemSanPham::Active) {
-                                ?>
+                            ?>
                                 <a class="btn btn-primary" data-toggle="modal" href='#yeuCauBaoHanh'>Yêu Cầu Bảo Hành</a>
-                                <?php
+                            <?php
+                            } else {
+                            ?>
+                                <a class="btn btn-primary" data-toggle="modal" href='#modal-id'>Yêu cầu kích hoat</a>
+                            <?php
                             }
                             ?>
-                            <a href="/sanpham/temsanpham/detailbysanpham/<?php echo $temSanPham->Code; ?>/" class="btn btn-primary" >Cập Nhập Tem Bảo Hành</a>
+                            <a class="btn btn-primary" target="_self" data-toggle="modal" href='#DanhGiaHoTro'>Đánh giá hỗ trợ</a>
                         </div>
                     </div>
                 </div>
+                <?php
+                if ($temSanPham->Status != Module\sanpham\Model\TemSanPham::Active) {
+                ?>
+                    <div class="text-center">
+                        <img src="/public/baohanh.jpg?v=<?php echo time(); ?>" class="img img-responsive" alt="hướng dẫn bảo hành">
+                    </div>
+                <?php
+                }
+                ?>
             </form>
-        </section>
+        </div>
     </div>
 </div>
+
+<form onsubmit="return onSubmit()" id="yeucaukichhoat" method="post">
+    <div class="modal fade" id="modal-id">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title">Yêu cầu kích hoạt tem</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <?php
+                            \Module\trungtambaohanh\Model\YeuCauBaoHanhForm::HoTen()->renderHTML();
+                            ?>
+                        </div>
+                        <div class="col-md-6">
+                            <?php
+                            \Module\trungtambaohanh\Model\YeuCauBaoHanhForm::SDT()->renderHTML();
+                            ?>
+                        </div>
+                        <div class="col-md-6">
+                            <?php
+                            \Module\trungtambaohanh\Model\YeuCauBaoHanhForm::TinhThanh($khachHang->TinhThanh, "TinhThanhId", "#QuanHuyenId")->renderHTML();
+                            ?>
+                        </div>
+                        <div class="col-md-6">
+                            <?php
+                            \Module\trungtambaohanh\Model\YeuCauBaoHanhForm::QuanHuyen($khachHang->QuanHuyen, $khachHang->TinhThanh, "QuanHuyenId")->renderHTML();
+                            ?>
+                        </div>
+                        <div class="col-md-12">
+                            <?php
+                            \Module\trungtambaohanh\Model\YeuCauBaoHanhForm::DiaChi($khachHang->DiaChi)->renderHTML();
+                            \Module\trungtambaohanh\Model\YeuCauBaoHanhForm::MaTem($temSanPham->Code, null, true)->render();
+                            ?>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Đóng</button>
+                    <button name="YeuCauKichHoat" id="YeuCauKichHoat" type="submit" class="btn btn-primary">Gửi</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
 <div class="modal fade" id="MaBaoHanh">
     <div class="modal-dialog modal-sm">
         <div class="modal-content">
@@ -245,13 +339,15 @@ $link = "/public/phpqrcode/index.php?data=" . Root_URL . "baohanh/" . $sanPham->
                 <h4 class="modal-title">QR code</h4>
             </div>
             <div class="modal-body">
-                <img style="width: 100%" src="<?php echo $link; ?>" class="img img-responsive"  >
+                <img style="width: 100%" src="<?php echo $link; ?>" class="img img-responsive">
+                <span><?php echo $idSanPham ?></span>
             </div>
         </div>
     </div>
 </div>
-<div class="modal fade" id="yeuCauBaoHanh"  >
-    <form action="" enctype="multipart/form-data" method="POST" >
+
+<div class="modal fade" id="yeuCauBaoHanh">
+    <form action="" enctype="multipart/form-data" method="POST">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -261,23 +357,41 @@ $link = "/public/phpqrcode/index.php?data=" . Root_URL . "baohanh/" . $sanPham->
                 <div class="modal-body">
                     <?php
                     \Module\trungtambaohanh\Model\YeuCauBaoHanhForm::NoiDung()->renderHTML();
-                    \Module\trungtambaohanh\Model\YeuCauBaoHanhForm::DiaChi($khachHang->DiaChi)->renderHTML();
                     ?>
                     <div class="row">
-                        <div class="col-md-6" >
+                        <div class="col-md-6">
+                            <?php
+                            \Module\trungtambaohanh\Model\YeuCauBaoHanhForm::TinhThanh($khachHang->TinhThanh)->renderHTML();
+                            ?>
+                        </div>
+                        <div class="col-md-6">
+                            <?php
+                            \Module\trungtambaohanh\Model\YeuCauBaoHanhForm::QuanHuyen($khachHang->QuanHuyen, $khachHang->TinhThanh)->renderHTML();
+                            ?>
+                        </div>
+                        <div class="col-md-12">
+                            <?php
+                            \Module\trungtambaohanh\Model\YeuCauBaoHanhForm::DiaChi($khachHang->DiaChi)->renderHTML();
+                            ?>
+                        </div>
+                        <div class="col-md-6">
                             <?php
                             \Module\trungtambaohanh\Model\YeuCauBaoHanhForm::SDT($khachHang->Phone)->renderHTML();
                             ?>
                         </div>
-                        <div class="col-md-6" >
+                        <div class="col-md-6">
                             <?php
-                            \Module\trungtambaohanh\Model\YeuCauBaoHanhForm::NgayBaoHanh()->renderHTML();
+                            \Module\trungtambaohanh\Model\YeuCauBaoHanhForm::NgayBaoHanh(null, null, $temSanPham->NgayKetThuc)->renderHTML();
                             ?>
                         </div>
                     </div>
                     <?php
                     \Module\trungtambaohanh\Model\YeuCauBaoHanhForm::MaTem($temSanPham->Code, null, true)->render();
-                    \Module\trungtambaohanh\Model\YeuCauBaoHanhForm::KhachHangTieuDung($temSanPham->KhachHangTieuDung, null, true)->render();
+                    \Module\trungtambaohanh\Model\YeuCauBaoHanhForm::KhachHangTieuDung(
+                        $temSanPham->KhachHangTieuDung,
+                        null,
+                        true
+                    )->render();
                     ?>
                 </div>
                 <div class="modal-footer">
@@ -288,3 +402,136 @@ $link = "/public/phpqrcode/index.php?data=" . Root_URL . "baohanh/" . $sanPham->
         </div>
     </form>
 </div>
+<div class="modal fade" id="DanhGiaHoTro">
+    <form action="" enctype="multipart/form-data" onsubmit="return(SubmitFormDanhGiaHoTro())" id="FormDanhGiaHoTro" enctype="multipart/form-data" method="POST">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title">Đánh Giá Hỗ Trợ</h4>
+                </div>
+                <div class="modal-body">
+                    <table class="table table-bordered ResetTable">
+                        <?php
+                        try {
+                            $option = new Option();
+                            $options = $option->GetAll2OptionsByGroups(Option::TieuChiDanhGia);
+                            foreach ($options as $key => $value) {
+                        ?>
+                                <tr>
+                                    <td><?php echo $value; ?></td>
+                                    <td class="ResetFormGroups"><?php FormTieuTriDanhGia::TieuTri(null, $key, "")->renderHtml(); ?></td>
+                                </tr>
+                        <?php
+                            }
+                        } catch (Exception $th) {
+                            echo $th;
+                        }
+                        ?>
+                    </table>
+                    <div>
+                        <?php
+                        FormTieuTriDanhGia::MaTem($_Param[0])->render();
+                        FormTieuTriDanhGia::Comment("")->renderHtml();
+
+                        ?>
+                        <div>
+                            <label style="cursor: pointer;text-align: center;border: 2px dashed green;width: 100%;">
+                                Chọn file
+                                <?php
+                                FormTieuTriDanhGia::File("", "FileChonFile")->render();
+                                ?>
+                                <div style="height: 70px;">
+                                    <img src="" id="previewImg" style="height: 70px;">
+                                </div>
+                            </label>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Thoát</button>
+                    <button type="submit" class="btn btn-primary">Gửi đánh giá</button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+<script>
+    $(".alert").hide(3000);
+
+    function SubmitFormDanhGiaHoTro() {
+        if (confirm(`Nhấn “Ok” để gửi đánh giá dịch vụ. `) == false) {
+            return false;
+        }
+    }
+
+    function onSubmit() {
+        if (confirm(`Nhấn “Đồng ý” để gửi yêu cầu kích hoạt. 
+        Yêu cầu của bạn được thực hiện trong vòng 24h`) == false) {
+            return;
+        }
+        var dataFormArray = $("form#yeucaukichhoat").serializeArray();
+
+        if (dataFormArray[1]["value"] == "") {
+
+        }
+        var dataFormString = $("form#yeucaukichhoat").serialize();
+        $.ajax({
+            url: '/index/yeucaukichhoat/',
+            type: 'POST',
+            data: dataFormString,
+            contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
+            success: function(response) {
+                alert(`Sản phẩm của bạn đang được chờ kích hoạt trong 24h, 
+                vui lòng liên hệ 0836.206.226 nếu chưa được hoàn thành`);
+                window.location.reload();
+            },
+            error: function() {
+                alert("error");
+            }
+        });
+        return false;
+    };
+    $(function() {
+
+        $("#FileChonFile").change(function() {
+            var file = $(this).get(0).files[0];
+            if (file) {
+                var reader = new FileReader();
+                reader.onload = function() {
+                    $("#previewImg").attr("src", reader.result);
+                }
+
+                reader.readAsDataURL(file);
+            }
+        });
+
+        $("select.AjaxHTML").each(function() {
+            try {
+                var dataHTML = $(this).data();
+                var self = $(this);
+                var object = dataHTML.object;
+                //        console.log();
+                self.change(function() {
+                    if (dataHTML.values == true) {
+                        var url = dataHTML.url;
+                        url = url + self.val();
+                    }
+                    // alert(url);
+                    $.ajax({
+                        url: url
+                    }).done(function(res) {
+                        $(object).html(res);
+                        // alert(object);
+                        // alert(res);
+                    });
+                });
+            } catch (error) {
+                alert(error)
+            }
+
+        });
+    })
+</script>
