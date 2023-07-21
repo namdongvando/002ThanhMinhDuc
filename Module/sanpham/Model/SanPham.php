@@ -21,23 +21,22 @@ class SanPham extends SanPhamData
         if ($dv) {
             if (!is_array($dv)) {
                 $dv = $this->GetById($dv);
-            }
-            if ($dv) {
-                $this->Id = !empty($dv["Id"]) ? $dv["Id"] : null;
-                $this->Name = !empty($dv["Name"]) ? $dv["Name"] : null;
-                $this->idKhachHang = !empty($dv["idKhachHang"]) ? $dv["idKhachHang"] : null;
-                $this->Code = !empty($dv["Code"]) ? $dv["Code"] : null;
-                $this->ChungLoaiSP = !empty($dv["ChungLoaiSP"]) ? $dv["ChungLoaiSP"] : null;
-                $this->Mota = !empty($dv["Mota"]) ? $dv["Mota"] : null;
-                $this->Gia = !empty($dv["Gia"]) ? $dv["Gia"] : 0;
-                $this->HinhAnh = !empty($dv["HinhAnh"]) ? $dv["HinhAnh"] : null;
-                $this->DanhMuc = !empty($dv["DanhMuc"]) ? $dv["DanhMuc"] : null;
-                $this->TinhTrang = !empty($dv["TinhTrang"]) ? $dv["TinhTrang"] : 0;
-                $this->Wfstatus = $dv["Wfstatus"] ?? 0;
-                $this->MaDaiLy = !empty($dv["MaDaiLy"]) ? $dv["MaDaiLy"] : "";
-                $this->isLook = !empty($dv["isLook"]) ? $dv["isLook"] : "";
+                
             }
         }
+        $this->Id = $dv["Id"] ?? null;
+        $this->Name = $dv["Name"] ?? null;
+        $this->idKhachHang = $dv["idKhachHang"] ?? null;
+        $this->Code = $dv["Code"] ?? null;
+        $this->ChungLoaiSP = $dv["ChungLoaiSP"] ?? null;
+        $this->Mota = $dv["Mota"] ?? null;
+        $this->Gia = $dv["Gia"] ?? null;
+        $this->HinhAnh = $dv["HinhAnh"] ?? null;
+        $this->DanhMuc = $dv["DanhMuc"] ?? null;
+        $this->TinhTrang = $dv["TinhTrang"] ?? null;
+        $this->Wfstatus = $dv["Wfstatus"] ?? 0;
+        $this->MaDaiLy = $dv["MaDaiLy"] ?? null;
+        $this->isLook = $dv["isLook"] ?? null;
     }
 
     function DanhMuc()

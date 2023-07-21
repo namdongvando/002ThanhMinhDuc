@@ -56,7 +56,48 @@ class ExcelReader
         $full_path = "/{$full_path}?v=" . time();
         //        header("Location: $full_path");
     }
+    function CreateFileExCode($full_path = 'public/excell/data.xlsx', $data)
+    {
+        ini_set("memory_limit", "512M");
+        ini_set("max_execution_time", 50000);
+        $spreadsheet = new Spreadsheet();
+        $sheet = $spreadsheet->getActiveSheet();
+        foreach ($data as $index => $value) {
+            $rows = $index + 1;
+            $k = 0;
+            foreach ($value as $colName => $val) {
+                $col = self::getNameFromNumber($k);
+                $cell = "{$col}{$rows}";
+                if ($colName == "img") {
+                    $drawing = new \PhpOffice\PhpSpreadsheet\Worksheet\Drawing();
+                    $drawing->setName('Paid');
+                    $drawing->setDescription('Paid');
+                    $drawing->setPath($val);
+                    $drawing->setCoordinates($cell);
+                    $drawing->setOffsetX(10);
+                    $drawing->setOffsetY(10);
+                    $drawing->setWorksheet($spreadsheet->getActiveSheet());
+                    $spreadsheet->getActiveSheet()->getColumnDimension($col)->setWidth(70);
+                } else {
+                    $sheet->setCellValue($cell, $val);
+                    // $spreadsheet->getActiveSheet()->getColumnDimension($col)->setWidth(20);
+                }
+                // $spreadsheet->getActiveSheet()->getStyle($col)->getAlignment()->setVertical(\PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_DISTRIBUTED);
+                // $spreadsheet->getActiveSheet()->getStyle($col)->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_DISTRIBUTED);
+                // $spreadsheet->getActiveSheet()->getStyle($rows)->getAlignment()->setVertical(\PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_DISTRIBUTED);
+                // $spreadsheet->getActiveSheet()->getStyle($rows)->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_DISTRIBUTED);
+                // $spreadsheet->getActiveSheet()->getRowDimension($rows)->setRowHeight(340);
+                $k++;
+            }
+            unset($data[$index]);
+            ob_clean();
+        }
 
+        $writer = new Xlsx($spreadsheet);
+        $writer->save($full_path);
+        $full_path = "/{$full_path}?v=" . time();
+        //        header("Location: $full_path");
+    }
     function CreateFileDowload($full_path = 'public/excell/data.xlsx', $data)
     {
         // ini_set("memory_limit", "512M");

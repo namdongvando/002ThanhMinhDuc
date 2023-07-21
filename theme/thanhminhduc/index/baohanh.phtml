@@ -62,22 +62,24 @@
 //$temSanPham = new \Module\sanpham\Model\TemSanPham();
 
 use Model\FormTieuTriDanhGia;
+use Module\khachhang\Model\KhachHangTieuDungForm;
 use Module\option\Model\Option;
+use Module\trungtambaohanh\Model\YeuCauBaoHanhForm;
 
 $idSanPham = $_Param[0];
 // var_dump($idSanPham);
 $sanPham = new Module\sanpham\Model\SanPham($sanPham);
 $link = "/public/phpqrcode/index.php?data=" . Root_URL . "baohanh/" . $idSanPham . "/"
-?>
+    ?>
 <script src="/theme/thanhminhduc/public/baohanhController.js"></script>
 <?php
 $alert = $data["alert"];
 if ($alert) {
-?>
+    ?>
     <div class="alert-fixed alert alert-<?php echo $alert["type"] ?>">
         <?php echo $alert["content"] ?>
     </div>
-<?php
+    <?php
 }
 ?>
 
@@ -148,12 +150,14 @@ if ($alert) {
                                             <legend>
                                                 <label style="font-weight: normal;cursor: pointer">
                                                     <b style="font-size: 18px;"> Thông Tin Khách</b>
-                                                    <input ng-checked="true" ng-model="showmore" type="checkbox" style="display: none;">
+                                                    <input ng-checked="true" ng-model="showmore" type="checkbox"
+                                                        style="display: none;">
                                                     <i ng-show="showmore == true" class="fa-2x fa fa-angle-up"></i>
                                                     <i ng-show="showmore != true" class="fa-2x fa fa-angle-down"></i>
                                                 </label>
                                             </legend>
-                                            <table style="margin-bottom: 0px;" ng-show="showmore" class="table table-bordered">
+                                            <table style="margin-bottom: 0px;" ng-show="showmore"
+                                                class="table table-bordered">
                                                 <tr>
                                                     <td style="width: 100px;">Họ & Tên</td>
                                                     <td>
@@ -196,7 +200,10 @@ if ($alert) {
                                                     </td>
                                                 </tr>
                                             </table>
-
+                                            <div class="text-right">
+                                                <a class="btn btn-primary" target="_self" data-toggle="modal"
+                                                    href='#SuaThongTin'>Sửa thông tin</a>
+                                            </div>
                                         </fieldset>
                                         <fieldset>
                                             <legend>
@@ -257,26 +264,30 @@ if ($alert) {
                             <a class="btn btn-primary" data-toggle="modal" href='#MaBaoHanh'>Mã QR Code</a>
                             <?php
                             if ($temSanPham->Status == Module\sanpham\Model\TemSanPham::Active) {
-                            ?>
+                                ?>
                                 <a class="btn btn-primary" data-toggle="modal" href='#yeuCauBaoHanh'>Yêu Cầu Bảo Hành</a>
-                            <?php
+                                <?php
                             } else {
-                            ?>
+                                ?>
                                 <a class="btn btn-primary" data-toggle="modal" href='#modal-id'>Yêu cầu kích hoat</a>
-                            <?php
+                                <?php
                             }
                             ?>
-                            <a class="btn btn-primary" target="_self" data-toggle="modal" href='#DanhGiaHoTro'>Đánh giá hỗ trợ</a>
+                            <a class="btn btn-primary" target="_self" data-toggle="modal" href='#DanhGiaHoTro'>Đánh giá
+                                hỗ trợ</a>
+
+
                         </div>
                     </div>
                 </div>
                 <?php
                 if ($temSanPham->Status != Module\sanpham\Model\TemSanPham::Active) {
-                ?>
+                    ?>
                     <div class="text-center">
-                        <img src="/public/baohanh.jpg?v=<?php echo time(); ?>" class="img img-responsive" alt="hướng dẫn bảo hành">
+                        <img src="/public/baohanh.jpg?v=<?php echo time(); ?>" class="img img-responsive"
+                            alt="hướng dẫn bảo hành">
                     </div>
-                <?php
+                    <?php
                 }
                 ?>
             </form>
@@ -321,7 +332,6 @@ if ($alert) {
                             ?>
                         </div>
                     </div>
-
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Đóng</button>
@@ -340,7 +350,9 @@ if ($alert) {
             </div>
             <div class="modal-body">
                 <img style="width: 100%" src="<?php echo $link; ?>" class="img img-responsive">
-                <span><?php echo $idSanPham ?></span>
+                <span>
+                    <?php echo $idSanPham ?>
+                </span>
             </div>
         </div>
     </div>
@@ -403,7 +415,8 @@ if ($alert) {
     </form>
 </div>
 <div class="modal fade" id="DanhGiaHoTro">
-    <form action="" enctype="multipart/form-data" onsubmit="return(SubmitFormDanhGiaHoTro())" id="FormDanhGiaHoTro" enctype="multipart/form-data" method="POST">
+    <form action="" enctype="multipart/form-data" onsubmit="return(SubmitFormDanhGiaHoTro())" id="FormDanhGiaHoTro"
+        enctype="multipart/form-data" method="POST">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -417,12 +430,16 @@ if ($alert) {
                             $option = new Option();
                             $options = $option->GetAll2OptionsByGroups(Option::TieuChiDanhGia);
                             foreach ($options as $key => $value) {
-                        ?>
+                                ?>
                                 <tr>
-                                    <td><?php echo $value; ?></td>
-                                    <td class="ResetFormGroups"><?php FormTieuTriDanhGia::TieuTri(null, $key, "")->renderHtml(); ?></td>
+                                    <td>
+                                        <?php echo $value; ?>
+                                    </td>
+                                    <td class="ResetFormGroups">
+                                        <?php FormTieuTriDanhGia::TieuTri(null, $key, "")->renderHtml(); ?>
+                                    </td>
                                 </tr>
-                        <?php
+                                <?php
                             }
                         } catch (Exception $th) {
                             echo $th;
@@ -457,10 +474,58 @@ if ($alert) {
         </div>
     </form>
 </div>
+<div class="modal fade" id="SuaThongTin">
+    <form action="" enctype="multipart/form-data" enctype="multipart/form-data" method="POST">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title">Thông tin khách hàng</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <?php
+                            KhachHangTieuDungForm::MaTem($temSanPham->Code)->render();
+                            KhachHangTieuDungForm::Name($khachHang->Name)->renderHTML();
+                            ?>
+                        </div>
+                        <div class="col-md-6">
+                            <?php
+                            KhachHangTieuDungForm::Phone($khachHang->Phone)->renderHTML();
+                            ?>
+                        </div>
+                        <div class="col-md-4 hidden">
+                            <?php
+                            KhachHangTieuDungForm::KhuVuc($khachHang->KhuVuc)->renderHTML();
+                            ?>
+                        </div>
+                        <div class="col-md-6">
+                            <?php
+                            KhachHangTieuDungForm::TinhThanh($khachHang->TinhThanh, "#KhachHangTieuDungQuan")->renderHTML();
+                            ?>
+                        </div>
+                        <div class="col-md-6">
+                            <?php
+                            KhachHangTieuDungForm::QuanHuyen($khachHang->QuanHuyen, $khachHang->TinhThanh, "KhachHangTieuDungQuan")->renderHTML();
+                            ?>
+                        </div>
+                    </div>
+                    <?php
+                    KhachHangTieuDungForm::DiaChi($khachHang->DiaChi)->renderHTML();
+                    KhachHangTieuDungForm::GhiChu($khachHang->GhiChu)->renderHTML();
+                    ?>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-submit btn-primary"> Lưu </button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
 
 <script>
-    $(".alert").hide(3000);
-
+    $(".alert").hide(5000);
     function SubmitFormDanhGiaHoTro() {
         if (confirm(`Nhấn “Ok” để gửi đánh giá dịch vụ. `) == false) {
             return false;
@@ -468,8 +533,7 @@ if ($alert) {
     }
 
     function onSubmit() {
-        if (confirm(`Nhấn “Đồng ý” để gửi yêu cầu kích hoạt. 
-        Yêu cầu của bạn được thực hiện trong vòng 24h`) == false) {
+        if (confirm(`Nhấn “Đồng ý” để gửi yêu cầu kích hoạt.Yêu cầu của quý khách được thực hiện trong vòng 24h`) == false) {
             return;
         }
         var dataFormArray = $("form#yeucaukichhoat").serializeArray();
@@ -483,38 +547,39 @@ if ($alert) {
             type: 'POST',
             data: dataFormString,
             contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
-            success: function(response) {
-                alert(`Sản phẩm của bạn đang được chờ kích hoạt trong 24h, 
-                vui lòng liên hệ 0836.206.226 nếu chưa được hoàn thành`);
+            success: function (response) {
+                alert(`Cảm ơn Quý khách đã gửi yêu cầu kích hoạt sản phẩm`);
                 window.location.reload();
             },
-            error: function() {
+            error: function () {
                 alert("error");
             }
         });
         return false;
     };
-    $(function() {
-
-        $("#FileChonFile").change(function() {
+    $(function () {
+        $("#FileChonFile").change(function () {
             var file = $(this).get(0).files[0];
             if (file) {
                 var reader = new FileReader();
-                reader.onload = function() {
+                reader.onload = function () {
                     $("#previewImg").attr("src", reader.result);
                 }
 
                 reader.readAsDataURL(file);
             }
         });
-
-        $("select.AjaxHTML").each(function() {
+        $("form").submit(function () {
+            $(".btn-submit").attr("disabled", true);
+            $(".btn-submit").text("Đang gửi ...");
+        })
+        $("select.AjaxHTML").each(function () {
             try {
                 var dataHTML = $(this).data();
                 var self = $(this);
                 var object = dataHTML.object;
-                //        console.log();
-                self.change(function() {
+                console.log(object);
+                self.change(function () {
                     if (dataHTML.values == true) {
                         var url = dataHTML.url;
                         url = url + self.val();
@@ -522,9 +587,9 @@ if ($alert) {
                     // alert(url);
                     $.ajax({
                         url: url
-                    }).done(function(res) {
+                    }).done(function (res) {
                         $(object).html(res);
-                        // alert(object);
+                        console.log(res);
                         // alert(res);
                     });
                 });

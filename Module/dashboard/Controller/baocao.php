@@ -2,6 +2,7 @@
 
 namespace Module\dashboard\Controller;
 
+use Common\Common;
 use Module\excell\Model\excell\ExcelReader;
 use Module\sanpham\Model\SanPhamForm;
 use Module\sanpham\Model\TemSanPham;
@@ -28,7 +29,17 @@ class baocao extends \ApplicationM
     {
         ini_set('memory_limit', '-1');
         $TemSamPham = new TemSanPham();
-        $DSTem =  $TemSamPham->GetByStatus(TemSanPham::Active);
+        $DateType = $_GET["DateType"] ?? "ThoiGianKichHoat";
+        $fromDate = $_GET["fromDate"] ?? Common::GetFirstDateOfMonth();
+        $toDate = $_GET["toDate"] ?? Common::GetLastDateOfMonth();
+        $DSTem =  $TemSamPham->GetByParams(
+            [
+                "Status" => TemSanPham::Active,
+                "dateType" => $DateType,
+                "fromDate" => $fromDate,
+                "toDate" => $toDate,
+            ]
+        );
         $dataRow = [];
         $dataRow[] = "STT";
         $dataRow[] = "Tên đại lý";
@@ -58,7 +69,7 @@ class baocao extends \ApplicationM
             $data[] = $dataRow;
         }
         $fileName = date("Y-m-d_His", time());
-        ExcelReader::Export($data, "public/baocao1_{$fileName}.xlsx");
+        ExcelReader::Export($data, "public/baocao1.xlsx");
     }
     function baocao2()
     {
@@ -129,9 +140,20 @@ class baocao extends \ApplicationM
         //4.     Xuất báo cáo danh sách thông tin người sử dụng kích hoạt
         ini_set('memory_limit', '-1');
         $TemSamPham = new TemSanPham();
-        $DSTem =  $TemSamPham->GetByStatusNguoiDung(TemSanPham::Active);
+        $DateType = $_GET["DateType"] ?? "ThoiGianKichHoat";
+        $fromDate = $_GET["fromDate"] ?? Common::GetFirstDateOfMonth();
+        $toDate = $_GET["toDate"] ?? Common::GetLastDateOfMonth();
+
+        $DSTem =  $TemSamPham->GetByStatusNguoiDungParams(
+            [
+                "Status" => TemSanPham::Active,
+                "dateType" => $DateType,
+                "fromDate" => $fromDate,
+                "toDate" => $toDate,
+            ]
+        );
         $dataRow = [];
-        $data[]  = $dataRow;
+
         $dataRow[] = "STT";
         $dataRow[] = "Tên đại lý";
         $dataRow[] = "Địa chỉ đại lý";
@@ -144,6 +166,7 @@ class baocao extends \ApplicationM
         $dataRow[] = "Mã code";
         $dataRow[] = "Thời gian người sử dụng kích hoạt";
         $dataRow[] = "Thời gian hết bảo hành";
+        $data[]  = $dataRow;
 
         foreach ($DSTem as $key => $value) {
             $dataRow = [];
@@ -157,11 +180,11 @@ class baocao extends \ApplicationM
             $dataRow[] = $_tem->KhachHangTieuDung()->Phone;
             $dataRow[] = $_tem->SanPham()->Name;
             $dataRow[] = $_tem->SanPham()->Code;
-            $dataRow[] = $_tem->CreateDate();
+            $dataRow[] = $_tem->NgayBatDau();
             $dataRow[] = $_tem->NgayKetThuc();
             $data[] = $dataRow;
         }
-        ExcelReader::Export($data, "public/baocao3.xlsx");
+        ExcelReader::Export($data, "public/baocao4.xlsx");
     }
     function baocao5()
     {
@@ -230,7 +253,17 @@ class baocao extends \ApplicationM
         //7.      Xuất báo cáo danh sách số lượng tem chưa kích hoạt
         ini_set('memory_limit', '-1');
         $TemSamPham = new TemSanPham();
-        $DSTem =  $TemSamPham->GetByStatus(TemSanPham::ChuaDung);
+        $DateType = $_GET["DateType"] ?? "ThoiGianKichHoat";
+        $fromDate = $_GET["fromDate"] ?? Common::GetFirstDateOfMonth();
+        $toDate = $_GET["toDate"] ?? Common::GetLastDateOfMonth();
+        $DSTem =  $TemSamPham->GetByParams(
+            [
+                "Status" => TemSanPham::ChuaDung,
+                "dateType" => $DateType,
+                "fromDate" => $fromDate,
+                "toDate" => $toDate,
+            ]
+        );
         $dataRow = [];
         $dataRow[] = "STT";
         $dataRow[] = "Tên đại lý";

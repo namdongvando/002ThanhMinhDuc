@@ -34,6 +34,8 @@ $ycKichHoats = $ycau->GetItems($Params);
                                         <th style="width: 50px;">#</th>
                                         <th style="white-space: nowrap; ">Họ Tên</th>
                                         <th>SĐT</th>
+                                        <th>Mã HH
+                                        </th>
                                         <th style="white-space: nowrap;width: 100px;">Ngày bắt đầu <i class="pull-right fa fa-info" <?php echo FormRender::ToolTip("Ngày bắt đầu bảo hành.") ?> aria-hidden="true"></i> </th>
                                         <th style="width: 100px;white-space: nowrap;">T.G Yêu Cầu
                                             <i class="pull-right fa fa-info" <?php echo FormRender::ToolTip("Thời gian yêu cầu kích  hoạt.") ?> aria-hidden="true"></i>
@@ -54,6 +56,7 @@ $ycKichHoats = $ycau->GetItems($Params);
                                             <td><?php echo $k + 1; ?></td>
                                             <th><?php echo $_Option->HoTen; ?></th>
                                             <th><?php echo $_Option->SDT; ?></th>
+                                            <th><?php echo $_Option->TemSanPham()->SanPham()->DanhMuc()->Code; ?></th>
                                             <th><?php echo $_Option->TemSanPham()->NgayBatDau(); ?></th>
                                             <th><?php echo $_Option->RecCreateDate(); ?></th>
                                             <th><?php echo $_Option->TinhThanh()->Name; ?></th>

@@ -22,8 +22,13 @@ class TemSanPham extends TemSanPhamData
             if (!is_array($dv)) {
                 $code = $dv;
                 $dv = $this->GetById($code);
+
                 if (!$dv) {
                     $dv = $this->GetByCode($code);
+                    // echo "code";
+                } else {
+                    // var_dump($code);
+                    // var_dump($dv);
                 }
             }
             $this->Id = !empty($dv["Id"]) ? $dv["Id"] : null;
@@ -34,7 +39,7 @@ class TemSanPham extends TemSanPhamData
             $this->NgayBatDau = !empty($dv["NgayBatDau"]) ? $dv["NgayBatDau"] : date("Y-m-d H:i:s", time());
             $this->NgayKetThuc = !empty($dv["NgayKetThuc"]) ? $dv["NgayKetThuc"] : null;
             $this->ThangKetThuc = !empty($dv["ThangKetThuc"]) ? $dv["ThangKetThuc"] : 24;
-            $this->Status =  $dv["Status"] ?? null;
+            $this->Status = $dv["Status"] ?? null;
             $this->UserId = !empty($dv["UserId"]) ? $dv["UserId"] : 0;
             $this->CreateDate = !empty($dv["CreateDate"]) ? $dv["CreateDate"] : null;
             $this->ModifyDate = !empty($dv["ModifyDate"]) ? $dv["ModifyDate"] : null;
@@ -64,6 +69,8 @@ class TemSanPham extends TemSanPhamData
         return $sanpham->GetRowsByWhere($where);
     }
 
+
+
     public function Code($code = null)
     {
         if ($code == null)
@@ -73,7 +80,7 @@ class TemSanPham extends TemSanPhamData
 
     public static function GetStatus()
     {
-        return [ 
+        return [
             self::Active => "Kích Hoạt",
             self::DeActive => "Chưa Kích Hoạt",
             self::YeuCauKichHoat => "Yêu cầu kích hoạt",
@@ -81,12 +88,41 @@ class TemSanPham extends TemSanPhamData
     }
     public static function CreateCode()
     {
+        // $where = '1=1';
+        // $tem = new TemSanPham();
+        // $tong = $tem->GetRowsNumber($where);
         return strtoupper(substr(md5(date("ym", time()) . rand(1, time())), 0, 19));
     }
 
     public function GetByStatus($Status)
     {
         return $this->GetRows("`Status` = '{$Status}'");
+    }
+    public function GetByParams($Params)
+    {
+        $Status = $Params["Status"] ?? null;
+        $fromDate = $Params["fromDate"] ?? null;
+        $toDate = $Params["toDate"] ?? null;
+        $dateType = $Params["dateType"] ?? null;
+        $dateTypes = [
+            "ThoiGianKichHoat" => "NgayBatDau",
+            "ThoiGianHetBaoHang" => "NgayKetThuc",
+        ];
+        $dateTypeCol = $dateTypes[$dateType] ?? "NgayBatDau";
+        $whereStatus = "1=1";
+        if ($Status) {
+            $whereStatus = "`Status` = '{$Status}'";
+        }
+        $whereFromDate = "";
+        if ($fromDate) {
+            $whereFromDate = " and `{$dateTypeCol}` > '{$fromDate}'";
+        }
+        $whereToDate = "";
+        if ($toDate) {
+            $whereToDate = " and `{$dateTypeCol}` < '{$toDate}'";
+        }
+        $where = "{$whereStatus} {$whereFromDate} {$whereToDate} order by `{$dateTypeCol}` DESC";
+        return $this->GetRows($where);
     }
     public function GetByStatusDaiLy($Status)
     {
@@ -95,6 +131,33 @@ class TemSanPham extends TemSanPhamData
     public function GetByStatusNguoiDung($Status)
     {
         return $this->GetRows("`Status` = '{$Status}' and `KhachHangTieuDung` is not NULL");
+    }
+    public function GetByStatusNguoiDungParams($Params)
+    {
+        $Status = $Params["Status"] ?? null;
+        $fromDate = $Params["fromDate"] ?? null;
+        $dateType = $Params["dateType"] ?? null;
+        $toDate = $Params["toDate"] ?? null;
+        $dateTypes = [
+            "ThoiGianKichHoat" => "NgayBatDau",
+            "ThơiGianHetBaoHanh" => "NgayKetThuc",
+        ];
+        $dateTypeCol = $dateTypes[$dateType] ?? "NgayBatDau";
+        $whereStatus = "1=1";
+        if ($Status) {
+            $whereStatus = "`Status` = '{$Status}'";
+        }
+        $whereFromDate = "";
+        if ($fromDate) {
+            $whereFromDate = " and `{$dateTypeCol}` > '{$fromDate}'";
+        }
+        $whereToDate = "";
+        if ($toDate) {
+            $whereToDate = " and `{$dateTypeCol}` < '{$toDate}'";
+        }
+        $where = "{$whereStatus} {$whereFromDate} {$whereToDate} and `KhachHangTieuDung` is not NULL order by `{$dateTypeCol}` DESC";
+        return $this->GetRows($where);
+        // return $this->GetRows("`Status` = '{$Status}' and `KhachHangTieuDung` is not NULL");
     }
 
     public function CountRows()

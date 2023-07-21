@@ -1,4 +1,4 @@
-console.log(log);
+// console.log(log);
 ////var data = "";
 //
 //var xhr = new XMLHttpRequest();

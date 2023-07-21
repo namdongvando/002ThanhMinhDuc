@@ -6,23 +6,28 @@ class NhapMa {
         this.content = content
     }
     GetCodeByQrcode() {
+
         var res = this.content.split("/");
         // alert(this.content);
         // alert(res[3]);
-        return res[3];
+        return res[4];
     }
     async SaveCode() {
         this.code = this.GetCodeByQrcode();
         var CodeTem = this.code;
         var url = `/dashboard/index/savecode/` + CodeTem + `/`;
-        await $.ajax({
-            "url": url,
-        }).done(function (result) {
-            $("#alertCode").append("<div  class='bg-green timeout'  ><span style='font-size:30px' >Đã Quét Code: " + CodeTem + "</span></div>");
-            $(".timeout").each(function () {
-                $(this).hide(2000);
+        if (CodeTem) {
+            await $.ajax({
+                "url": url,
+            }).done(function (result) {
+                $("#alertCode")
+                    .append("<div  class='bg-green timeout'  ><span style='font-size:20px' >Đã Quét Code: " + CodeTem + "</span></div>");
+                $(".timeout").each(function () {
+                    $(this).hide(3000);
+                });
             });
-        });
+        }
+
     }
 
 }
@@ -38,10 +43,12 @@ try {
         scanPeriod: 1
     };
     window.URL.createObjectURL = (stream) => {
+        stream.video = { pan: true, tilt: true, zoom: true };
         opts.video.srcObject = stream;
         return stream;
     };
     var scanner = new Instascan.Scanner(opts);
+    // console.log(scanner.captureImage);
     scanner.addListener('scan', function (content) {
         //        new ScanOption().GetCode(content);
         // alert(content);
@@ -49,11 +56,6 @@ try {
         nhapMa.SaveCode();
     });
     Instascan.Camera.getCameras().then(function (cameras) {
-        //        console.log(cameras.length);
-        //        console.log(Object.values(cameras));
-        //        for (index in cameras) {
-        //            $("#Cams").append(Object.values(cameras[index]).toString());
-        //        }
         if (cameras.length > 0) {
             var CamIndex = 0;
             var CameraIndex = window.localStorage.getItem("Camera");

@@ -2,13 +2,15 @@
 
 namespace Common;
 
-class Common {
+class Common
+{
 
-    function __construct() {
-
+    function __construct()
+    {
     }
 
-    static function toUrl($url = null) {
+    static function toUrl($url = null)
+    {
         if ($url == null) {
             $url = $_SERVER["HTTP_REFERER"];
         }
@@ -16,16 +18,19 @@ class Common {
         exit();
     }
 
-    static function Actual_link() {
+    static function Actual_link()
+    {
         $actual_link = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
         return $actual_link;
     }
 
-    static function LinkQrcode($data) {
+    static function LinkQrcode($data)
+    {
         return "/public/phpqrcode/index.php?data=" . $data;
     }
 
-    static function RandomString($a) {
+    static function RandomString($a)
+    {
         $characters = "0123456789abcdefghjklzxcvbnmqwertyuiopasdfgh{}[]()!@#$%^&*";
         $randstring = "";
         for ($i = 0; $i < $a; $i++) {
@@ -34,7 +39,8 @@ class Common {
         return $randstring;
     }
 
-    static function bodautv($str) {
+    static function bodautv($str)
+    {
         if (!$str)
             return false;
 
@@ -69,7 +75,8 @@ class Common {
         return $str;
     }
 
-    static function DeCodeHTML() {
+    static function DeCodeHTML()
+    {
 
         $str = ob_get_clean();
         $Model_Infor = new \Model\infor();
@@ -85,19 +92,23 @@ class Common {
         echo $str;
     }
 
-    public static function DateTimeFormat() {
+    public static function DateTimeFormat()
+    {
         return "d-m-Y H:i";
     }
 
-    public static function DateFormat() {
+    public static function DateFormat()
+    {
         return "H:i d-m-Y";
     }
 
-    public static function ToDate($date) {
+    public static function ToDate($date)
+    {
         return date(self::DateFormat(), strtotime($date));
     }
 
-    static function minimizeCSSsimple($css) {
+    static function minimizeCSSsimple($css)
+    {
         $css = preg_replace('/\/\*((?!\*\/).)*\*\//', '', $css); // negative look ahead
         $css = preg_replace('/\s{2,}/', ' ', $css);
         $css = preg_replace('/\s*([:;{}])\s*/', '$1', $css);
@@ -105,7 +116,8 @@ class Common {
         return $css;
     }
 
-    public static function compress_htmlcode($codedata) {
+    public static function compress_htmlcode($codedata)
+    {
         $searchdata = array(
             '/\>[^\S ]+/s', // remove whitespaces after tags
             '/[^\S ]+\</s', // remove whitespaces before tags
@@ -116,33 +128,40 @@ class Common {
         return $codedata;
     }
 
-    public static function CheckName($param0) {
+    public static function CheckName($param0)
+    {
         return strip_tags($param0);
     }
 
-    public static function CheckPhone($param0) {
+    public static function CheckPhone($param0)
+    {
         return strip_tags($param0);
     }
 
-    public static function CheckEmail($param0) {
+    public static function CheckEmail($param0)
+    {
         return strip_tags($param0);
     }
 
-    public static function CheckDiaChi($formUser) {
+    public static function CheckDiaChi($formUser)
+    {
         return strip_tags($formUser);
     }
 
-    public static function ChekId($userPost) {
+    public static function ChekId($userPost)
+    {
         $userPost = intval($userPost);
         $userPost = max($userPost, 0);
         return intval($userPost);
     }
 
-    public static function CheckId($formUser) {
+    public static function CheckId($formUser)
+    {
         return self::ChekId($formUser);
     }
 
-    public static function PhoneFomat($number) {
+    public static function PhoneFomat($number)
+    {
         $number = preg_replace("/[^\d]/", "", $number);
         // get number length.
         $length = strlen($number);
@@ -153,12 +172,13 @@ class Common {
         return $number;
     }
 
-    public static function NameFileCache($url) {
-        return "cache/" . sha1($url) . ".html";
-        ;
+    public static function NameFileCache($url)
+    {
+        return "cache/" . sha1($url) . ".html";;
     }
 
-    public static function PhanTrang($TongTrang, $TrangHienTai, $DuongDan) {
+    public static function PhanTrang($TongTrang, $TrangHienTai, $DuongDan)
+    {
         $PhanTrang = ' <ul class="pagination mt-10 mb-0">';
         $PhanTrang .= "<li><a>{$TrangHienTai}/{$TongTrang}</a></li>";
         $tu = $TrangHienTai - 4;
@@ -195,17 +215,75 @@ class Common {
         return $PhanTrang;
     }
 
-    public static function GetIndex($k, $pagesIndex, $pageNumber) {
+    public static function GetIndex($k, $pagesIndex, $pageNumber)
+    {
         return ($pageNumber * ($pagesIndex - 1)) + $k + 1;
     }
 
-    public static function CheckInput($param) {
+    public static function CheckInput($param)
+    {
         $param = trim($param);
         $param = addslashes($param);
         $param = htmlspecialchars($param);
         return $param;
     }
+    static public function GetFirstDateOfMonth($month = null, $year = null, $dateFormat = "Y-m-d")
+    {
+        if ($month == null) {
+            $month = date("m", time());
+        }
+        $month = min($month, 12);
+        $month = max($month, 1);
+        if ($year == null) {
+            $year = date("Y", time());
+        }
+        $fullDate = "{$year}-{$month}-01";
+        return date($dateFormat, strtotime($fullDate));
+    }
+    static public function GetLastDateOfMonth($month = null, $year = null, $dateFormat = "Y-m-d")
+    {
+        if ($month == null) {
+            $month = date("m", time());
+        }
+        $month = min($month, 12);
+        $month = max($month, 1);
+        if ($year == null) {
+            $year = date("Y", time());
+        }
+        $day = self::GetDayOfMonth($month, $year);
+        $fullDate = "{$year}-{$month}-{$day}";
+        return date($dateFormat, strtotime($fullDate));
+    }
 
+
+
+    static public function GetDayOfMonth($month = 1, $year = null)
+    {
+        $month = min($month, 12);
+        $month = max($month, 1);
+        if ($year == null) {
+            $year = date("Y", time());
+        }
+        $a = [
+            1 => 31,
+            3 => 31,
+            4 => 30,
+            5 => 31,
+            6 => 30,
+            7 => 31,
+            8 => 31,
+            9 => 30,
+            10 => 31,
+            11 => 30,
+            12 => 31,
+        ];
+        if ($month != 2) {
+            return $a[$month];
+        }
+        if ($year % 4 == 0) {
+            return 28;
+        } else {
+            return 29;
+        }
+    }
 }
-
-?>

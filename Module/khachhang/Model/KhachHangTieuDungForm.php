@@ -3,10 +3,15 @@
 namespace Module\khachhang\Model;
 
 use Model\FormRender;
+use PFBC\Element\Hidden;
+use PFBC\Element\Textarea;
 use PFBC\Element\Textbox;
 
 class KhachHangTieuDungForm extends \PFBC\Form implements IKhachHangTieuDungForm
 {
+
+
+    const formName = "khachhangtieudung";
 
     public function __construct($dv = null)
     {
@@ -27,6 +32,11 @@ class KhachHangTieuDungForm extends \PFBC\Form implements IKhachHangTieuDungForm
         $Option[FormRender::Required] = "";
         return new FormRender(new \PFBC\Element\Textbox("Tên Khách Hàng", "khachhangtieudung[Name]", $Option));
     }
+    public static function MaTem($value = null)
+    {
+        $name = self::formName . "[MaTen]";
+        return new FormRender(new Hidden($name, $value));
+    }
 
     public static function KhuVuc($value = null)
     {
@@ -42,23 +52,23 @@ class KhachHangTieuDungForm extends \PFBC\Form implements IKhachHangTieuDungForm
         $Option = self::$Option;
         $Option["value"] = $value;
         $Option["maxlength"] = 15;
-        return new  FormRender( new \PFBC\Element\Textbox("Chứng Minh Nhân Dân", "khachhangtieudung[CMNN]", $Option));
+        return new FormRender(new \PFBC\Element\Textbox("Chứng Minh Nhân Dân", "khachhangtieudung[CMNN]", $Option));
     }
 
     public static function DiaChi($value = null)
     {
         $Option = self::$Option;
-        $Option["class"] = $Option["class"] . " textareaHeight";
         $Option["value"] = $value;
         $Option[FormRender::Required] = "1";
-        return new FormRender(new Textbox("Địa Chỉ", "khachhangtieudung[DiaChi]", $Option));
+
+        return new FormRender(new TextBox("Địa Chỉ", "khachhangtieudung[DiaChi]", $Option));
     }
 
     public static function GhiChu($value = null)
     {
         $Option = self::$Option;
         $Option["value"] = $value;
-        return new  FormRender(new \PFBC\Element\Textarea("Ghi Chú", "khachhangtieudung[GhiChu]", $Option));
+        return new FormRender(new \PFBC\Element\Textarea("Ghi Chú", "khachhangtieudung[GhiChu]", $Option));
     }
 
     public static function Phone($value = null)
@@ -71,37 +81,42 @@ class KhachHangTieuDungForm extends \PFBC\Form implements IKhachHangTieuDungForm
         $Option["oninput"] = "this.setCustomValidity('')";
         $Option[FormRender::Required] = "";
 
-        return new FormRender(new \PFBC\Element\Textbox(
-            "Số Điện Thoại Khách Hàng", "khachhangtieudung[Phone]", $Option));
+        return new FormRender(
+            new \PFBC\Element\Textbox(
+                "Số Điện Thoại Khách Hàng",
+                "khachhangtieudung[Phone]",
+                $Option
+            )
+        );
     }
 
     public static function SubData($value = null)
     {
         $Option = self::$Option;
         $Option["value"] = $value;
-        return new  FormRender(new \PFBC\Element\Textbox("Số Điện Thoại Bảo Hành", "khachhangtieudung[SubData]", $Option));
+        return new FormRender(new \PFBC\Element\Textbox("Số Điện Thoại Bảo Hành", "khachhangtieudung[SubData]", $Option));
     }
 
-    public static function TinhThanh($value)
+    public static function TinhThanh($value, $objectId = "#khachhangtieudungQuanHuyen")
     {
         $Option = self::$Option;
         $Option["value"] = $value;
         $Option["class"] = "form-control AjaxHTML";
         $Option["data-url"] = "/option/api/TinhThanhTagOption/";
         $Option["data-values"] = "true";
-        $Option["data-object"] = "#khachhangtieudungQuanHuyen";
+        $Option["data-object"] = $objectId;
         $Option[FormRender::Required] = "";
         $options = \Module\option\Model\Option::GetTinhThanh2Option(0);
-        return new  FormRender(new \PFBC\Element\Select("Tỉnh Thành Phố", "khachhangtieudung[TinhThanh]", $options, $Option));
+        return new FormRender(new \PFBC\Element\Select("Tỉnh Thành Phố", "khachhangtieudung[TinhThanh]", $options, $Option));
     }
 
-    public static function QuanHuyen($value, $tinhThanh = 1)
+    public static function QuanHuyen($value, $tinhThanh = 1, $id = "khachhangtieudungQuanHuyen")
     {
         $Option = self::$Option;
         $Option["value"] = $value;
-        $Option["id"] = "khachhangtieudungQuanHuyen";
+        $Option["id"] = $id;
         $Option[FormRender::Required] = "";
         $options = \Module\option\Model\Option::GetTinhThanh2Option($tinhThanh);
-        return new  FormRender(new \PFBC\Element\Select("Quận Huyện", "khachhangtieudung[QuanHuyen]", $options, $Option));
+        return new FormRender(new \PFBC\Element\Select("Quận Huyện", "khachhangtieudung[QuanHuyen]", $options, $Option));
     }
 }

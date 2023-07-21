@@ -26,8 +26,18 @@ class nhaptem extends \ApplicationM
             try {
                 $temSanPham = new \Module\sanpham\Model\TemSanPham();
                 $Chon = $_POST["Chon"];
-                $MaDanhMuc = $Chon["MaDanhMuc"];
+                $SanPham = $_POST["sanpham"];
+                $MaDanhMuc = $Chon["MaDanhMuc"] ?? null;
+                $MaDaiLy = $SanPham["MaDaiLy"] ?? null;
+                $NhanVienKyThuat = $Chon["NhanVien"] ?? null;
+                if ($NhanVienKyThuat == null) {
+                    throw new \Exception("Không có thông tin nhân viên");
+                }
+                if ($MaDaiLy == null || $MaDaiLy == "all") {
+                    throw new \Exception("Không có thông tin đại lý::{$MaDaiLy}");
+                }
                 $sanphamPost = $_POST[SanPhamForm::formName];
+
                 $op = new \Module\option\Model\Option($MaDanhMuc);
                 $admin = \Module\user\Model\Admin::getCurentUser(true);
                 $CodeQr = new \Model\CodeQR($admin->Username);
@@ -51,12 +61,14 @@ class nhaptem extends \ApplicationM
                         $model = $SanPham->ToArray();
                         $SanPham->UpdateSubmit($model);
                         $tenSp = new \Module\sanpham\Model\TemSanPham();
+                        $model_Tem["UserId"] = $NhanVienKyThuat;
                         $model_Tem["Status"] = TemSanPham::DeActive;
                         $tenSp->UpdateSubmit($model_Tem);
                     }
                 }
             } catch (\Exception $exc) {
                 echo $exc->getMessage();
+
             }
         }
         return $this->ViewThemeModlue([], null, "qr");
@@ -110,15 +122,15 @@ class nhaptem extends \ApplicationM
         foreach ($ds as $k => $code) {
             $temSP = new \Module\sanpham\Model\TemSanPham($code);
 ?>
-            <tr>
-                <td><?php echo 1 + $index++; ?></td>
-                <td><?php echo $temSP->Code; ?></td>
-                <td>
-                    <p style="margin: 0px;"><?php echo $temSP->SanPham()->Name; ?></p>
-                    <p style="margin: 0px;"><?php echo $temSP->SanPham()->TinhTrang(); ?></p>
-                    <p style="margin: 0px;"><?php echo $temSP->SanPham()->DaiLy()->Name; ?></p>
-                </td>
-            </tr>
+<tr>
+    <td><?php echo 1 + $index++; ?></td>
+    <td><?php echo $temSP->Code; ?></td>
+    <td>
+        <p style="margin: 0px;"><?php echo $temSP->SanPham()->Name; ?></p>
+        <p style="margin: 0px;"><?php echo $temSP->SanPham()->TinhTrang(); ?></p>
+        <p style="margin: 0px;"><?php echo $temSP->SanPham()->DaiLy()->Name; ?></p>
+    </td>
+</tr>
 <?php
         }
     }

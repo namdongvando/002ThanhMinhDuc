@@ -2,7 +2,7 @@
 
 use Module\user\Model\Admin;
 
-$link = "/public/phpqrcode/index.php?data=" . Root_URL . "baohanh/" . $temSanPham->Code;
+$link = "/public/phpqrcode/index.php?data=http://cskhtmd.com/" . $temSanPham->Code."/";
 ?>
 <ol class="breadcrumb">
     <li>
@@ -37,8 +37,10 @@ $link = "/public/phpqrcode/index.php?data=" . Root_URL . "baohanh/" . $temSanPha
                         <div class="box-header">
                             <h3 class="box-title">Tem Bảo Hành</h3>
                             <div class="box-tools">
-                                <button class="btn hidden btn-success btn-xs btn-toggle" data-target="#ThongTinSanPham">Xem Thông Tin Sản Phẩm</button>
-                                <a class="btn btn-xs btn-primary" data-toggle="modal" href='#ThemTemPhu'>Thêm Tem Phụ</a>
+                                <button class="btn hidden btn-success btn-xs btn-toggle"
+                                    data-target="#ThongTinSanPham">Xem Thông Tin Sản Phẩm</button>
+                                <a class="btn btn-xs btn-primary" data-toggle="modal" href='#ThemTemPhu'>Thêm Tem
+                                    Phụ</a>
                                 <a class="btn btn-xs btn-primary" data-toggle="modal" href='#MaBaoHanh'>Mã QR Code</a>
                             </div>
                         </div>
@@ -67,7 +69,9 @@ $link = "/public/phpqrcode/index.php?data=" . Root_URL . "baohanh/" . $temSanPha
                                             <div class="col-md-4">
                                                 <div class="form-group">
                                                     <label for="">Ngày Kết Thúc</label>
-                                                    <input type="text" readonly="" value="<?php echo $temSanPham->NgayKetThuc() ?>" class="form-control">
+                                                    <input type="text" readonly=""
+                                                        value="<?php echo $temSanPham->NgayKetThuc() ?>"
+                                                        class="form-control">
                                                 </div>
 
                                             </div>
@@ -123,10 +127,16 @@ $link = "/public/phpqrcode/index.php?data=" . Root_URL . "baohanh/" . $temSanPha
                                             <!-- Nav tabs -->
                                             <ul class="nav nav-tabs" role="tablist">
                                                 <li role="presentation" class="active">
-                                                    <a href="#ThongTinSanPham" aria-controls="ThongTinSanPham" role="tab" data-toggle="tab">Thông tin sản phẩm</a>
+                                                    <a href="#ThongTinSanPham" aria-controls="ThongTinSanPham"
+                                                        role="tab" data-toggle="tab">Thông tin sản phẩm</a>
                                                 </li>
                                                 <li role="presentation">
-                                                    <a href="#LichSuSanPham" aria-controls="LichSuSanPham" role="tab" data-toggle="tab">Lịch sử sản phẩm</a>
+                                                    <a href="#LichSuSanPham" aria-controls="LichSuSanPham" role="tab"
+                                                        data-toggle="tab">Lịch sử sản phẩm</a>
+                                                </li>
+                                                <li role="presentation">
+                                                    <a href="#NhanVienKyThuat" aria-controls="NhanVienKyThuat"
+                                                        role="tab" data-toggle="tab">Nhân Viên</a>
                                                 </li>
                                             </ul>
 
@@ -154,7 +164,8 @@ $link = "/public/phpqrcode/index.php?data=" . Root_URL . "baohanh/" . $temSanPha
                                                         \Module\sanpham\Model\SanPhamForm::MaDaiLy($temSanPham->SanPham()->MaDaiLy)->renderHTML();
                                                         ?>
                                                         <div class="form-group">
-                                                            <img src="<?php echo $temSanPham->SanPham()->HinhAnh; ?>?v=<?php echo time(); ?>" style="height: 80px;" class="img img-responsive">
+                                                            <img src="<?php echo $temSanPham->SanPham()->HinhAnh; ?>?v=<?php echo time(); ?>"
+                                                                style="height: 80px;" class="img img-responsive">
                                                             <label for="">Hình Sản Phẩm</label>
                                                             <?php
                                                             \Module\sanpham\Model\SanPhamForm::HinhAnh()->render();
@@ -175,18 +186,28 @@ $link = "/public/phpqrcode/index.php?data=" . Root_URL . "baohanh/" . $temSanPha
                                                             foreach ($_SanPhamLog as $sanPham) {
                                                                 $_sp = new \Module\sanpham\Model\SanPhamLog($sanPham);
                                                             ?>
-                                                                <tr>
-                                                                    <td><?php echo $_sp->NgayTao ?></td>
-                                                                    <td><?php echo $_sp->SanPham()->TinhTrang(); ?></td>
-                                                                    <td><?php echo $_sp->SanPham()->DaiLy()->Name; ?></td>
+                                                            <tr>
+                                                                <td><?php echo $_sp->NgayTao ?></td>
+                                                                <td><?php echo $_sp->SanPham()->TinhTrang(); ?></td>
+                                                                <td><?php echo $_sp->SanPham()->DaiLy()->Name; ?></td>
 
-                                                                </tr>
+                                                            </tr>
                                                             <?php
                                                             }
                                                             ?>
                                                         </table>
                                                     </div>
 
+                                                </div>
+                                                <div role="tabpanel" class="tab-pane" id="NhanVienKyThuat">
+                                                    <fieldset>
+                                                        <legend>Thông tin nhân viên</legend>
+                                                        <?php
+                                                        // echo $temSanPham->UserId;
+                                                        echo Admin::GetUserInfor($temSanPham->UserId);
+                                                        ?>
+
+                                                    </fieldset>
                                                 </div>
                                             </div>
                                         </div>

@@ -3,7 +3,11 @@
     <li><a href="/dashboard/nhaptem/index">Danh Sanh Sách Nhập</a></li>
 </ol>
 <?php
-$admin = \Module\user\Model\Admin::getCurentUser(true);
+
+use Model\FormOptions;
+use Module\user\Model\Admin;
+
+$admin = Admin::getCurentUser(true);
 $CodeQr = new \Model\CodeQR($admin->Username);
 $ds = $CodeQr->GetCodes();
 ?>
@@ -19,6 +23,12 @@ $ds = $CodeQr->GetCodes();
                     <?php
                     Module\option\Model\OptionForm::SelectGroups("Danh Mục Sản Phẩm", "Chon[MaDanhMuc]", \Module\option\Model\Option::DanhMucVatTu)->renderHtml();
                     Module\sanpham\Model\SanPhamForm::MaDaiLy()->renderHTML();
+                    FormOptions::Select(
+                        "",
+                        "Chon[NhanVien]",
+                        Admin::GetUsersOptions(Admin::NVKT),
+                        ["label" => 'Nhân Viên Kỹ Thuật &nbsp &nbsp &nbsp <a href="/user/users/" target="_blank" > Thêm Nhân Viên</a> ', 'style' => "width:100%;"]
+                    )->renderHtml();
                     ?>
                 </div>
                 <div class="modal-footer">
@@ -40,10 +50,12 @@ $ds = $CodeQr->GetCodes();
                     </div>
                 </div>
                 <div class="box-body table-responsive">
-                    <a href="/dashboard/nhaptem/clear" onclick="return confirm('Bạn có chắc muốn nhập lại?')" class="pull-right btn-sm btn btn-danger">
+                    <a href="/dashboard/nhaptem/clear" onclick="return confirm('Bạn có chắc muốn nhập lại?')"
+                        class="pull-right btn-sm btn btn-danger">
                         Xóa Hết
                     </a>
-                    <button type="button" class="btn btn-sm " data-toggle="modal" data-target='#ChonSanPham'>Chọn Sản Phẩm</button>
+                    <button type="button" class="btn btn-sm " data-toggle="modal" data-target='#ChonSanPham'>Chọn Sản
+                        Phẩm</button>
                     <a href="/dashboard/nhaptem/index" class="btn btn-sm btn-primary">
                         <i class="fa fa-refresh"></i>
                     </a>
@@ -54,30 +66,47 @@ $ds = $CodeQr->GetCodes();
                     <table class="table table-bordered">
                         <thead>
                             <tr>
+                                <th style="width: 50px">Thao Tác</th>
                                 <th style="width: 50px">Stt</th>
                                 <th style="width: 150px">Mã Tem</th>
                                 <th>Thông Tin Sản Phẩm</th>
                             </tr>
                         </thead>
-                        <tbody id="DanhSachTem" class="ajaxAutoReload" data-target="#DanhSachTem" data-timeload="2000" data-urlcheck="/dashboard/nhaptem/coderefesh/" data-urldata="/dashboard/nhaptem/danhsachtem/">
+                        <tbody id="DanhSachTem" class="ajaxAutoReload" data-target="#DanhSachTem" data-timeload="2000"
+                            data-urlcheck="/dashboard/nhaptem/coderefesh/"
+                            data-urldata="/dashboard/nhaptem/danhsachtem/">
                             <?php
                             $index = 0;
                             if ($ds) {
                                 foreach ($ds as $k => $code) {
-                                    $temSP = new \Module\sanpham\Model\TemSanPham($code);
-                                    if ($temSP->Code != "") {
-                            ?>
-                                        <tr>
-                                            <td><?php echo 1 + $index++; ?></td>
-                                            <td><?php echo $temSP->Code; ?></td>
-                                            <td>
-                                                <p style="margin: 0px;"><?php echo $temSP->SanPham()->Name; ?></p>
-                                                <p style="margin: 0px;"><?php echo $temSP->SanPham()->TinhTrang(); ?></p>
-                                                <p style="margin: 0px;"><?php echo $temSP->SanPham()->DaiLy()->Name; ?></p>
-                                            </td>
-                                        </tr>
-                            <?php
-                                    }
+
+                                    $temSP = new \Module\sanpham\Model\TemSanPham($code);  
+                                    // var_dump($code);
+                                    // var_dump($temSP);
+                                    ?>
+                                    <tr>
+                                        <td><a href="/sanpham/temsanpham/detailbysanpham/<?php echo $code; ?>/"
+                                                class="btn btn-primary">Xem</a></td>
+                                        <td>
+                                            <?php echo 1 + $index++; ?>
+                                        </td>
+                                        <td>
+                                            <?php echo $temSP->Code; ?>
+                                        </td>
+                                        <td>
+                                            <p style="margin: 0px;">
+                                                <?php echo $temSP->SanPham()->Name; ?>
+                                            </p>
+                                            <p style="margin: 0px;">
+                                                <?php echo $temSP->SanPham()->TinhTrang(); ?>
+                                            </p>
+                                            <p style="margin: 0px;">
+                                                <?php echo $temSP->SanPham()->DaiLy()->Name; ?>
+                                            </p>
+                                        </td>
+                                    </tr>
+                                    <?php
+
                                 }
                             }
                             ?>

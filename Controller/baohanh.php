@@ -8,11 +8,8 @@ use Module\trungtambaohanh\Model\YeuCauBaoHanh;
 use Module\sanpham\Model\TemSanPham;
 use Model\PhanAnh\PhanAnh;
 use Model\PhanAnh\PhanAnhLog;
-use Module\khachhang\Model\KhachHangData;
-use Module\khachhang\Model\KhachHangTieuDung;
-use Module\khachhang\Model\KhachHangTieuDungForm;
 
-class Controller_index extends Application
+class Controller_baohanh extends Application
 {
 
     public $param;
@@ -104,7 +101,7 @@ class Controller_index extends Application
         $yeucaubaohanh["TinhTrang"] = YeuCauKichHoat::MoiTao;
         $yeucaubaohanh["RecCreateDate"] = date("Y-m-d H:i:s", time());
         $yeucaubaohanh["RecUpdateDate"] = date("Y-m-d H:i:s", time());
-        $yeucaubaohanh["Code"] = $yeucaubaohanh["MaTem"];
+        $yeucaubaohanh["Code"] =  $yeucaubaohanh["MaTem"];
         $YeuCauKichHoat = new YeuCauKichHoat($yeucaubaohanh["Code"]);
 
         if ($YeuCauKichHoat->Code == null) {
@@ -125,38 +122,21 @@ class Controller_index extends Application
     function baohanh()
     {
         $alert = null;
-
-        if (isset($_POST[KhachHangTieuDungForm::formName])) {
-            $dataPost = $_POST[KhachHangTieuDungForm::formName];
-            $maTem = $dataPost["MaTen"];
-            $ModelTemSanPham = new TemSanPham($maTem);
-            // var_dump($ModelTemSanPham);
-            // var_dump($ModelTemSanPham->KhachHangTieuDung);
-            if ($ModelTemSanPham->KhachHangTieuDung) {
-                $dataPost["Code"] = $ModelTemSanPham->KhachHangTieuDung;
-                unset($dataPost["MaTen"]);
-                $modelKhachHang = new KhachHangTieuDung($dataPost["Code"]);
-                $dataPost["Id"] = $modelKhachHang->Id;
-                $modelKhachHang->UpdateRowTable($dataPost);
-                $alert["content"] = "Thông tin Quý khách đã được cập nhật";
-                $alert["type"] = "success";
-            }
-        }
-
+        echo "baohanh";
         if (isset($_POST[Module\trungtambaohanh\Model\YeuCauBaoHanhForm::nameForm])) {
             $ModelYeuCau = $_POST[Module\trungtambaohanh\Model\YeuCauBaoHanhForm::nameForm];
             $MYeuCau = new Module\trungtambaohanh\Model\YeuCauBaoHanh();
             $ModelYeuCau["Code"] = md5(time() . rand(0, time()));
-            // $ModelYeuCau["KhachHangTieuDung"] = $ModelYeuCau["KhachHangTieuDung"];
+            $ModelYeuCau["KhachHangTieuDung"] = $ModelYeuCau["KhachHangTieuDung"];
             $ModelYeuCau["Status"] = Module\trungtambaohanh\Model\YeuCauBaoHanh::MoiTao;
             $ModelYeuCau["Name"] = \Module\option\Model\SuCoMacPhai::SuCoMacPhaiByCode($ModelYeuCau["NoiDung"])["Name"];
             $ModelYeuCau["idNhanVien"] = 0;
             $ModelYeuCau["HinhAnh"] = "";
-            // $ModelYeuCau["TinhThanh"] = $ModelYeuCau["TinhThanh"];
-            // $ModelYeuCau["QuanHuyen"] = $ModelYeuCau["QuanHuyen"];
+            $ModelYeuCau["TinhThanh"] = $ModelYeuCau["TinhThanh"];
+            $ModelYeuCau["QuanHuyen"] = $ModelYeuCau["QuanHuyen"];
             $ModelYeuCau["DiaChi"] = \Module\option\Model\SuCoMacPhai::SuCoMacPhaiByCode($ModelYeuCau["NoiDung"])["Name"];
             $MYeuCau->InsertSubmit($ModelYeuCau);
-            $alert["content"] = "Quý khách đã gửi yêu cầu bảo hành thành công Trân trọng cảm ơn!";
+            $alert["content"] = "Gửi yêu cầu thành công";
             $alert["type"] = "success";
         }
         $kt = $this->LuuPhanAnh();
@@ -199,11 +179,11 @@ class Controller_index extends Application
                 }
             }
 
-            $tieuTri = $FormDanhGia["TieuTri"] ?? [];
+            $tieuTri =  $FormDanhGia["TieuTri"] ?? [];
             $comment = trim($FormDanhGia["Comment"]);
             $comment = htmlspecialchars($comment);
             $model["Code"] = $ModelPhanAnh->CreateCode();
-            $model["Name"] = "";
+            $model["Name"]  = "";
             $model["Content"] = strip_tags($comment);
             $model["MaTem"] = strip_tags($FormDanhGia["MaTem"]);
             $model["TinhTrang"] = "MoiTao";

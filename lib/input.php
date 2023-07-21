@@ -2,13 +2,15 @@
 
 namespace lib;
 
-class input {
+class input
+{
 
-    function __construct() {
-        
+    function __construct()
+    {
     }
 
-    function checkKey($str) {
+    function checkKey($str)
+    {
         if (!$str)
             return false;
         $str = str_replace(array(',', '<', '>', '&', '{', '}', "[", "]", '*', '?', '/', '+', '@', '%', '"'), array(' '), $str);
@@ -42,4 +44,16 @@ class input {
         return $str;
     }
 
+    public static function RandomString($length = 10, $per = "", $last = "")
+    {
+        $characters = '0123456789abcdefghijklmnopqrstuvwxyz';
+        $charactersLength = strlen($characters);
+        // $characters = input::RandomString(100);
+        // $charactersLength = strlen($characters);
+        $randomString = '';
+        for ($i = 0; $i < $length; $i++) {
+            $randomString .= $characters[random_int(0, $charactersLength - 1)];
+        }
+        return $per . $randomString . $last;
+    }
 }

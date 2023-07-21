@@ -2,7 +2,8 @@
 
 namespace Module\user\Model;
 
-class Admin extends AdminTable {
+class Admin extends AdminTable
+{
 
     public $Id;
     public $Username;
@@ -24,7 +25,8 @@ class Admin extends AdminTable {
     const TTBH = 4;
     const NVKT = 5;
 
-    function __construct($NhanVien = NULL) {
+    function __construct($NhanVien = NULL)
+    {
         parent::__construct();
         if ($NhanVien) {
             $this->Id = isset($NhanVien['Id']) ? $NhanVien['Id'] : '';
@@ -41,16 +43,19 @@ class Admin extends AdminTable {
         }
     }
 
-    function CheckLogin($Username, $Password) {
+    function CheckLogin($Username, $Password)
+    {
         return $this->userByUsernamePassword($Username, $Password);
-//        return $this->getUserByUsernamePassword($Username, $Password);
+        //        return $this->getUserByUsernamePassword($Username, $Password);
     }
 
-    function createrPassword($p, $r) {
+    function createrPassword($p, $r)
+    {
         return sha1($p . $r);
     }
 
-    public static function getCurentUser($obj = false) {
+    public static function getCurentUser($obj = false)
+    {
 
         if (isset($_SESSION[QuanTri])) {
             if (!$obj)
@@ -60,11 +65,13 @@ class Admin extends AdminTable {
         return NULL;
     }
 
-    public static function setCurentUser($User) {
+    public static function setCurentUser($User)
+    {
         $_SESSION[QuanTri] = $User;
     }
 
-    public static function IsLogin() {
+    public static function IsLogin()
+    {
         if (!isset($_SESSION[QuanTri])) {
             return FALSE;
         }
@@ -74,70 +81,87 @@ class Admin extends AdminTable {
         return True;
     }
 
-    public static function Logout() {
+    public static function Logout()
+    {
         unset($_SESSION[QuanTri]);
 
         \Common\Common::toUrl("/dashboard/");
     }
 
-    function updateUserInfor($user) {
+    function updateUserInfor($user)
+    {
         return $this->Update($user, "`Username` = '{$user["Username"]}'");
     }
 
-    public function getUserByUsername($Username) {
+    public function getUserByUsername($Username)
+    {
         return $this->ToRow($this->Select("`Username` = '{$Username}'"));
     }
+    public function getUserById($Id)
+    {
+        return $this->ToRow($this->Select("`Id` = '{$Id}'"));
+    }
 
-    function GetAll2Option() {
+    function GetAll2Option()
+    {
         $where = " 1=1";
         return $this->getColumnsOption(["Id", "Name"], $where);
     }
 
-    public function Groups() {
+    public function Groups()
+    {
         $Project = new userGroups();
         return new userGroups($Project->GetByGroupsId($this->Groups));
     }
 
-    public function GetUserActive() {
+    public function GetUserActive()
+    {
         $active = AdminStatus::sActive;
         $Where = "`Active` = '{$active}' and `Groups` > 0";
         return $this->ToArray($this->Select($Where));
     }
 
-    public function GetUserByGroups($group) {
+    public function GetUserByGroups($group)
+    {
         $active = AdminStatus::sActive;
         $Where = "`Active` = '{$active}' and `Groups` = '{$group}'";
         return $this->ToArray($this->Select($Where));
     }
 
-    public function GetUserByActive($active) {
+    public function GetUserByActive($active)
+    {
         $Where = "`Active` = '{$active}'";
         return $this->ToArray($this->Select($Where));
     }
 
-    public function Active() {
+    public function Active()
+    {
         $ac = new AdminStatus();
         return $ac->GetById($this->Active, true);
     }
 
-    public function publicKey() {
+    public function publicKey()
+    {
         return sha1($this->Username . $this->Email . $this->Id);
     }
 
-    public function getUserByPublicKey($publicKey) {
+    public function getUserByPublicKey($publicKey)
+    {
         $Where = " SHA1(concat(`Username`,`Email`,`Id`)) = '{$publicKey}'";
         return $this->ToRow($this->Select($Where));
     }
 
-    public function ResetPassword($Model) {
+    public function ResetPassword($Model)
+    {
         $password = "zaq@123Abc";
         $Model["Password"] = $this->createrPassword($password, $Model["Random"]);
         $this->UpdateSubmit($Model);
-//        send mail
+        //        send mail
         return $password;
     }
 
-    public function AdminViewModel() {
+    public function AdminViewModel()
+    {
         $a["Id"] = $this->Id;
 
         $a["Name"] = $this->Name;
@@ -149,33 +173,46 @@ class Admin extends AdminTable {
         return $a;
     }
 
-    public function isAdmin() {
+    public function isAdmin()
+    {
         return Admin::getCurentUser(true)->Groups()->GroupsId == self::Admin;
     }
 
-    public function updatePasswordUser($User) {
+    public function updatePasswordUser($User)
+    {
         return $this->UpdateSubmit($User);
     }
 
-    public function getUserByEmail($Email) {
+    public function getUserByEmail($Email)
+    {
         return $this->ToRow($this->Select("`Email` = '{$Email}'"));
     }
 
-    public function CheckPassword($Password) {
+    public function CheckPassword($Password)
+    {
         return $this->CheckLogin($this->Username, $Password);
     }
 
-    public static function GetUsersOptions($groups = null) {
+    public static function GetUsersOptions($groups = null)
+    {
         $admin = new Admin();
         if ($groups) {
-            $where = " `Groups` = '{$groups}' ";
+            $where = " `Groups` = '{$groups}' and `Active` = 1 ";
         } else {
-            $where = " 1=1";
+            $where = "`Active` = 1";
         }
-        return $admin->getColumnsOption(["Id", "Name"], $where);
+        $users = $admin->getColumnsOption(["Id", "Name"], $where);
+        $admin = self::getCurentUser(true);
+        foreach ($users as $key => $value) {
+            if ($key  == $admin->Id) {
+                $users[$key] = "_Bạn_ | " . $value;
+            }
+        }
+        return $users;
     }
 
-    public static function GetUsersByGroups2Options($user = []) {
+    public static function GetUsersByGroups2Options($user = [])
+    {
         $admin = new Admin();
         if ($user) {
             $users = implode(",", $user);
@@ -186,7 +223,8 @@ class Admin extends AdminTable {
         return $admin->getColumnsOption(["Id", "Name"], $where);
     }
 
-    public function TrungTamBaoHanh() {
+    public function TrungTamBaoHanh()
+    {
         $taiKhoan = new TaiKhoan();
         $danhSachTaiKhoan = $taiKhoan->GetByIdUser($this->Id, TaiKhoan::CodeTrungTamBaoHanh);
         if ($danhSachTaiKhoan) {
@@ -195,7 +233,8 @@ class Admin extends AdminTable {
         return new TaiKhoan();
     }
 
-    public function KhachHang() {
+    public function KhachHang()
+    {
         $taiKhoan = new TaiKhoan();
         $danhSachTaiKhoan = $taiKhoan->GetByIdUser($this->Id, TaiKhoan::CodeKhachHang);
         if ($danhSachTaiKhoan) {
@@ -204,7 +243,8 @@ class Admin extends AdminTable {
         return new TaiKhoan();
     }
 
-    public static function CheckQuyen($nhom = [], $not = false) {
+    public static function CheckQuyen($nhom = [], $not = false)
+    {
         $user = \Module\user\Model\Admin::getCurentUser(true)->Groups;
         if ($not == true) {
             return !in_array($user, $nhom);
@@ -212,7 +252,8 @@ class Admin extends AdminTable {
         return in_array($user, $nhom);
     }
 
-    public function GetAllPT($name = "", $pagesIndex, $pageNumber, &$tong) {
+    public function GetAllPT($name = "", $pagesIndex, $pageNumber, &$tong)
+    {
         $superId = userGroups::SupperAdmin;
         $idGroupSql = " `Groups` != '$superId' and ";
         $where = "$idGroupSql `Active` >= 0 ";
@@ -236,11 +277,39 @@ class Admin extends AdminTable {
         return $Kh->GetRowsByWhere($where);
     }
 
-    public function KhachHangs() {
+    public function KhachHangs()
+    {
         $ModelTaiKhoan = new TaiKhoan();
         return $ModelTaiKhoan->GetByKhachHangIdUser($this->Id);
     }
+    public static function GetUserInfor($id)
+    {
+        $admin = new Admin();
+        $userInfor  =  $admin->GetUserById($id);
+        // var_dump($userInfor); 
+        $userInfor = new Admin($userInfor);
+        $userInfor = (array) $userInfor;
+        $html = <<<HTML
 
+            <table class="table table-border table-responsive">
+                <tr>
+                     <td>Tài Khoản</td>
+                     <td>{$userInfor["Username"]}</td>
+                </tr>
+                <tr>
+                     <td>SĐT</td>
+                     <td>{$userInfor["Phone"]}</td>
+                </tr>
+                <tr>
+                     <td>Email</td>
+                     <td>{$userInfor["Email"]}</td>
+                </tr>
+                <tr>
+                     <td>Họ & Tên</td>
+                     <td>{$userInfor["Name"]}</td>
+                </tr>
+            </table>
+HTML;
+        return $html;
+    }
 }
-
-?>

@@ -242,6 +242,11 @@ class backend
                                     ?>
                                 </ul>
                             </li>
+                            <li>
+                                <a href="/user/users/">
+                                    <span>Quản Lý Tài Khoản</span>
+                                </a>
+                            </li>
                         </ul>
                     </div>
                     <div class="navbar-custom-menu">

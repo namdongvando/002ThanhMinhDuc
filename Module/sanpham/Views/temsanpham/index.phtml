@@ -35,13 +35,12 @@ $TemSanPhams = \Module\sanpham\Model\TemSanPham::GetRowsPT($params, $pagesIndex,
                         Danh Sách Tem Sản Phẩm(<?php echo number_format($tong, 0, ".", ","); ?>)
                     </h3>
                     <div class="btn-group pull-right">
+                        <a class="btn btn-primary" data-toggle="modal" href='/sanpham/temsanpham/exportCode/'>Export Tem Mới</a>
                         <a class="btn btn-primary" data-toggle="modal" href='#XuatTemSanPham'>Export</a>
                         <a class="btn btn-primary " data-toggle="modal" href='#ThemTemSanPham'>Thêm Tem Sản Phẩm</a>
                     </div>
                 </div>
                 <div class="box-body table-responsive">
-
-
                     <form action="/sanpham/temsanpham/index/" method="get">
                         <div class="d-flex">
                             <input value="<?php echo $params["MaTem"] ?? ""; ?>" style="width: 200px;" type="text" name="MaTem" placeholder="Mã tem" class="form-control">

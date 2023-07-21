@@ -3,6 +3,7 @@
 namespace Module\sanpham\Controller;
 
 use Exception;
+use lib\input;
 use Module\sanpham\Model\SanPham;
 
 class temsanpham extends \ApplicationM implements \Controller\IController
@@ -20,18 +21,27 @@ class temsanpham extends \ApplicationM implements \Controller\IController
         }
     }
 
+    protected function CreateCode($i)
+    {
+        $string = input::RandomString(6, date("y", time()));
+        return $string;
+    }
+
     function index()
     {
-
         if (isset($_POST["ThemTem"])) {
+
             $TemSanPham = new \Module\sanpham\Model\TemSanPham();
             for ($i = 0; $i < intval($_POST["SoLuong"]); $i++) {
-                $date = date("ymd");
-                $string = sha1(rand(1, time())) . microtime();
-                $string = substr($string, 0, 10);
-                $tem["Code"] = "{$date}{$string}";
+                $string = $this->CreateCode($i);
+                while ($TemSanPham->GetByCode($string)) {
+                    $string = $this->CreateCode($i);
+                }
+                $tem["Code"] = "{$string}";
                 $tem["Name"] = $tem["Code"];
+                $tem["MaSanPham"] = 0;
                 $tem["Parents"] = 0;
+                $tem["ThangKetThuc"] = null;
                 $tem["IsPrint"] = 0;
                 $tem["CreateDate"] = date("Y-m-d H:i:s", time());
                 $tem["ModifyDate"] = date("Y-m-d H:i:s", time());
@@ -41,6 +51,13 @@ class temsanpham extends \ApplicationM implements \Controller\IController
         return $this->ViewThemeModlue();
     }
 
+    public function xoatemchuain()
+    {
+
+        $TemSanPham = new \Module\sanpham\Model\TemSanPham();
+        $TemSanPham->DeleteNoPrint();
+        return;
+    }
     public function create()
     {
         if (\Module\project\Model\ProjectForm::onSubmit()) {
@@ -174,7 +191,13 @@ class temsanpham extends \ApplicationM implements \Controller\IController
         flush();
         exit();
     }
-
+    function exportCode()
+    {
+        $MTemSanPham = new \Module\sanpham\Model\TemSanPham();
+        $data = $MTemSanPham->GetTempChuaIn();
+        $this->exportListCode("public/Code23.xlsx", $data);
+        header("Location: /public/Code23.xlsx");
+    }
     function zipfile($folder)
     {
         $rootPath = realpath($folder);
@@ -197,10 +220,40 @@ class temsanpham extends \ApplicationM implements \Controller\IController
         exit();
     }
 
+    function exportListCode($fileName, $data)
+    {
+        foreach ($data as $k => $value) {
+            // $link = Root_URL . "public/phpqrcode/index.php?data=http://cskhtmd.com/{$value["Code"]}";
+            // $imagesQr = "public/QRCode/{$value["Code"]}.png";
+            // if (!file_exists($imagesQr)) {
+            //     $io = new \lib\io();
+            //     $io->writeFile($imagesQr, file_get_contents($link));
+            // }
+            $data[$k]["Stt"] = $k + 1;
+            $data[$k]["Code"] =  $value["Code"];
+            $data[$k]["Code"] =  "http://cskhtmd.com/" . $value["Code"] . "/";
+            unset($data[$k]["img"]);
+            unset($data[$k]["KhachHangTieuDung"]);
+            unset($data[$k]["NgayBatDau"]);
+            unset($data[$k]["Id"]);
+            unset($data[$k]["NgayKetThuc"]);
+            unset($data[$k]["ThangKetThuc"]);
+            unset($data[$k]["Status"]);
+            unset($data[$k]["UserId"]);
+            unset($data[$k]["Parents"]);
+            unset($data[$k]["CreateDate"]);
+            unset($data[$k]["ModifyDate"]);
+            unset($data[$k]["IsPrint"]);
+            unset($data[$k]["MaSanPham"]);
+        }
+        $Excell = new \Module\excell\Model\excell\ExcelReader();
+        $Excell->CreateFileExCode($fileName, $data);
+    }
+
     function exporttoFire($fileName, $data)
     {
         foreach ($data as $k => $value) {
-            $link = Root_URL . "public/phpqrcode/index.php?data=" . Root_URL . "baohanh/" . $value["Code"];
+            $link = Root_URL . "public/phpqrcode/index.php?data=http://cskhtmd.com/{$value["Code"]}";
             $imagesQr = "public/QRCode/{$value["Code"]}.png";
             if (!file_exists($imagesQr)) {
                 $io = new \lib\io();

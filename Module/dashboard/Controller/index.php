@@ -2,27 +2,31 @@
 
 namespace Module\dashboard\Controller;
 
-class index extends \ApplicationM {
+class index extends \ApplicationM
+{
 
     const AppDir = "Module/dashboard";
     const AppPath = "/Module/dashboard";
 
     static public $UserLayout = "user";
 
-    function __construct() {
+    function __construct()
+    {
         new \Controller\backend();
     }
 
     public function test()
-    { 
-        
-        return $this->ViewThemeModlue(); 
+    {
+
+        return $this->ViewThemeModlue();
     }
-    function index() {
+    function index()
+    {
         return $this->ViewThemeModlue();
     }
 
-    function listdata() {
+    function listdata()
+    {
         $time = filemtime("Module/dashboard/public/js/dashboardWorkflows.js");
         $Js = <<<JS
 <script src="/Module/dashboard/public/js/dashboardWorkflows.js?v={$time}" type="text/javascript"></script>
@@ -31,11 +35,13 @@ JS;
         return $this->ViewThemeModlue();
     }
 
-    function scan() {
+    function scan()
+    {
         return $this->ViewThemeModlue([], null, "qr");
     }
 
-    function savecode1() {
+    function savecode1()
+    {
         $user = "admin";
         if (\Module\user\Model\Admin::getCurentUser(false)) {
             $user = \Module\user\Model\Admin::getCurentUser(true)->Username;
@@ -51,8 +57,10 @@ JS;
         var_dump($a);
     }
 
-    function savecode() {
+    function savecode()
+    {
         $user = "admin";
+        $a = [];
         if (\Module\user\Model\Admin::getCurentUser(false)) {
             $user = \Module\user\Model\Admin::getCurentUser(true)->Username;
         }

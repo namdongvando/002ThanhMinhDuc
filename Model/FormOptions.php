@@ -79,7 +79,7 @@ class FormOptions
         return new FormRender(new Element\Button($title, "button", $properties));
     }
 
-    public static function Select($val, $name, $options, $pro)
+    public static function Select($val, $name, $options, $pro = [])
     {
         $properties = self::$FormClass;
         $properties["value"] = $val;
@@ -89,7 +89,11 @@ class FormOptions
             }
         }
         $properties["label"] =  $properties["label"] ?? '';
-        $name = isset($properties["name"]) ? $properties["name"] : __FUNCTION__;
+        $name = $name ?? null;
+        if ($name == null) {
+            $name = isset($properties["name"]) ? $properties["name"] : __FUNCTION__;
+        }
+
         return new FormRender(new Element\Select($properties["label"], $name, $options, $properties));
     }
 }

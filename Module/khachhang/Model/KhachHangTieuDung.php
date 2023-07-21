@@ -22,19 +22,34 @@ class KhachHangTieuDung extends KhachHangTieuDungData
                 }
             }
         }
-        $this->Id = !empty($dv["Id"]) ? $dv["Id"] : null;
-        $this->Name = !empty($dv["Name"]) ? $dv["Name"] : null;
-        $this->Code = !empty($dv["Code"]) ? $dv["Code"] : "";
-        $this->Phone = !empty($dv["Phone"]) ? $dv["Phone"] : null;
-        $this->DiaChi = !empty($dv["DiaChi"]) ? $dv["DiaChi"] : null;
-        $this->CMNN = !empty($dv["CMNN"]) ? $dv["CMNN"] : null;
-        $this->GhiChu = !empty($dv["GhiChu"]) ? $dv["GhiChu"] : null;
-        $this->SubData = !empty($dv["SubData"]) ? $dv["SubData"] : null;
-        $this->TinhThanh = !empty($dv["TinhThanh"]) ? $dv["TinhThanh"] : 32;
-        $this->QuanHuyen = !empty($dv["QuanHuyen"]) ? $dv["QuanHuyen"] : null;
-        $this->KhuVuc = !empty($dv["KhuVuc"]) ? $dv["KhuVuc"] : null;
+        $this->Id = $dv["Id"] ?? null;
+        $this->Name = $dv["Name"] ?? null;
+        $this->Code = $dv["Code"] ?? null;
+        $this->Phone = $dv["Phone"] ?? null;
+        $this->DiaChi = $dv["DiaChi"] ?? null;
+        $this->CMNN = $dv["CMNN"] ?? null;
+        $this->GhiChu = $dv["GhiChu"] ?? null;
+        $this->SubData = $dv["SubData"] ?? null;
+        $this->TinhThanh = $dv["TinhThanh"] ?? null;
+        $this->QuanHuyen = $dv["QuanHuyen"] ?? null;
+        $this->KhuVuc = $dv["KhuVuc"] ?? null;
     }
 
+    // danh sách sản phẩm
+    public function SanPhams()
+    {
+        $dsKh = $this->GetByPhone($this->Phone);
+        $a = [];
+        foreach ($dsKh as $key => $value) {
+            $a[] = $value["Id"];
+        }
+        return $a;
+    }
+    public function GetByPhone($Phone)
+    {
+        $where = " `Phone` = '{$Phone}'";
+        return $this->GetRowsByWhere($where);
+    }
     public function DiaChi()
     {
         $diaChi = $this->DiaChi;

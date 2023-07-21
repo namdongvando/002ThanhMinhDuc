@@ -1,5 +1,11 @@
 <?php
 
+function Get_Module()
+{
+    $Module = "dashboard|khachhang|excell|mail|option|project|rmm|sanpham|trungtambaohanh|user";
+    return explode("|", $Module);
+}
+
 spl_autoload_register(function ($class) {
     $class = str_replace("\\", "_", $class);
     $class = str_replace("_", "/", $class) . ".php";
@@ -39,9 +45,9 @@ if ($online == false) {
     $INI['username'] = "root";
     $INI['password'] = "";
     $INI['DBname'] = "thanh962_demo1";
-    define("BASE_URL", "http://002thanhminhduc.dev2/");
-    define("Root_URL", "http://002thanhminhduc.dev2/");
-    define("DOMAIN", ".002thanhminhduc.dev2");
+    define("BASE_URL", "http://localhost:8081/");
+    define("Root_URL", "http://localhost:8081/");
+    define("DOMAIN", ".localhost:8081");
 } else {
     $INI['host'] = "localhost";
     $INI['username'] = "thanh962_demo";
