@@ -196,7 +196,11 @@ class Controller_api extends Application
         $io = new \lib\io();
 
         $a = [
-            "online" => $rs[0], "today" => $homnay[0], "Homqua" => $homqua[0] == "" ? 0 : $homqua[0], "Thang" => $ThangNay[0] == "" ? 0 : $ThangNay[0], "total" => $tong[0]
+            "online" => $rs[0],
+            "today" => $homnay[0],
+            "Homqua" => $homqua[0] == "" ? 0 : $homqua[0],
+            "Thang" => $ThangNay[0] == "" ? 0 : $ThangNay[0],
+            "total" => $tong[0]
         ];
         $io->writeFile($filename, json_encode($a));
         return $a;
@@ -398,10 +402,13 @@ class Controller_api extends Application
 
         echo json_encode(
             [
-                "online" => rand(100, 120), "today" => 900, "total" => 1000
+                "online" => rand(100, 120),
+                "today" => 900,
+                "total" => 1000
             ]
         );
     }
+ 
 
     //luuthongtin
 }

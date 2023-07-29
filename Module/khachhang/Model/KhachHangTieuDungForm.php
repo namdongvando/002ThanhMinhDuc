@@ -68,7 +68,13 @@ class KhachHangTieuDungForm extends \PFBC\Form implements IKhachHangTieuDungForm
     {
         $Option = self::$Option;
         $Option["value"] = $value;
-        return new FormRender(new \PFBC\Element\Textarea("Ghi Chú", "khachhangtieudung[GhiChu]", $Option));
+        return new FormRender(
+            new \PFBC\Element\Textarea(
+                "Ghi Chú",
+                "khachhangtieudung[GhiChu]",
+                $Option
+            )
+        );
     }
 
     public static function Phone($value = null)
@@ -102,7 +108,7 @@ class KhachHangTieuDungForm extends \PFBC\Form implements IKhachHangTieuDungForm
         $Option = self::$Option;
         $Option["value"] = $value;
         $Option["class"] = "form-control AjaxHTML";
-        $Option["data-url"] = "/option/api/TinhThanhTagOption/";
+        $Option["data-url"] = "/api/TinhThanhTagOption/";
         $Option["data-values"] = "true";
         $Option["data-object"] = $objectId;
         $Option[FormRender::Required] = "";
@@ -112,6 +118,7 @@ class KhachHangTieuDungForm extends \PFBC\Form implements IKhachHangTieuDungForm
 
     public static function QuanHuyen($value, $tinhThanh = 1, $id = "khachhangtieudungQuanHuyen")
     {
+
         $Option = self::$Option;
         $Option["value"] = $value;
         $Option["id"] = $id;

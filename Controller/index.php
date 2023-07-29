@@ -2,6 +2,7 @@
 
 use Common\Common;
 use Model\FormTieuTriDanhGia;
+use Model\Notification;
 use Model\PhanAnh\PhanAnhChiTiet;
 use Module\sanpham\Model\YeuCauKichHoat;
 use Module\trungtambaohanh\Model\YeuCauBaoHanh;
@@ -37,12 +38,12 @@ class Controller_index extends Application
     function index1()
     {
         // danh sách table
-        $a = Common\CoreCodePhp\ModelDataSytem\ModelTable::getTableName();
-        // tao table
-        Common\CoreCodePhp\ModelDataSytem\ModelTable::createFolder();
-        foreach ($a as $key => $value) {
-            Common\CoreCodePhp\ModelDataSytem\ModelTable::createFiles($value);
-        }
+        // $a = Common\CoreCodePhp\ModelDataSytem\ModelTable::getTableName();
+        // // tao table
+        // Common\CoreCodePhp\ModelDataSytem\ModelTable::createFolder();
+        // foreach ($a as $key => $value) {
+        //     Common\CoreCodePhp\ModelDataSytem\ModelTable::createFiles($value);
+        // }
     }
 
     function index2()
@@ -80,17 +81,17 @@ class Controller_index extends Application
 
     function indexdemo()
     {
-        Model_Seo::$Title = "{Title}";
-        Model_Seo::$des = "{Des}";
-        Model_Seo::$key = "{Keyword}";
-        Model_Seo::$img = "[imagesDefault]";
+        // Model_Seo::$Title = "{Title}";
+        // Model_Seo::$des = "{Des}";
+        // Model_Seo::$key = "{Keyword}";
+        // Model_Seo::$img = "[imagesDefault]";
 
         $this->ViewTheme("  ", Model_ViewTheme::get_viewthene(), "homedemo");
     }
 
 
 
-    function yeucaukichhoat()
+    function yeucaukichhoat($isAPI = true)
     {
         $yeucaubaohanh = $_POST["yecaubaphanh"];
 
@@ -120,18 +121,32 @@ class Controller_index extends Application
             $model["Status"] = TemSanPham::YeuCauKichHoat;
             $temsp->UpdateSubmit($model);
         }
-        echo json_encode($yeucaubaohanh);
+        if ($isAPI) {
+            echo json_encode($yeucaubaohanh);
+        }
+    }
+
+    function YeuCauBaoHanh()
+    {
+        // $_POST[Module\trungtambaohanh\Model\YeuCauBaoHanhForm::nameForm]
+        $ModelYeuCau = $_POST[Module\trungtambaohanh\Model\YeuCauBaoHanhForm::nameForm];
+        $MYeuCau = new Module\trungtambaohanh\Model\YeuCauBaoHanh();
+        $ModelYeuCau["Code"] = md5(time() . rand(0, time()));
+        // $ModelYeuCau["KhachHangTieuDung"] = $ModelYeuCau["KhachHangTieuDung"];
+        $ModelYeuCau["Status"] = Module\trungtambaohanh\Model\YeuCauBaoHanh::MoiTao;
+        $ModelYeuCau["Name"] = \Module\option\Model\SuCoMacPhai::SuCoMacPhaiByCode($ModelYeuCau["NoiDung"])["Name"];
+        $ModelYeuCau["idNhanVien"] = 0;
+        $ModelYeuCau["HinhAnh"] = "";
+        $ModelYeuCau["DiaChi"] = \Module\option\Model\SuCoMacPhai::SuCoMacPhaiByCode($ModelYeuCau["NoiDung"])["Name"];
+        $MYeuCau->InsertSubmit($ModelYeuCau);
     }
     function baohanh()
     {
         $alert = null;
-
         if (isset($_POST[KhachHangTieuDungForm::formName])) {
             $dataPost = $_POST[KhachHangTieuDungForm::formName];
             $maTem = $dataPost["MaTen"];
             $ModelTemSanPham = new TemSanPham($maTem);
-            // var_dump($ModelTemSanPham);
-            // var_dump($ModelTemSanPham->KhachHangTieuDung);
             if ($ModelTemSanPham->KhachHangTieuDung) {
                 $dataPost["Code"] = $ModelTemSanPham->KhachHangTieuDung;
                 unset($dataPost["MaTen"]);
@@ -140,24 +155,25 @@ class Controller_index extends Application
                 $modelKhachHang->UpdateRowTable($dataPost);
                 $alert["content"] = "Thông tin Quý khách đã được cập nhật";
                 $alert["type"] = "success";
+                (new Notification())->SetContent($alert);
+                Common::toUrl();
             }
         }
 
-        if (isset($_POST[Module\trungtambaohanh\Model\YeuCauBaoHanhForm::nameForm])) {
-            $ModelYeuCau = $_POST[Module\trungtambaohanh\Model\YeuCauBaoHanhForm::nameForm];
-            $MYeuCau = new Module\trungtambaohanh\Model\YeuCauBaoHanh();
-            $ModelYeuCau["Code"] = md5(time() . rand(0, time()));
-            // $ModelYeuCau["KhachHangTieuDung"] = $ModelYeuCau["KhachHangTieuDung"];
-            $ModelYeuCau["Status"] = Module\trungtambaohanh\Model\YeuCauBaoHanh::MoiTao;
-            $ModelYeuCau["Name"] = \Module\option\Model\SuCoMacPhai::SuCoMacPhaiByCode($ModelYeuCau["NoiDung"])["Name"];
-            $ModelYeuCau["idNhanVien"] = 0;
-            $ModelYeuCau["HinhAnh"] = "";
-            // $ModelYeuCau["TinhThanh"] = $ModelYeuCau["TinhThanh"];
-            // $ModelYeuCau["QuanHuyen"] = $ModelYeuCau["QuanHuyen"];
-            $ModelYeuCau["DiaChi"] = \Module\option\Model\SuCoMacPhai::SuCoMacPhaiByCode($ModelYeuCau["NoiDung"])["Name"];
-            $MYeuCau->InsertSubmit($ModelYeuCau);
-            $alert["content"] = "Quý khách đã gửi yêu cầu bảo hành thành công Trân trọng cảm ơn!";
+        if (isset($_POST["BtnYeuCauKichHoat"])) {
+            $this->yeucaukichhoat(false);
+            $alert["content"] = "Cảm ơn Quý khách, yêu cầu kích hoạt của Quý khách sẽ được thực hiện trong vòng 24h tới!";
             $alert["type"] = "success";
+            (new Notification())->SetContent($alert);
+            Common::toUrl();
+        }
+
+        if (isset($_POST["BtnYeuCauBaoHanh"])) {
+            $this->YeuCauBaoHanh();
+            $alert["content"] = "Cảm ơn Quý khách, yêu cầu bảo hành của Quý khách sẽ được thực hiện trong vòng 48h tới!";
+            $alert["type"] = "success";
+            (new Notification())->SetContent($alert);
+            Common::toUrl();
         }
         $kt = $this->LuuPhanAnh();
         if ($kt) {

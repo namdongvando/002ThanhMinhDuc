@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,
+                         initial-scale=1.0" />
+    <title>QR Code Generator</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js">
+    </script>
+</head>
+
+<body style="margin-top: 200px;" >
+    <main style="width: 80%;margin: auto;" >
+        <form action="/" id="qr-generation-form">
+            <input style="width: 100%;" type="text" name="qr-code-content" id="qr-content" value=""
+                placeholder="Url" autocomplete="off" />
+            <input type="submit" value="Tạo QrCode" />
+        </form><br />
+        <div id="qr-code"></div>
+    </main>
+</body>
+<script>
+    let qrContentInput = document.getElementById("qr-content");
+    let qrGenerationForm =
+        document.getElementById("qr-generation-form");
+    let qrCode;
+    function generateQrCode(qrContent) {
+        return new QRCode("qr-code", {
+            text: qrContent,
+            width: 500,
+            height: 500,
+            colorDark: "#000000",
+            colorLight: "#ffffff",
+            correctLevel: QRCode.CorrectLevel.H,
+        });
+    }
+
+    // Event listener for form submit event
+    qrGenerationForm.addEventListener("submit", function (event) {
+        // Prevent form submission
+        event.preventDefault();
+        let qrContent = qrContentInput.value;
+        if (qrCode == null) {
+
+            // Generate code initially
+            qrCode = generateQrCode(qrContent);
+        } else {
+
+            // If code already generated then make
+            // again using same object
+            qrCode.makeCode(qrContent);
+        }
+    });
+</script>
+
+</html>
