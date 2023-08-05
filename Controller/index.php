@@ -4,6 +4,7 @@ use Common\Common;
 use Model\FormTieuTriDanhGia;
 use Model\Notification;
 use Model\PhanAnh\PhanAnhChiTiet;
+use Model\ThongBao;
 use Module\sanpham\Model\YeuCauKichHoat;
 use Module\trungtambaohanh\Model\YeuCauBaoHanh;
 use Module\sanpham\Model\TemSanPham;
@@ -95,6 +96,24 @@ class Controller_index extends Application
     {
         $yeucaubaohanh = $_POST["yecaubaphanh"];
 
+        $thongBao = new ThongBao();
+        $tt = [
+            "Code" => md5("/dashboard/yeucaukichhoat/index/?TinhTrang=MoiTao"),
+            "Title" => "Có yêu cầu kích hoạt",
+            "Content" => "Có yêu cầu kích hoạt",
+            "Link" => "/dashboard/yeucaukichhoat/index/?TinhTrang=MoiTao",
+            "Status" => "1",
+            "Username" => "",
+            "CreateRecord" => date("Y-m-d H:i:s", time()),
+            "UpdateRecord" => date("Y-m-d H:i:s", time())
+        ];
+        $tt1 = $thongBao->GetByCode($tt["Code"]);
+        if ($tt1 == null) {
+            $thongBao->Post($tt);
+        } else {
+            $tt["Id"] = $tt1["Id"];
+            $thongBao->Put($tt);
+        }
 
         $yeucaubaohanh["HoTen"] = Common::CheckInput($yeucaubaohanh["HoTen"]);
         $yeucaubaohanh["SDT"] = Common::CheckInput($yeucaubaohanh["SDT"]);
@@ -139,6 +158,26 @@ class Controller_index extends Application
         $ModelYeuCau["HinhAnh"] = "";
         $ModelYeuCau["DiaChi"] = \Module\option\Model\SuCoMacPhai::SuCoMacPhaiByCode($ModelYeuCau["NoiDung"])["Name"];
         $MYeuCau->InsertSubmit($ModelYeuCau);
+
+        $thongBao = new ThongBao();
+        $tt = [
+            "Code" => md5("/dashboard/index"),
+            "Title" => "Có yêu cầu bảo hành",
+            "Content" => "Có yêu cầu bảo hành",
+            "Link" => "/dashboard/yeucaukichhoat/index/?TinhTrang=MoiTao",
+            "Status" => "1",
+            "Username" => "",
+            "CreateRecord" => date("Y-m-d H:i:s", time()),
+            "UpdateRecord" => date("Y-m-d H:i:s", time())
+        ];
+        $tt1 = $thongBao->GetByCode($tt["Code"]);
+        if ($tt1 == null) {
+            $thongBao->Post($tt);
+        } else {
+            $tt["Id"] = $tt1["Id"];
+            $thongBao->Put($tt);
+        }
+
     }
     function baohanh()
     {
@@ -253,6 +292,9 @@ class Controller_index extends Application
             $modelphanAnhLog->Post($paLog);
             $alert["content"] = "Gửi đánh giá thành công";
             $alert["type"] = "success";
+            $tb = new ThongBao();
+            $tb->TaoThongBao(md5("PhanAnhMoi"), "Có Phản Ánh Mới", "/dashboard/phananh/", "Admin", "");
+
             return $alert;
         }
         return false;

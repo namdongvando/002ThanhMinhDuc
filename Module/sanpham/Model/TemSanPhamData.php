@@ -59,7 +59,7 @@ class TemSanPhamData extends \datatable\ZendData implements \Model\IModel
     }
 
     public function UpdateSubmit($model)
-    {
+    { 
         return $this->UpdateRowTable($model);
     }
 

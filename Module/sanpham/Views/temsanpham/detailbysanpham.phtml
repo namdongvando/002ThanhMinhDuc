@@ -2,7 +2,7 @@
 
 use Module\user\Model\Admin;
 
-$link = "/public/phpqrcode/index.php?data=http://cskhtmd.com/" . $temSanPham->Code."/";
+$link = "/public/phpqrcode/index.php?data=http://cskhtmd.com/" . $temSanPham->Code . "/";
 ?>
 <ol class="breadcrumb">
     <li>
@@ -81,7 +81,6 @@ $link = "/public/phpqrcode/index.php?data=http://cskhtmd.com/" . $temSanPham->Co
                                         \Module\sanpham\Model\TemSanPhamForm::KhachHangTieuDung($temSanPham->KhachHangTieuDung, true)->renderHTML();
                                         \Module\sanpham\Model\TemSanPhamForm::Status($temSanPham->Status)->renderHTML();
                                         ?>
-
                                     </fieldset>
                                     <fieldset>
                                         <legend>Thông Tin Khách Hàng Tiêu Dùng</legend>
@@ -138,6 +137,7 @@ $link = "/public/phpqrcode/index.php?data=http://cskhtmd.com/" . $temSanPham->Co
                                                     <a href="#NhanVienKyThuat" aria-controls="NhanVienKyThuat"
                                                         role="tab" data-toggle="tab">Nhân Viên</a>
                                                 </li>
+
                                             </ul>
 
                                             <!-- Tab panes -->
@@ -185,14 +185,20 @@ $link = "/public/phpqrcode/index.php?data=http://cskhtmd.com/" . $temSanPham->Co
                                                             $_SanPhamLog = $temSanPham->SanPham()->SanPhamLog();
                                                             foreach ($_SanPhamLog as $sanPham) {
                                                                 $_sp = new \Module\sanpham\Model\SanPhamLog($sanPham);
-                                                            ?>
-                                                            <tr>
-                                                                <td><?php echo $_sp->NgayTao ?></td>
-                                                                <td><?php echo $_sp->SanPham()->TinhTrang(); ?></td>
-                                                                <td><?php echo $_sp->SanPham()->DaiLy()->Name; ?></td>
+                                                                ?>
+                                                                <tr>
+                                                                    <td>
+                                                                        <?php echo $_sp->NgayTao ?>
+                                                                    </td>
+                                                                    <td>
+                                                                        <?php echo $_sp->SanPham()->TinhTrang(); ?>
+                                                                    </td>
+                                                                    <td>
+                                                                        <?php echo $_sp->SanPham()->DaiLy()->Name; ?>
+                                                                    </td>
 
-                                                            </tr>
-                                                            <?php
+                                                                </tr>
+                                                                <?php
                                                             }
                                                             ?>
                                                         </table>
@@ -202,11 +208,20 @@ $link = "/public/phpqrcode/index.php?data=http://cskhtmd.com/" . $temSanPham->Co
                                                 <div role="tabpanel" class="tab-pane" id="NhanVienKyThuat">
                                                     <fieldset>
                                                         <legend>Thông tin nhân viên</legend>
+                                                        <p>Là nhân viên tương tác cuối cùng với tem sản phẩm</p>
                                                         <?php
                                                         // echo $temSanPham->UserId;
                                                         echo Admin::GetUserInfor($temSanPham->UserId);
                                                         ?>
-
+                                                    </fieldset>
+                                                    <fieldset>
+                                                        <legend>Nhân viên kiểm hàng</legend>
+                                                        <p>Là nhân viên kiểm hàng cuối cùng</p>
+                                                        <?php
+                                                        $Ls = $temSanPham->GetLichSuKiemHang()[0] ?? [];
+                                                        // echo $temSanPham->UserId;
+                                                        echo Admin::GetUserInfor($Ls["UserId"] ?? null);
+                                                        ?>
                                                     </fieldset>
                                                 </div>
                                             </div>

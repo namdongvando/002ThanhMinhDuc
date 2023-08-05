@@ -33,5 +33,6 @@ return array(
     'FacebookAds\\' => array($baseDir . '/src/FacebookAds', $vendorDir . '/facebook/php-business-sdk/src/FacebookAds'),
     'Doctrine\\Instantiator\\' => array($vendorDir . '/doctrine/instantiator/src/Doctrine/Instantiator'),
     'DeepCopy\\' => array($vendorDir . '/myclabs/deep-copy/src/DeepCopy'),
+    'Datatable\\' => array($vendorDir . '/namdongvando/phpdatatable/src'),
     'Complex\\' => array($vendorDir . '/markbaker/complex/classes/src'),
 );

@@ -40,7 +40,12 @@ class ZendData
         global $INI;
         if (!self::$Adapter) {
             self::$Adapter = new Adapter([
-                "driver" => "Pdo_Mysql", "database" => $INI['DBname'], "username" => $INI['username'], "password" => $INI['password'], "hostname" => $INI['host'], "charset" => "utf8"
+                "driver" => "Pdo_Mysql",
+                "database" => $INI['DBname'],
+                "username" => $INI['username'],
+                "password" => $INI['password'],
+                "hostname" => $INI['host'],
+                "charset" => "utf8"
             ]);
             return self::$Adapter;
         }

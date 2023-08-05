@@ -1189,6 +1189,57 @@
             "install-path": "../myclabs/php-enum"
         },
         {
+            "name": "namdongvando/phpdatatable",
+            "version": "1.36",
+            "version_normalized": "1.36.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/namdongvando/PHPDatatable.git",
+                "reference": "5dbafcc9a238bcf8d7163d2c2e8ee1eed4cd73ac"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/namdongvando/PHPDatatable/zipball/5dbafcc9a238bcf8d7163d2c2e8ee1eed4cd73ac",
+                "reference": "5dbafcc9a238bcf8d7163d2c2e8ee1eed4cd73ac",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=7.0"
+            },
+            "time": "2023-06-23T08:55:08+00:00",
+            "type": "library",
+            "installation-source": "dist",
+            "autoload": {
+                "psr-4": {
+                    "Datatable\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "email": "namdong92@gmail.com",
+                    "role": "Owner"
+                },
+                {
+                    "email": "namdong92@gmail.com",
+                    "role": "Committer"
+                }
+            ],
+            "description": "phpdatatable",
+            "keywords": [
+                "php",
+                "php datatable"
+            ],
+            "support": {
+                "issues": "https://github.com/namdongvando/PHPDatatable/issues",
+                "source": "https://github.com/namdongvando/PHPDatatable/tree/1.36"
+            },
+            "install-path": "../namdongvando/phpdatatable"
+        },
+        {
             "name": "paragonie/constant_time_encoding",
             "version": "v2.6.3",
             "version_normalized": "2.6.3.0",

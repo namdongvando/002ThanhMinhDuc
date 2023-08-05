@@ -26,12 +26,18 @@ class FormOptions
             }
         }
         $options = [
-            10 => "10 dòng", 20 => "20 dòng", 50 => "50 dòng", 100 => "100 dòng"
+            10 => "10 dòng",
+            20 => "20 dòng",
+            50 => "50 dòng",
+            100 => "100 dòng"
         ];
         $properties["name"] = isset($properties["name"]) ? $properties["name"] : __FUNCTION__;
         return new FormRender(new Element\Select("Hiện Thị", $properties["name"], $options, $properties));
     }
-
+    public static function TextArea($lable, $name, $properties)
+    {
+        return new FormRender(new Element\Textarea($lable, $name, $properties));
+    }
     public static function TimKiem($val = null, $pro = [])
     {
         $properties = self::$FormClass;
@@ -78,6 +84,38 @@ class FormOptions
 
         return new FormRender(new Element\Button($title, "button", $properties));
     }
+    public static function SelectFromSetting($val, $name, $GroupName, $pro = [])
+    {
+        $properties = self::$FormClass;
+        $properties["value"] = $val;
+        if ($pro) {
+            foreach ($pro as $key => $value) {
+                $properties[$key] = $value;
+            }
+        }
+        $properties["label"] = $properties["label"] ?? '';
+        $name = $name ?? null;
+        if ($name == null) {
+            $name = isset($properties["name"]) ? $properties["name"] : __FUNCTION__;
+        }
+        $lable = $properties["label"] ?? " ";
+
+        $options = \Module\option\Model\Option::GetAll2OptionsByGroups($GroupName);
+
+        if (!$options) {
+            $lable .= "[{$GroupName}]";
+        }
+        $properties["label"] = $lable;
+        return new FormRender(
+            new Element\Select(
+                $lable,
+                $name,
+                $options,
+                $properties
+            )
+        );
+    }
+
 
     public static function Select($val, $name, $options, $pro = [])
     {
@@ -88,7 +126,7 @@ class FormOptions
                 $properties[$key] = $value;
             }
         }
-        $properties["label"] =  $properties["label"] ?? '';
+        $properties["label"] = $properties["label"] ?? '';
         $name = $name ?? null;
         if ($name == null) {
             $name = isset($properties["name"]) ? $properties["name"] : __FUNCTION__;

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "7cb112db1a82928ca0f2cc53c74cb4c5",
+    "content-hash": "132512ed4cf5c3f6b49b8b44cc46b1f1",
     "packages": [
         {
             "name": "ezyang/htmlpurifier",
@@ -1016,6 +1016,54 @@
                 }
             ],
             "time": "2022-08-04T09:53:51+00:00"
+        },
+        {
+            "name": "namdongvando/phpdatatable",
+            "version": "1.36",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/namdongvando/PHPDatatable.git",
+                "reference": "5dbafcc9a238bcf8d7163d2c2e8ee1eed4cd73ac"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/namdongvando/PHPDatatable/zipball/5dbafcc9a238bcf8d7163d2c2e8ee1eed4cd73ac",
+                "reference": "5dbafcc9a238bcf8d7163d2c2e8ee1eed4cd73ac",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=7.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Datatable\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "email": "namdong92@gmail.com",
+                    "role": "Owner"
+                },
+                {
+                    "email": "namdong92@gmail.com",
+                    "role": "Committer"
+                }
+            ],
+            "description": "phpdatatable",
+            "keywords": [
+                "php",
+                "php datatable"
+            ],
+            "support": {
+                "issues": "https://github.com/namdongvando/PHPDatatable/issues",
+                "source": "https://github.com/namdongvando/PHPDatatable/tree/1.36"
+            },
+            "time": "2023-06-23T08:55:08+00:00"
         },
         {
             "name": "paragonie/constant_time_encoding",

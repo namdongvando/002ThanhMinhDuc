@@ -90,7 +90,7 @@ class Link
         }
         if ($admin->Groups()->GroupsId == \Module\user\Model\Admin::Customer || \Module\project\Model\Project::GetCurentProject()) {
         }
-?>
+    ?>
     <?php
     }
 
@@ -108,7 +108,7 @@ class Link
 
     public static function MenuDoiTac()
     {
-    ?>
+        ?>
         <li class="dropdown">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">Quản Lý Sản Phẩm <span class="caret"></span></a>
             <ul class="dropdown-menu" role="menu">
@@ -120,7 +120,18 @@ class Link
                 ?>
             </ul>
         </li>
-<?php
+        <?php
+    }
+    public static function KiemHang()
+    {
+        ?>
+        <li>
+            <a href="/dashboard/kiemhang/">Kiểm Hàng </a>
+        </li>
+        <li>
+            <a href="/dashboard/nhaptem/index">Quét Tem </a>
+        </li>
+        <?php
     }
 }
 ?>

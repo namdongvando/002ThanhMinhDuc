@@ -119,8 +119,10 @@ class Common
     public static function compress_htmlcode($codedata)
     {
         $searchdata = array(
-            '/\>[^\S ]+/s', // remove whitespaces after tags
-            '/[^\S ]+\</s', // remove whitespaces before tags
+            '/\>[^\S ]+/s',
+            // remove whitespaces after tags
+            '/[^\S ]+\</s',
+            // remove whitespaces before tags
             '/(\s)+/s' // remove multiple whitespace sequences
         );
         $replacedata = array('>', '<', '\\1');
@@ -174,7 +176,8 @@ class Common
 
     public static function NameFileCache($url)
     {
-        return "cache/" . sha1($url) . ".html";;
+        return "cache/" . sha1($url) . ".html";
+        ;
     }
 
     public static function PhanTrang($TongTrang, $TrangHienTai, $DuongDan)
@@ -259,6 +262,7 @@ class Common
 
     static public function GetDayOfMonth($month = 1, $year = null)
     {
+        $month = intval($month);
         $month = min($month, 12);
         $month = max($month, 1);
         if ($year == null) {

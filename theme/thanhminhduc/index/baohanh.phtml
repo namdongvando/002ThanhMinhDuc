@@ -564,8 +564,7 @@ $link = "/public/phpqrcode/index.php?data=" . Root_URL . "baohanh/" . $idSanPham
             try {
                 var dataHTML = $(this).data();
                 var self = $(this);
-                var object = dataHTML.object;
-                console.log(object);
+                var object = dataHTML.object;  
                 self.change(function () {
                     if (dataHTML.values == true) {
                         var url = dataHTML.url;
@@ -581,7 +580,8 @@ $link = "/public/phpqrcode/index.php?data=" . Root_URL . "baohanh/" . $idSanPham
                     }
                 });
             } catch (error) {
-                alert(error)
+                // alert(error)
+                console.log(error);
             }
 
         });

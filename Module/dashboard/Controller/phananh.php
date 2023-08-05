@@ -5,6 +5,7 @@ namespace Module\dashboard\Controller;
 use Common\Common;
 use Model\PhanAnh\PhanAnh as PhanAnhPhanAnh;
 use Model\PhanAnh\XuLyPhanAnh;
+use Model\ThongBao;
 use Module\sanpham\Model\SanPham;
 use Module\sanpham\Model\SanPhamForm;
 
@@ -24,6 +25,8 @@ class phananh extends \ApplicationM
     function index()
     {
 
+        $thongBao = new ThongBao();
+        $thongBao->XoaThongBao(md5("PhanAnhMoi"));
         return $this->ViewThemeModlue([], null, "qr");
     }
     function detail()
@@ -41,7 +44,7 @@ class phananh extends \ApplicationM
             $xulyDanhGia = $_POST[XuLyPhanAnh::$FormName];
             $model["Id"] = $xulyDanhGia["Id"];
             $model["TinhTrang"] = strip_tags($xulyDanhGia["TinhTrang"]);
-            $Comment  = $xulyDanhGia["Comment"];
+            $Comment = $xulyDanhGia["Comment"];
             $phananh = new PhanAnhPhanAnh($model["Id"]);
             $phananh->Put($model);
             $phananh->SaveLog("Update", $Comment);

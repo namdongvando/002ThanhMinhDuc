@@ -2,6 +2,8 @@
 
 namespace Module\dashboard\Controller;
 
+use Model\ThongBao;
+
 class index extends \ApplicationM
 {
 
@@ -13,6 +15,8 @@ class index extends \ApplicationM
     function __construct()
     {
         new \Controller\backend();
+
+        (new ThongBao())->XoaThongBao(md5("/dashboard/index"));
     }
 
     public function test()
@@ -37,7 +41,7 @@ JS;
 
     function scan()
     {
-        return $this->ViewThemeModlue([], null, "qr");
+        return $this->ViewThemeModlue([], null);
     }
 
     function savecode1()

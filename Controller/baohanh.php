@@ -101,7 +101,7 @@ class Controller_baohanh extends Application
         $yeucaubaohanh["TinhTrang"] = YeuCauKichHoat::MoiTao;
         $yeucaubaohanh["RecCreateDate"] = date("Y-m-d H:i:s", time());
         $yeucaubaohanh["RecUpdateDate"] = date("Y-m-d H:i:s", time());
-        $yeucaubaohanh["Code"] =  $yeucaubaohanh["MaTem"];
+        $yeucaubaohanh["Code"] = $yeucaubaohanh["MaTem"];
         $YeuCauKichHoat = new YeuCauKichHoat($yeucaubaohanh["Code"]);
 
         if ($YeuCauKichHoat->Code == null) {
@@ -179,11 +179,11 @@ class Controller_baohanh extends Application
                 }
             }
 
-            $tieuTri =  $FormDanhGia["TieuTri"] ?? [];
+            $tieuTri = $FormDanhGia["TieuTri"] ?? [];
             $comment = trim($FormDanhGia["Comment"]);
             $comment = htmlspecialchars($comment);
             $model["Code"] = $ModelPhanAnh->CreateCode();
-            $model["Name"]  = "";
+            $model["Name"] = "";
             $model["Content"] = strip_tags($comment);
             $model["MaTem"] = strip_tags($FormDanhGia["MaTem"]);
             $model["TinhTrang"] = "MoiTao";

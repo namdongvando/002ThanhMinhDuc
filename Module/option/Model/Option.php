@@ -7,23 +7,25 @@ class Option extends OptionData
 
     const MaDoiTuongKhachHang = "MaPhanLoai";
     const MaNhomKinhDoanh = "MaNhomKinhDoanh";
+    const SettingService = "SettingService";
     const KhuVuc = "KhuVuc";
     const NganHang = "NganHang";
     const SuCoMacPhai = "SuCoMacPhai";
     const ChungLoaiSP = "ChungLoaiSP";
+    const TrangThaiKiemHang = "TrangThaiKiemHang";
     const DanhMucVatTu = "DanhMucVatTu";
     const PhuLucLoai = "PhuLucLoai";
     const TieuChiDanhGia = "TieuChiDanhGia";
     const TinhTrangPhanAnh = "TinhTrangPhanAnh";
 
     public
-        $Id,
-        $Name,
-        $Code,
-        $Groups,
-        $Note,
-        $Parents,
-        $OrderBy;
+    $Id,
+    $Name,
+    $Code,
+    $Groups,
+    $Note,
+    $Parents,
+    $OrderBy;
 
     public function __construct($dv = null)
     {
@@ -37,13 +39,13 @@ class Option extends OptionData
                 }
             }
             if ($dv) {
-                $this->Id = $dv["Id"];
-                $this->Name = $dv["Name"];
-                $this->Code = $dv["Code"];
-                $this->Groups = $dv["Groups"];
-                $this->Note = $dv["Note"];
-                $this->Parents = $dv["Parents"];
-                $this->OrderBy = $dv["OrderBy"];
+                $this->Id = $dv["Id"] ?? null;
+                $this->Name = $dv["Name"] ?? null;
+                $this->Code = $dv["Code"] ?? null;
+                $this->Groups = $dv["Groups"] ?? null;
+                $this->Note = $dv["Note"] ?? null;
+                $this->Parents = $dv["Parents"] ?? null;
+                $this->OrderBy = $dv["OrderBy"] ?? null;
             }
         }
     }
@@ -75,6 +77,7 @@ class Option extends OptionData
     public static function GetGroupsOption()
     {
         return [
+            self::TrangThaiKiemHang => "Trang Thái Kiểm Hàng",
             self::DanhMucVatTu => "Danh Mục Vật Tư",
             self::KhuVuc => "Khu Vực",
             self::MaDoiTuongKhachHang => "Đối Tượng Khách Hàng",
@@ -84,13 +87,13 @@ class Option extends OptionData
             self::ChungLoaiSP => "Chung Loại Sản Phẩm",
             self::PhuLucLoai => "Loại Phụ Lục Chi Phí Sửa Chữa",
             self::TieuChiDanhGia => "Tiêu Trí Đánh Giá Hỗ Trợ",
-            self::TinhTrangPhanAnh => "Tình Trạng Phản Ảnh"
+            self::TinhTrangPhanAnh => "Tình Trạng Phản Ảnh",
+            self::SettingService => "Quản Lý Danh Mục"
         ];
     }
 
     public static function GetAll2Options($array = null)
     {
-
         $Option = new Option();
         return $Option->GetAll2Option(null, $array);
     }

@@ -23,7 +23,13 @@ class DatabaseZend implements \Model\IModel
         //        mysqli_query(self::$_conn, "SET NAMES utf8"); // Chuyển dữ liệu trả về sang kiểu utf8
         if (!self::$Conneted) {
             self::$Conneted = new Adapter([
-                "driver" => "Pdo_Mysql", "database" => $INI['DBname'], "username" => $INI['username'], "password" => $INI['password'], "hostname" => $INI['host'], "post" => "8080", "charset" => "utf8"
+                "driver" => "Pdo_Mysql",
+                "database" => $INI['DBname'],
+                "username" => $INI['username'],
+                "password" => $INI['password'],
+                "hostname" => $INI['host'],
+                "post" => "8080",
+                "charset" => "utf8"
             ]);
         }
         return self::$Conneted;

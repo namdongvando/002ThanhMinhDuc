@@ -2,9 +2,12 @@
 
 namespace Module\dashboard\Controller;
 
+use Common\Common;
 use Module\sanpham\Model\SanPham;
 use Module\sanpham\Model\SanPhamForm;
 use Module\sanpham\Model\TemSanPham;
+use Module\sanpham\Model\XuatNhapKho\PhieuXuatNhap;
+use Module\user\Model\Admin;
 
 class nhaptem extends \ApplicationM
 {
@@ -71,12 +74,12 @@ class nhaptem extends \ApplicationM
 
             }
         }
-        return $this->ViewThemeModlue([], null, "qr");
+        return $this->ViewThemeModlue([], null);
     }
 
     function scan()
     {
-        return $this->ViewThemeModlue([], null, "qr");
+        return $this->ViewThemeModlue([], null);
     }
 
     function savecode()
@@ -102,6 +105,37 @@ class nhaptem extends \ApplicationM
         \Common\Common::toUrl($_SERVER["HTTP_REFERER"]);
     }
 
+    function xuatkho()
+    {
+        return $this->ViewThemeModlue([], null);
+    }
+    function xuatkhodanhsachtem()
+    {
+
+        $admin = Admin::getCurentUser(true);
+        $CodeQr = new \Model\CodeQR($admin->Username);
+        $ds = $CodeQr->GetCodes();
+        if ($ds) {
+            $phieu = new PhieuXuatNhap();
+            $postData["Code"] = $phieu->GetCode(-1);
+            $postData["Name"] = "Phiếu xuất kho từ nhập tem";
+            $postData["Content"] = "";
+            $postData["UserId"] = $admin->Id;
+            $postData["KhacHang"] = "";
+            $postData["Type"] = -1;
+            $code = $phieu->TaoPhieu($postData, $ds);
+            $CodeQr->clearCode();
+            Common::toUrl("/dashboard/xuatnhapkho/detail/{$code}");
+        }
+        Common::toUrl();
+    }
+
+    function xuatkhosanpham()
+    {
+        $code = $this->getParam()[0];
+        return $this->ViewThemeModlue(["code" => $code], null);
+    }
+
     function coderefesh()
     {
         header('Content-Type: application/json');
@@ -121,17 +155,32 @@ class nhaptem extends \ApplicationM
         $index = 0;
         foreach ($ds as $k => $code) {
             $temSP = new \Module\sanpham\Model\TemSanPham($code);
-?>
-<tr>
-    <td><?php echo 1 + $index++; ?></td>
-    <td><?php echo $temSP->Code; ?></td>
-    <td>
-        <p style="margin: 0px;"><?php echo $temSP->SanPham()->Name; ?></p>
-        <p style="margin: 0px;"><?php echo $temSP->SanPham()->TinhTrang(); ?></p>
-        <p style="margin: 0px;"><?php echo $temSP->SanPham()->DaiLy()->Name; ?></p>
-    </td>
-</tr>
-<?php
+            ?>
+            <tr>
+                <td>
+                    <?php echo 1 + $index++; ?>
+                </td>
+                <td>
+                    <a class="btn btn-primary" href="/dashboard/workflow/temsanpham/<?php echo $temSP->Code; ?>/">
+                        Chọn
+                    </a>
+                </td>
+                <td>
+                    <?php echo $temSP->Code; ?>
+                </td>
+                <td>
+                    <p style="margin: 0px;">
+                        <?php echo $temSP->SanPham()->Name; ?>
+                    </p>
+                    <p style="margin: 0px;">
+                        <?php echo $temSP->SanPham()->TinhTrang(); ?>
+                    </p>
+                    <p style="margin: 0px;">
+                        <?php echo $temSP->SanPham()->DaiLy()->Name; ?>
+                    </p>
+                </td>
+            </tr>
+            <?php
         }
     }
 }

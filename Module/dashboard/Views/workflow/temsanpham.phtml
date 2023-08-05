@@ -1,0 +1,86 @@
+<?php
+
+use Model\Obj2Html;
+use Module\sanpham\Model\FormKiemHang;
+use Module\sanpham\Model\SanPhamKiemHang;
+use Module\sanpham\Model\TemSanPham;
+use Module\sanpham\Model\XuatNhapKho\PhieuXuatNhapChiTiet;
+
+$temSanPham = new TemSanPham($_Param[0]);
+$itemsLs = $temSanPham->GetLichSuKiemHang();
+
+?>
+<div class="container">
+    <h2>Thông tin tem</h2>
+    <div role="tabpanel">
+        <div class="nav-tabs-custom">
+            <!-- Nav tabs -->
+            <ul class="nav nav-tabs" role="tablist">
+                <li role="presentation" class="active">
+                    <a href="#home" target="_self" aria-controls="home" role="tab" data-toggle="tab">
+                        Thông tin hàng hóa</a>
+                </li>
+                <li role="presentation">
+                    <a href="#tab" aria-controls="tab" role="tab" data-toggle="tab">Lịch Sử Kiểm Hàng</a>
+                </li>
+                <li role="presentation">
+                    <a href="#xuatnhapkho" aria-controls="tab" role="tab" data-toggle="tab">Lich sử xuất / nhận kho </a>
+                </li>
+            </ul>
+
+            <!-- Tab panes -->
+            <div class="tab-content">
+                <div role="tabpanel" class="tab-pane active" id="home">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <?php
+                            Obj2Html::ThongTinSanPhamTheoMaTem($temSanPham->Code);
+
+                            ?>
+                        </div>
+
+                    </div>
+                </div>
+                <div role="tabpanel" class="tab-pane" id="tab">
+                    <?php echo $temSanPham->GetLichSuKiemHangHtml(); ?>
+                </div>
+                <div role="tabpanel" class="tab-pane" id="xuatnhapkho">
+                    <?php
+                    $DS = $temSanPham->PhieuXuatNhap();
+                    ?>
+                    <table class="table table-bordered">
+                        <tr class="bg-primary">
+                            <th>STT</th>
+                            <th>Ngày</th>
+                            <th>Nhân viên</th>
+                            <th>Loại phiếu</th>
+                        </tr>
+                        <?php
+                        foreach ($DS as $key => $value) {
+                            $_item = new PhieuXuatNhapChiTiet($value);
+                            ?>
+                            <tr>
+                                <td>
+                                    <?php echo $key + 1; ?>
+                                </td>
+                                <td>
+                                    <?php echo $_item->CreateRecorde ?>
+                                </td>
+                                <td>
+                                    <?php echo $_item->UserId()->Name ?>
+                                </td>
+                                <td>
+                                    <?php echo $_item->Type()->Name; ?>
+                                </td>
+                            </tr>
+                            <?php
+                        }
+
+                        ?>
+                    </table>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -513,12 +513,9 @@ $(function () {
     } catch (e) {
         console.log(e.message);
     }
-
-
-
-
     try {
-        $("select").select2();
+        // $("select").select2();
+        $("select").select2({ width: 'resolve' });
     } catch (e) {
         console.log(e);
     }

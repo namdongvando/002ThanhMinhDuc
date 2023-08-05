@@ -1,0 +1,47 @@
+<ol class="breadcrumb">
+    <li><a href="/dashboard/">Dashboard</a></li>
+    <li><a>Phiếu Xuất Nhập Kho</a></li>
+</ol>
+<?php
+
+use Datatable\Table;
+use Model\FormOptions;
+use Model\Obj2Html;
+use Module\sanpham\Model\XuatNhapKho\PhieuXuatNhap;
+use Module\sanpham\Model\XuatNhapKho\PhieuXuatNhapChiTiet;
+use Module\user\Model\Admin;
+
+$admin = Admin::getCurentUser(true);
+$CodeQr = new \Model\CodeQR($admin->Username);
+
+?>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="box box-primary">
+                <div class="box-header">
+                    <h3 class="box-title">Danh sách phiếu xuất/nhập</h3>
+                </div>
+                <div class="box-body ">
+                    <?php
+                    $link = "/examples/index.php";
+                    // $dataTable = new Table(["rows" => $data["rows"], "columns" => $columns], Card::class);
+                    $dataTable = new Table([
+                        "rows" => $response["rows"],
+                        "columns" => $response["columns"]
+                    ], PhieuXuatNhap::class,true);
+                    $dataTable->setPropTable(
+                        [
+                            "table" => ["id" => "table", "class" => "table table-border"],
+                            "thead" => ["class" => "bg-primary"],
+                        ]
+                    );
+                    $dataTable->RenderHtml();
+                    echo $dataTable->PaginationWidthData($data, $link);
+                    ?>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>

@@ -17,7 +17,8 @@
                 </div>
                 <div class="form-group col-md-3">
                     <label>Ngày Tạo Yêu Cầu</label>
-                    <input type="datetime-local" ng-model="formdataDefaut.CreateDate" class="form-control" placeholder="...">
+                    <input type="datetime-local" ng-model="formdataDefaut.CreateDate" class="form-control"
+                        placeholder="...">
                 </div>
                 <div class="form-group col-md-3">
                     <label>Tình Trạng</label>
@@ -32,7 +33,8 @@
             <div class="row">
                 <div class="form-group col-md-4">
                     <label>Ngày Bảo Hành</label>
-                    <input type="datetime-local" ng-model="formdataDefaut.NgayBaoHanh" class="form-control" placeholder="...">
+                    <input type="datetime-local" ng-model="formdataDefaut.NgayBaoHanh" class="form-control"
+                        placeholder="...">
                 </div>
                 <div class="form-group col-md-4">
                     <label>SĐT Khách Hàng</label>
@@ -48,7 +50,6 @@
                 <textarea ng-model="formdataDefaut.NoiDungBaoHanh" class="form-control" placeholder="..."></textarea>
             </div>
         </fieldset>
-
         <fieldset>
             <legend>Thông tin sản phẩm</legend>
             <div class="row">
@@ -62,7 +63,8 @@
                 </div>
                 <div class="form-group col-md-4">
                     <label>Ngày Hết Bảo Hành</label>
-                    <input ng-model="formdataDefaut.TemSanPham.NgayKetThuc" type="date" class="form-control" placeholder="...">
+                    <input ng-model="formdataDefaut.TemSanPham.NgayKetThuc" type="date" class="form-control"
+                        placeholder="...">
                 </div>
             </div>
             <div class="form-group">
@@ -72,7 +74,8 @@
             <div class="col-md-12">
                 <div class="form-group ">
                     <label>Tem Sản Phẩm</label>
-                    <a target="_blank" href="/sanpham/temsanpham/detailbysanpham/{{formdataDefaut.MaTem}}/">
+                    <a class="btn btn-primary" target="_blank"
+                        href="/sanpham/temsanpham/detailbysanpham/{{formdataDefaut.MaTem}}/">
                         <i class="fa fa-qrcode" aria-hidden="true"></i>
                         Tem bảo hành
                     </a>
@@ -104,7 +107,8 @@
                     <input type="text" ng-model="formdataDefaut.ThongTinKhachHang.DiaChi" class="form-control">
                 </div>
             </div>
-            <button type="button" ng-click="LuuThongTinKhachHang(formdataDefaut.ThongTinKhachHang, true)">Cập Nhật Thông Tin Khách Hàng</button>
+            <button type="button" ng-click="LuuThongTinKhachHang(formdataDefaut.ThongTinKhachHang, true)">Cập Nhật Thông
+                Tin Khách Hàng</button>
         </fieldset>
         <fieldset>
             <legend>Thông Tin Đơn Vị Bảo Hành</legend>
@@ -124,12 +128,16 @@
         </fieldset>
         <fieldset>
             <legend>Kết Quả Xử Lý</legend>
-            <img src="{{formdataDefaut.HinhAnh}}" style="max-height: 200px;" class="img img-responsive" alt="alt" title="alt">
+            <img src="{{formdataDefaut.HinhAnh}}" style="max-height: 200px;" class="img img-responsive" alt="alt"
+                title="alt">
         </fieldset>
         <div class="form-group text-center">
             <label></label>
-            <input type="button" ng-click="SaveFormData(formdataDefaut)" class="btn btn-success" value="&nbsp; &nbsp; Gửi &nbsp; &nbsp;">
+            <input type="button" ng-click="SaveFormData(formdataDefaut)" class="btn btn-success"
+                value="&nbsp; &nbsp; Gửi &nbsp; &nbsp;">
             <button type="button" class="btn btn-primary" data-toggle="modal" href='#HoanThanh'>Hoàn Thành</button>
+            <a href="/trungtambaohanh/yeucaubaohanh/scan/{{formdataDefaut.Code}}/" class="btn btn-primary">Kiểm Tra Tem
+            </a>
 
         </div>
     </form>
@@ -146,7 +154,8 @@
                         <div class="form-group">
                             <label for="">Nội Dung</label>
                             <textarea type="text" class="form-control" name="NoiDung"></textarea>
-                            <input type="hidden" ng-value="formdataDefaut.Code" name="Code" class="form-control" placeholder="...">
+                            <input type="hidden" ng-value="formdataDefaut.Code" name="Code" class="form-control"
+                                placeholder="...">
                         </div>
                         <div class="form-group">
                             <label for="">Hình Ảnh</label>
@@ -162,5 +171,4 @@
             </div>
         </div>
     </form>
-
 </div>

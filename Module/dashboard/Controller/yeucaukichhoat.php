@@ -2,6 +2,7 @@
 
 namespace Module\dashboard\Controller;
 
+use Model\ThongBao;
 use Module\sanpham\Model\SanPhamForm;
 use Module\sanpham\Model\YeuCauKichHoat as ModelYeuCauKichHoat;
 use Module\khachhang\Model\KhachHang;
@@ -19,6 +20,10 @@ class yeucaukichhoat extends \ApplicationM
     function __construct()
     {
         new \Controller\backend();
+
+
+        (new ThongBao())->XoaThongBao(md5("/dashboard/yeucaukichhoat/index/?TinhTrang=MoiTao"));
+
     }
 
     function index()
@@ -67,7 +72,7 @@ class yeucaukichhoat extends \ApplicationM
         $item["NgayBatDau"] = $ngaybatdau;
         $ngaybd = strtotime($item["NgayBatDau"]);
         $item["KhachHangTieuDung"] = $khTieuDung->Code;
-        $ngayKetThuc = date("Y-m-d", $ngaybd  + (730 * 24 *  3600));
+        $ngayKetThuc = date("Y-m-d", $ngaybd + (730 * 24 * 3600));
         $item["NgayKetThuc"] = $ngayKetThuc;
         $item["Status"] = TemSanPham::Active;
         $temsp->UpdateSubmit($item);
@@ -76,7 +81,7 @@ class yeucaukichhoat extends \ApplicationM
     function lamlai()
     {
         // cập nhật yêu cầu
-        $id =  $this->getParam(0);
+        $id = $this->getParam(0);
         $yeuCau = new ModelYeuCauKichHoat($id);
         $yc = $yeuCau->GetByCode($id);
         $yc["TinhTrang"] = ModelYeuCauKichHoat::MoiTao;
@@ -95,7 +100,7 @@ class yeucaukichhoat extends \ApplicationM
     function tuchoi()
     {
         // cập nhật yêu cầu
-        $id =  $this->getParam(0);
+        $id = $this->getParam(0);
         $yeuCau = new ModelYeuCauKichHoat($id);
         $yc = $yeuCau->GetByCode($id);
         $yc["TinhTrang"] = ModelYeuCauKichHoat::HuyKichHoat;

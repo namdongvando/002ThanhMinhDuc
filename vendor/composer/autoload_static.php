@@ -70,6 +70,7 @@ class ComposerStaticInit8bfcdb1f9daa5c29eacaae6119130dfd
         array (
             'Doctrine\\Instantiator\\' => 22,
             'DeepCopy\\' => 9,
+            'Datatable\\' => 10,
         ),
         'C' => 
         array (
@@ -187,6 +188,10 @@ class ComposerStaticInit8bfcdb1f9daa5c29eacaae6119130dfd
         'DeepCopy\\' => 
         array (
             0 => __DIR__ . '/..' . '/myclabs/deep-copy/src/DeepCopy',
+        ),
+        'Datatable\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/namdongvando/phpdatatable/src',
         ),
         'Complex\\' => 
         array (

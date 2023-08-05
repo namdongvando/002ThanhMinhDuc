@@ -2,11 +2,22 @@
 
 namespace Module\trungtambaohanh\Controller;
 
-class yeucaubaohanh extends \ApplicationM {
+use Common\Alert;
+use Common\Common;
+use Exception;
+use Module\trungtambaohanh\Model\FormXuLyYeuCau;
+use Module\trungtambaohanh\Model\FormYeuCauBaoHanh;
+use Module\trungtambaohanh\Model\XuLyYeuCau;
+use Module\trungtambaohanh\Model\YeuCauBaoHanh as ModelYeuCauBaoHanh;
+use Module\user\Model\Admin;
+
+class yeucaubaohanh extends \ApplicationM
+{
 
     static public $UserLayout = "backend";
 
-    function __construct() {
+    function __construct()
+    {
         new \Controller\backend();
         try {
             \Core\ViewTheme::set_viewthene("backend");
@@ -15,9 +26,20 @@ class yeucaubaohanh extends \ApplicationM {
         }
     }
 
-    function index() {
+    function index()
+    {
+        if (isset($_POST["DieuPhoi"])) {
+            $PostForm = $_POST[FormYeuCauBaoHanh::nameForm];
+            $ModelyeuCau = new \Module\trungtambaohanh\Model\YeuCauBaoHanh($PostForm["Id"]);
+            $yeuCau = $ModelyeuCau->GetByCode($ModelyeuCau->Code);
+            $yeuCau["IdTrungTamBaoHanh"] = $PostForm["IdTrungTamBaoHanh"];
+            $yeuCau["idNhanVien"] = $PostForm["idNhanVien"];
+            var_dump($yeuCau);
+            $ModelyeuCau->UpdateSubmit($yeuCau);
+            Common::toUrl();
+        }
         if (isset($_POST["HoanThanh"])) {
-//            var_dump($_POST);
+            //            var_dump($_POST);
             $Ma = $_POST["Code"];
             $ModelyeuCau = new \Module\trungtambaohanh\Model\YeuCauBaoHanh($Ma);
             $yeuCau = $ModelyeuCau->GetByCode($Ma);
@@ -34,20 +56,111 @@ class yeucaubaohanh extends \ApplicationM {
         return $this->ViewThemeModlue();
     }
 
-    function detail() {
+    function LoiBaoHanh()
+    {
+        if (isset($_POST["LoiBaoHanh"])) {
+            $PostForm = $_POST[FormYeuCauBaoHanh::nameForm];
+            $ModelyeuCau = new \Module\trungtambaohanh\Model\YeuCauBaoHanh($PostForm["Id"]);
+            $yeuCau = $ModelyeuCau->GetByCode($ModelyeuCau->Code);
+            $yeuCau["Status"] = ModelYeuCauBaoHanh::DangXuLy;
+            $yeuCau["NoiDung"] = $PostForm["NoiDung"];
+            $yeuCau["NoiDungKhac"] = $PostForm["NoiDungKhac"];
+            $ModelyeuCau->UpdateSubmit($yeuCau);
+            new Alert(["success", "Đã cập nhật lỗi bảo hành"]);
+            Common::toUrl();
+        }
+        return $this->ViewThemeModlue();
+    }
+    function PhuongAnXuLy()
+    {
+        if (isset($_POST["PhuongAnXuLy"])) {
+            $PostForm = $_POST[FormXuLyYeuCau::nameForm];
+            $ModelyeuCau = new XuLyYeuCau();
+
+            $yeuCau["UserId"] = Admin::getCurentUser(true)->Id;
+            $yeuCau["MaYeuCau"] = $PostForm["MaYeuCau"];
+            $yeuCau["Type"] = "PhuongAnXuLy";
+            $yeuCau["NoiDung"] = $PostForm["NoiDung"];
+            $yeuCau["NoiDungKhac"] = $PostForm["NoiDungKhac"];
+
+            $ModelyeuCau->InsertSubmit($yeuCau);
+            new Alert(["success", "Đã cập nhật phương án xử lý"]);
+            Common::toUrl();
+        }
+        return $this->ViewThemeModlue();
+    }
+    function KetQuaBaoHanh()
+    {
+        if (isset($_POST["KetQuaBaoHanh"])) {
+            $PostForm = $_POST[FormXuLyYeuCau::nameForm];
+            $ModelyeuCau = new XuLyYeuCau();
+            $yeuCau["UserId"] = Admin::getCurentUser(true)->Id;
+            $yeuCau["MaYeuCau"] = $PostForm["MaYeuCau"];
+            $yeuCau["Type"] = "KetQuaBaoHanh";
+            $yeuCau["NoiDung"] = $PostForm["NoiDung"];
+            $yeuCau["NoiDungKhac"] = $PostForm["NoiDungKhac"];
+
+            $ModelyeuCau->InsertSubmit($yeuCau);
+            $code = $PostForm["MaYeuCau"];
+
+            if ($_FILES[FormXuLyYeuCau::nameForm]) {
+                // var_dump($_FILES[FormXuLyYeuCau::nameForm]);
+                $adapter = new \Core\Adapter();
+                $yeuCauCode = $code;
+                $img = "public/baohanh/{$yeuCauCode}/";
+                $imgName = $adapter->upload_multi_image(
+                    $_FILES[FormXuLyYeuCau::nameForm],
+                    $img,
+                    $code . time(),
+                    true
+                );
+            }
+            new Alert(["success", "Đã cập nhật Kết quả bảo hành"]);
+            Common::toUrl("/trungtambaohanh/yeucaubaohanh/index/{$code}/");
+        }
+        return $this->ViewThemeModlue();
+    }
+
+
+
+    function detail()
+    {
         return $this->AView();
     }
 
-    function form() {
+    function form()
+    {
         return $this->AView();
     }
 
-    function formcomposers() {
+    function formcomposers()
+    {
         return $this->AView();
     }
 
-    public function SanPham() {
+    public function SanPham()
+    {
 
+    }
+
+    function kiemtratem()
+    {
+        return $this->ViewThemeModlue();
+    }
+    function scan()
+    {
+        return $this->ViewThemeModlue();
+    }
+
+    function XacNhanKQ()
+    {
+
+        $code = $this->getParam(0);
+        $yeuCauBaoHanh = new ModelYeuCauBaoHanh($code);
+        $yeuCauBaoHanh->Status = ModelYeuCauBaoHanh::DaXuLy;
+
+        $yeuCauBaoHanh->UpdateSubmit($yeuCauBaoHanh->ToArray());
+        Common::toUrl();
     }
 
 }

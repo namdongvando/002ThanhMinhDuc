@@ -28,19 +28,24 @@ class Admin extends AdminTable
     function __construct($NhanVien = NULL)
     {
         parent::__construct();
-        if ($NhanVien) {
-            $this->Id = isset($NhanVien['Id']) ? $NhanVien['Id'] : '';
-            $this->Username = isset($NhanVien['Username']) ? $NhanVien['Username'] : '';
-            $this->Password = isset($NhanVien['Password']) ? $NhanVien['Password'] : '';
-            $this->Random = isset($NhanVien['Random']) ? $NhanVien['Random'] : '';
-            $this->Name = isset($NhanVien['Name']) ? $NhanVien['Name'] : '';
-            $this->Email = isset($NhanVien['Email']) ? $NhanVien['Email'] : "";
-            $this->Phone = isset($NhanVien['Phone']) ? $NhanVien['Phone'] : "";
-            $this->Address = isset($NhanVien['Address']) ? $NhanVien['Address'] : "";
-            $this->Note = isset($NhanVien['Note']) ? $NhanVien['Note'] : "";
-            $this->Groups = isset($NhanVien['Groups']) ? $NhanVien['Groups'] : "";
-            $this->Active = isset($NhanVien['Active']) ? $NhanVien['Active'] : 0;
+        if (!is_array($NhanVien)) {
+            $id = $NhanVien;
+            $NhanVien = $this->GetById($id);
+            if ($NhanVien == null) {
+                $NhanVien = $this->getUserByUsername($id);
+            }
         }
+        $this->Id = $NhanVien['Id'] ?? null;
+        $this->Username = $NhanVien['Username'] ?? null;
+        $this->Password = $NhanVien['Password'] ?? null;
+        $this->Random = $NhanVien['Random'] ?? null;
+        $this->Name = $NhanVien['Name'] ?? null;
+        $this->Email = $NhanVien['Email'] ?? null;
+        $this->Phone = $NhanVien['Phone'] ?? null;
+        $this->Address = $NhanVien['Address'] ?? null;
+        $this->Note = $NhanVien['Note'] ?? null;
+        $this->Groups = $NhanVien['Groups'] ?? null;
+        $this->Active = $NhanVien['Active'] ?? null;
     }
 
     function CheckLogin($Username, $Password)
@@ -204,7 +209,7 @@ class Admin extends AdminTable
         $users = $admin->getColumnsOption(["Id", "Name"], $where);
         $admin = self::getCurentUser(true);
         foreach ($users as $key => $value) {
-            if ($key  == $admin->Id) {
+            if ($key == $admin->Id) {
                 $users[$key] = "_Bạn_ | " . $value;
             }
         }
@@ -222,7 +227,7 @@ class Admin extends AdminTable
         }
         return $admin->getColumnsOption(["Id", "Name"], $where);
     }
-
+ 
     public function TrungTamBaoHanh()
     {
         $taiKhoan = new TaiKhoan();
@@ -285,12 +290,11 @@ class Admin extends AdminTable
     public static function GetUserInfor($id)
     {
         $admin = new Admin();
-        $userInfor  =  $admin->GetUserById($id);
+        $userInfor = $admin->GetUserById($id);
         // var_dump($userInfor); 
         $userInfor = new Admin($userInfor);
         $userInfor = (array) $userInfor;
         $html = <<<HTML
-
             <table class="table table-border table-responsive">
                 <tr>
                      <td>Tài Khoản</td>

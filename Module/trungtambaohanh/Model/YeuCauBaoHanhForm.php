@@ -77,7 +77,7 @@ class YeuCauBaoHanhForm implements IYeuCauBaoHanh
         $Option[FormRender::Required] = "";
         $options = \Module\option\Model\Option::GetTinhThanh2Option(0);
         $nameForm = self::nameForm;
-        return new  FormRender(new \PFBC\Element\Select("Tỉnh Thành Phố", "{$nameForm}[" . __FUNCTION__ . "]", $options, $Option));
+        return new FormRender(new \PFBC\Element\Select("Tỉnh Thành Phố", "{$nameForm}[" . __FUNCTION__ . "]", $options, $Option));
     }
 
     public static function QuanHuyen($value, $tinhThanh = 1, $id = "khachhangtieudungQuanHuyen")
@@ -88,7 +88,7 @@ class YeuCauBaoHanhForm implements IYeuCauBaoHanh
         $Option[FormRender::Required] = "";
         $options = \Module\option\Model\Option::GetTinhThanh2Option($tinhThanh);
         $nameForm = self::nameForm;
-        return new  FormRender(new \PFBC\Element\Select("Quận Huyện",  "{$nameForm}[" . __FUNCTION__ . "]", $options, $Option));
+        return new FormRender(new \PFBC\Element\Select("Quận Huyện", "{$nameForm}[" . __FUNCTION__ . "]", $options, $Option));
     }
 
     public static function DiaChi($value = null, $title = null)
@@ -140,7 +140,7 @@ class YeuCauBaoHanhForm implements IYeuCauBaoHanh
             $Option["max"] = $max;
         }
         $nameForm = self::nameForm;
-        return new  FormRender(new \PFBC\Element\Textbox($title, "{$nameForm}[" . __FUNCTION__ . "]", $Option));
+        return new FormRender(new \PFBC\Element\Textbox($title, "{$nameForm}[" . __FUNCTION__ . "]", $Option));
     }
 
     public static function NoiDung($value = null, $title = null)

@@ -6,12 +6,12 @@ $YeuCauSuas = Module\trungtambaohanh\Model\YeuCauBaoHanh::YeuCauSuaChuas();
 </ol>
 <div class="container-fluid ">
     <section class="pb-10 mt-20">
-        <div class="connectedSortable">
+        <div class="">
             <div class="box box-primary">
                 <div class="box-header">
                     <h3 class="box-title">Danh sách yêu cầu bảo hành</h3>
                 </div>
-                <div class="box-body table-responsive ">
+                <div class="box-body  ">
                     <table class="table table-bordered table-striped  dataTable " id="data">
                         <thead>
                             <tr>
@@ -19,6 +19,7 @@ $YeuCauSuas = Module\trungtambaohanh\Model\YeuCauBaoHanh::YeuCauSuaChuas();
                                 <th>#</th>
                                 <th style="white-space: nowrap;">Name</th>
                                 <th style="white-space: nowrap;">Khách Hàng</th>
+                                <th style="white-space: nowrap;">Sự Cố</th>
                                 <th style="white-space: nowrap;">Tỉnh Thành</th>
                                 <th style="white-space: nowrap;">Thơi Gian Tạo</th>
                                 <th style="white-space: nowrap;">Thời Gian Cập Nhật</th>
@@ -31,7 +32,7 @@ $YeuCauSuas = Module\trungtambaohanh\Model\YeuCauBaoHanh::YeuCauSuaChuas();
                                 $_Option = new Module\trungtambaohanh\Model\YeuCauBaoHanh($op);
                             ?>
                                 <tr>
-                                    <td><a href="/trungtambaohanh/yeucaubaohanh/index/#/<?php echo $_Option->Code ?>" class="btn btn-success">Chọn</a></td>
+                                    <td><a href="/trungtambaohanh/yeucaubaohanh/index/<?php echo $_Option->Code ?>/" class="btn btn-success">Chọn</a></td>
                                     <td><?php echo $k + 1; ?></td>
                                     <td>
                                         <?php
@@ -41,6 +42,11 @@ $YeuCauSuas = Module\trungtambaohanh\Model\YeuCauBaoHanh::YeuCauSuaChuas();
                                     <td>
                                         <?php
                                         echo $_Option->KhachHangTieuDung()->Name;
+                                        ?>
+                                    </td>
+                                    <td>
+                                        <?php
+                                        echo $_Option->NoiDungBaoHanh()->Name;
                                         ?>
                                     </td>
                                     <td>

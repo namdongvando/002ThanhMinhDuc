@@ -6,9 +6,9 @@ $KhachHangs = \Module\trungtambaohanh\Model\TrungTamBaoHanh::TrungTamBaoHanhs();
     <li class="active">Trung Tâm Bảo Hành</li>
 </ol>
 <script type="text/javascript">
-    app.controller("ttbhController", function($scope, $http) {
-        $scope.ttbhInnit = function() {
-            $http.get("/option/api/options/").then(function(res) {});
+    app.controller("ttbhController", function ($scope, $http) {
+        $scope.ttbhInnit = function () {
+            $http.get("/option/api/options/").then(function (res) { });
         }
     });
 </script>
@@ -41,7 +41,7 @@ $KhachHangs = \Module\trungtambaohanh\Model\TrungTamBaoHanh::TrungTamBaoHanhs();
                             <?php
                             foreach ($KhachHangs as $index => $op) {
                                 $_op = new \Module\trungtambaohanh\Model\TrungTamBaoHanh($op);
-                            ?>
+                                ?>
                                 <tr>
                                     <td>
                                         <?php
@@ -49,15 +49,25 @@ $KhachHangs = \Module\trungtambaohanh\Model\TrungTamBaoHanh::TrungTamBaoHanhs();
                                         echo Module\trungtambaohanh\Model\TrungTamBaoHanhForm::Xoa($_op->Id);
                                         ?>
                                     </td>
-                                    <td><?php echo $index + 1 ?></td>
-                                    <td><?php echo $_op->Name ?></td>
-                                    <td><?php echo $_op->Hotline ?></td>
-                                    <td><?php
+                                    <td>
+                                        <?php echo $index + 1 ?>
+                                    </td>
+                                    <td>
+                                        <?php echo $_op->Name ?>
+                                    </td>
+                                    <td>
+                                        <?php echo $_op->Hotline ?>
+                                    </td>
+                                    <td>
+                                        <?php
                                         echo $_op->KhuVuc()->Name;
-                                        ?></td>
-                                    <td><?php echo $_op->Address; ?></td>
+                                        ?>
+                                    </td>
+                                    <td>
+                                        <?php echo $_op->Address; ?>
+                                    </td>
                                 </tr>
-                            <?php
+                                <?php
                             }
                             ?>
                         </tbody>

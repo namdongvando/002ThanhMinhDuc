@@ -21,7 +21,7 @@ class SanPham extends SanPhamData
         if ($dv) {
             if (!is_array($dv)) {
                 $dv = $this->GetById($dv);
-                
+
             }
         }
         $this->Id = $dv["Id"] ?? null;
@@ -130,7 +130,7 @@ class SanPham extends SanPhamData
             $sql .= " and `sp`.`Name` like '%{$name}%' and `Name` != '' ";
         }
         // echo $sqlCount;
-        $tongSql =  $sanpham->runsqlToArray($sqlCount);
+        $tongSql = $sanpham->runsqlToArray($sqlCount);
         $tong = ($tongSql[0]["Tong"]);
         $sql .= "limit {$pagesIndex},{$pageNumber}";
         return $sanpham->runsqlToArray($sql);

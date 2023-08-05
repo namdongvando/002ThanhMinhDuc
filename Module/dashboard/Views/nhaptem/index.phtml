@@ -46,7 +46,12 @@ $ds = $CodeQr->GetCodes();
                 <div class="box-header">
                     <h3 class="box-title">Danh Sách Mã</h3>
                     <div class="box-tools">
-                        <a href="/dashboard/nhaptem/scan" class="btn btn-primary"><i class="fa fa-camera"></i></a>
+                        <a href="/dashboard/nhaptem/scan" class="btn btn-primary">
+                            Quét Tem <i class="fa fa-camera"></i>
+                        </a>
+                        <a href="/dashboard/nhaptem/index" class="btn btn-primary">
+                            <i class="fa fa-refresh"></i>
+                        </a>
                     </div>
                 </div>
                 <div class="box-body table-responsive">
@@ -54,11 +59,21 @@ $ds = $CodeQr->GetCodes();
                         class="pull-right btn-sm btn btn-danger">
                         Xóa Hết
                     </a>
-                    <button type="button" class="btn btn-sm " data-toggle="modal" data-target='#ChonSanPham'>Chọn Sản
-                        Phẩm</button>
-                    <a href="/dashboard/nhaptem/index" class="btn btn-sm btn-primary">
-                        <i class="fa fa-refresh"></i>
+                    <?php
+                    $kt = \Model\Permistion::CheckPermistion([Admin::Admin, Admin::SuperAdmin]);
+                    if ($kt == true) {
+                        ?>
+                        <button type="button" class="btn btn-sm " data-toggle="modal" data-target='#ChonSanPham'>
+                            Chọn Sản Phẩm
+                        </button>
+                        <?php
+                    }
+                    ?>
+                    <a href="/dashboard/nhaptem/xuatkho" class="btn btn-sm btn-primary">
+                        Xuất kho
                     </a>
+
+
                     <div class="container">
                         <?php
                         ?>
@@ -66,8 +81,8 @@ $ds = $CodeQr->GetCodes();
                     <table class="table table-bordered">
                         <thead>
                             <tr>
-                                <th style="width: 50px">Thao Tác</th>
                                 <th style="width: 50px">Stt</th>
+                                <th style="width: 200px">Thao Tác</th>
                                 <th style="width: 150px">Mã Tem</th>
                                 <th>Thông Tin Sản Phẩm</th>
                             </tr>
@@ -80,15 +95,17 @@ $ds = $CodeQr->GetCodes();
                             if ($ds) {
                                 foreach ($ds as $k => $code) {
 
-                                    $temSP = new \Module\sanpham\Model\TemSanPham($code);  
+                                    $temSP = new \Module\sanpham\Model\TemSanPham($code);
                                     // var_dump($code);
                                     // var_dump($temSP);
                                     ?>
                                     <tr>
-                                        <td><a href="/sanpham/temsanpham/detailbysanpham/<?php echo $code; ?>/"
-                                                class="btn btn-primary">Xem</a></td>
                                         <td>
                                             <?php echo 1 + $index++; ?>
+                                        </td>
+                                        <td>
+                                            <a href="/dashboard/workflow/temsanpham/<?php echo $code; ?>/"
+                                                class="btn btn-primary">Chọn</a>
                                         </td>
                                         <td>
                                             <?php echo $temSP->Code; ?>
@@ -106,7 +123,6 @@ $ds = $CodeQr->GetCodes();
                                         </td>
                                     </tr>
                                     <?php
-
                                 }
                             }
                             ?>

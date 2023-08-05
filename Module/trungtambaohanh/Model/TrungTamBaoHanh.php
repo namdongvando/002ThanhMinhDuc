@@ -2,11 +2,13 @@
 
 namespace Module\trungtambaohanh\Model;
 
-class TrungTamBaoHanh extends TrungTamBaoHanhData {
+class TrungTamBaoHanh extends TrungTamBaoHanhData
+{
 
     public $Id, $Name, $Address, $Hotline, $TenNhanVien, $KhuVuc, $UserId;
 
-    public function __construct($dv = null) {
+    public function __construct($dv = null)
+    {
         parent::__construct();
         if ($dv) {
             if (!is_array($dv)) {
@@ -22,15 +24,20 @@ class TrungTamBaoHanh extends TrungTamBaoHanhData {
         }
     }
 
-    public static function TrungTamBaoHanhs() {
+    public static function TrungTamBaoHanhs()
+    {
         $TTKH = new TrungTamBaoHanh();
         return $TTKH->GetAll();
     }
 
-    public function KhuVuc() {
+    public function KhuVuc()
+    {
         return new \Module\option\Model\Option($this->KhuVuc);
+    }
+    public function GetToOption()
+    {
+        return $this->getColumnsOption(["Id", "Name"], "1=1");
     }
 
 }
 ?>
-

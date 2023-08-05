@@ -47,8 +47,12 @@ class OptionForm extends \PFBC\Form {
         $Option["value"] = $value;
         $Option["required"] = true;
         $Option["style"] = "width:100%;";
+
+        $options1 = Option::GetAll2OptionsByGroups("SettingService");
         $options = Option::GetGroupsOption();
-        return new \PFBC\Element\Select("Nhóm", "option[Groups]", $options, $Option);
+
+        $optionstotal = $options1 + $options;
+        return new \PFBC\Element\Select("Nhóm", "option[Groups]", $optionstotal, $Option);
     }
 
     public static function Parents($value = null) {

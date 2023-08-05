@@ -3,6 +3,7 @@
 namespace Module\sanpham\Model;
 
 use Module\khachhang\Model\KhachHangTieuDung;
+use Module\sanpham\Model\XuatNhapKho\PhieuXuatNhapChiTiet;
 
 class TemSanPham extends TemSanPhamData
 {
@@ -46,6 +47,34 @@ class TemSanPham extends TemSanPhamData
             $this->Parents = !empty($dv["Parents"]) ? $dv["Parents"] : null;
             $this->IsPrint = !empty($dv["IsPrint"]) ? $dv["IsPrint"] : null;
         }
+    }
+
+    function GetLichSuKiemHang()
+    {
+        $i = new SanPhamKiemHang();
+        return $i->GetByMaTem($this->Code, 1, 100, $total);
+    }
+    function ThongTinKiemHang()
+    {
+        $i = new SanPhamKiemHang();
+        return new SanPhamKiemHang($i->GetByMaTem($this->Code, 1, 1, $total)[0] ?? null);
+    }
+
+    function KiemHang($Status, $Content)
+    {
+        $admin = \Module\user\Model\Admin::getCurentUser(true);
+        $model["Id"] = $this->Id;
+        $model["UserId"] = $admin->Id;
+        $this->UpdateSubmit($model);
+        $spKh = new SanPhamKiemHang();
+        $spKh->InsertSubmit([
+            "Name" => $admin->Name,
+            "MaSanPham" => $this->SanPham()->Id,
+            "MaTem" => $this->Code,
+            "Status" => $Status,
+            "Content" => $Content,
+            "UserId" => $model["UserId"],
+        ]);
     }
 
     public static function GetRowsPT($params, $pagesIndex, $pageNumber, &$tong)
@@ -315,4 +344,81 @@ class TemSanPham extends TemSanPhamData
             return $this->ThangKetThuc . ' Tháng';
         return "Chưa cấu hình";
     }
+
+    function GetLichSuKiemHangHtml()
+    {
+        $itemsLs = $this->GetLichSuKiemHang();
+        ?>
+        <div class="table-responsive" style="height: 200px;">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Tài khoản</th>
+                        <th>Họ Tên</th>
+                        <th>Sản Phẩm</th>
+                        <th>Mã Tem</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php
+                    if ($itemsLs) {
+                        foreach ($itemsLs as $key => $value) {
+                            $_item = new SanPhamKiemHang($value);
+                            ?>
+                            <tr>
+                                <td>
+                                    <?php echo $key + 1 ?>
+                                </td>
+                                <td>
+                                    <?php echo $_item->UserId()->Username; ?>
+                                </td>
+                                <td>
+                                    <?php echo $_item->Name ?>
+                                </td>
+                                <td>
+                                    <?php echo $_item->SanPham()->Name; ?>
+                                </td>
+                                <td>
+                                    <?php echo $_item->MaTem ?>
+                                </td>
+                                <td>
+                                    <?php echo $_item->Status()->Name; ?>
+                                </td>
+                                <td>
+                                    <?php echo $_item->Content ?>
+                                </td>
+                                <td>
+                                    <?php echo $_item->CreateRecord ?>
+                                </td>
+                                <td>
+                                    <?php echo $_item->UpdateRecord ?>
+                                </td>
+                            </tr>
+                            <?php
+
+                        }
+                    }
+                    ?>
+                </tbody>
+            </table>
+        </div>
+
+        <?php
+
+    }
+    function PhieuXuatNhap()
+    {
+        $phieuChiTiet = new PhieuXuatNhapChiTiet();
+        return $phieuChiTiet->GetByMaTem($this->Code);
+    }
+    function PhieuXuatNhapHTML()
+    {
+        $DS = $this->PhieuXuatNhap();
+        ?> 
+
+        <?php
+    }
+
+
 }
