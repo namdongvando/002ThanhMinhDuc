@@ -13,15 +13,11 @@ class Obj2Html
 
     static function ThongTinSanPhamTheoMaTem($maTem)
     {
+        
         $temSanPham = new TemSanPham($maTem);
-        ?>
-
+        ?> 
         <p><b>Mã tem:</b>
-            <?php echo $temSanPham->Code; ?>
-            <?php
-            if()
-            ?>
-            <a >xem</a>
+            <?php echo $temSanPham->Code; ?> 
         </p>
         <p><b>Mã sản phẩm:</b>
             <?php echo $temSanPham->SanPham()->Code; ?>
@@ -29,8 +25,8 @@ class Obj2Html
         <p><b>Tên sản phẩm:</b>
             <?php echo $temSanPham->SanPham()->Name; ?>
         </p>
-        <p><b>Mô tả:</b>
-            <?php echo $temSanPham->SanPham()->Mota; ?>
+        <p><b>Tình trạng:</b>
+            <?php echo $temSanPham->Status()->Name; ?>
         </p>
         <p><b>Chủng loại SP:</b>
             <?php echo $temSanPham->SanPham()->ChungLoaiSP()->Name; ?>
@@ -53,7 +49,7 @@ class Obj2Html
         </p>
         <p>
             <b>
-                Tình Trạng Hàng Hóa:
+                Tình Trạng Kiểm hàng:
             </b>
             <?php
             echo $temSanPham->ThongTinKiemHang()->Status()->Name ?? "";
@@ -67,8 +63,8 @@ class Obj2Html
         $sanPham = new SanPham($maSanPham);
         ?>
 
-        <p><b>Id:</b>
-            <?php echo $sanPham->Id; ?>
+        <p><b>Mã tem:</b>
+            <?php echo $sanPham->TemBaoHang()->Code; ?>
         </p>
         <p><b>Mã sản phẩm:</b>
             <?php echo $sanPham->Code; ?>
@@ -109,7 +105,7 @@ class Obj2Html
         </p>
         <p><b>Nội dung bảo hành: </b>
             <?php echo $yeuCauBaoHanh->NoiDungBaoHanh()->Name; ?>
-        </p>
+        </p> 
         <?php
     }
 

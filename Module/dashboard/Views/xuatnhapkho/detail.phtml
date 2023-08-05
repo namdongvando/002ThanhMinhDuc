@@ -1,13 +1,13 @@
 <ol class="breadcrumb">
     <li><a href="/dashboard/">Dashboard</a></li>
-    <li><a>Phiếu Xuất Nhập Kho</a></li>
+    <li><a>Phiếu</a></li>
 </ol>
 <?php
 use Model\FormOptions;
 use Model\Obj2Html;
 use Module\sanpham\Model\XuatNhapKho\PhieuXuatNhap;
 use Module\sanpham\Model\XuatNhapKho\PhieuXuatNhapChiTiet;
-use Module\user\Model\Admin;
+use Module\user\Model\Admin; 
 
 $admin = Admin::getCurentUser(true);
 $CodeQr = new \Model\CodeQR($admin->Username);
@@ -20,12 +20,12 @@ $DSSanPham = $phieuXuatNhap->DanhSachSanPham();
         <div class="col-md-12">
             <div class="box box-primary">
                 <div class="box-header">
-                    <h3 class="box-title">Thông tin phiếu xuất/nhập</h3>
+                    <h3 class="box-title">Thông tin phiếu</h3>
                 </div>
                 <div class="box-body ">
                     <div class="row">
                         <div class="col-md-3"></div>
-                        <div class="col-md-6">
+                        <div class="col-md-6 ">
                             <h3 class="text-center">
                                 <?php echo $phieuXuatNhap->Name; ?>
                             </h3>
@@ -36,6 +36,18 @@ $DSSanPham = $phieuXuatNhap->DanhSachSanPham();
                             <p>
                                 <b>Loại phiếu:</b>
                                 <?php echo $phieuXuatNhap->Type()->Name; ?>
+                            </p>
+                            <p>
+                                <b>Điều kiện nhập kho:</b>
+                                <?php echo $phieuXuatNhap->DieuKienNhapKho()->Name; ?>
+                            </p>
+                            <p>
+                                <b>Tình trạng sản phẩm:</b>
+                                <?php echo $phieuXuatNhap->TinhTrangSanPham()->Name; ?>
+                            </p>
+                            <p>
+                                <b>Lý Do:</b>
+                                <?php echo $phieuXuatNhap->LyDo()->Name; ?>
                             </p>
                             <p>
                                 <b>Nhân viên:</b>

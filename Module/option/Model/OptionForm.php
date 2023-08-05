@@ -60,9 +60,9 @@ class OptionForm extends \PFBC\Form {
         $Option["value"] = $value;
         $Option["required"] = true;
         $Option["style"] = "width:100%;";
-        $options = Option::GetALL2Options(["Id", "Name"]);
-        array_unshift($options, "Là Cấp Cha");
-        return new \PFBC\Element\Select("Cấp Cha", "option[Parents]", $options, $Option);
+        $_options = Option::GetALL2Options(["Id", "Name"]);
+        array_unshift($_options, "Là Cấp Cha");
+        return new \PFBC\Element\Select("Cấp Cha", "option[Parents]", $_options, $Option);
     }
 
     public static function Code($value = null) {

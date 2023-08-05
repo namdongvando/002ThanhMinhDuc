@@ -10,6 +10,8 @@ class TemSanPham extends TemSanPhamData
 
     const ChuaDung = null;
     const Active = 1;
+    const KyGui = 3;
+    const TrungBay = 4;
     const DeActive = 0;
     const Huy = -1;
     const YeuCauKichHoat = 2;
@@ -290,7 +292,17 @@ class TemSanPham extends TemSanPhamData
             [
                 "Id" => self::YeuCauKichHoat,
                 "Name" => "Yêu Cầu Kích Hoạt",
-            ]
+            ],
+            self::KyGui =>
+            [
+                "Id" => self::KyGui,
+                "Name" => "Ký gửi",
+            ],
+            self::TrungBay =>
+            [
+                "Id" => self::TrungBay,
+                "Name" => "Trưng bày",
+            ] 
         ];
     }
 
@@ -415,7 +427,7 @@ class TemSanPham extends TemSanPhamData
     function PhieuXuatNhapHTML()
     {
         $DS = $this->PhieuXuatNhap();
-        ?> 
+        ?>
 
         <?php
     }

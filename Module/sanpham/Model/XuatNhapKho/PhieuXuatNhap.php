@@ -2,6 +2,7 @@
 namespace Module\sanpham\Model\XuatNhapKho;
 
 use datatable\ZendData;
+use Module\option\Model\Option;
 use Module\sanpham\Model\TemSanPham;
 use Module\user\Model\Admin;
 use stdClass;
@@ -15,6 +16,11 @@ class PhieuXuatNhap extends ZendData
     public $Id;
     public $Code;
     public $Name;
+    public $NamePhieu;
+    public $DieuKienNhapKho;
+    public $TinhTrangSanPham;
+    public $LyDo;
+
     public $Content;
     public $UserId;
     public $KhacHang;
@@ -42,6 +48,10 @@ class PhieuXuatNhap extends ZendData
         $this->Id = $item["Id"] ?? null;
         $this->Code = $item["Code"] ?? null;
         $this->Name = $item["Name"] ?? null;
+        $this->NamePhieu = $item["NamePhieu"] ?? null;
+        $this->DieuKienNhapKho = $item["DieuKienNhapKho"] ?? null;
+        $this->TinhTrangSanPham = $item["TinhTrangSanPham"] ?? null;
+        $this->LyDo = $item["LyDo"] ?? null;
         $this->Content = $item["Content"] ?? null;
         $this->UserId = $item["UserId"] ?? null;
         $this->KhacHang = $item["KhacHang"] ?? null;
@@ -49,6 +59,31 @@ class PhieuXuatNhap extends ZendData
         $this->CreateRecorde = $item["CreateRecorde"] ?? null;
         $this->UpdateRecorde = $item["UpdateRecorde"] ?? null;
 
+    }
+
+    function DieuKienNhapKho()
+    {
+        return new Option(
+            Option::GetOptionByGroupsCode(
+                "DoiTra_DieuKienNhapKho", $this->DieuKienNhapKho
+            )
+        );
+    }
+    function TinhTrangSanPham()
+    {
+        return new Option(
+            Option::GetOptionByGroupsCode(
+                "DoiTra_TinhTrangSanPham", $this->TinhTrangSanPham
+            )
+        );
+    }
+    function LyDo()
+    {
+        return new Option(
+            Option::GetOptionByGroupsCode(
+                "DoiTra_LyDo", $this->LyDo
+            )
+        );
     }
 
     function Type()
@@ -162,5 +197,5 @@ class PhieuXuatNhap extends ZendData
     {
         $id = $this->Code;
         return "<a href='/dashboard/xuatnhapkho/detail/{$id}' class='btn btn-primary' >Xem</a>";
-    } 
+    }
 }

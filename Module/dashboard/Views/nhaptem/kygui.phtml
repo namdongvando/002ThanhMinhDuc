@@ -1,0 +1,86 @@
+<ol class="breadcrumb">
+    <li><a href="/dashboard/">Dashboard</a></li>
+    <li><a href="/dashboard/nhaptem/index">Danh Sanh Sách Nhập</a></li>
+    <li><a>Kích hoạt ký gửi/ trưng bày</a></li>
+</ol>
+<?php
+
+use Model\FormCommon;
+use Model\FormOptions;
+use Model\FormRender;
+use Model\Obj2Html;
+use Module\sanpham\Model\TemSanPham;
+use Module\sanpham\Model\XuatNhapKho\FormPhieuXuatNhap;
+use Module\user\Model\Admin;
+use PFBC\Element\Select;
+
+$admin = Admin::getCurentUser(true);
+$CodeQr = new \Model\CodeQR($admin->Username);
+$ds = $CodeQr->GetCodes();
+?>
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="box box-primary">
+                <div class="box-header">
+                    <h3 class="box-title">Ký gửi / trung bày</h3>
+                    <div class="box-tools">
+                        <a href="/dashboard/nhaptem/scan" class="btn btn-primary"><i class="fa fa-camera"></i></a>
+                    </div>
+                </div>
+                <div class="box-body table-responsive">
+                    <form action="" method="POST">
+                        <p>Nhân viên kỹ thuật kích hoạt sản phẩm ký gửi / trưng bày</p>
+                        <?php
+                        $op = [
+                            TemSanPham::KyGui => "Ký Gửi",
+                            TemSanPham::TrungBay => "Trung Bày"
+                        ];
+                        $f = new FormRender(new Select("Hình Thức", "Status", $op, ["class" => "form-control"]));
+                        $f->renderHTML();
+
+                        ?>
+                        <button name="KyGui" onclick="return confirm('Bạn có muốn đổi trả các sản phẩm này?')"
+                            class="btn btn-sm btn-primary">
+                            Xác nhận
+                        </button>
+                    </form>
+                    <p>Chọn "Xuất kho" để ghi nhận thông tin nhân viên xuất kho </p>
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th style="width: 50px">Stt</th> 
+                                <th>Thông Tin Sản Phẩm</th>
+                            </tr>
+                        </thead>
+                        <tbody id="DanhSachTem">
+                            <?php
+                            $index = 0;
+                            if ($ds) {
+                                foreach ($ds as $k => $code) {
+                                    $temSP = new \Module\sanpham\Model\TemSanPham($code);
+                                    // var_dump($code);
+                                    // var_dump($temSP);
+                                    ?>
+                                    <tr>
+                                        <td>
+                                            <?php echo 1 + $index++; ?>
+                                        </td> 
+                                        <td>
+                                            <?php
+                                            Obj2Html::ThongTinSanPhamTheoMaTem($temSP->Code);
+                                            ?>
+                                        </td>
+                                    </tr>
+                                    <?php
+                                }
+                            }
+                            ?>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>

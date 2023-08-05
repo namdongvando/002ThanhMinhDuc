@@ -59,8 +59,14 @@ class TemSanPhamData extends \datatable\ZendData implements \Model\IModel
     }
 
     public function UpdateSubmit($model)
-    { 
+    {
         return $this->UpdateRowTable($model);
+    }
+    public function KichHoatTrangThai($trangThai, $DSMa)
+    {
+        $DSMaTem = implode("','", $DSMa);
+        $item["Status"] = intval($trangThai);
+        return $this->UpdateRowTable($item, "`Code` in ('{$DSMaTem}')");
     }
 
     public function DeleteSubmit($id, $isMD5 = false)

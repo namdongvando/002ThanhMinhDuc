@@ -44,7 +44,29 @@ class YeuCauBaoHanhData extends \datatable\ZendData implements \Model\IModel
         $model["UpdateDate"] = date(DateFomatDB, time());
         return $this->InsertRowsTable($model);
     }
-
+    public function UpdateSubmitPhuongAnXuLy($model)
+    {
+        $model["UpdateDate"] = date(DateFomatDB, time());
+        $this->UpdateRowTable($model);
+        $a = new Admin($model["idNhanVien"]);
+        $code =  $a->Username."|".$a->Name;
+        $model["NoiDungKhac"] = "Điều Phối cho nhân viên {$code}";
+        $model["idNhanVien"] = Admin::getCurentUser(true)->Id;
+        $log = new YeuCauBaoHanhLogData();
+        $log->InsertSubmit($model);
+    }
+    public function UpdateSubmitDieuPhoi($model)
+    {
+        $model["UpdateDate"] = date(DateFomatDB, time());
+        $this->UpdateRowTable($model);
+        $a = new Admin($model["idNhanVien"]);
+        $code =  $a->Username."|".$a->Name;
+        $model["NoiDung"] = "Khac";
+        $model["NoiDungKhac"] = "Điều Phối cho nhân viên {$code}";
+        $model["idNhanVien"] = Admin::getCurentUser(true)->Id;
+        $log = new YeuCauBaoHanhLogData();
+        $log->InsertSubmit($model);
+    }
     public function UpdateSubmit($model)
     {
         $model["UpdateDate"] = date(DateFomatDB, time());

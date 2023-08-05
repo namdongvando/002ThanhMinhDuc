@@ -73,7 +73,7 @@ class YeuCauBaoHanhLogData extends \datatable\ZendData
     }
     public function GetAllByCode($code)
     {
-        return $this->GetRowsByWhere("`Code` = '{$code}'");
+        return $this->GetRowsByWhere("`Code` = '{$code}' Order by `UpdateDate` desc");
     }
     public function GetById($id)
     {

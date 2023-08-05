@@ -68,7 +68,12 @@ use Module\option\Model\Option;
 use Module\trungtambaohanh\Model\YeuCauBaoHanhForm;
 
 $idSanPham = $_Param[0];
-$khachHang = $temSanPham->KhachHangTieuDung();
+$_SESSION["KhachHangTieuDung"] = $_SESSION["KhachHangTieuDung"] ?? null;
+if ($_SESSION["KhachHangTieuDung"] == null) {
+    $khachHang = $temSanPham->KhachHangTieuDung();
+} else {
+    $khachHang = $_SESSION["KhachHangTieuDung"];
+} 
 $sanPham = new Module\sanpham\Model\SanPham($sanPham);
 
 $link = "/public/phpqrcode/index.php?data=" . Root_URL . "baohanh/" . $idSanPham . "/"
@@ -184,6 +189,7 @@ $link = "/public/phpqrcode/index.php?data=" . Root_URL . "baohanh/" . $idSanPham
                                                 </div>
                                                 <div class="text-right">
                                                     <input type="hidden" name="BtnYeuCauKichHoat" value="1">
+                                                    <a class="btn btn-primary">Kích hoạt sản phẩm khác</a>
                                                     <button id="YeuCauKichHoat" type="submit"
                                                         class="btn btn-submit btn-primary">Yêu cầu kích hoạt</button>
                                                 </div>
@@ -277,9 +283,7 @@ $link = "/public/phpqrcode/index.php?data=" . Root_URL . "baohanh/" . $idSanPham
                                                 </tr>
                                             </table>
                                         </fieldset>
-
                                     </div>
-
                                 </div>
                             </div>
                         </div>
@@ -564,7 +568,7 @@ $link = "/public/phpqrcode/index.php?data=" . Root_URL . "baohanh/" . $idSanPham
             try {
                 var dataHTML = $(this).data();
                 var self = $(this);
-                var object = dataHTML.object;  
+                var object = dataHTML.object;
                 self.change(function () {
                     if (dataHTML.values == true) {
                         var url = dataHTML.url;

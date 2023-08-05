@@ -34,8 +34,10 @@ class yeucaubaohanh extends \ApplicationM
             $yeuCau = $ModelyeuCau->GetByCode($ModelyeuCau->Code);
             $yeuCau["IdTrungTamBaoHanh"] = $PostForm["IdTrungTamBaoHanh"];
             $yeuCau["idNhanVien"] = $PostForm["idNhanVien"];
-            var_dump($yeuCau);
-            $ModelyeuCau->UpdateSubmit($yeuCau);
+            // var_dump($PostForm);
+            // var_dump($yeuCau);
+            // die();
+            $ModelyeuCau->UpdateSubmitDieuPhoi($yeuCau);
             Common::toUrl();
         }
         if (isset($_POST["HoanThanh"])) {
@@ -76,16 +78,20 @@ class yeucaubaohanh extends \ApplicationM
         if (isset($_POST["PhuongAnXuLy"])) {
             $PostForm = $_POST[FormXuLyYeuCau::nameForm];
             $ModelyeuCau = new XuLyYeuCau();
-
             $yeuCau["UserId"] = Admin::getCurentUser(true)->Id;
             $yeuCau["MaYeuCau"] = $PostForm["MaYeuCau"];
             $yeuCau["Type"] = "PhuongAnXuLy";
             $yeuCau["NoiDung"] = $PostForm["NoiDung"];
             $yeuCau["NoiDungKhac"] = $PostForm["NoiDungKhac"];
-
             $ModelyeuCau->InsertSubmit($yeuCau);
             new Alert(["success", "Đã cập nhật phương án xử lý"]);
-            Common::toUrl();
+            $ModelyeuCau = new ModelYeuCauBaoHanh($PostForm["MaYeuCau"]);
+            $yeuCau = $ModelyeuCau->GetByCode($ModelyeuCau->Code);
+            $yeuCau["Status"] = ModelYeuCauBaoHanh::DangXuLy;
+            $yeuCau["Name"] = "PhuongAnXuLy";
+            $ModelyeuCau->UpdateSubmit($yeuCau);
+            $code =  $PostForm["MaYeuCau"];
+            Common::toUrl("/trungtambaohanh/yeucaubaohanh/index/{$code}");
         }
         return $this->ViewThemeModlue();
     }

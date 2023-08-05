@@ -134,6 +134,7 @@ class Controller_index extends Application
             unset($yeucaubaohanh["TinhTrang"]);
             $YeuCauKichHoat->UpdateSubmit($yeucaubaohanh);
         }
+        // cập nhật tem sảm  phẩm khi chưa kích hoạt
         $temsp = new TemSanPham($yeucaubaohanh["MaTem"]);
         if ($temsp->Status == TemSanPham::DeActive) {
             $model["Id"] = $temsp->Id;

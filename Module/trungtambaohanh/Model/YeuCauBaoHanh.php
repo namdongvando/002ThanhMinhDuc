@@ -42,7 +42,7 @@ class YeuCauBaoHanh extends YeuCauBaoHanhData
                 if (!$dv) {
                     $dv = $this->GetByCode($code);
                 }
-            }
+            } 
             $this->Id = $dv["Id"] ?? null;
             $this->Code = $dv["Code"] ?? null;
             $this->Name = $dv["Name"] ?? null;

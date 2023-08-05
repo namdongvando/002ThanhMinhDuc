@@ -2,10 +2,12 @@
 
 namespace Module\dashboard\Controller;
 
+use Common\Alert;
 use Common\Common;
 use Module\sanpham\Model\SanPham;
 use Module\sanpham\Model\SanPhamForm;
 use Module\sanpham\Model\TemSanPham;
+use Module\sanpham\Model\XuatNhapKho\FormPhieuXuatNhap;
 use Module\sanpham\Model\XuatNhapKho\PhieuXuatNhap;
 use Module\user\Model\Admin;
 
@@ -109,6 +111,52 @@ class nhaptem extends \ApplicationM
     {
         return $this->ViewThemeModlue([], null);
     }
+    function kygui()
+    {
+        $admin = Admin::getCurentUser(true);
+        $CodeQr = new \Model\CodeQR($admin->Username);
+        $ds = $CodeQr->GetCodes();
+        if (isset($_POST["KyGui"])) {
+            if ($ds) {
+                $tembaohanh = new TemSanPham();
+                $tembaohanh->KichHoatTrangThai($_POST["Status"], $ds);
+            } else {
+                new Alert(["danger", "Không có sản phẩm"]);
+            }
+        }
+        return $this->ViewThemeModlue([], null);
+    }
+    function doitra()
+    {
+        $admin = Admin::getCurentUser(true);
+        $CodeQr = new \Model\CodeQR($admin->Username);
+        $ds = $CodeQr->GetCodes();
+        if (isset($_POST["DoiTra"])) {
+            $admin = Admin::getCurentUser(true);
+            $CodeQr = new \Model\CodeQR($admin->Username);
+            $ds = $CodeQr->GetCodes();
+            if ($ds) {
+                $dataPost = $_POST[FormPhieuXuatNhap::nameForm];
+                $phieu = new PhieuXuatNhap();
+                $postData["Code"] = $phieu->GetCode();
+                $postData["Name"] = "Phiếu Đổi Trả";
+                $postData["NamePhieu"] = "PhieuDoiTra";
+                $postData["Content"] = $dataPost["Content"];
+                $postData["DieuKienNhapKho"] = $dataPost["DieuKienNhapKho"];
+                $postData["TinhTrangSanPham"] = $dataPost["TinhTrangSanPham"];
+                $postData["LyDo"] = $dataPost["LyDo"];
+                $postData["UserId"] = $admin->Id;
+                $postData["KhacHang"] = "";
+                $postData["Type"] = 1;
+                $code = $phieu->TaoPhieu($postData, $ds);
+                $CodeQr->clearCode();
+                Common::toUrl("/dashboard/xuatnhapkho/detail/{$code}");
+
+            }
+            new Alert(["danger", "Chưa có sản phẩm"]);
+        }
+        return $this->ViewThemeModlue([], null);
+    }
     function xuatkhodanhsachtem()
     {
 
@@ -117,7 +165,7 @@ class nhaptem extends \ApplicationM
         $ds = $CodeQr->GetCodes();
         if ($ds) {
             $phieu = new PhieuXuatNhap();
-            $postData["Code"] = $phieu->GetCode(-1);
+            $postData["Code"] = $phieu->GetCode();
             $postData["Name"] = "Phiếu xuất kho từ nhập tem";
             $postData["Content"] = "";
             $postData["UserId"] = $admin->Id;
@@ -184,4 +232,3 @@ class nhaptem extends \ApplicationM
         }
     }
 }
-?>
