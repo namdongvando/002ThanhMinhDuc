@@ -10,6 +10,8 @@ use Zend\Db\TableGateway\TableGateway;
 
 class PhieuXuatNhap extends ZendData
 {
+    const PhieuXuat = -1;
+    const PhieuNhap = 1;
     private static $tableNews;
     private $TableName;
 
@@ -104,9 +106,9 @@ class PhieuXuatNhap extends ZendData
     {
         return new Admin($this->UserId);
     }
-    function GetItems($params, $indexPage, $numberPage, $total)
+    function GetItems($params, $indexPage, $numberPage, &$total)
     {
-        $where = "1=1";
+        $where = "1=1 order by `CreateRecorde` DESC";
         return $this->GetRowsTablePt($where, $indexPage, $numberPage, $total);
 
     }
@@ -138,10 +140,12 @@ class PhieuXuatNhap extends ZendData
 
     function TaoPhieu($Phieu, $DSMtem, $UserId = null)
     {
+
         if ($UserId == null) {
             $admin = \Module\user\Model\Admin::getCurentUser(true);
             $UserId = $admin->Id;
         }
+        
         $id = $this->Post($Phieu);
         foreach ($DSMtem as $key => $value) {
             $tem = new TemSanPham($value);
@@ -157,7 +161,9 @@ class PhieuXuatNhap extends ZendData
                 "Id" => $tem->Id,
                 "UserId" => $tem->UserId
             ]);
+
             $ChiTietPhieu = new PhieuXuatNhapChiTiet();
+         
             $ChiTietPhieu->Post($model);
 
         }
@@ -172,7 +178,7 @@ class PhieuXuatNhap extends ZendData
 
     function ToRow($index)
     {
-        $a["Id"] = $this->Id;
+        $a["Id"] = $index+1;
         $a["Code"] = $this->Code;
         $a["Name"] = $this->Name;
         $a["Content"] = $this->Content;
@@ -192,6 +198,21 @@ class PhieuXuatNhap extends ZendData
     function columns()
     {
 
+    }
+
+    function ToArray() {
+        $a["Id"] = $this->Id;
+        $a["Code"] = $this->Code;
+        $a["Name"] = $this->Name;
+        $a["NamePhieu"] = $this->NamePhieu;
+        $a["DieuKienNhapKho"] = $this->DieuKienNhapKho;
+        $a["TinhTrangSanPham"] = $this->TinhTrangSanPham;
+        $a["LyDo"] = $this->LyDo;
+        $a["Content"] = $this->Content;
+        $a["UserId"] = $this->UserId;
+        $a["KhacHang"] = $this->KhacHang;
+        $a["Type"] = $this->Type;
+        return $a;
     }
     function BtnGroup()
     {

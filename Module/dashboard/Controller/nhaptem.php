@@ -35,17 +35,35 @@ class nhaptem extends \ApplicationM
                 $MaDanhMuc = $Chon["MaDanhMuc"] ?? null;
                 $MaDaiLy = $SanPham["MaDaiLy"] ?? null;
                 $NhanVienKyThuat = $Chon["NhanVien"] ?? null;
+                $NhanVienBanHang = $Chon["NhanVienBanHang"] ?? null;
+                $LyDoXuatKho = $Chon["LyDoXuatKho"] ?? null;
+
+                $Lydo = [
+                    TemSanPham::KyGui => "KyGui",
+                    TemSanPham::TrungBay => "TrungBay"
+                ];
+                $StatusLyDo = [
+                    "KyGui" => TemSanPham::KyGui,
+                    "TrungBay" => TemSanPham::TrungBay
+                ];
+
+                $TemSanPhamStatus = TemSanPham::DeActive;
+                // 
+                if (in_array($LyDoXuatKho, $Lydo)) {
+                    $TemSanPhamStatus = $StatusLyDo[$LyDoXuatKho];
+                } 
                 if ($NhanVienKyThuat == null) {
                     throw new \Exception("Không có thông tin nhân viên");
                 }
                 if ($MaDaiLy == null || $MaDaiLy == "all") {
-                    throw new \Exception("Không có thông tin đại lý::{$MaDaiLy}");
+                    throw new \Exception("Chọn Thông tin đại lý");
                 }
                 $sanphamPost = $_POST[SanPhamForm::formName];
 
                 $op = new \Module\option\Model\Option($MaDanhMuc);
                 $admin = \Module\user\Model\Admin::getCurentUser(true);
                 $CodeQr = new \Model\CodeQR($admin->Username);
+               // danh sách tem 
                 $ds = $CodeQr->GetCodes();
                 if ($ds == false) {
                     throw new \Exception("Không có danh sách sản phẩm");
@@ -67,13 +85,24 @@ class nhaptem extends \ApplicationM
                         $SanPham->UpdateSubmit($model);
                         $tenSp = new \Module\sanpham\Model\TemSanPham();
                         $model_Tem["UserId"] = $NhanVienKyThuat;
-                        $model_Tem["Status"] = TemSanPham::DeActive;
+                        $model_Tem["Status"] = $TemSanPhamStatus;
                         $tenSp->UpdateSubmit($model_Tem);
+                          
                     }
                 }
-            } catch (\Exception $exc) {
-                echo $exc->getMessage();
-
+                $PhieuXuatNhap = new PhieuXuatNhap();
+                $PhieuXuatNhap->Code = time();
+                $PhieuXuatNhap->Name = "Xuất Kho";
+                $PhieuXuatNhap->NamePhieu = "PhieuXuatKho";
+                $PhieuXuatNhap->Content = "";
+                $PhieuXuatNhap->Type = PhieuXuatNhap::PhieuXuat;
+                $PhieuXuatNhap->LyDo =  $LyDoXuatKho;
+                $PhieuXuatNhap->UserId =  $NhanVienBanHang;
+                $PhieuXuatNhap->KhacHang = $MaDaiLy;
+                $PhieuXuatNhap->TaoPhieu($PhieuXuatNhap->ToArray(),$ds,$NhanVienBanHang);
+                Common::toUrl();
+            } catch (\Exception $exc) { 
+                new Alert(["danger", $exc->getMessage()]); 
             }
         }
         return $this->ViewThemeModlue([], null);

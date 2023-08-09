@@ -5,6 +5,7 @@ namespace Module\trungtambaohanh\Controller;
 use Common\Alert;
 use Common\Common;
 use Exception;
+use Module\sanpham\Model\TemSanPham;
 use Module\trungtambaohanh\Model\FormXuLyYeuCau;
 use Module\trungtambaohanh\Model\FormYeuCauBaoHanh;
 use Module\trungtambaohanh\Model\XuLyYeuCau;
@@ -40,19 +41,12 @@ class yeucaubaohanh extends \ApplicationM
             $ModelyeuCau->UpdateSubmitDieuPhoi($yeuCau);
             Common::toUrl();
         }
-        if (isset($_POST["HoanThanh"])) {
+        if (isset($_POST["XacNhaHoanThanh"])) {
             //            var_dump($_POST);
             $Ma = $_POST["Code"];
             $ModelyeuCau = new \Module\trungtambaohanh\Model\YeuCauBaoHanh($Ma);
             $yeuCau = $ModelyeuCau->GetByCode($Ma);
-            $yeuCau["Status"] = \Module\trungtambaohanh\Model\YeuCauBaoHanh::DaXuLy;
-            if ($_FILES["hinhanh"]["error"] == 0) {
-                $adapter = new \Core\Adapter();
-                $img = "public/baohanh/";
-                $imgName = $adapter->upload_image1($_FILES["hinhanh"], $img, $yeuCau["Code"] . time(), false);
-                $imgName = "/{$imgName}";
-                $yeuCau["HinhAnh"] = $imgName;
-            }
+            $yeuCau["Status"] = ModelYeuCauBaoHanh::DaXuLy;
             $ModelyeuCau->UpdateSubmit($yeuCau);
         }
         return $this->ViewThemeModlue();
@@ -69,7 +63,8 @@ class yeucaubaohanh extends \ApplicationM
             $yeuCau["NoiDungKhac"] = $PostForm["NoiDungKhac"];
             $ModelyeuCau->UpdateSubmit($yeuCau);
             new Alert(["success", "Đã cập nhật lỗi bảo hành"]);
-            Common::toUrl();
+            $code = $ModelyeuCau->Code;
+            Common::toUrl("/trungtambaohanh/yeucaubaohanh/index/{$code}");
         }
         return $this->ViewThemeModlue();
     }
@@ -90,7 +85,7 @@ class yeucaubaohanh extends \ApplicationM
             $yeuCau["Status"] = ModelYeuCauBaoHanh::DangXuLy;
             $yeuCau["Name"] = "PhuongAnXuLy";
             $ModelyeuCau->UpdateSubmit($yeuCau);
-            $code =  $PostForm["MaYeuCau"];
+            $code = $PostForm["MaYeuCau"];
             Common::toUrl("/trungtambaohanh/yeucaubaohanh/index/{$code}");
         }
         return $this->ViewThemeModlue();
@@ -121,13 +116,22 @@ class yeucaubaohanh extends \ApplicationM
                     true
                 );
             }
+            $ModelyeuCau = new ModelYeuCauBaoHanh($PostForm["MaYeuCau"]);
+            $yeuCau = $ModelyeuCau->GetByCode($ModelyeuCau->Code);
+            $yeuCau["Status"] = ModelYeuCauBaoHanh::YeuCauKiemTra;
+            $yeuCau["Name"] = "PhuongAnXuLy";
+            $ModelyeuCau->UpdateSubmit($yeuCau);
             new Alert(["success", "Đã cập nhật Kết quả bảo hành"]);
             Common::toUrl("/trungtambaohanh/yeucaubaohanh/index/{$code}/");
         }
         return $this->ViewThemeModlue();
     }
 
+    function TenBaoHanh()
+    {
 
+        return $this->ViewThemeModlue();
+    }
 
     function detail()
     {
@@ -166,6 +170,32 @@ class yeucaubaohanh extends \ApplicationM
         $yeuCauBaoHanh->Status = ModelYeuCauBaoHanh::DaXuLy;
 
         $yeuCauBaoHanh->UpdateSubmit($yeuCauBaoHanh->ToArray());
+        Common::toUrl();
+    }
+
+    function TaoYeuCauBaoHanh()
+    {
+        $temSanPham = new TemSanPham($this->getParam(0)) ;
+        if($temSanPham->Id != null){
+            $KHTieuDung = $temSanPham->KhachHangTieuDung();
+            $idNhanVien = Admin::getCurentUser(true)->Id;
+            $ModelYeuCau["Code"] = md5(time() . rand(0, time()));
+            $ModelYeuCau["Status"] = ModelYeuCauBaoHanh::MoiTao;
+            $ModelYeuCau["MaTem"] =  $temSanPham->Code;
+            $ModelYeuCau["KhachHangTieuDung"] =  $KHTieuDung->Id;
+            $ModelYeuCau["SDT"] =  $KHTieuDung->Phone;
+            $ModelYeuCau["TinhThanh"] =  $KHTieuDung->TinhThanh;
+            $ModelYeuCau["QuanHuyen"] =  $KHTieuDung->QuanHuyen;
+            $ModelYeuCau["NgayBaoHanh"] =  date("Y-m-d",time());
+            $ModelYeuCau["NoiDung"] =  "Bảo hành theo yêu cầu";
+            $ModelYeuCau["Name"] =  "Bảo hành theo yêu cầu";
+            $ModelYeuCau["idNhanVien"] = $idNhanVien;
+            $ModelYeuCau["HinhAnh"] = "";
+            $ModelYeuCau["DiaChi"] = $KHTieuDung->DiaChi();
+            $MYeuCau = new ModelYeuCauBaoHanh();
+            $MYeuCau->InsertSubmit($ModelYeuCau);
+
+        }
         Common::toUrl();
     }
 

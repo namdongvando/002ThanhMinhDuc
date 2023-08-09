@@ -15,5 +15,6 @@ class Form {
     public static function RequestGet($name, $defaut) {
         return isset($_GET[$name]) ? $_GET[$name] : $defaut;
     }
+ 
 
 }

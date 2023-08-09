@@ -160,6 +160,19 @@ class Controller_index extends Application
         $ModelYeuCau["DiaChi"] = \Module\option\Model\SuCoMacPhai::SuCoMacPhaiByCode($ModelYeuCau["NoiDung"])["Name"];
         $MYeuCau->InsertSubmit($ModelYeuCau);
 
+        // $ModelYeuCau["Code"];
+        if ($_FILES["HinhLoi"]) {
+            // var_dump($_FILES[FormXuLyYeuCau::nameForm]);
+            $adapter = new \Core\Adapter();
+            $yeuCauCode = $ModelYeuCau["Code"];
+            $img = "public/baohanh/{$yeuCauCode}/";
+             $adapter->upload_image1(
+                $_FILES["HinhLoi"],
+                $img,
+                $yeuCauCode,
+                true
+            );
+        }
         $thongBao = new ThongBao();
         $tt = [
             "Code" => md5("/dashboard/index"),
@@ -235,6 +248,11 @@ class Controller_index extends Application
             "khachHang" => $kH,
             "sanPham" => $SanPham
         ], null, "");
+    }
+
+    function scan()
+    {
+        return $this->ViewTheme();
     }
 
     public function LuuPhanAnh()

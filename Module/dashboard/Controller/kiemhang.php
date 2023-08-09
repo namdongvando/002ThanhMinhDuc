@@ -5,6 +5,7 @@ namespace Module\dashboard\Controller;
 use Common\Alert;
 use Common\Common;
 use Exception;
+use Module\sanpham\Model\DanhMucSanPham;
 use Module\sanpham\Model\FormKiemHang;
 use Module\sanpham\Model\SanPham;
 use Module\sanpham\Model\SanPhamForm;
@@ -90,10 +91,23 @@ class kiemhang extends \ApplicationM
         if (isset($_POST[FormKiemHang::FormName])) {
             try {
                 $formData = $_POST[FormKiemHang::FormName];
+                $DanhMucSanPham = new DanhMucSanPham();
                 $maTem = new TemSanPham($formData["MaTem"]);
                 $kihang = new SanPhamKiemHang();
                 $admin = \Module\user\Model\Admin::getCurentUser(true);
+
+                $sp = $maTem->SanPham();
+                $DMSanPham = new DanhMucSanPham($DanhMucSanPham->DMByGroupsCode($formData["SanPham"]));
+
+                $sp->Code = $formData["SanPham"];
+                $sp->ChungLoaiSP = $DMSanPham->Parents;
+                $sp->DanhMuc = $DMSanPham->Code;
+                $sp->Name = $DMSanPham->Name;
+                // sửa thong tin sản phẩm
+                $maTem->SanPham()->UpdateSubmit($sp->ToArray());
+
                 $maTem->KiemHang($formData["Status"], $formData["Content"]);
+
                 // $p["Name"] = $admin->Name;
                 // $p["MaSanPham"] = $formData["MaSanPham"];
                 // $p["MaTem"] = $formData["MaTem"];
@@ -103,7 +117,7 @@ class kiemhang extends \ApplicationM
                 // $kihang->InsertSubmit($p);
 
                 new Alert(["success", "Đã cập nhật thành công"]);
-                Common::toUrl();
+                // Common::toUrl();
             } catch (Exception $th) {
                 //throw $th;
             }

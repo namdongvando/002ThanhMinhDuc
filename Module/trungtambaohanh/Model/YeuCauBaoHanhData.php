@@ -29,7 +29,7 @@ class YeuCauBaoHanhData extends \datatable\ZendData implements \Model\IModel
     }
 
     public function GetById($id)
-    {
+    { 
         return $this->GetRowByWhere("`Id` = '{$id}'");
     }
 

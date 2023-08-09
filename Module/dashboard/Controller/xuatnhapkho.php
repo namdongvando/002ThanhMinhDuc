@@ -28,19 +28,22 @@ class xuatnhapkho extends \ApplicationM
     {
         $XuatNhapKho = new PhieuXuatNhap();
         $total = 0;
-        $items = $XuatNhapKho->GetItems([], 1, 10, $total);
+        $pageIndex = intval($_REQUEST["indexPage"] ?? "1");
+        $params["pageSize"] = intval($_REQUEST["pageIndex"] ?? "10");
+        $items = $XuatNhapKho->GetItems([], $pageIndex, $params["pageSize"], $total);
         $response = new Response();
-        $response->params = ["number" => 1, "keyword" => $_GET["keyword"] ?? ""];
-        $response->totalrows = 10;
-        $response->number = 1;
-        $response->indexPage = 1;
+        $response->params = $params;
+        $response->totalrows = $total;
+        $response->number = $params["pageSize"];
+        $response->indexPage = $pageIndex;
+        $response->totalPage = ceil($total / $params["pageSize"]);
         $response->rows = $items;
         $response->status = Response::OK;
         $response->columns = [
-            "Id" => "Id",
+            "Id" => "#",
             "Code" => "Mã Phiếu",
             "Name" => "Tên Phiếu",
-            "UserId" => "Nhân Viên",
+            "UserId" => "Nhân Viên Bán Hàng",
             "KhacHang" => "Khách hàng",
             "Type" => "Loại Phiếu",
             "CreateRecorde" => "Ngày Tạo",
@@ -48,7 +51,6 @@ class xuatnhapkho extends \ApplicationM
             "Actions" => "Thao tác",
         ];
         $data = $response->ToRow();
-
         return $this->ViewThemeModlue(["response" => $data], null);
     }
     function detail()

@@ -24,7 +24,7 @@ $CodeQr = new \Model\CodeQR($admin->Username);
                 </div>
                 <div class="box-body ">
                     <?php
-                    $link = "/examples/index.php";
+                    $link = "/dashboard/xuatnhapkho/index/";
                     // $dataTable = new Table(["rows" => $data["rows"], "columns" => $columns], Card::class);
                     $dataTable = new Table([
                         "rows" => $response["rows"],
@@ -37,7 +37,7 @@ $CodeQr = new \Model\CodeQR($admin->Username);
                         ]
                     );
                     $dataTable->RenderHtml();
-                    echo $dataTable->PaginationWidthData($data, $link);
+                    echo $dataTable->PaginationWidthData($response, $link);
                     ?>
                 </div>
             </div>

@@ -13,11 +13,11 @@ class Obj2Html
 
     static function ThongTinSanPhamTheoMaTem($maTem)
     {
-        
+
         $temSanPham = new TemSanPham($maTem);
-        ?> 
+        ?>
         <p><b>Mã tem:</b>
-            <?php echo $temSanPham->Code; ?> 
+            <?php echo $temSanPham->Code; ?>
         </p>
         <p><b>Mã sản phẩm:</b>
             <?php echo $temSanPham->SanPham()->Code; ?>
@@ -31,10 +31,15 @@ class Obj2Html
         <p><b>Chủng loại SP:</b>
             <?php echo $temSanPham->SanPham()->ChungLoaiSP()->Name; ?>
         </p>
-        <p><b>Chủng loại SP:</b>
+        <p><b>Loại SP:</b>
             <?php echo $temSanPham->SanPham()->DanhMuc()->Name; ?>
         </p>
         <p><b>Nhân Viên:</b>
+            <?php
+            echo $temSanPham->UserId()->Name ?? "";
+            ?>
+        </p>
+        <p><b>Nhân viên bán hàng:</b>
             <?php
             echo $temSanPham->UserId()->Name ?? "";
             ?>
@@ -85,8 +90,9 @@ class Obj2Html
     }
 
     public static function ThongTinYeuCau($yc)
-    {
+    { 
         $yeuCauBaoHanh = new YeuCauBaoHanh($yc);
+
         ?>
         <p><b>Mã yêu cầu: </b>
             <?php echo $yeuCauBaoHanh->Code; ?>
@@ -105,7 +111,7 @@ class Obj2Html
         </p>
         <p><b>Nội dung bảo hành: </b>
             <?php echo $yeuCauBaoHanh->NoiDungBaoHanh()->Name; ?>
-        </p> 
+        </p>
         <?php
     }
 

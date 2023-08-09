@@ -59,6 +59,8 @@
     }
 </style>
 <?php
+use Model\FormRender;
+
 $temSanPham = new \Module\sanpham\Model\TemSanPham($_Param[0]);
 
 use Model\FormTieuTriDanhGia;
@@ -66,6 +68,7 @@ use Model\Notification;
 use Module\khachhang\Model\KhachHangTieuDungForm;
 use Module\option\Model\Option;
 use Module\trungtambaohanh\Model\YeuCauBaoHanhForm;
+use PFBC\Element\File;
 
 $idSanPham = $_Param[0];
 $_SESSION["KhachHangTieuDung"] = $_SESSION["KhachHangTieuDung"] ?? null;
@@ -73,7 +76,7 @@ if ($_SESSION["KhachHangTieuDung"] == null) {
     $khachHang = $temSanPham->KhachHangTieuDung();
 } else {
     $khachHang = $_SESSION["KhachHangTieuDung"];
-} 
+}
 $sanPham = new Module\sanpham\Model\SanPham($sanPham);
 
 $link = "/public/phpqrcode/index.php?data=" . Root_URL . "baohanh/" . $idSanPham . "/"
@@ -135,7 +138,7 @@ $link = "/public/phpqrcode/index.php?data=" . Root_URL . "baohanh/" . $idSanPham
                                                         Tên Sản Phẩm:
                                                         <b>
                                                             <?php
-                                                            echo $temSanPham->SanPham()->Name;
+                                                            echo $temSanPham->SanPham()->Name == "" ? "Chưa xác định" : $temSanPham->SanPham()->Name;
                                                             ?>
                                                         </b>
                                                     </td>
@@ -158,40 +161,53 @@ $link = "/public/phpqrcode/index.php?data=" . Root_URL . "baohanh/" . $idSanPham
                                                 </legend>
 
                                                 <div class="">
-                                                    <div class="row">
-                                                        <div class="col-md-6">
-                                                            <?php
-                                                            YeuCauBaoHanhForm::HoTen($khachHang->Name)->renderHTML();
-                                                            ?>
+                                                    <?php
+                                                    if ($temSanPham->SanPham()->Name) {
+                                                        ?>
+                                                        <div class="row">
+                                                            <div class="col-md-6">
+                                                                <?php
+                                                                YeuCauBaoHanhForm::HoTen($khachHang->Name)->renderHTML();
+                                                                ?>
+                                                            </div>
+                                                            <div class="col-md-6">
+                                                                <?php
+                                                                YeuCauBaoHanhForm::SDT($khachHang->Phone)->renderHTML();
+                                                                ?>
+                                                            </div>
+                                                            <div class="col-md-6">
+                                                                <?php
+                                                                YeuCauBaoHanhForm::TinhThanh($khachHang->TinhThanh, "TinhThanhId", "#QuanHuyenId")->renderHTML();
+                                                                ?>
+                                                            </div>
+                                                            <div class="col-md-6">
+                                                                <?php
+                                                                YeuCauBaoHanhForm::QuanHuyen($khachHang->QuanHuyen, $khachHang->TinhThanh, "QuanHuyenId")->renderHTML();
+                                                                ?>
+                                                            </div>
+                                                            <div class="col-md-12">
+                                                                <?php
+                                                                YeuCauBaoHanhForm::DiaChi($khachHang->DiaChi)->renderHTML();
+                                                                YeuCauBaoHanhForm::MaTem($temSanPham->Code, null, true)->render();
+                                                                ?>
+                                                            </div>
                                                         </div>
-                                                        <div class="col-md-6">
-                                                            <?php
-                                                            YeuCauBaoHanhForm::SDT($khachHang->Phone)->renderHTML();
-                                                            ?>
+                                                        <div class="text-right">
+                                                            <input type="hidden" name="BtnYeuCauKichHoat" value="1">
+                                                            <button id="YeuCauKichHoat" type="submit"
+                                                                class="btn btn-submit btn-primary">Yêu cầu kích hoạt</button>
                                                         </div>
-                                                        <div class="col-md-6">
-                                                            <?php
-                                                            YeuCauBaoHanhForm::TinhThanh($khachHang->TinhThanh, "TinhThanhId", "#QuanHuyenId")->renderHTML();
-                                                            ?>
-                                                        </div>
-                                                        <div class="col-md-6">
-                                                            <?php
-                                                            YeuCauBaoHanhForm::QuanHuyen($khachHang->QuanHuyen, $khachHang->TinhThanh, "QuanHuyenId")->renderHTML();
-                                                            ?>
-                                                        </div>
-                                                        <div class="col-md-12">
-                                                            <?php
-                                                            YeuCauBaoHanhForm::DiaChi($khachHang->DiaChi)->renderHTML();
-                                                            YeuCauBaoHanhForm::MaTem($temSanPham->Code, null, true)->render();
-                                                            ?>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="text-right">
-                                                    <input type="hidden" name="BtnYeuCauKichHoat" value="1">
-                                                    <a class="btn btn-primary">Kích hoạt sản phẩm khác</a>
-                                                    <button id="YeuCauKichHoat" type="submit"
-                                                        class="btn btn-submit btn-primary">Yêu cầu kích hoạt</button>
+                                                        <?php
+                                                    } else {
+                                                        ?>
+                                                        <p style="color:red">Tem bảo hanh chưa có thông tin sản phẩm 
+                                                        <b>
+                                                            Liên hệ SĐT <a href="tel:0329.687.989">0329.687.989</a>
+                                                        </b> Để được hỗ trợ</p>
+                                                        <?php
+                                                    }
+                                                    ?>
+
                                                 </div>
 
                                             </fieldset>
@@ -288,6 +304,10 @@ $link = "/public/phpqrcode/index.php?data=" . Root_URL . "baohanh/" . $idSanPham
                             </div>
                         </div>
                         <div class="">
+                            <a href="/index/scan/" class="btn btn-primary">
+                                Quét mã
+                                <i class="fa fa-camera"></i>
+                            </a>
                             <a class="btn btn-primary" data-toggle="modal" href='#MaBaoHanh'>Mã QR Code</a>
                             <a class="btn btn-primary" target="_self" data-toggle="modal" href='#DanhGiaHoTro'>Đánh giá
                                 hỗ trợ</a>
@@ -324,6 +344,7 @@ $link = "/public/phpqrcode/index.php?data=" . Root_URL . "baohanh/" . $idSanPham
                     <?php
                 }
                 ?>
+
             </form>
         </div>
     </div>
@@ -376,6 +397,12 @@ $link = "/public/phpqrcode/index.php?data=" . Root_URL . "baohanh/" . $idSanPham
                         null,
                         true
                     )->render();
+                    $fForm = new FormRender(new File("Hình sản Phẩm Lỗi", "HinhLoi", [
+                        "accept" => "image/*"
+                    ]));
+                    $fForm->renderHTML();
+
+
                     ?>
                 </div>
                 <div class="modal-footer">

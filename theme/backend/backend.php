@@ -632,8 +632,8 @@ class backend
     public function footer()
     {
         ?>
-        <footer class="main-footer ">
-            <div class="pull-right hidden-xs">
+        <footer class="main-footer hidden-xs">
+            <div class="pull-right  ">
                 <b>Version</b> 1.0.1
             </div>
             <strong>Copyright &copy;
@@ -782,15 +782,9 @@ class backend
                     <!-- Collect the nav links, forms, and other content for toggling -->
                     <div class="collapse navbar-collapse pull-left" id="navbar-collapse">
                         <ul class="nav navbar-nav">
-                            <li class="">
-                                <a href="/dashboard/">
-                                    <span>Danh Sách Công Việc</span>
-                                </a>
-                            </li>
                             <?php
                             \Common\Link::KiemHang();
                             ?>
-
                         </ul>
                     </div><!-- /.navbar-collapse -->
                     <!-- Navbar Right Menu -->

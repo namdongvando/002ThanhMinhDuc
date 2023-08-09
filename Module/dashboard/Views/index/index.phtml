@@ -1,80 +1,113 @@
 <?php
-$YeuCauSuas = Module\trungtambaohanh\Model\YeuCauBaoHanh::YeuCauSuaChuas();
+
+use Datatable\Response;
+use Datatable\Table;
+use Model\FormRender;
+use Module\trungtambaohanh\Model\YeuCauBaoHanh;
+use PFBC\Element\Hidden;
+use PFBC\Element\Select;
+use PFBC\Element\Textbox;
+
+$YeuCauSuas = new YeuCauBaoHanh();
+$total = 0;
+$pageIndex = intval($_REQUEST["indexPage"] ?? "1");
+$params["pageSize"] = intval($_REQUEST["pageSize"] ?? 10);
+$params["Status"] = $_REQUEST["Status"] ?? "";
+$params["Keyword"] = $_REQUEST["Keyword"] ?? "";
+$items = $YeuCauSuas->GetItems($params, $pageIndex, $params["pageSize"], $total);
+$response = new Response();
+$response->params = $params;
+$response->totalrows = $total;
+$response->number = $params["pageSize"];
+$response->indexPage = $pageIndex;
+$response->totalPage = ceil($total / $params["pageSize"]);
+$response->rows = $items;
+$response->status = Response::OK;
+$response->columns = [
+    "Actions" => "Thao Tác",
+    "TinhThanh" => "Tỉnh Thành",
+    "QuanHuyen" => "Quận Huyện",
+    "KhachHangTieuDung" => "Mã khách hàng",
+    "MaTem" => "Mã Tem",
+    "SDT" => "SĐT",
+    "Status" => "Tình Trạng",
+    "DiaChi" => "Địa Chỉ",
+    "NgayBaoHanh" => "Ngày yêu cầu bảo hành",
+    "NoiDung" => "Nội dung",
+    "CreateDate" => "Ngày tạo yêu cầu",
+];
+$response = $response->ToRow();
+
+
+$fpageIndex = new FormRender(new Hidden("pageIndex", 1));
+$fpageSize = new FormRender(new Hidden("pageSize", $params["pageSize"]));
+$fKeyword = new FormRender(new Textbox("Từ khóa", "Keyword", [
+    "class" => "form-control",
+    "onchange" => "submit()",
+    "placeholder"=>"SĐT...",
+    "value" => $_REQUEST["Keyword"] ?? ""
+]));
+
+$fTinhTrang = new FormRender(
+    new Select(
+        "Tình Trạng",
+        "Status", ["" => "Tất cả"] + YeuCauBaoHanh::ListStatus(),
+        [
+            "class" => "form-control",
+            "onchange" => "submit()",
+            "value" => $params["Status"]
+        ]
+    )
+);
+
 ?>
-<ol class="breadcrumb">
-    <li><a href="/dashboard/">Thông tin bảo hành</a></li>
+<ol class="hidden-sm hidden-xs breadcrumb" style="margin-bottom: 5px;">
+    <li><a href="/dashboard/">Yêu cầu bảo hành</a></li>
 </ol>
+ 
 <div class="container-fluid ">
-    <section class="pb-10 mt-20">
+    <section class=" ">
         <div class="">
+            <form action="/dashboard/index/index/" method="get">
+                <div class="row">
+                    <div class="col-md-2 col-xs-6">
+                        <?php
+                        $fKeyword->renderHTML();
+                        ?>
+                    </div>
+                    <div class="col-md-2 col-xs-6">
+                        <?php
+                        $fpageIndex->render();
+                        $fpageSize->render();
+                        $fTinhTrang->renderHTML();
+                        ?>
+                    </div>
+                </div>
+            </form>
             <div class="box box-primary">
                 <div class="box-header">
+                    <div class="box-tools">
+                    </div>
                     <h3 class="box-title">Danh sách yêu cầu bảo hành</h3>
                 </div>
-                <div class="box-body  ">
-                    <table class="table table-bordered table-striped  dataTable " id="data">
-                        <thead>
-                            <tr>
-                                <th></th>
-                                <th>#</th>
-                                <th style="white-space: nowrap;">Name</th>
-                                <th style="white-space: nowrap;">Khách Hàng</th>
-                                <th style="white-space: nowrap;">Sự Cố</th>
-                                <th style="white-space: nowrap;">Tỉnh Thành</th>
-                                <th style="white-space: nowrap;">Thơi Gian Tạo</th>
-                                <th style="white-space: nowrap;">Thời Gian Cập Nhật</th>
-                                <th style="white-space: nowrap;">Tình Trạng</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <?php
-                            foreach ($YeuCauSuas as $k => $op) {
-                                $_Option = new Module\trungtambaohanh\Model\YeuCauBaoHanh($op);
-                            ?>
-                                <tr>
-                                    <td><a href="/trungtambaohanh/yeucaubaohanh/index/<?php echo $_Option->Code ?>/" class="btn btn-success">Chọn</a></td>
-                                    <td><?php echo $k + 1; ?></td>
-                                    <td>
-                                        <?php
-                                        echo $_Option->Name;
-                                        ?>
-                                    </td>
-                                    <td>
-                                        <?php
-                                        echo $_Option->KhachHangTieuDung()->Name;
-                                        ?>
-                                    </td>
-                                    <td>
-                                        <?php
-                                        echo $_Option->NoiDungBaoHanh()->Name;
-                                        ?>
-                                    </td>
-                                    <td>
-                                        <?php
-                                        echo $_Option->KhachHangTieuDung()->TinhThanh()->Name;
-                                        ?>
-                                    </td>
-                                    <td>
-                                        <?php
-                                        echo Common\Common::ToDate($_Option->CreateDate);
-                                        ?>
-                                    </td>
-                                    <td>
-                                        <?php
-                                        echo Common\Common::ToDate($_Option->UpdateDate);
-                                        ?>
-                                    </td>
-                                    <td>
-                                        <?php
-                                        echo $_Option->Status();
-                                        ?>
-                                    </td>
-                                </tr>
-                            <?php
-                            }
-                            ?>
-                        </tbody>
-                    </table>
+                <div class="box-body table-responsive ">
+
+                    <?php
+                    $link = "/dashboard/index/index/";
+                    // $dataTable = new Table(["rows" => $data["rows"], "columns" => $columns], Card::class);
+                    $dataTable = new Table([
+                        "rows" => $response["rows"],
+                        "columns" => $response["columns"]
+                    ], YeuCauBaoHanh::class, true);
+                    $dataTable->setPropTable(
+                        [
+                            "table" => ["id" => "table", "class" => "table table-border"],
+                            "thead" => ["class" => "bg-primary"],
+                        ]
+                    );
+                    $dataTable->RenderHtml();
+                    echo $dataTable->PaginationWidthData($response, $link);
+                    ?>
                 </div>
             </div>
         </div>

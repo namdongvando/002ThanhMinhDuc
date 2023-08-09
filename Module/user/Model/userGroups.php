@@ -10,6 +10,7 @@ class userGroups extends userGroupsTable {
     const DaiLy = 3;
     const TrungTamBaoHanh = 4;
     const NVKT = 5;
+    const KinhDoanh = 6;
 
     public $Id;
     public $Name;

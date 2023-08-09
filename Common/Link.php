@@ -2,6 +2,8 @@
 
 namespace Common;
 
+use Module\user\Model\Admin;
+
 class Link
 {
 
@@ -128,10 +130,21 @@ class Link
         <li>
             <a href="/dashboard/kiemhang/">Kiểm Hàng </a>
         </li>
-        <li>
-            <a href="/dashboard/nhaptem/index">Quét Tem </a>
-        </li>
         <?php
+        if (Admin::CheckQuyen([Admin::Admin, Admin::SuperAdmin]) == true) {
+            ?>
+            <li>
+                <a href="/dashboard/nhaptem/index">Quét Tem </a>
+            </li>
+            <?php
+
+        }
+        ?>
+        <li>
+            <a href="/trungtambaohanh/yeucaubaohanh/scan/">Bảo Hành </a>
+        </li>
+    <?php
+
     }
 }
 ?>

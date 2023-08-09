@@ -4,12 +4,15 @@
 </ol>
 <?php
 
+use Model\FormCommon;
 use Model\FormOptions;
 use Module\user\Model\Admin;
 
 $admin = Admin::getCurentUser(true);
 $CodeQr = new \Model\CodeQR($admin->Username);
 $ds = $CodeQr->GetCodes();
+
+
 ?>
 <form action="" enctype="multipart/form-data" method="POST">
     <div class="modal fade" id="ChonSanPham">
@@ -20,6 +23,14 @@ $ds = $CodeQr->GetCodes();
                     <h4 class="modal-title">Chọn Model Sản Phẩm</h4>
                 </div>
                 <div class="modal-body">
+                    <div style="color:red !important;">
+                        Cập nhật thông tin sản phẩm vào tem bảo hành, ghi nhận vị trí của sản phẩm
+                        <br>Lưu ý:
+                        <ol>
+                            <li>Sản phẩm phải giống nhau</li>
+                            <li>Cùng nhân viên bán hàng</li>
+                        </ol>
+                    </div>
                     <?php
                     Module\option\Model\OptionForm::SelectGroups("Danh Mục Sản Phẩm", "Chon[MaDanhMuc]", \Module\option\Model\Option::DanhMucVatTu)->renderHtml();
                     Module\sanpham\Model\SanPhamForm::MaDaiLy()->renderHTML();
@@ -29,11 +40,23 @@ $ds = $CodeQr->GetCodes();
                         Admin::GetUsersOptions(Admin::NVKT),
                         ["label" => 'Nhân Viên Kỹ Thuật &nbsp &nbsp &nbsp <a href="/user/users/" target="_blank" > Thêm Nhân Viên</a> ', 'style' => "width:100%;"]
                     )->renderHtml();
+                    FormOptions::Select(
+                        "",
+                        "Chon[NhanVienBanHang]",
+                        Admin::GetUsersOptions(),
+                        ["label" => 'Nhân viên Bán hàng  ', 'style' => "width:100%;"]
+                    )->renderHtml();
+
+                    FormCommon::LyDoXuatKho(null, "Chon[LyDoXuatKho]", [
+                        "style" => "width:100%;"
+                    ])->renderHTML();
                     ?>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                    <button type="submit" name="ChonDanhMucSanPham" class="btn btn-primary">OK</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Đóng</button>
+                    <button type="submit"
+                        onclick="return confirm('Bạn muốn cập nhật thông tin sản phẩm cho tem bảo hành')"
+                        name="ChonDanhMucSanPham" class="btn btn-primary">Xác nhận</button>
                 </div>
             </div>
         </div>
@@ -47,91 +70,112 @@ $ds = $CodeQr->GetCodes();
                     <h3 class="box-title">Danh Sách Mã</h3>
                     <div class="box-tools">
                         <a href="/dashboard/nhaptem/scan" class="btn btn-primary">
-                            Quét Tem <i class="fa fa-camera"></i>
+                            <i class="fa fa-camera"></i>
                         </a>
                         <a href="/dashboard/nhaptem/index" class="btn btn-primary">
                             <i class="fa fa-refresh"></i>
                         </a>
                     </div>
                 </div>
-                <div class="box-body table-responsive">
+                <div class="box-body">
                     <a href="/dashboard/nhaptem/clear" onclick="return confirm('Bạn có chắc muốn nhập lại?')"
-                        class="pull-right btn-sm btn btn-danger">
-                        Xóa Hết
+                        class="pull-right btn btn-danger">
+                        <span class="hidden-xs hidden-sm">Xóa Hết
+                            <i class="fa fa-trash"></i>
+                        </span>
+                        <span class="hidden-md hidden-lg"><i class="fa fa-trash"></i></span>
                     </a>
                     <?php
                     $kt = \Model\Permistion::CheckPermistion([Admin::Admin, Admin::SuperAdmin]);
                     if ($kt == true) {
                         ?>
-                        <button type="button" class="btn btn-sm " data-toggle="modal" data-target='#ChonSanPham'>
-                            Chọn Sản Phẩm
+                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target='#ChonSanPham'>
+                            <span class="hidden-xs hidden-sm">Chọn Sản Phẩm</span>
+                            <span class="hidden-md hidden-lg">Chọn SP</span>
                         </button>
                         <?php
                     }
                     ?>
-                    <a href="/dashboard/nhaptem/xuatkho" class="btn btn-sm btn-primary">
-                        Xuất kho
-                    </a>
-                    <a href="/dashboard/nhaptem/doitra" class="btn btn-sm btn-primary">
-                        Tiếp nhận đổi trả
-                    </a>
-                    <a href="/dashboard/nhaptem/kygui" class="btn btn-sm btn-primary">
-                        Ký gửi/Trưng bày
-                    </a>  
-                    <div class="container">
-                        <?php
-                        ?>
-                    </div>
-                    <table class="table table-bordered">
-                        <thead>
-                            <tr>
-                                <th style="width: 50px">Stt</th>
-                                <th style="width: 200px">Thao Tác</th>
-                                <th style="width: 150px">Mã Tem</th>
-                                <th>Thông Tin Sản Phẩm</th>
-                            </tr>
-                        </thead>
-                        <tbody id="DanhSachTem" class="ajaxAutoReload" data-target="#DanhSachTem" data-timeload="2000"
-                            data-urlcheck="/dashboard/nhaptem/coderefesh/"
-                            data-urldata="/dashboard/nhaptem/danhsachtem/">
-                            <?php
-                            $index = 0;
-                            if ($ds) {
-                                foreach ($ds as $k => $code) {
+                    <!-- <button type="button" class="btn btn-primary" data-toggle="modal" data-target='#ModalXuatKho'>
+                        <span class="hidden-xs hidden-sm">Xuất kho
+                            <i class="fa fa-arrow-up"></i>
+                        </span>
+                        <span class="hidden-md hidden-lg">Xuất kho
+                            <i class="fa fa-arrow-up"></i>
+                        </span>
+                    </button> -->
+                    <!-- <a href="/dashboard/nhaptem/xuatkho" class="btn  btn-primary">
+                        <span class="hidden-xs hidden-sm">Xuất kho
+                            <i class="fa fa-arrow-up"></i>
+                        </span>
+                        <span class="hidden-md hidden-lg">Xuất kho
+                            <i class="fa fa-arrow-up"></i>
+                        </span>
+                    </a> -->
+                    <a href="/dashboard/nhaptem/doitra" class="btn  btn-primary">
 
-                                    $temSP = new \Module\sanpham\Model\TemSanPham($code);
-                                    // var_dump($code);
-                                    // var_dump($temSP);
-                                    ?>
-                                    <tr>
-                                        <td>
-                                            <?php echo 1 + $index++; ?>
-                                        </td>
-                                        <td>
-                                            <a href="/dashboard/workflow/temsanpham/<?php echo $code; ?>/"
-                                                class="btn btn-primary">Chọn</a>
-                                        </td>
-                                        <td>
-                                            <?php echo $temSP->Code; ?>
-                                        </td>
-                                        <td>
-                                            <p style="margin: 0px;">
-                                                <?php echo $temSP->SanPham()->Name; ?>
-                                            </p>
-                                            <p style="margin: 0px;">
-                                                <?php echo $temSP->SanPham()->TinhTrang(); ?>
-                                            </p>
-                                            <p style="margin: 0px;">
-                                                <?php echo $temSP->SanPham()->DaiLy()->Name; ?>
-                                            </p>
-                                        </td>
-                                    </tr>
-                                    <?php
+                        <span class="hidden-xs hidden-sm">Tiếp nhận đổi trả</span>
+                        <span class="hidden-md hidden-lg">
+                            <i class="fa fa-arrows-v"></i>
+                            TN đổi trả
+                        </span>
+                    </a>
+                    <!-- <a href="/dashboard/nhaptem/kygui" class="btn  btn-primary">
+                        Ký gửi/Trưng bày
+                    </a>   -->
+                    <div class=" table-responsive mt-10">
+
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th style="width: 50px">Stt</th>
+                                    <th style="width: 200px">Thao Tác</th>
+                                    <th style="width: 150px">Mã Tem</th>
+                                    <th>Thông Tin Sản Phẩm</th>
+                                </tr>
+                            </thead>
+                            <tbody id="DanhSachTem" class="ajaxAutoReload" data-target="#DanhSachTem"
+                                data-timeload="2000" data-urlcheck="/dashboard/nhaptem/coderefesh/"
+                                data-urldata="/dashboard/nhaptem/danhsachtem/">
+                                <?php
+                                $index = 0;
+                                if ($ds) {
+                                    foreach ($ds as $k => $code) {
+
+                                        $temSP = new \Module\sanpham\Model\TemSanPham($code);
+                                        // var_dump($code);
+                                        // var_dump($temSP);
+                                        ?>
+                                        <tr>
+                                            <td>
+                                                <?php echo 1 + $index++; ?>
+                                            </td>
+                                            <td>
+                                                <a href="/dashboard/workflow/temsanpham/<?php echo $code; ?>/"
+                                                    class="btn btn-primary">Chọn</a>
+                                            </td>
+                                            <td>
+                                                <?php echo $temSP->Code; ?>
+                                            </td>
+                                            <td>
+                                                <p style="margin: 0px;">
+                                                    <?php echo $temSP->SanPham()->Name; ?>
+                                                </p>
+                                                <p style="margin: 0px;">
+                                                    <?php echo $temSP->SanPham()->TinhTrang(); ?>
+                                                </p>
+                                                <p style="margin: 0px;">
+                                                    <?php echo $temSP->SanPham()->DaiLy()->Name; ?>
+                                                </p>
+                                            </td>
+                                        </tr>
+                                        <?php
+                                    }
                                 }
-                            }
-                            ?>
-                        </tbody>
-                    </table>
+                                ?>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>

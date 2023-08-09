@@ -9,7 +9,6 @@ use Module\user\Model\Admin;
 
 $id = $_Param[0];
 $yeuCauBaoHanh = new YeuCauBaoHanh($id);
-
 $formYc = new YeuCauBaoHanhForm();
 
 ?>
@@ -86,7 +85,7 @@ $formYc = new YeuCauBaoHanhForm();
                                                 ?>
                                             </div>
                                             <div class="col-md-6">
-                                                <?php 
+                                                <?php
                                                 // echo $yeuCauBaoHanh->idNhanVien;
                                                 $yeuForm->idNhanVien()->renderHtml();
                                                 ?>
@@ -114,9 +113,9 @@ $formYc = new YeuCauBaoHanhForm();
                                     <?php
                                     echo $yeuCauBaoHanh->KetQuaXuLy()->NoiDungXuLy()->Name;
                                     ?>
-                                </p> 
+                                </p>
                                 <div style="display: flex;flex-wrap: wrap;" class="DanhSachHinh">
-                                
+
                                     <?php
                                     foreach ($yeuCauBaoHanh->DanhSachHinh() as $k => $v) {
                                         ?>
@@ -149,27 +148,23 @@ $formYc = new YeuCauBaoHanhForm();
                             <?php
                             $kt = \Model\Permistion::CheckPermistion([Admin::Admin, Admin::SuperAdmin]);
 
-
                             if ($yeuCauBaoHanh->Status == YeuCauBaoHanh::YeuCauKiemTra) {
                                 ?>
                                 <form action="" method="post">
                                     <fieldset>
                                         <legend>Xác nhận hoành thành </legend>
-                                        <p>Nhân viên cskh xác nhận yêu cầu bảo hành</p>
+                                        <p>Nhân viên cskh xác nhận đã hoàn thành cầu bảo hành</p>
                                         <?php
                                         $yeuForm = new FormYeuCauBaoHanh((array) $yeuCauBaoHanh);
+
                                         ?>
-                                        <div class="col-md-4">
-                                            <?php
-                                            $yeuForm->Id()->render();
-                                            $yeuForm->IdTrungTamBaoHanh()->renderHtml();
-                                            ?>
-                                        </div>
+                                        <input type="hidden" value="<?php echo $yeuCauBaoHanh->Code ?>" name="Code">
                                         <div class="col-md-12 text-right">
                                             <?php
                                             if (Admin::CheckQuyen([Admin::SuperAdmin, Admin::Admin])) {
                                                 ?>
-                                                <button class="btn btn-success" name="DieuPhoi">Xác nhận</button>
+                                                <button onclick="return confirm('Bạn đã xác nhận yêu cầu bảo hành thành công?')"
+                                                    class="btn btn-success" name="XacNhaHoanThanh">Xác nhận</button>
                                                 <!-- <a onclick="return confirm('Bạn đã xác nhận yêu cầu bảo hành thành công?')"
                                                     href="/trungtambaohanh/yeucaubaohanh/XacNhanKQ/<?php echo $yeuCauBaoHanh->Code; ?>/"
                                                     class="btn btn-primary">Xác nhận hoành thành
@@ -184,18 +179,21 @@ $formYc = new YeuCauBaoHanhForm();
                             }
                             ?>
                             <div class="form-group text-center">
-                                <a href="/trungtambaohanh/yeucaubaohanh/scan/<?php echo $yeuCauBaoHanh->Code; ?>/"
-                                    class="btn btn-primary">Kiểm tra tem
-                                </a>
-                                <a href="/trungtambaohanh/yeucaubaohanh/LoiBaoHanh/<?php echo $yeuCauBaoHanh->Code; ?>/"
-                                    class="btn btn-primary">Cập nhật lỗi
-                                </a>
-                                <a href="/trungtambaohanh/yeucaubaohanh/PhuongAnXuLy/<?php echo $yeuCauBaoHanh->Code; ?>/"
-                                    class="btn btn-primary">Phương án xử lý
-                                </a>
-                                <a href="/trungtambaohanh/yeucaubaohanh/KetQuaBaoHanh/<?php echo $yeuCauBaoHanh->Code; ?>/"
-                                    class="btn btn-primary">Kết quả bảo hành
-                                </a>
+                                <?php
+                                if ($yeuCauBaoHanh->Status != YeuCauBaoHanh::DaXuLy) {
+                                    ?>
+                                    <a href="/trungtambaohanh/yeucaubaohanh/LoiBaoHanh/<?php echo $yeuCauBaoHanh->Code; ?>/"
+                                        class="btn btn-primary">Cập nhật lỗi
+                                    </a>
+                                    <a href="/trungtambaohanh/yeucaubaohanh/PhuongAnXuLy/<?php echo $yeuCauBaoHanh->Code; ?>/"
+                                        class="btn btn-primary">Phương án xử lý
+                                    </a>
+                                    <a href="/trungtambaohanh/yeucaubaohanh/KetQuaBaoHanh/<?php echo $yeuCauBaoHanh->Code; ?>/"
+                                        class="btn btn-primary">Kết quả bảo hành
+                                    </a>
+                                    <?php
+                                }
+                                ?>
 
                             </div>
                         </div>
@@ -207,7 +205,7 @@ $formYc = new YeuCauBaoHanhForm();
                             foreach ($logs as $key => $value) {
                                 $_v = new YeuCauBaoHanhLogData($value);
                                 ?>
-                                <tr> 
+                                <tr>
                                     <td>
                                         <?php echo $_v->NoiDungBaoHanh()->Name; ?>
                                     </td>

@@ -4,6 +4,8 @@ namespace Module\trungtambaohanh\Model;
 
 use lib\redDirectory;
 use Module\option\Model\Option;
+use Module\option\Model\TinhThanh;
+use Module\user\Model\Admin;
 
 class YeuCauBaoHanh extends YeuCauBaoHanhData
 {
@@ -38,11 +40,11 @@ class YeuCauBaoHanh extends YeuCauBaoHanhData
         if ($dv) {
             if (!is_array($dv)) {
                 $code = $dv;
-                $dv = $this->GetById($code);
+                $dv = $this->GetByCode($code);
                 if (!$dv) {
-                    $dv = $this->GetByCode($code);
+                    $dv = $this->GetById($code);
                 }
-            } 
+            }
             $this->Id = $dv["Id"] ?? null;
             $this->Code = $dv["Code"] ?? null;
             $this->Name = $dv["Name"] ?? null;
@@ -64,12 +66,39 @@ class YeuCauBaoHanh extends YeuCauBaoHanhData
         }
     }
 
+    function TinhThanh()
+    {
+        return new TinhThanh($this->TinhThanh);
+    }
+    function QuanHuyen()
+    {
+        return new TinhThanh($this->QuanHuyen);
+    }
+    function DiaChi()
+    {
+        return $this->DiaChi;
+    }
 
     function GetItems($params, $indexPage = 1, $numberPage = 10, &$total)
     {
-
-
-        $where = "1=1";
+        $Keyword = $params["Keyword"] ?? null;
+        $status = $params["Status"] ?? null;
+        $statusSql = "";
+        if ($status != false) {
+            $statusSql = "and `Status` = '{$status}'";
+        }
+        $nhanVienSql = "";
+        if (
+            Admin::CheckQuyen([
+                Admin::SuperAdmin,
+                Admin::TTBH,
+                Admin::Admin
+            ]) == false
+        ) {
+            $idNhanVien = Admin::getCurentUser(true)->Id;
+            $nhanVienSql = "and `idNhanVien` = '{$idNhanVien}'";
+        }
+        $where = " `SDT` like '%$Keyword%' {$statusSql} {$nhanVienSql} order by `CreateDate` DESC ";
 
         return $this->GetRowsTablePt($where, $indexPage, $numberPage, $total);
     }
@@ -81,15 +110,18 @@ class YeuCauBaoHanh extends YeuCauBaoHanhData
 
     function NoiDungBaoHanh()
     {
-
         if ($this->NoiDung == "Khac") {
             return new Option(["Name" => $this->NoiDungKhac]);
         }
-        return new \Module\option\Model\Option(
+        $noiDung = new \Module\option\Model\Option(
             \Module\option\Model\Option::GetOptionByGroupsCode(
                 \Module\option\Model\Option::SuCoMacPhai, $this->NoiDung
             )
         );
+        if ($noiDung->Name == null) {
+            return new Option(["Name" => $this->NoiDung]);
+        }
+        return $noiDung;
     }
 
     public static function YeuCauSuaChuas()
@@ -97,11 +129,11 @@ class YeuCauBaoHanh extends YeuCauBaoHanhData
         $TTKH = new YeuCauBaoHanh();
 
         if (\Module\user\Model\Admin::CheckQuyen([\Module\user\Model\Admin::SuperAdmin, \Module\user\Model\Admin::TTBH, \Module\user\Model\Admin::Admin])) {
-            $lisStaTus = [self::MoiTao, self::DangXuLy, self::DaXuLy];
+            $lisStaTus = [self::MoiTao, self::DangXuLy, self::YeuCauKiemTra];
             $lisStaTus = implode("','", $lisStaTus);
             $where = "Status in ('{$lisStaTus}')  order by `CreateDate` DESC";
         } else {
-            $lisStaTus = [self::MoiTao, self::DangXuLy];
+            $lisStaTus = [self::MoiTao, self::DangXuLy, self::YeuCauKiemTra];
             $lisStaTus = implode("','", $lisStaTus);
             $idNhanVien = \Module\user\Model\Admin::getCurentUser(true)->Id;
             $where = "Status in ('{$lisStaTus}') and `idNhanVien` = '{$idNhanVien}' order by `CreateDate` DESC";
@@ -136,6 +168,17 @@ class YeuCauBaoHanh extends YeuCauBaoHanhData
     {
         if (isset(self::ListStatus()[$this->Status]))
             return self::ListStatus()[$this->Status];
+    }
+    function GetByMaTem($maTem)
+    {
+        $where = "`MaTem` = '{$maTem}' ";
+        return $this->GetRowsByWhere($where);
+    }
+    function ChuaHoanThanh($maTem)
+    {
+        $status = self::DaXuLy;
+        $where = "`MaTem` = '{$maTem}' and `Status` != '{$status}' ";
+        return $this->GetRowsByWhere($where);
     }
 
     public static function GetByCode($code)
@@ -193,6 +236,28 @@ class YeuCauBaoHanh extends YeuCauBaoHanhData
         $a["UpdateDate"] = $this->UpdateDate;
         return $a;
     }
+    function ToRow($index)
+    {
+        $a["Id"] = $index + 1;
+        $a["Code"] = $this->Code;
+        $a["Name"] = $this->Name;
+        $a["TinhThanh"] = $this->TinhThanh()->Name;
+        $a["QuanHuyen"] = $this->QuanHuyen()->Name;
+        $a["KhachHangTieuDung"] = $this->KhachHangTieuDung;
+        $a["SDT"] = $this->SDT;
+        $a["Status"] = $this->Status();
+        $a["IdTrungTamBaoHanh"] = $this->IdTrungTamBaoHanh;
+        $a["MaTem"] = $this->MaTem;
+        $a["DiaChi"] = $this->DiaChi;
+        $a["idNhanVien"] = $this->idNhanVien;
+        $a["NgayBaoHanh"] = date("d-m-Y", strtotime($this->NgayBaoHanh));
+        $a["NoiDung"] = $this->NoiDungBaoHanh()->Name;
+        $a["NoiDungKhac"] = $this->NoiDungKhac;
+        $a["HinhAnh"] = $this->HinhAnh;
+        $a["CreateDate"] = date("d-m-Y", strtotime($this->CreateDate));
+        $a["UpdateDate"] = $this->UpdateDate;
+        return $a;
+    }
 
     function DanhSachHinh()
     {
@@ -208,6 +273,16 @@ class YeuCauBaoHanh extends YeuCauBaoHanhData
         $log = new YeuCauBaoHanhLogData();
         return $log->GetAllByCode($this->Code);
 
+    }
+
+    function BtnGroup()
+    {
+        $Code = $this->Code;
+        return <<<HTML
+
+<a href="/trungtambaohanh/yeucaubaohanh/index/{$Code}/" class="btn btn-success">Chọn</a>
+
+HTML;
     }
 
 }

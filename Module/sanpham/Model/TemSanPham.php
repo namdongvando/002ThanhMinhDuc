@@ -2,8 +2,11 @@
 
 namespace Module\sanpham\Model;
 
+use Datatable\Response;
+use Datatable\Table;
 use Module\khachhang\Model\KhachHangTieuDung;
 use Module\sanpham\Model\XuatNhapKho\PhieuXuatNhapChiTiet;
+use Module\trungtambaohanh\Model\YeuCauBaoHanh;
 
 class TemSanPham extends TemSanPhamData
 {
@@ -67,6 +70,8 @@ class TemSanPham extends TemSanPhamData
         $admin = \Module\user\Model\Admin::getCurentUser(true);
         $model["Id"] = $this->Id;
         $model["UserId"] = $admin->Id;
+        $model["MaSanPham"] = $this->MaSanPham;
+
         $this->UpdateSubmit($model);
         $spKh = new SanPhamKiemHang();
         $spKh->InsertSubmit([
@@ -302,7 +307,7 @@ class TemSanPham extends TemSanPhamData
             [
                 "Id" => self::TrungBay,
                 "Name" => "Trưng bày",
-            ] 
+            ]
         ];
     }
 
@@ -361,7 +366,7 @@ class TemSanPham extends TemSanPhamData
     {
         $itemsLs = $this->GetLichSuKiemHang();
         ?>
-        <div class="table-responsive" style="height: 200px;">
+        <div class="table-responsive">
             <table class="table table-hover">
                 <thead>
                     <tr>
@@ -430,6 +435,51 @@ class TemSanPham extends TemSanPhamData
         ?>
 
         <?php
+    }
+
+    function DSYeuCauBaoHanhChuaHoanThanh()
+    {
+        $yeucau = new YeuCauBaoHanh();
+        $items = $yeucau->ChuaHoanThanh($this->Code);
+        return $items;
+    }
+    function DSYeuCauBaoHanh()
+    {
+        $yeucau = new YeuCauBaoHanh();
+        $items = $yeucau->GetByMaTem($this->Code);
+        return $items;
+    }
+    function DSYeuCauBaoHanhToHtml($items,$actions = false)
+    {
+        $response = new Response();
+        $response->params = [];
+        $response->totalrows = 100;
+        $response->number = 10;
+        $response->indexPage = 1;
+        $response->totalPage = 1;
+        $response->rows = $items;
+        $response->status = Response::OK;
+        $response->columns = [
+            "Actions" => "Thao Tác",
+            "Id" => "#",
+            "SDT" => "SĐT",
+            "Status" => "Tình Trạng",
+            "NgayBaoHanh" => "Ngày bảo hành",
+            "CreateDate" => "Ngày tạo yêu cầu",
+
+        ];
+        $response = $response->ToRow();
+        $dataTable = new Table([
+            "rows" => $response["rows"],
+            "columns" => $response["columns"]
+        ], YeuCauBaoHanh::class, $actions);
+        $dataTable->setPropTable(
+            [
+                "table" => ["id" => "table", "class" => "table table-border"],
+                "thead" => ["class" => "bg-primary"],
+            ]
+        );
+        $dataTable->RenderHtml();
     }
 
 

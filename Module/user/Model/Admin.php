@@ -227,7 +227,7 @@ class Admin extends AdminTable
         }
         return $admin->getColumnsOption(["Id", "Name"], $where);
     }
- 
+
     public function TrungTamBaoHanh()
     {
         $taiKhoan = new TaiKhoan();
