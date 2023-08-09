@@ -1,0 +1,111 @@
+<?php
+
+use Common\Common;
+use Model\FormOptions;
+use Model\FormRender;
+use Model\PhanAnh\PhanAnh;
+
+$modelPhanAnh = new PhanAnh();
+$params = [];
+$indexPage = $_GET["indexPage"] ?? 1;
+$keyword = $_GET["keyword"] ?? "";
+$numberPage = $_GET["numberPage"] ?? 10;
+$order = $_GET["order"] ?? "1";
+$tottal = 0;
+$params["keyword"] = $keyword;
+$params["order"] = $order;
+$phananhs = $modelPhanAnh->GetItems($params, $indexPage, $numberPage, $tottal);
+?>
+
+<ol class="breadcrumb">
+    <li>
+        <a href="/dashboard/">Dashboard</a>
+    </li>
+    <li>
+        <a href="/dashboard/phananh/">Danh sách đánh giá</a>
+    </li>
+</ol>
+<div class="container-fluid ">
+    <section class="pb-10 mt-20">
+        <div class="connectedSortable">
+            <div class="box box-primary">
+                <div class="box-header">
+                    <h3 class="box-title">Danh sách đánh giá (<?php echo $tottal; ?>)</h3>
+                </div>
+                <div class="box-body  ">
+                    <div class="row">
+                        <form action="/dashboard/phananh/index/">
+                            <div class="col-md-3">
+                                <?php
+                                FormOptions::TimKiem($keyword, ["name" => "keyword"])->renderHTML();
+                                FormOptions::indexPage($_GET["indexPage"] ?? 1)->render();
+                                FormOptions::numberPage($_GET["numberPage"] ?? 10)->render();
+                                ?>
+                            </div>
+                            <div class="col-md-2">
+                                <?php
+                                FormOptions::SapXep($order, ["name" => "order"])->renderHTML();
+                                ?>
+                            </div>
+                            <div class="col-md-2">
+                                <button style="margin-top: 25px;" class="btn btn-primary">Tìm Kiếm</button>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-striped " id="data">
+                            <thead>
+                                <tr>
+                                    <th class="text-center" style="width: 50px;">#</th>
+                                    <th style="width: 120px;">Thao tác</th>
+                                    <th>Sản phẩm</th>
+                                    <th style="width: 150px;">SĐT <?php echo FormRender::ToolTipElement("Số điện thoại khách hàng"); ?></th>
+                                    <th style="width: 200px;">Đại lý</th>
+                                    <th style="width: 100px;">Tình Trạng</th>
+                                    <th style="width: 150px;">Mã Tem <?php echo FormRender::ToolTipElement("Thông tin tem bảo hành"); ?></th>
+                                    <th style="width: 150px;">Ngày tạo <?php echo FormRender::ToolTipElement("Thời gian tạo phản ánh"); ?></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php
+                                foreach ($phananhs as $k => $op) {
+                                    $_item = new PhanAnh($op);
+                                ?>
+                                    <tr>
+                                        <td class="text-center"><?php echo $k + 1; ?></td>
+                                        <td>
+                                            <a href="/dashboard/phananh/detail/<?php echo $_item->Code ?>" class="btn btn-sm btn-primary">Chọn</a>
+                                        </td>
+                                        <td><?php echo $_item->TemSanPham()->SanPham()->Name; ?> </td>
+                                        <td>
+                                            <?php echo FormRender::ToolTipElement("Số điện thoại", null, "fa-phone"); ?>
+                                            <?php echo $_item->TemSanPham()->KhachHangTieuDung()->Phone; ?>
+                                        </td>
+                                        <td><?php echo $_item->TemSanPham()->SanPham()->DaiLy()->Name; ?> </td>
+                                        <td><?php echo $_item->TinhTrang()->Name; ?> </td>
+
+                                        <td>
+                                            <a target="_blank" href="/sanpham/temsanpham/detailbysanpham/<?php echo $_item->MaTem; ?>/">
+                                                <?php echo $_item->MaTem; ?>
+                                                <?php echo FormRender::ToolTipElement("Xem chi tiết tem sản phẩm"); ?>
+                                            </a>
+                                        </td>
+                                        <th> <?php echo $_item->CreateRecord; ?> </th>
+
+                                    </tr>
+                                <?php
+                                }
+                                ?>
+                            </tbody>
+                        </table> 
+                    </div>
+                    <?php
+                    $url = "/dashboard/phananh/index/?keyword={$keyword}&order={$order}&indexPage=[i]&numberPage={$numberPage}";
+                    $tongTrang = ceil($tottal / $numberPage);
+                    echo Common::PhanTrang($tongTrang, $indexPage, $url);
+                    ?>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>

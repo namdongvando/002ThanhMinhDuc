@@ -1,13 +1,23 @@
 <?php
-$pagesIndex = isset($_Param[0]) ? $_Param[0] : 1;
-$pageNumber = isset($_Param[1]) ? $_Param[1] : 10;
+
+use Model\FormRender;
+
+$pagesIndex = $_GET["pagesIndex"] ?? 1;
+$pageNumber = $_GET["pageNumber"] ?? 10;
+$status = $_GET["status"] ?? "all";
+$MaTem = $_GET["MaTem"] ?? "";
+$status = trim($status);
+$MaTem = trim($MaTem);
 $tong = 0;
 $name = "";
 $linkNumberIndex = '/sanpham/temsanpham/index/1/';
-$TemSanPhams = \Module\sanpham\Model\TemSanPham::GetRowsPT($name, $pagesIndex, $pageNumber, $tong);
+$params["name"] = $name;
+$params["status"] = $status;
+$params["MaTem"] = $MaTem;
+$TemSanPhams = \Module\sanpham\Model\TemSanPham::GetRowsPT($params, $pagesIndex, $pageNumber, $tong);
 ?>
 <script src="<?php echo \Module\sanpham\Functions::UrlModule; ?>public/TemsanphamController.js?v=<?php echo time(); ?>" type="text/javascript"></script>
-<div class="" ng-controller="TemsanphamController" >
+<div class="" ng-controller="TemsanphamController">
     <ol class="breadcrumb ">
         <li>
             <a href="/dashboad/">Dashboad</a>
@@ -17,38 +27,66 @@ $TemSanPhams = \Module\sanpham\Model\TemSanPham::GetRowsPT($name, $pagesIndex, $
         </li>
         <li class="active">Tem Sản Phẩm</li>
     </ol>
-    <div class="row " >
-        <section class="col-md-12 pb-10" >
-            <div class="box " >
-                <div class="box-header " >
-                    <h3 class="box-title" >
+    <div class="container-fluid">
+        <section class="pb-10">
+            <div class="box ">
+                <div class="box-header ">
+                    <h3 class="box-title">
                         Danh Sách Tem Sản Phẩm(<?php echo number_format($tong, 0, ".", ","); ?>)
                     </h3>
                     <div class="btn-group pull-right">
-                        <a class="btn btn-primary"  data-toggle="modal" href='#XuatTemSanPham'>Export</a>
+                        <a class="btn btn-primary" data-toggle="modal" href='/sanpham/temsanpham/exportCode/'>Export Tem Mới</a>
+                        <a class="btn btn-primary" data-toggle="modal" href='#XuatTemSanPham'>Export</a>
                         <a class="btn btn-primary " data-toggle="modal" href='#ThemTemSanPham'>Thêm Tem Sản Phẩm</a>
                     </div>
                 </div>
-                <div class="box-body table-responsive" >
-                    <select style="width: 100px;"  name="" onchange="window.location.href = '<?php echo $linkNumberIndex; ?>' + this.value" >
-                        <option <?php echo $pageNumber == 10 ? "selected" : ""; ?>  value="10" >10 Dòng</option>
-                        <option <?php echo $pageNumber == 20 ? "selected" : ""; ?> value="20" >20 Dòng</option>
-                        <option <?php echo $pageNumber == 50 ? "selected" : ""; ?> value="50" >50 Dòng</option>
-                        <option <?php echo $pageNumber == 100 ? "selected" : ""; ?> value="100">100 Dòng</option>
-                    </select>
-                    <table class="table table-bordered  " id="data"  >
+                <div class="box-body table-responsive">
+                    <form action="/sanpham/temsanpham/index/" method="get">
+                        <div class="d-flex">
+                            <input value="<?php echo $params["MaTem"] ?? ""; ?>" style="width: 200px;" type="text" name="MaTem" placeholder="Mã tem" class="form-control">
+                            <select id="pageNumber" style="width: 100px;" name="pageNumber">
+                                <option <?php echo $pageNumber == 10 ? "selected" : ""; ?> value="10">10 Dòng</option>
+                                <option <?php echo $pageNumber == 20 ? "selected" : ""; ?> value="20">20 Dòng</option>
+                                <option <?php echo $pageNumber == 50 ? "selected" : ""; ?> value="50">50 Dòng</option>
+                                <option <?php echo $pageNumber == 100 ? "selected" : ""; ?> value="100">100 Dòng</option>
+                            </select>
+                            <select id="status" style="width: 180px;" name="status">
+                                <option <?php echo $status == "-1" ? "selected" : ""; ?> value="all">Tất cả</option>
+                                <option <?php echo $status == "1" ? "selected" : ""; ?> value="1">Kích Hoạt</option>
+                                <option <?php echo $status == "0" ? "selected" : ""; ?> value="0">Chưa Kích Hoạt</option>
+                            </select>
+                            <button type="submit" class="btn btn-primary">Tìm Kiếm</button>
+                        </div>
+                    </form>
+                    <table class="table table-bordered  " id="data">
                         <thead>
-                            <tr class="bg-primary" >
-                                <th style="width: 120px;" ></th>
-                                <th style="width: 50px;" >STT</th>
-                                <th style="width: 150px;" >Mã Tem</th>
-                                <th>Sản Phẩm</th>
-                                <th  style="width: 150px;">Tình Trạng</th>
-                                <th  style="width: 130px;" >Ngày Bắt Đầu</th>
-                                <th style="width: 180px;" >Thời Gian Bảo Hành</th>
-                                <th style="width: 150px;" >Ngày Kết Thúc</th>
-                                <th style="width: 100px;" >Ngày Tạo</th>
-                                <th style="width: 100px;" >Ngày Sửa</th>
+                            <tr class="bg-primary">
+                                <th style="width: 120px;">Thao tác
+                                    <?php echo FormRender::ToolTipElement("Thao tác"); ?>
+                                </th>
+                                <th style="width: 70px;">STT
+                                    <?php echo FormRender::ToolTipElement("Số thứ tự"); ?>
+                                </th>
+                                <th style="width: 150px;">Mã
+                                    <?php echo FormRender::ToolTipElement("Mã tem bảo hành"); ?>
+                                </th>
+                                <th>Sản Phẩm
+                                    <?php echo FormRender::ToolTipElement("Tên sản phẩm"); ?>
+                                </th>
+                                <th style="width: 150px;">Tình Trạng
+                                    <?php echo FormRender::ToolTipElement("Tình trạng tem bảo hành"); ?>
+                                </th>
+                                <th style="width: 130px;">Ngày Bắt Đầu
+                                    <?php echo FormRender::ToolTipElement("Ngày bắt đầu bảo hành"); ?>
+                                </th>
+                                <th style="width: 120px;">Thời Gian
+                                    <?php echo FormRender::ToolTipElement("Thời gian bảo hành"); ?>
+                                </th>
+                                <th style="width: 150px;">Ngày Kết Thúc
+                                    <?php echo FormRender::ToolTipElement("Ngày kết thúc bảo hành"); ?>
+                                </th>
+                                <th style="width: 100px;">Ngày Tạo <?php echo FormRender::ToolTipElement("Ngày tạo tem bảo hành"); ?></th>
+                                <th style="width: 100px;">Ngày Sửa <?php echo FormRender::ToolTipElement("Ngày cập nhật bảo hành"); ?></th>
                             </tr>
                         </thead>
                         <tbody>
@@ -56,38 +94,40 @@ $TemSanPhams = \Module\sanpham\Model\TemSanPham::GetRowsPT($name, $pagesIndex, $
                             if ($TemSanPhams)
                                 foreach ($TemSanPhams as $k => $op) {
                                     $_op = new \Module\sanpham\Model\TemSanPham($op);
-                                    ?>
-                                    <tr  >
-                                        <td  >
-                                            <a class="btn btn-xs btn-success" href="/sanpham/temsanpham/detailbysanpham/<?php echo $_op->Code; ?>/"  >Sửa</a>
-            <!--                                    | <a href="/sanpham/temsanpham/delete/<?php echo md5($_op->Id); ?>/" data-confirm="Bạn muốn xóa tem này?" class="xoa" >Xóa</a>-->
-                                        </td>
-                                        <td><?php echo $k + 1; ?></td>
-                                        <td><?php echo $_op->Name ?></td>
-                                        <td><?php echo $_op->SanPham()->Name; ?></td>
-                                        <td><?php echo $_op->Status()->Name; ?></td>
-                                        <td><?php echo $_op->NgayBatDau() ?></td>
-                                        <td><?php echo $_op->ThangKetThuc() ?></td>
-                                        <td><?php echo $_op->NgayKetThuc() ?></td>
-                                        <td><?php echo $_op->CreateDate() ?></td>
-                                        <td><?php echo $_op->ModifyDate() ?></td>
-                                    </tr>
-                                    <?php
+                            ?>
+                                <tr>
+                                    <td class="text-center">
+                                        <a <?php echo FormRender::ToolTip("Sửa thông tin tem sản phẩm"); ?> class="btn btn-md btn-success" href="/sanpham/temsanpham/detailbysanpham/<?php echo $_op->Code; ?>/">Sửa</a>
+                                        <!--                                    | <a href="/sanpham/temsanpham/delete/<?php echo md5($_op->Id); ?>/" data-confirm="Bạn muốn xóa tem này?" class="xoa" >Xóa</a>-->
+                                    </td>
+                                    <td class="text-center"><?php echo $k + 1; ?></td>
+                                    <td><?php echo $_op->Name ?></td>
+                                    <td><?php echo $_op->SanPham()->Name; ?></td>
+                                    <td><?php echo $_op->Status()->Name; ?></td>
+                                    <td><?php echo $_op->NgayBatDau() ?></td>
+                                    <td><?php echo $_op->ThangKetThuc() ?></td>
+                                    <td><?php echo $_op->NgayKetThuc() ?></td>
+                                    <td><?php echo $_op->CreateDate() ?></td>
+                                    <td><?php echo $_op->ModifyDate() ?></td>
+                                </tr>
+                            <?php
                                 }
                             ?>
                         </tbody>
 
                     </table>
+
+
                     <?php
-                    $linkPagination = "/sanpham/temsanpham/index/[i]/{$pageNumber}";
+                    $linkPagination = "/sanpham/temsanpham/index/?pageNumber={$pageNumber}&status={$status}&pagesIndex=[i]";
+                    // $linkPagination = "/sanpham/temsanpham/index/[i]/{$pageNumber}/?status={$status}";
                     echo Common\Common::PhanTrang(ceil($tong / $pageNumber), $pagesIndex, $linkPagination);
                     ?>
-
                 </div>
             </div>
         </section>
     </div>
-    <form action="" enctype="multipart/form-data" method="POST" >
+    <form action="" enctype="multipart/form-data" method="POST">
         <div class="modal fade" id="ThemTemSanPham">
             <div class="modal-dialog">
                 <div class="modal-content">
@@ -98,17 +138,17 @@ $TemSanPhams = \Module\sanpham\Model\TemSanPham::GetRowsPT($name, $pagesIndex, $
                     <div class="modal-body">
                         <div class="form-group">
                             <label for="">Số Lượng</label>
-                            <input type="text" class="form-control" name="SoLuong" value="100" >
+                            <input type="text" class="form-control" name="SoLuong" value="100">
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button class="btn btn-primary" name="ThemTem" >Thêm</button>
+                        <button class="btn btn-primary" name="ThemTem">Thêm</button>
                     </div>
                 </div>
             </div>
         </div>
     </form>
-    <form action="" enctype="multipart/form-data" method="POST" >
+    <form action="" enctype="multipart/form-data" method="POST">
         <div class="modal fade" id="XuatTemSanPham">
             <div class="modal-dialog">
                 <div class="modal-content">
@@ -120,7 +160,7 @@ $TemSanPhams = \Module\sanpham\Model\TemSanPham::GetRowsPT($name, $pagesIndex, $
                         {{expagesIndex}}/{{expagesTotal}}
                     </div>
                     <div class="modal-footer">
-                        <button class="btn btn-primary" ng-click="XuatExcell()" type="button" >Gửi</button>
+                        <button class="btn btn-primary" ng-click="XuatExcell()" type="button">Gửi</button>
                     </div>
                 </div>
             </div>

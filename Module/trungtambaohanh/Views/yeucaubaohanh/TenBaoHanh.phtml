@@ -1,0 +1,70 @@
+<?php
+
+use Datatable\Response;
+use Datatable\Table;
+use Model\Obj2Html;
+use Module\sanpham\Model\FormKiemHang;
+use Module\sanpham\Model\SanPhamKiemHang;
+use Module\sanpham\Model\TemSanPham;
+use Module\trungtambaohanh\Model\YeuCauBaoHanh;
+
+$temSanPham = new TemSanPham($_Param[0]);
+$itemsLs = $temSanPham->GetLichSuKiemHang();
+
+?>
+<div class="container">
+    <h2>Bảo Hành</h2>
+    <div role="tabpanel">
+        <div class="nav-tabs-custom">
+            <!-- Nav tabs -->
+            <ul class="nav nav-tabs" role="tablist">
+                <li role="presentation" class="active">
+                    <a href="#home" target="_self" aria-controls="home" role="tab" data-toggle="tab">
+                        Thông tin hàng hóa</a>
+                </li>
+                <li role="presentation">
+                    <a href="#tab" aria-controls="tab" role="tab" data-toggle="tab">
+                        Yêu Cầu Bảo Hành
+                    </a>
+                </li>
+            </ul>
+            <div class="tab-content">
+                <div role="tabpanel" class="tab-pane active" id="home">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <?php
+                            Obj2Html::ThongTinSanPhamTheoMaTem($temSanPham->Code);
+                            ?>
+                        </div>
+                    </div>
+                </div>
+                <div role="tabpanel" class="tab-pane" id="tab">
+                    <p class="text-red">Là danh sách yêu cầu bảo hành đã yêu cầu của tem sản phẩm</p>
+                    <div class="table-responsive">
+                        <?php
+                        $temSanPham->DSYeuCauBaoHanhToHtml($temSanPham->DSYeuCauBaoHanh());
+                        ?>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div> 
+<div class="container">
+    <div class="box box-primary">
+        <div class="box-header">
+            <div class="box-tools" >
+                <a class="btn btn-success" href="/trungtambaohanh/yeucaubaohanh/TaoYeuCauBaoHanh/<?php echo  $temSanPham->Code; ?>/" >Tạo yêu cầu</a>
+            </div>
+            <h3 class="box-title">Danh sách yêu cầu</h3>
+        </div>
+        <div class="box-body">
+            <p class="text-red" >Nhân viên `Tạo yêu cầu` nếu chưa không có yêu cầu bảo hành.</p>
+            <div class="table-responsive">
+                <?php
+                $temSanPham->DSYeuCauBaoHanhToHtml($temSanPham->DSYeuCauBaoHanhChuaHoanThanh(), true);
+                ?>
+            </div>
+        </div>
+    </div>
+</div>

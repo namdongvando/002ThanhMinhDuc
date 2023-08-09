@@ -20,7 +20,7 @@ RewriteRule public - [L]
 RewriteRule confix -  [L]
 RewriteRule robots.txt -  [L]
 RewriteRule smarty -  [L] 
-SetOutputFilter DEFLATE 
+# SetOutputFilter DEFLATE 
 
 # RewriteCond %{HTTPS} off
 # RewriteRule (.*) https://%{SERVER_NAME}/$1 [L]

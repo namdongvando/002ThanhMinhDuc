@@ -2,19 +2,22 @@
 
 namespace Module\option;
 
-class Functions {
+class Functions
+{
 
     static $DoiTuongKhachHang;
     static $NhomKinhDoanh;
     static $KhuVuc;
 
-    public function __construct() {
+    public function __construct()
+    {
         self::$DoiTuongKhachHang = Model\Option::MaDoiTuongKhachHang;
         self::$NhomKinhDoanh = Model\Option::MaNhomKinhDoanh;
         self::$KhuVuc = Model\Option::KhuVuc;
     }
 
-    function head() {
+    function head()
+    {
         ?>
         <meta http-equiv="cache-control" content="max-age=0" />
         <meta http-equiv="cache-control" content="no-cache" />
@@ -30,37 +33,42 @@ class Functions {
         <link rel="stylesheet" href="/public/admin/plugins/datepicker/datepicker3.css">
         <link rel="stylesheet" href="/public/admin/plugins/daterangepicker/daterangepicker-bs3.css">
         <link rel="stylesheet" href="/public/admin/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css">
-        <link href="/public/admin/plugins/select2/select2.min.css" rel="stylesheet" type="text/css"/>
+        <link href="/public/admin/plugins/select2/select2.min.css" rel="stylesheet" type="text/css" />
         <link rel="stylesheet" href="/public/admin/plugins/datatables/dataTables.bootstrap.css">
-        <link href="/public/admin/plugins/datatables/jquery.dataTables.min.css" rel="stylesheet" type="text/css"/>
-        <style type="text/css" >
-            .alert{
+        <link href="/public/admin/plugins/datatables/jquery.dataTables.min.css" rel="stylesheet" type="text/css" />
+        <style type="text/css">
+            .alert {
                 position: fixed;
                 top: 20%;
             }
-            .alert-fixed-top-right{
+
+            .alert-fixed-top-right {
                 position: fixed;
                 right: 0px;
                 min-width: 300px;
                 top: 40px;
                 z-index: 9999;
             }
-            .dataTables_length{
+
+            .dataTables_length {
                 float: left;
             }
+
             fieldset legend {
                 margin: 0;
                 padding: 0;
                 position: static;
                 border: 0;
-                top: auto; left: auto;
+                top: auto;
+                left: auto;
                 float: none;
                 display: table;
                 font-size: 14px;
                 line-height: 18px;
                 width: auto;
             }
-            fieldset{
+
+            fieldset {
                 display: block;
                 margin-inline-start: 2px;
                 margin-inline-end: 2px;
@@ -75,7 +83,10 @@ class Functions {
                 border-image: initial;
 
             }
-            .nav-tabs>li.active>a, .nav-tabs>li.active>a:focus, .nav-tabs>li.active>a:hover{
+
+            .nav-tabs>li.active>a,
+            .nav-tabs>li.active>a:focus,
+            .nav-tabs>li.active>a:hover {
                 font-weight: bold;
                 font-size: 16px;
                 max-width: 100px;
@@ -87,7 +98,8 @@ class Functions {
         <?php
     }
 
-    function Menu() {
+    function Menu()
+    {
         ?>
         <header class="main-header ">
             <!-- Logo -->
@@ -103,7 +115,7 @@ class Functions {
                     <ul class="nav navbar-nav">
 
                         <li>
-                            <a href="/backend/timkiem/" >
+                            <a href="/backend/timkiem/">
                                 <span class="fa fa-search"></span>
                             </a>
                         </li>
@@ -114,7 +126,7 @@ class Functions {
                 </div>
             </nav>
         </header>
-        <aside class="main-sidebar" >
+        <aside class="main-sidebar">
             <section class="sidebar ">
                 <ul class="sidebar-menu ">
                     <li class="treeview">
@@ -130,12 +142,30 @@ class Functions {
                         </a>
                     </li>
                     <?php
+                    $GetGroupsOption = Model\Option::GetOptionsByGroups(Model\Option::SettingService);
+                    foreach ($GetGroupsOption as $key => $value) {
+                        $value = new Model\Option($value);
+                        ?>
+                        <li class="treeview">
+                            <a href="/option/index/groups/<?php echo $value->Code; ?>/">
+                                <i class="fa fa-list-alt"></i> <span>
+                                    <?php echo $value->Name; ?>
+                                </span>
+                                <i class="fa fa-angle-right pull-right"></i>
+                            </a>
+                        </li>
+                        <?php
+                    }
+                    ?>
+                    <?php
                     $GetGroupsOption = Model\Option::GetGroupsOption();
                     foreach ($GetGroupsOption as $key => $value) {
                         ?>
                         <li class="treeview">
                             <a href="/option/index/groups/<?php echo $key; ?>/">
-                                <i class="fa fa-list-alt"></i> <span><?php echo $value; ?></span>
+                                <i class="fa fa-list-alt"></i> <span>
+                                    <?php echo $value; ?>
+                                </span>
                                 <i class="fa fa-angle-right pull-right"></i>
                             </a>
                         </li>
@@ -148,14 +178,16 @@ class Functions {
         <?php
     }
 
-    function Breadcrumb() {
+    function Breadcrumb()
+    {
         $brea = new \Model\Breadcrumb();
         $brea->backend();
     }
 
-    function js() {
+    function js()
+    {
         ?>
-        <script type="text/javascript" >
+        <script type="text/javascript">
             var linkArray = [
                 "/public/admin/plugins/jQuery/jQuery-2.1.4.min.js",
                 "https://code.jquery.com/ui/1.11.4/jquery-ui.min.js",
@@ -184,8 +216,8 @@ class Functions {
                 document.write('<script type="text/javascript" src="' + linkArray[i] + '"><\/script>');
             }
         </script>
-        <style type="text/css" >
-            .toolbardatatable{
+        <style type="text/css">
+            .toolbardatatable {
                 float: left;
             }
         </style>

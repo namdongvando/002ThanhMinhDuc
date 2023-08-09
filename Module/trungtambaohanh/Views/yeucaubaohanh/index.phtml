@@ -1,8 +1,233 @@
-<script src="/Module/trungtambaohanh/public/js/WfyeucaubaohanhController.js?v=<?php echo filemtime('Module/trungtambaohanh/public/js/WfyeucaubaohanhController.js') ?>" type="text/javascript"></script>
+<?php
+
+use Model\Obj2Html;
+use Module\trungtambaohanh\Model\FormYeuCauBaoHanh;
+use Module\trungtambaohanh\Model\YeuCauBaoHanh;
+use Module\trungtambaohanh\Model\YeuCauBaoHanhForm;
+use Module\trungtambaohanh\Model\YeuCauBaoHanhLogData;
+use Module\user\Model\Admin;
+
+$id = $_Param[0];
+$yeuCauBaoHanh = new YeuCauBaoHanh($id);
+$formYc = new YeuCauBaoHanhForm();
+
+?>
 <ol class="breadcrumb">
     <li><a href="/dashboard/"><i class="fa fa-dashboard"></i> Dashboard</a></li>
     <li class="active">Yêu Cầu Bảo Hành</li>
 </ol>
-<div ng-view></div>
+<div class="container">
+    <div class="box-body">
+        <div role="tabpanel">
+            <div class="nav-tabs-custom">
+                <!-- Nav tabs -->
+                <ul class="nav nav-tabs" role="tablist">
+                    <li role="presentation" class="active">
+                        <a href="#home" target="_self" aria-controls="home" role="tab" data-toggle="tab">
+                            Thông tin yêu cầu</a>
+                    </li>
+                    <li role="presentation">
+                        <a href="#tab" aria-controls="tab" role="tab" data-toggle="tab">
+                            Lịch sử
+                        </a>
+                    </li>
+                </ul>
+
+                <div class="tab-content">
+                    <div role="tabpanel" class="tab-pane active" id="home">
+                        <div class="class">
+                            <fieldset>
+                                <legend>Thông tin khách hàng</legend>
+                                <?php
+                                echo Obj2Html::ThongTinKhachHangTieuDung($yeuCauBaoHanh->KhachHangTieuDung);
+                                ?>
+                            </fieldset>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <fieldset>
+                                        <legend>Thông tin yêu cầu</legend>
+                                        <div class="">
+                                            <?php
+                                            echo Obj2Html::ThongTinYeuCau((array) $yeuCauBaoHanh);
+                                            ?>
+                                        </div>
+                                    </fieldset>
+
+                                </div>
+                                <div class="col-md-6">
+                                    <fieldset>
+                                        <legend>Thông tin sản phẩm</legend>
+                                        <div class="">
+                                            <?php echo Obj2Html::ThongTinSanPham($yeuCauBaoHanh->TemSanPham()->SanPham()->Id) ?>
+                                        </div>
+                                    </fieldset>
+                                </div>
+
+                            </div>
+
+                            <?php
+                            $kt = \Model\Permistion::CheckPermistion([Admin::Admin, Admin::SuperAdmin]);
+                            if ($kt == true) {
+                                ?>
+                                <form action="" method="post">
+                                    <fieldset>
+                                        <legend>Thông Tin Đơn Vị Bảo Hành</legend>
+                                        <p>Điều phối yêu cầu cho nhân viên, trung tâm bảo hành</p>
+                                        <?php
+                                        // var_dump($yeuCauBaoHanh);
+                                        $yeuForm = new FormYeuCauBaoHanh((array) $yeuCauBaoHanh);
+                                        ?>
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <?php
+                                                $yeuForm->Id()->render();
+                                                $yeuForm->IdTrungTamBaoHanh()->renderHtml();
+                                                ?>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <?php
+                                                // echo $yeuCauBaoHanh->idNhanVien;
+                                                $yeuForm->idNhanVien()->renderHtml();
+                                                ?>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12 text-right">
+                                            <button class="btn btn-success" name="DieuPhoi">Điều Phối</button>
+                                        </div>
+                                    </fieldset>
+                                </form>
+                                <?php
+                            }
+                            ?>
+
+                            <fieldset>
+                                <legend>Kết quả xử lý</legend>
+                                <p>
+                                    <b>Phương án:</b>
+                                    <?php
+                                    echo $yeuCauBaoHanh->PhuongAnXuLy()->NoiDungXuLy()->Name;
+                                    ?>
+                                </p>
+                                <p>
+                                    <b>Kết quả:</b>
+                                    <?php
+                                    echo $yeuCauBaoHanh->KetQuaXuLy()->NoiDungXuLy()->Name;
+                                    ?>
+                                </p>
+                                <div style="display: flex;flex-wrap: wrap;" class="DanhSachHinh">
+
+                                    <?php
+                                    foreach ($yeuCauBaoHanh->DanhSachHinh() as $k => $v) {
+                                        ?>
+                                        <a data-toggle="modal" href='#modal-id-<?php echo $k ?>'>
+                                            <img style="height: 50px;margin-bottom: 10px;border: 2px solid #aaa;margin-left: 10px;"
+                                                src="/<?php echo $v ?>">
+                                        </a>
+                                        <div class="modal fade" id="modal-id-<?php echo $k ?>">
+                                            <div class="modal-lg modal-dialog">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <button type="button" class="close" data-dismiss="modal"
+                                                            aria-hidden="true">&times;</button>
+                                                    </div>
+                                                    <div class="modal-body text-center">
+                                                        <img style="max-width: 100%;" src="/<?php echo $v ?>">
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <!-- <a href="/trungtambaohanh/yeucaubaohanh/xoahinh/">Xóa hình</a> -->
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <?php
+                                    }
+                                    ?>
+                                </div>
+                            </fieldset>
+
+                            <?php
+                            $kt = \Model\Permistion::CheckPermistion([Admin::Admin, Admin::SuperAdmin]);
+
+                            if ($yeuCauBaoHanh->Status == YeuCauBaoHanh::YeuCauKiemTra) {
+                                ?>
+                                <form action="" method="post">
+                                    <fieldset>
+                                        <legend>Xác nhận hoành thành </legend>
+                                        <p>Nhân viên cskh xác nhận đã hoàn thành cầu bảo hành</p>
+                                        <?php
+                                        $yeuForm = new FormYeuCauBaoHanh((array) $yeuCauBaoHanh);
+
+                                        ?>
+                                        <input type="hidden" value="<?php echo $yeuCauBaoHanh->Code ?>" name="Code">
+                                        <div class="col-md-12 text-right">
+                                            <?php
+                                            if (Admin::CheckQuyen([Admin::SuperAdmin, Admin::Admin])) {
+                                                ?>
+                                                <button onclick="return confirm('Bạn đã xác nhận yêu cầu bảo hành thành công?')"
+                                                    class="btn btn-success" name="XacNhaHoanThanh">Xác nhận</button>
+                                                <!-- <a onclick="return confirm('Bạn đã xác nhận yêu cầu bảo hành thành công?')"
+                                                    href="/trungtambaohanh/yeucaubaohanh/XacNhanKQ/<?php echo $yeuCauBaoHanh->Code; ?>/"
+                                                    class="btn btn-primary">Xác nhận hoành thành
+                                                </a> -->
+                                                <?php
+                                            }
+                                            ?>
+                                        </div>
+                                    </fieldset>
+                                </form>
+                                <?php
+                            }
+                            ?>
+                            <div class="form-group text-center">
+                                <?php
+                                if ($yeuCauBaoHanh->Status != YeuCauBaoHanh::DaXuLy) {
+                                    ?>
+                                    <a href="/trungtambaohanh/yeucaubaohanh/LoiBaoHanh/<?php echo $yeuCauBaoHanh->Code; ?>/"
+                                        class="btn btn-primary">Cập nhật lỗi
+                                    </a>
+                                    <a href="/trungtambaohanh/yeucaubaohanh/PhuongAnXuLy/<?php echo $yeuCauBaoHanh->Code; ?>/"
+                                        class="btn btn-primary">Phương án xử lý
+                                    </a>
+                                    <a href="/trungtambaohanh/yeucaubaohanh/KetQuaBaoHanh/<?php echo $yeuCauBaoHanh->Code; ?>/"
+                                        class="btn btn-primary">Kết quả bảo hành
+                                    </a>
+                                    <?php
+                                }
+                                ?>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div role="tabpanel" class="tab-pane" id="tab">
+                        <table class="table table-responsive">
+                            <?php
+                            $logs = $yeuCauBaoHanh->Logs();
+                            foreach ($logs as $key => $value) {
+                                $_v = new YeuCauBaoHanhLogData($value);
+                                ?>
+                                <tr>
+                                    <td>
+                                        <?php echo $_v->NoiDungBaoHanh()->Name; ?>
+                                    </td>
+                                    <td>
+                                        <?php echo $_v->idNhanVien()->Name ?>
+                                    </td>
+                                    <td>
+                                        <?php echo $_v->UpdateDate ?>
+                                    </td>
+                                    <td>
+                                        <?php echo $_v->CreateDate ?>
+                                    </td>
+                                </tr>
+                                <?php
+                            }
+                            ?>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
 
 
+    </div>
+</div>

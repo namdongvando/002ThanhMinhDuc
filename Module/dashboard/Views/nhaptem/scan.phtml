@@ -1,10 +1,11 @@
-<ol class="breadcrumb" >
-    <li><a href="/dashboard/nhaptem/index" >Sanh Sách Nhập</a></li>
+<ol class="breadcrumb">
+    <li><a href="/dashboard/nhaptem/index">Sanh Sách Nhập</a></li>
     <li>Quét Mã</li>
 </ol>
-<div class="box box-primary">
+<!-- <div class="box box-primary">
     <div class="box-body">
-        <video poster="/public/camera_loading.svg?v=<?php echo time(); ?>" style="width: 100%;margin: auto; max-height: 500px;" id="preview">
+        <video poster="/public/camera_loading.svg?v=<?php echo time(); ?>"
+            style="transform: scale(1.5);width: 100%;margin: auto; max-height: 500px;" id="preview">
             loadvideo
         </video>
     </div>
@@ -24,6 +25,92 @@
 </div>
 <div id="Cams" class="">
 </div>
-<div class="thongbao bg-green" id="alertCode"></div>
-<div class="clearfix" ></div>
-<script src="/Module/dashboard/public/qrcode.js?v=<?php echo time(); ?>" type="text/javascript"></script>
+
+<div class="clearfix"></div>
+<script src="/Module/dashboard/public/qrcode.js?v=<?php echo time(); ?>" type="text/javascript"></script> -->
+
+<script src="/Module/dashboard/public/html5-qrcode.min.js" type="text/javascript"></script>
+<div class="container">
+    <div class="row">
+        <div class="col-md-3"></div>
+        <div class="col-md-6">
+            <div id="qr-reader" style="width:100%;height: auto;margin: auto;"></div>
+            <div class="thongbao bg-green" id="alertCode"></div>
+            <div id="error"></div>
+            <div id="countResults"></div>
+            <label>Nội Dung</label>
+            <textarea style="width: 100%;height: 50px;" id="qr-reader-results"></textarea>
+        </div>
+    </div>
+</div>
+<script>
+    class NhapMa {
+        content;
+        idElement;
+        code;
+        constructor(content) {
+            this.content = content
+        }
+        GetCodeByQrcode() {
+
+            var res = this.content.split("/");
+            // alert(this.content);
+            // alert(res[3]);
+            return res[3];
+        }
+        async SaveCode() {
+            this.code = this.GetCodeByQrcode();
+            var CodeTem = this.code;
+            var url = `/dashboard/index/savecode/` + CodeTem + `/`;
+            if (CodeTem) {
+                await $.ajax({
+                    "url": url,
+                }).done(function (result) {
+                    $("#alertCode")
+                        .append("<div  class='bg-green timeout'  ><span style='font-size:20px' >Đã Quét Code: " + CodeTem + "</span></div>");
+                    $(".timeout").each(function () {
+                        $(this).hide(3000);
+                    });
+                });
+            }
+
+        }
+
+    }
+
+    function docReady(fn) {
+        // see if DOM is already available
+        if (document.readyState === "complete"
+            || document.readyState === "interactive") {
+            // call on next available tick
+            setTimeout(fn, 100);
+        } else {
+            document.addEventListener("DOMContentLoaded", fn);
+        }
+    }
+    docReady(function () {
+        try {
+            var resultContainer = document.getElementById('qr-reader-results');
+            var lastResult, countResults = 0;
+            function onScanSuccess(decodedText, decodedResult) {
+                if (decodedText !== lastResult) {
+                    ++countResults;
+                    lastResult = decodedText;
+                    // Handle on success condition with the decoded message.
+                    resultContainer.innerHTML = `${decodedText}`;
+                    var nhapMa = new NhapMa(decodedText);
+                    nhapMa.SaveCode();
+
+                    countResultsHtml = document.getElementById("countResults");
+                    countResultsHtml.innerHTML = "Số Lần Quét: " + countResults;
+                }
+            }
+            var html5QrcodeScanner = new Html5QrcodeScanner(
+                "qr-reader", { fps: 10, qrbox: 250 });
+            html5QrcodeScanner.render(onScanSuccess);
+        } catch (error) {
+            var errorHtml = document.getElementById("error");
+            errorHtml.innerHTML += error;
+        }
+    });
+</script>

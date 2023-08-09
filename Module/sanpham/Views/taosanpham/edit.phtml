@@ -2,21 +2,21 @@
 
 use Module\user\Model\Admin;
 ?>
-<ol class="breadcrumb" >
-    <li><a href="/sanpham/taosanpham/" >Danh Sách Sảm Phẩm</a></li>
+<ol class="breadcrumb">
+    <li><a href="/sanpham/taosanpham/">Danh Sách Sảm Phẩm</a></li>
     <li>Chi tiết</li>
 </ol>
-<div class="container" >
-    <div class="row " >
-        <section class="col-md-12 pb-10" >
-            <form action="" method="POST" enctype="multipart/form-data" >
-                <div class="connectedSortable" >
+<div class="container">
+    <div class="row ">
+        <section class="col-md-12 pb-10">
+            <form action="" method="POST" enctype="multipart/form-data">
+                <div class="connectedSortable">
                     <div class="box box-solid">
                         <div class=" box-header bg-blue-gradient">
                             <h3 class="box-title">Chi Tiết Sản Phẩm</h3>
                         </div>
                         <div class="box-body">
-                            <div class="row" >
+                            <div class="row">
                                 <div class="col-md-6">
                                     <?php
                                     Module\sanpham\Model\SanPhamForm::Id($SanPham->Id)->render();
@@ -33,31 +33,31 @@ use Module\user\Model\Admin;
                             Module\sanpham\Model\SanPhamForm::Mota($SanPham->Mota)->renderHTML();
                             Module\sanpham\Model\SanPhamForm::HinhAnh($SanPham->HinhAnh)->renderHTML();
                             ?>
-                            <div class="row" >
-                                <div class="col-md-4" >
+                            <div class="row">
+                                <div class="col-md-4">
                                     <?php
                                     Module\sanpham\Model\SanPhamForm::DanhMuc($SanPham->DanhMuc)->renderHTML();
                                     ?>
                                 </div>
-                                <div class="col-md-4" >
+                                <div class="col-md-4">
                                     <?php
                                     Module\sanpham\Model\SanPhamForm::TinhTrang($SanPham->TinhTrang)->renderHTML();
                                     ?>
                                 </div>
-                                <div class="col-md-4" >
+                                <div class="col-md-4">
                                     <?php
                                     Module\sanpham\Model\SanPhamForm::ChungLoaiSP($SanPham->ChungLoaiSP)->renderHTML();
                                     ?>
                                 </div>
                                 <?php
                                 if (Module\user\Model\Admin::CheckQuyen([Admin::Admin, Admin::SuperAdmin])) {
-                                    ?>
-                                    <div class="col-md-12" >
+                                ?>
+                                    <div class="col-md-12">
                                         <?php
                                         Module\sanpham\Model\SanPhamForm::MaDaiLy($SanPham->MaDaiLy)->renderHTML();
                                         ?>
                                     </div>
-                                    <?php
+                                <?php
                                 }
                                 ?>
                             </div>
@@ -71,14 +71,14 @@ use Module\user\Model\Admin;
                                 ?>
                             </p>
                         </div>
-                        <div class="box-footer" >
+                        <div class="box-footer">
                             <?php
                             Module\sanpham\Model\SanPhamForm::btnSave()->render();
                             ?>
                         </div>
                         <div class="">
-                            <table class="table table-bordered" >
-                                <tr class="bg-blue" >
+                            <table class="table table-bordered">
+                                <tr class="bg-blue">
                                     <td>Ngày</td>
                                     <td>Tình Trạng Sản Phẩm</td>
                                     <td>Đại Lý/Nhà Cung Cấp</td>
@@ -87,14 +87,14 @@ use Module\user\Model\Admin;
                                 $_SanPhamLog = $SanPham->SanPhamLog();
                                 foreach ($_SanPhamLog as $sanPham) {
                                     $_sp = new \Module\sanpham\Model\SanPhamLog($sanPham);
-                                    ?>
+                                ?>
                                     <tr>
                                         <td><?php echo $_sp->NgayTao ?></td>
                                         <td><?php echo $_sp->SanPham()->TinhTrang(); ?></td>
                                         <td><?php echo $_sp->SanPham()->DaiLy()->Name; ?></td>
 
                                     </tr>
-                                    <?php
+                                <?php
                                 }
                                 ?>
 

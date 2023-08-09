@@ -1,4 +1,18 @@
 <?php
+try {
+    // xóa file temp
+    $path = dirname(__FILE__) . '/temp';
+    if ($handle = opendir($path)) {
+        while (false !== ($file = readdir($handle))) {
+            if ((time() - filectime($path . '/' . $file)) > 900) {
+                if (preg_match('/\.png$/i', $file)) {
+                    unlink($path . '/' . $file);
+                }
+            }
+        }
+    }
+} catch (Exception $th) {
+}
 
 $PNG_TEMP_DIR = dirname(__FILE__) . DIRECTORY_SEPARATOR . 'temp' . DIRECTORY_SEPARATOR;
 $PNG_WEB_DIR = 'temp/';
@@ -22,4 +36,5 @@ $type = 'image/jpg';
 header('Content-Type:' . $type);
 header('Content-Length: ' . filesize($filename));
 readfile($filename);
+ 
 //echo '<img src="' . $PNG_WEB_DIR . basename($filename) . '" />';

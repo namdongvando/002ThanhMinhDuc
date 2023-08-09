@@ -1,0 +1,36 @@
+RewriteEngine On
+
+RewriteBase /
+RewriteCond %{ENV:REDIRECT_STATUS} ^200
+RewriteRule ^ - [L]
+RewriteCond %{QUERY_STRING} ^(.*)&?fbclid=[^&]+&?(.*)$ [NC]
+RewriteRule ^(.*)$ /$1?%1%2 [R=301,L]
+RewriteCond %{QUERY_STRING} ^(.*)&?gidzl=[^&]+&?(.*)$ [NC]
+RewriteRule ^(.*)$ /$1?%1%2 [R=301,L]
+RewriteCond %{QUERY_STRING} ^(.*)&?utm_medium=[^&]+&?(.*)$ [NC]
+RewriteRule ^(.*)$ /$1?%1%2 [R=301,L]
+RewriteCond %{QUERY_STRING} ^(.*)&?utm_source=[^&]+&?(.*)$ [NC]
+RewriteRule ^(.*)$ /$1?%1%2 [R=301,L]
+RewriteCond %{QUERY_STRING} ^(.*)&?utm_campaign=[^&]+&?(.*)$ [NC]
+RewriteRule ^(.*)$ /$1?%1%2 [R=301,L]
+RewriteCond %{QUERY_STRING} ^(.*)&?zarsrc=[^&]+&?(.*)$ [NC]
+RewriteRule ^(.*)$ /$1?%1%2 [R=301,L]
+RewriteRule fonts -  [L]
+RewriteRule public - [L]
+RewriteRule confix -  [L]
+RewriteRule robots.txt -  [L]
+RewriteRule smarty -  [L] 
+SetOutputFilter DEFLATE 
+
+# RewriteCond %{HTTPS} off
+# RewriteRule (.*) https://%{SERVER_NAME}/$1 [L]
+ 
+RewriteRule ^baohanh/(.*)/ /index.php?ctr=index&action=baohanh&param=$1 [L]
+RewriteRule ^baohanh/(.*) /index.php?ctr=index&action=baohanh&param=$1 [L]
+
+RewriteRule ^(dashboard|khachhang|excell|mail|option|project|rmm|sanpham|trungtambaohanh|user)  indexm.php [L]
+
+RewriteRule (.*) /index.php [L]
+#
+# ErrorDocument 404 /index.php?ctr=index&action=loi404
+#

@@ -95,9 +95,10 @@ class AdminForm {
                 ";
         $properties["required"] = true;
         $TTBH = new \Module\trungtambaohanh\Model\TrungTamBaoHanh();
-        $options = $TTBH->getColumnsOption(["Id", "Name"]);
+        $options = $TTBH->getColumnsOption(["Id", "Name"],"1=1 order by `Id` DESC");
+
         $options = array_merge(["Chọn Trung Tâm Bảo Hành"], $options);
-        return new Element\Select("Trung Tâm Bảo Hành", "taikhoan[ TrungTamBaoHang]", $options, $properties);
+        return new Element\Select("Trung Tâm Bảo Hành", "taikhoan[TrungTamBaoHang]", $options, $properties);
     }
 
     public static function KhachHang($value = "") {

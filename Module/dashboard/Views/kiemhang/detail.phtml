@@ -1,0 +1,73 @@
+<?php
+
+use Model\Obj2Html;
+use Module\sanpham\Model\FormKiemHang;
+use Module\sanpham\Model\SanPhamKiemHang;
+use Module\sanpham\Model\TemSanPham;
+
+$temSanPham = new TemSanPham($_Param[0]);
+$itemsLs = $temSanPham->GetLichSuKiemHang();
+
+?>
+<div class="container">
+    <h2>Kiểm Hàng</h2>
+    <div role="tabpanel">
+        <div class="nav-tabs-custom">
+            <!-- Nav tabs -->
+            <ul class="nav nav-tabs" role="tablist">
+                <li role="presentation" class="active">
+                    <a href="#home" target="_self" aria-controls="home" role="tab" data-toggle="tab">
+                        Thông tin hàng hóa</a>
+                </li>
+                <li role="presentation">
+                    <a href="#tab" aria-controls="tab" role="tab" data-toggle="tab">Lịch Sử Kiểm Hàng</a>
+                </li>
+            </ul>
+
+            <!-- Tab panes -->
+            <div class="tab-content">
+                <div role="tabpanel" class="tab-pane active" id="home">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <?php
+                            Obj2Html::ThongTinSanPhamTheoMaTem($temSanPham->Code);
+                            ?>
+                        </div>
+                    </div>
+                </div>
+                <div role="tabpanel" class="tab-pane" id="tab">
+                    <?php echo $temSanPham->GetLichSuKiemHangHtml(); ?>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<div class="container">
+    <form method="POST" action="" onsubmit="return(confirm('Bạn có chắc đã kiểm hàng?'))">
+        <div class='box box-primary'>
+            <div class='box-header'>
+                <h3 class='box-title'>Kiểm Hàng</h3>
+            </div>
+            <div class='box-body'>
+                <?php
+                $f = new FormKiemHang();
+                $f->SanPham($temSanPham->SanPham()->Code)->renderHTML();
+                $f->Hidden($temSanPham->Code, "MaTem")->render();
+                $f->Status($temSanPham->ThongTinKiemHang()->Status)->renderHTML();
+                ?>
+                <div>
+                    <?php
+
+                    $f->Content($temSanPham->ThongTinKiemHang()->Content)->renderHTML();
+                    ?>
+                    <spam>Nhập ghi chú cho tình trạng hàng hóa</spam>
+                </div>
+            </div>
+            <div class="box-footer text-right">
+                <button name="btnGui" class="btn btn-success"> Gửi </button>
+            </div>
+        </div>
+    </form>
+</div>

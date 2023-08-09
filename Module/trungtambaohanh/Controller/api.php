@@ -2,43 +2,66 @@
 
 namespace Module\trungtambaohanh\Controller;
 
-class api extends \ApplicationM {
+use Model\Obj2Html;
+use Module\sanpham\Model\TemSanPham;
 
-    function __construct() {
+class api extends \ApplicationM
+{
+
+    function __construct()
+    {
         new \Controller\backend();
         header('Content-Type: application/json');
     }
 
-    public function TokenDeCode($param0) {
+    public function TokenDeCode($param0)
+    {
 
     }
 
-    function GetYeuCauBaoHanhByCode() {
+
+    function SanPhamTheoMaTem()
+    {
+        header('Content-Type: html');
+        $maTem = new TemSanPham($this->getParam(0));
+         
+        if ($maTem->Id != null) {
+            echo Obj2Html::ThongTinSanPhamTheoMaTem($this->getParam(0));
+            return;
+        }
+        echo "Không có thông tin sản phẩm";
+    }
+
+    function GetYeuCauBaoHanhByCode()
+    {
         $code = $this->getParam()[0];
         $a = \Module\trungtambaohanh\Model\YeuCauBaoHanh::GetByCode($code);
         $yeuCau = new \Module\trungtambaohanh\Model\YeuCauBaoHanh($a);
 
         $a["ThongTinKhachHang"] = \Module\khachhang\Model\KhachHangTieuDung::GetKhachHangByCode($a["KhachHangTieuDung"]);
-//        var_dump($yeuCau->TemSanPham());
+        //        var_dump($yeuCau->TemSanPham());
         $a["ThongTinSanPham"] = $yeuCau->TemSanPham()->SanPham()->ToArray();
-//        $sanPham = new \Module\sanpham\Model\SanPham($a["ThongTinSanPham"]);
+        //        $sanPham = new \Module\sanpham\Model\SanPham($a["ThongTinSanPham"]);
         $a["TemSanPham"] = $yeuCau->TemSanPham();
         $a["NoiDungBaoHanh"] = $yeuCau->NoiDungBaoHanh()->Name;
         $api = new \lib\APIs();
         $api->ArrayToApi($a);
     }
 
-    function GetStatusYeuCauBaoHanh() {
+    function GetStatusYeuCauBaoHanh()
+    {
         $a = \Module\trungtambaohanh\Model\YeuCauBaoHanh::ListStatusToOption();
         $api = new \lib\APIs();
         $api->ArrayToApi($a);
-//        \lib\APIs::Json_encode($a);
+        //        \lib\APIs::Json_encode($a);
     }
 
-    function ycbhUpdate() {
+    function ycbhUpdate()
+    {
         $postdata = file_get_contents("php://input");
         $request = json_decode($postdata, JSON_OBJECT_AS_ARRAY);
         $code = $request["Code"];
+
         $status["Status"] = $request["Status"];
         $status["IdTrungTamBaoHanh"] = $request["IdTrungTamBaoHanh"];
         $status["idNhanVien"] = $request["idNhanVien"];
@@ -48,13 +71,15 @@ class api extends \ApplicationM {
         echo json_encode($status);
     }
 
-    function getTTBH() {
+    function getTTBH()
+    {
         $TrungTBH = \Module\trungtambaohanh\Model\TrungTamBaoHanh::TrungTamBaoHanhs();
         $api = new \lib\APIs();
         $api->ArrayToApi($TrungTBH);
     }
 
-    function thongtinkhachhang() {
+    function thongtinkhachhang()
+    {
         $postdata = file_get_contents("php://input");
         $request = json_decode($postdata, JSON_OBJECT_AS_ARRAY);
         $_POST = $request;
@@ -67,7 +92,8 @@ class api extends \ApplicationM {
         \Module\khachhang\Model\KhachHangTieuDung::Update($khachHang);
     }
 
-    function NhanVienBaoHang() {
+    function NhanVienBaoHang()
+    {
         $admin = new \Module\user\Model\Admin();
         $user = $admin->GetUserByGroups(\Module\user\Model\Admin::NVKT);
         $api = new \lib\APIs();
@@ -81,4 +107,3 @@ class api extends \ApplicationM {
 
 }
 ?>
-

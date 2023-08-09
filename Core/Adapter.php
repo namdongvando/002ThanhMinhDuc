@@ -2,19 +2,24 @@
 
 namespace Core;
 
-class Adapter {
+use Exception;
+
+class Adapter
+{
 
     static protected $_conn = "";
     static protected $_result = "";
     static protected $_Query = "";
 
-    public function __construct() { // Kết nối csdl đầu tiên
+    public function __construct()
+    { // Kết nối csdl đầu tiên
         global $INI;
         self::$_conn = mysqli_connect($INI['host'], $INI['username'], $INI['password'], $INI['DBname']) or mysqli_errno("Can't connect database");
         mysqli_query(self::$_conn, "SET NAMES utf8"); // Chuyển dữ liệu trả về sang kiểu utf8
     }
 
-    public function ThemTable($tablename, $row) {
+    public function ThemTable($tablename, $row)
+    {
         $sql = "INSERT INTO `$tablename` SET ";
         $content = null;
         $table = $this->Table($tablename, $row);
@@ -36,7 +41,8 @@ class Adapter {
         self::$_Query = $sql;
     }
 
-    public function _createDir($StringPath, $SubString = '/') {
+    public function _createDir($StringPath, $SubString = '/')
+    {
 
         $Dir = explode($SubString, $StringPath);
         $root = reset($Dir) . $SubString;
@@ -54,31 +60,34 @@ class Adapter {
         }
     }
 
-    public function _createFile($StringPathFile, $NoiDung) {
+    public function _createFile($StringPathFile, $NoiDung)
+    {
         $myfile = fopen($StringPathFile, "w") or die("Unable to open file!");
         fwrite($myfile, $NoiDung);
         fclose($myfile);
     }
 
-    public function Bokytusql($str) {
+    public function Bokytusql($str)
+    {
         $str = addslashes($str);
         return $str;
     }
 
-    function guimail($NoiDungMail) {
-//      $tennguoigui = trim(strip_tags($NoiDungMail['tennguoigui']));
+    function guimail($NoiDungMail)
+    {
+        //      $tennguoigui = trim(strip_tags($NoiDungMail['tennguoigui']));
         $tennguoigui = $NoiDungMail['NguoiGui'];
         // mail nguoi nhan
         $to_email = $NoiDungMail['ToMail'];
-//      $from_email = trim(strip_tags($NoiDungMail['emailgui']));
+        //      $from_email = trim(strip_tags($NoiDungMail['emailgui']));
 //      mail gửi/
         $from_email = $NoiDungMail['FromMail'];
 
-//      Tiêu đề mail
+        //      Tiêu đề mail
         $tieude = $NoiDungMail['TieuDe'];
-//      nội dung mail
+        //      nội dung mail
         $noidung = $NoiDungMail['NoiDung'];
-//
+        //
         $username = $NoiDungMail['FromMail']; // Tài khoản gmail dùng để gửi thư
         $password = $NoiDungMail['PassWord']; // mật khẩu của tài khoản gửi mail
         require_once 'PHPMailerAutoload.php';
@@ -89,7 +98,7 @@ class Adapter {
         $mail->CharSet = 'UTF-8';
         $mail->ContentType = 'text/html; charset=utf-8';
         $mail->Host = "smtp.gmail.com";
-        $mail->Port = 465;  //25,465 or 587
+        $mail->Port = 465; //25,465 or 587
         $mail->SMTPSecure = 'ssl';
         $mail->SMTPAuth = true;
         $mail->Username = $username;
@@ -105,12 +114,14 @@ class Adapter {
             return "Đã gửi mail";
     }
 
-    function _header($url) {
+    function _header($url)
+    {
         header("Location: " . $url);
         exit();
     }
 
-    function bodautv($str) {
+    function bodautv($str)
+    {
         if (!$str)
             return false;
 
@@ -145,11 +156,13 @@ class Adapter {
         return $str;
     }
 
-    function _subStringUnicode($str, $SL) {
+    function _subStringUnicode($str, $SL)
+    {
         return mb_substr($str, 0, $SL, 'UTF-8');
     }
 
-    function upload_image($file, $extension, $folder, $tienTo) {
+    function upload_image($file, $extension, $folder, $tienTo)
+    {
         $ext = trim(substr($file["type"], 6, strlen($file["type"])));
         $name = basename($file['name'], '.' . $ext);
         $extension = "jpg|jpeg|png|gif|JPG|JPEG|PNG|GIF";
@@ -169,7 +182,8 @@ class Adapter {
         return $file['name'];
     }
 
-    function mkdir_r($dirName, $rights = 0777) {
+    function mkdir_r($dirName, $rights = 0777)
+    {
         $dirs = explode('/', $dirName);
         $dir = '';
         foreach ($dirs as $part) {
@@ -179,12 +193,13 @@ class Adapter {
         }
     }
 
-    function upload_image1($file, $folder, $tt = "sp-", $isNameFile = false) {
+    function upload_image1($file, $folder, $tt = "sp-", $isNameFile = false)
+    {
         if (!is_dir($folder)) {
             mkdir($folder, 0777);
         }
         if (!$isNameFile) {
-            $tienTo = $tt . time() . rand(1, 2000);
+            $tienTo = $tt . time() . rand(1000, 9999);
         } else {
             $tienTo = $tt;
         }
@@ -197,7 +212,7 @@ class Adapter {
         if (file_exists($folder . $name))
             for ($i = 0; $i < 100; $i++) {
                 if (!file_exists($folder . $name . $i . '.' . $ext)) {
-                    $file['name'][$k] = $name . $i . '.' . $ext;
+                    $file['name'][$i] = $name . $i . '.' . $ext;
                     break;
                 }
             }
@@ -207,43 +222,55 @@ class Adapter {
         return $file['name'];
     }
 
-    function upload_multi_image($file, $folder, $tt = "sp-", $isNameFile = false) {
+    function upload_multi_image($file, $folder, $tt = "sp-", $isNameFile = false)
+    {
         $this->mkdir_r($folder);
         $extension = "jpg|jpeg|png|gif|JPG|JPEG|PNG|GIF";
         $listName = array();
         foreach ($file['name'] as $k => $name) {
-            if (!$isNameFile) {
-                $tienTo = $tt . $k;
-            } else {
-                $tienTo = $tt;
-            }
-            $ext = trim(substr($file["type"][$k], 6, strlen($file["type"][$k])));
-            $name = basename($file['name'][$k], '.' . $ext);
-            if ($ext) {
-                if (strpos($extension, $ext) === false) {
-                    break;
+            try {
+                if (!$isNameFile) {
+                    $tienTo = $tt . $k;
+                } else {
+                    $tienTo = $tt;
                 }
-                if (file_exists($folder . $file['name'][$k]))
-                    for ($i = 0; $i < 100; $i++) {
-                        if (!file_exists($folder . $name . $i . '.' . $ext)) {
-                            $file['name'][$k] = $name . $i . '.' . $ext;
-                            break;
+                $ext = trim(substr($file["type"][$k], 6, strlen($file["type"][$k])));
+                $name = basename($file['name'][$k], '.' . $ext);
+                 
+                if ($ext) {
+                    if (strpos($extension, $ext) === false) {
+                        break;
+                    }
+                    if (file_exists($folder . $file['name'][$k])) {
+                        $i = 0;
+                        while ($i < 100) {
+                            if (!file_exists($folder . $name . $i . '.' . $ext)) {
+                                $file['name'][$k] = $name . $i . '.' . $ext;
+                                break;
+                            }
+                            $i++;
                         }
                     }
-                $listName[$k] = $file['name'][$k] = $folder . $tienTo . "-" . $k . '.' . $ext;
-                copy($file["tmp_name"][$k], $file['name'][$k]);
-                move_uploaded_file($file["tmp_name"][$k], $file['name'][$k]);
+
+                    $file['name'][$k] = $folder . $tienTo . "-" . $k . '.' . $ext;
+                    $listName[$k] = $folder . $tienTo . "-" . $k . '.' . $ext;
+
+                    copy($file["tmp_name"][$k], $file['name'][$k]);
+                    move_uploaded_file($file["tmp_name"][$k], $file['name'][$k]);
+
+                }
+            } catch (Exception $th) {
+
             }
         }
         return $listName;
     }
 
-    function RandomString($a) {
+    function RandomString($a)
+    {
         $md5_hash = md5(rand(0, 9999) . time());
         $security_code = substr($md5_hash, 2, 10);
         return $security_code;
     }
 
 }
-
-?>

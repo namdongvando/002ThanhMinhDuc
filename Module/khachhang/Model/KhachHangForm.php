@@ -2,7 +2,8 @@
 
 namespace Module\khachhang\Model;
 
-class KhachHangForm extends \PFBC\Form implements IKhachHangForm {
+class KhachHangForm extends \PFBC\Form implements IKhachHangForm
+{
 
     public $Id;
     public $Code;
@@ -23,34 +24,41 @@ class KhachHangForm extends \PFBC\Form implements IKhachHangForm {
     public $DiaChiGiaoHang;
     public $NhomHangKinhDoanh;
 
-    public function __construct($dv = null) {
+    public function __construct($dv = null)
+    {
 
     }
 
     private static $Option = ["class" => "form-control"];
 
-    public static function Id($Id = null) {
-//        return new \PFBC\Element\Hidden("khachhang[Id]", $Id, []);
+    public static function Id($Id = null)
+    {
+        //        return new \PFBC\Element\Hidden("khachhang[Id]", $Id, []);
         return new \PFBC\Element\Hidden("khachhang[Id]", $Id);
     }
 
-    public static function Name($value = null) {
+    public static function Name($value = null)
+    {
         $Option = self::$Option;
         $Option["value"] = $value;
         $Option["required"] = true;
         return new \PFBC\Element\Textbox("Tên Khách Hàng", "khachhang[Name]", $Option);
     }
 
-    public static function Parents($value = null) {
+    public static function Parents($value = null)
+    {
         $Option = self::$Option;
         $Option["value"] = $value;
         $Option["required"] = true;
+        $Option["class"] = "select2 form-control";
+        $Option["id"] = __FUNCTION__;
         $options = KhachHang::GetALL2Options();
         $options = ["Là Cấp Cha"] + $options;
         return new \PFBC\Element\Select("Cấp Cha", "khachhang[Parents]", $options, $Option);
     }
 
-    public static function KhuVuc($value = null) {
+    public static function KhuVuc($value = null)
+    {
         $Option = self::$Option;
         $Option["value"] = $value;
         $Option["required"] = true;
@@ -58,27 +66,31 @@ class KhachHangForm extends \PFBC\Form implements IKhachHangForm {
         return new \PFBC\Element\Select("Khu Vực", "khachhang[KhuVuc]", $options, $Option);
     }
 
-    public static function ThongTinThanhToan($value = null) {
+    public static function ThongTinThanhToan($value = null)
+    {
         $Option = self::$Option;
         $Option["value"] = $value;
         $Option["required"] = true;
         return new \PFBC\Element\Textbox("Thông Tin Thanh Toán", "khachhang[ThongTinThanhToan]", $Option);
     }
 
-    public static function LoaiHinhKinhDoanh($value = null) {
+    public static function LoaiHinhKinhDoanh($value = null)
+    {
         $Option = self::$Option;
         $Option["value"] = $value;
         $options = \Module\option\Model\Option::GetAll2OptionsByGroups(\Module\option\Model\Option::MaNhomKinhDoanh);
         return new \PFBC\Element\Select("Loại Hình Kinh Doanh", "khachhang[LoaiHinhKinhDoanh]", $options, $Option);
     }
 
-    public static function DiaChi($value = null) {
+    public static function DiaChi($value = null)
+    {
         $Option = self::$Option;
         $Option["value"] = $value;
         return new \PFBC\Element\Textbox("Số Nhà, Đường, Phường/Xã", "khachhang[DiaChi]", $Option);
     }
 
-    public static function LaChuKinhDoanh($value = null) {
+    public static function LaChuKinhDoanh($value = null)
+    {
         $Option = self::$Option;
         $Option["value"] = $value;
         $options[0] = "Không";
@@ -86,76 +98,88 @@ class KhachHangForm extends \PFBC\Form implements IKhachHangForm {
         return new \PFBC\Element\Select("Là Chủ Kinh Doanh", "khachhang[LaChuKinhDoanh]", $options, $Option);
     }
 
-    public static function btnSubmit() {
+    public static function btnSubmit()
+    {
         return new \PFBC\Element\Button("Lưu", "submit", ["class" => "btn-succes", "Name" => "OnSave"]);
     }
 
-    public static function btnXoa($options) {
+    public static function btnXoa($options)
+    {
         $link = <<<Link
                 <a href="/khachhang/index/delete/{$options}" data-confirm="Bạn Muốn Xóa Khách Hàng Này?" class="btn xoa btn-danger" >Xóa</a>
 Link;
         echo $link;
     }
 
-    public static function btnThem($btnThem = 'Thêm') {
+    public static function btnThem($btnThem = 'Thêm')
+    {
         $link = <<<Link
                 <a href="/khachhang/index/add/" class="btn btn-success" >{$btnThem}</a>
 Link;
         echo $link;
     }
 
-    public static function btnEdit($options) {
+    public static function btnEdit($options)
+    {
         $link = <<<Link
                 <a href="/khachhang/index/edit/{$options}" class="btn btn-primary" >Sửa</a>
 Link;
         echo $link;
     }
 
-    public static function Code($value = null) {
+    public static function Code($value = null)
+    {
         $Option = self::$Option;
         $Option["value"] = $value;
-//        $Option["ng-model"] = "MaKhachHang";
+        //        $Option["ng-model"] = "MaKhachHang";
         $Option["required"] = true;
         return new \PFBC\Element\Textbox("Mã Khách Hàng (aaabbb-ccdddd)", "khachhang[Code]", $Option);
     }
 
-    public static function DiDong($value = null) {
+    public static function DiDong($value = null)
+    {
         $Option = self::$Option;
         $Option["value"] = $value;
         return new \PFBC\Element\Textbox("Di Động", "khachhang[DiDong]", $Option);
     }
 
-    public static function DiaChiGiaoHang($value = null) {
+    public static function DiaChiGiaoHang($value = null)
+    {
         $Option = self::$Option;
         $Option["value"] = $value;
         return new \PFBC\Element\Textbox("Địa Chỉ Giao Hàng", "khachhang[DiaChiGiaoHang]", $Option);
     }
 
-    public static function DienThoai($value = null) {
+    public static function DienThoai($value = null)
+    {
         $Option = self::$Option;
         $Option["value"] = $value;
         return new \PFBC\Element\Textbox("Điện Thoại", "khachhang[DienThoai]", $Option);
     }
 
-    public static function MaSoThue($value = null) {
+    public static function MaSoThue($value = null)
+    {
         $Option = self::$Option;
         $Option["value"] = $value;
         return new \PFBC\Element\Textbox("Mã Số Thuế", "khachhang[MaSoThue]", $Option);
     }
 
-    public static function NhomHangKinhDoanh($value = null) {
+    public static function NhomHangKinhDoanh($value = null)
+    {
         $Option = self::$Option;
         $Option["value"] = $value;
         return new \PFBC\Element\Textbox("Nhóm Hàng Kinh Doanh", "khachhang[NhomHangKinhDoanh]", $Option);
     }
 
-    public static function PhuongXa($value = null, $quanhuyen = 1) {
+    public static function PhuongXa($value = null, $quanhuyen = 1)
+    {
         $Option = self::$Option;
         $Option["value"] = $value;
         return new \PFBC\Element\Textbox("Phường Xã", "khachhang[PhuongXa]", $options, $Option);
     }
 
-    public static function TinhThanh($value = null) {
+    public static function TinhThanh($value = null)
+    {
         $Option = self::$Option;
         $Option["value"] = $value;
         $Option["class"] = "form-control AjaxHTML";
@@ -166,7 +190,8 @@ Link;
         return new \PFBC\Element\Select("Tỉnh Thành", "khachhang[TinhThanh]", $options, $Option);
     }
 
-    public static function QuanHuyen($value = null, $tinhThanh = 1) {
+    public static function QuanHuyen($value = null, $tinhThanh = 1)
+    {
         $Option = self::$Option;
         $Option["value"] = $value;
         $Option["id"] = "KhachHangQuanHuyen";
@@ -174,7 +199,8 @@ Link;
         return new \PFBC\Element\Select("Quận Huyện", "khachhang[QuanHuyen]", $options, $Option);
     }
 
-    public static function Zalo($value = null) {
+    public static function Zalo($value = null)
+    {
         $Option = self::$Option;
         $Option["value"] = $value;
         return new \PFBC\Element\Textbox("ZaLo", "khachhang[Zalo]", $Option);
@@ -182,4 +208,3 @@ Link;
 
 }
 ?>
-

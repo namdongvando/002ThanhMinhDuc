@@ -8,37 +8,41 @@ use Zend\Db\Sql\TableIdentifier;
 use Zend\Db\TableGateway\TableGateway;
 use \Zend\Db\Sql\Select;
 
-class DatabaseZend implements \Model\IModel {
+class DatabaseZend implements \Model\IModel
+{
 
     public $ConnetTable;
     private static $Conneted;
     private static $TableName;
 
-    function Connect() {
+    function Connect()
+    {
 
         global $INI;
-//        self::$_conn = mysqli_connect($INI['host'], $INI['username'], $INI['password'], $INI['DBname']) or mysqli_errno("Can't connect database");
-//        mysqli_query(self::$_conn, "SET NAMES utf8"); // Chuyển dữ liệu trả về sang kiểu utf8
+        //        self::$_conn = mysqli_connect($INI['host'], $INI['username'], $INI['password'], $INI['DBname']) or mysqli_errno("Can't connect database");
+        //        mysqli_query(self::$_conn, "SET NAMES utf8"); // Chuyển dữ liệu trả về sang kiểu utf8
         if (!self::$Conneted) {
             self::$Conneted = new Adapter([
-                "driver" => "Pdo_Mysql"
-                , "database" => $INI['DBname']
-                , "username" => $INI['username']
-                , "password" => $INI['password']
-                , "hostname" => $INI['host']
-                , "post" => "8080"
-                , "charset" => "utf8"
+                "driver" => "Pdo_Mysql",
+                "database" => $INI['DBname'],
+                "username" => $INI['username'],
+                "password" => $INI['password'],
+                "hostname" => $INI['host'],
+                "post" => "8080",
+                "charset" => "utf8"
             ]);
         }
         return self::$Conneted;
     }
 
-    function setConnetTable($tableName) {
+    function setConnetTable($tableName)
+    {
         $this->ConnetTable = new TableGateway($tableName, $this->Connect());
         self::$TableName = $tableName;
     }
 
-    function getColumnsOption($columns = [], $where = "") {
+    function getColumnsOption($columns = [], $where = "")
+    {
         $select = new Select();
         $select->from(self::$TableName);
         $select->columns($columns);
@@ -56,17 +60,20 @@ class DatabaseZend implements \Model\IModel {
         return $d;
     }
 
-    function Query($sql) {
+    function Query($sql)
+    {
         return $this->Connect()->query($sql, Adapter::QUERY_MODE_EXECUTE);
     }
 
-    function ToRow($res) {
+    function ToRow($res)
+    {
         if ($res)
             return (array) $res->current();
         return null;
     }
 
-    function getRowById($id) {
+    function getRowById($id)
+    {
         $where = " `Id` = '{$id}' ";
         $row = $this->Select($where);
         if ($row)
@@ -74,67 +81,77 @@ class DatabaseZend implements \Model\IModel {
         return $row;
     }
 
-    function ToArray($res) {
+    function ToArray($res)
+    {
         return $res->toArray();
     }
 
-    function GetRowsNumber($where) {
+    function GetRowsNumber($where)
+    {
         return $this->ConnetTable->select($where)->count();
     }
 
-    function GetRowsByWhere($where) {
+    function GetRowsByWhere($where)
+    {
         return $this->ToArray($this->Select($where));
     }
 
-    function Update($QA, $where = "") {
+    function Update($QA, $where = "")
+    {
         if (!$where)
             $where = " `Id` = '{$QA["Id"]}' ";
         return $this->ConnetTable->update($QA, $where);
     }
 
-    function Insert($QA) {
+    function Insert($QA)
+    {
         return $this->ConnetTable->insert($QA);
     }
 
-    function Delete($Id) {
+    function Delete($Id)
+    {
         $where = " `Id` = '{$Id}' ";
         return $this->ConnetTable->delete($where);
     }
 
-    function Select($Where = "") {
+    function Select($Where = "")
+    {
         if ($Where)
             return $this->ConnetTable->select($Where);
         return $this->ConnetTable->select();
     }
 
-    public function DeleteSubmit($id) {
+    public function DeleteSubmit($id)
+    {
         return $this->Delete($id);
     }
 
-    public function GetAll() {
+    public function GetAll()
+    {
         $where = "`Groups` > 0";
         return $this->ToArray($this->Select($where));
     }
 
-    public function GetById($id) {
+    public function GetById($id)
+    {
         $where = "`Id` = '{$id}'";
         return $this->ToRow($this->Select($where));
     }
 
-    public function GetByName($name) {
+    public function GetByName($name)
+    {
         $where = "`Name` = '{$name}'";
         return $this->ToRow($this->Select($where));
     }
 
-    public function InsertSubmit($model) {
+    public function InsertSubmit($model)
+    {
         $model["Id"] = \Application\UUID::v4();
         return $this->Insert($model);
     }
 
-    public function UpdateSubmit($model) {
+    public function UpdateSubmit($model)
+    {
         return $this->Update($model);
     }
-
 }
-
-?>

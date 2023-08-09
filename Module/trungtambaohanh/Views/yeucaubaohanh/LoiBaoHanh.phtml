@@ -1,0 +1,60 @@
+<?php
+use Module\trungtambaohanh\Model\FormYeuCauBaoHanh;
+use Module\trungtambaohanh\Model\YeuCauBaoHanh;
+
+$ycbh = new YeuCauBaoHanh($_Param[0]);
+?>
+<ol class="breadcrumb">
+    <li>
+        <a href="/trungtambaohanh/yeucaubaohanh/index/<?php echo $ycbh->Code; ?>">
+            Chi Tiết Yêu Cầu
+        </a>
+    </li>
+    <li class="active">Kiểm tra tem </li>
+</ol>
+
+<div class="container">
+    <div class='box box-primary'>
+        <div class='box-header'>
+            <h3 class='box-title'>Thông tin lỗi sản phẩm </h3>
+        </div>
+        <div class='box-body'>
+
+
+            <form action="" method="post">
+
+                <?php
+                $yeuCauBaoHanh = new YeuCauBaoHanh($_Param[0]);
+                $yeuForm = new FormYeuCauBaoHanh((array) $yeuCauBaoHanh);
+                ?>
+                <div class="col-md-6">
+                    <?php
+                    $yeuForm->Id()->render();
+                    $yeuForm->NoiDung()->renderHtml();
+                    $display = $yeuCauBaoHanh->NoiDung == "Khac" ? "block" : "none";
+                    ?>
+                    <div id="NoiDungKhac" style="display: <?php echo $display ?>;">
+                        <?php
+                        $yeuForm->NoiDungKhac()->renderHTML();
+                        ?>
+                    </div>
+
+                </div>
+                <div class="col-md-6">
+                    <p>Nhân viên bảo hành cập nhật lại lỗi sau khi kiểm tra lỗi thực tế của sản phẩm</p>
+
+                    <p>Chọn "cập nhật" để cập nhật lỗi bảo hành</p>
+                </div>
+                <div class="col-md-12 text-right">
+                    <a class="btn btn-primary" href="/trungtambaohanh/yeucaubaohanh/index/<?php echo $ycbh->Code; ?>">
+                        Quay lại
+                    </a>
+                    <button onclick="return(confirm('Bạn có muốn lưu lỗi bảo hành'))" class="btn btn-success"
+                        name="LoiBaoHanh">Cập
+                        nhật</button>
+                </div>
+            </form>
+
+        </div>
+    </div>
+</div>

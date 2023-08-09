@@ -2,7 +2,8 @@
 
 namespace Module\khachhang\Model;
 
-class KhachHang extends KhachHangData {
+class KhachHang extends KhachHangData
+{
 
     const MaDoiTuongKhachHang = "MaPhanLoai";
     const MaNhomKinhDoanh = "MaNhomKinhDoanh";
@@ -27,11 +28,13 @@ class KhachHang extends KhachHangData {
     public $DiaChiGiaoHang;
     public $NhomHangKinhDoanh;
 
-    public function __construct($dv = null) {
+    public function __construct($dv = null)
+    {
         parent::__construct();
         if ($dv) {
             if (!is_array($dv)) {
-                $dv = $this->GetById($dv);
+                $id = $dv;
+                $dv = $this->GetById($id);
             }
             $this->Id = !empty($dv["Id"]) ? $dv["Id"] : null;
             $this->Code = !empty($dv["Code"]) ? $dv["Code"] : null;
@@ -54,23 +57,27 @@ class KhachHang extends KhachHangData {
         }
     }
 
-    public static function KhachHangs() {
+    public static function KhachHangs()
+    {
         $Kh = new KhachHang();
         return $Kh->GetRows();
     }
 
-    public static function GetALL2Options() {
+    public static function GetALL2Options()
+    {
         $Kh = new KhachHang();
         return $Kh->GetAll2Option();
     }
 
-    function Parents() {
+    function Parents()
+    {
         if ($this->Parents == 0)
             return new KhachHang();
         return new KhachHang($this->Parents);
     }
 
-    public static function GetKhachHangById($id, $isDecode = false) {
+    public static function GetKhachHangById($id, $isDecode = false)
+    {
         $Kh = new KhachHang();
         if ($isDecode) {
             $where = "sha1(`id`) = '{$id}'";
@@ -79,31 +86,40 @@ class KhachHang extends KhachHangData {
         return $Kh->GetById($id);
     }
 
-    public function KhachHangThanhToan() {
+    public function KhachHangThanhToan()
+    {
         return new KhachHangThanhToan(KhachHangThanhToan::GetByMaKhachHang($this->Code));
     }
 
-    public function KhuVuc() {
+    public function KhuVuc()
+    {
         $options = new \Module\rmm\Model\Option();
         $Groups = \Module\option\Model\Option::KhuVuc;
         $where = "`Code` = '{$this->KhuVuc}' and `Groups`='{$Groups}'";
         return new \Module\option\Model\Option($options->GetRowByWhere($where));
-//        return $options->;
+        //        return $options->;
     }
 
-    public function TinhThanh() {
+    public function TinhThanh()
+    {
         $tinhThanh = new \Module\option\Model\TinhThanh();
         $tinhThanh = $tinhThanh->GetById($this->TinhThanh);
         return new \Module\option\Model\TinhThanh($tinhThanh);
     }
 
-    public function QuanHuyen() {
+    public function QuanHuyen()
+    {
         $tinhThanh = new \Module\option\Model\TinhThanh();
         $tinhThanh = $tinhThanh->GetById($this->QuanHuyen);
         return new \Module\option\Model\TinhThanh($tinhThanh);
     }
 
-    public static function KhachHangsPT($name = "", $pagesIndex, $pageNumber, &$tong) {
+    public function DiaChi()
+    {
+        return $this->DiaChi . ", " . $this->QuanHuyen()->Name  . ", " . $this->TinhThanh()->Name;
+    }
+    public static function KhachHangsPT($name = "", $pagesIndex, $pageNumber, &$tong)
+    {
         $Kh = new KhachHang();
         $pagesIndex = max($pagesIndex, 1);
         $pagesIndex = ($pagesIndex - 1) * $pageNumber;
@@ -116,10 +132,8 @@ class KhachHang extends KhachHangData {
         return $Kh->GetRowsByWhere($where);
     }
 
-    public function LinkChiTiet() {
+    public function LinkChiTiet()
+    {
         return "/khachhang/index/edit/" . sha1($this->Id);
     }
-
 }
-?>
-

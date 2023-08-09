@@ -15,35 +15,35 @@ $linkTimKiem = '/khachhang/index/index/1/10/';
     </li>
     <li class="active">Đại lý bán hàng</li>
 </ol>
-<div class="" >
+<div class="">
     <div class="container-fluid">
-        <section class="pb-10 " >
-            <div class=" " >
-                <div class="box box-primary" >
+        <section class="pb-10 ">
+            <div class=" ">
+                <div class="box box-primary">
                     <div class="box-header">
-                        <h3 class="box-title" >Danh Sách Đại Lý</h3>
+                        <h3 class="box-title">Danh Sách Đại Lý</h3>
                         <div class="box-tools">
                             <?php
                             \Module\khachhang\Model\KhachHangForm::btnThem("Thêm");
                             ?>
                             <button class="btn btn-primary" data-toggle="modal" data-target='#ImportModel'>Import</button>
-                            <button type="button" data-target="#TimKiem" class="btn-toggle btn btn-primary" ><i class="fa fa-search" ></i></button>
+                            <button type="button" data-target="#TimKiem" class="btn-toggle btn btn-primary"><i class="fa fa-search"></i></button>
                         </div>
                     </div>
-                    <div class="box-body " >
+                    <div class="box-body ">
                         <div class="row">
-                            <div class="col-md-2 " style="display: none;" id="TimKiem" >
+                            <div class="col-md-2 " style="display: none;" id="TimKiem">
                                 <?php
                                 Model\FormOptions::TimKiem($name, ["id" => "TuKhoa", "onchange" => "TimKiemSanPham()"])->renderHTMLIcon("search");
                                 ?>
                             </div>
                         </div>
 
-                        <div class="">
-                            <table class="table table-hover table-striped table-bordered   "    >
+                        <div class="table-responsive">
+                            <table class="table table-hover table-striped table-bordered   ">
                                 <thead>
-                                    <tr class="bg-blue" >
-                                        <th style="width: 50px;" >#</th>
+                                    <tr class="bg-blue">
+                                        <th style="width: 50px;">#</th>
                                         <th>Mã</th>
                                         <th>Tên Khách Hàng</th>
                                         <th>Địa Chỉ</th>
@@ -56,37 +56,37 @@ $linkTimKiem = '/khachhang/index/index/1/10/';
                                     <?php
                                     foreach ($KhachHangs as $index => $kh) {
                                         $Modelkh = new Module\khachhang\Model\KhachHang($kh);
-                                        ?>
+                                    ?>
                                         <tr>
-                                            <td><?php echo ($pagesNumber * ($pagesIndex - 1) ) + $index + 1; ?></td>
-                                            <td >
-                                                <a href="/khachhang/index/edit/<?php echo sha1($Modelkh->Id); ?>"  >
+                                            <td><?php echo ($pagesNumber * ($pagesIndex - 1)) + $index + 1; ?></td>
+                                            <td>
+                                                <a href="/khachhang/index/edit/<?php echo sha1($Modelkh->Id); ?>">
                                                     <?php echo $Modelkh->Code ?>
                                                 </a>
                                             </td>
-                                            <td >
-                                                <a href="/khachhang/index/edit/<?php echo sha1($Modelkh->Id); ?>"  >
+                                            <td>
+                                                <a href="/khachhang/index/edit/<?php echo sha1($Modelkh->Id); ?>">
                                                     <?php echo $Modelkh->Name ?>
                                                 </a>
                                             </td>
-                                            <td ><?php echo $Modelkh->DiaChi ?></td>
-                                            <td  ><?php echo $Modelkh->DienThoai ?></td>
+                                            <td><?php echo $Modelkh->DiaChi ?></td>
+                                            <td><?php echo $Modelkh->DienThoai ?></td>
                                             <td><?php echo $Modelkh->TinhThanh()->Name; ?></td>
                                             <td><?php echo $Modelkh->QuanHuyen()->Name; ?></td>
                                         </tr>
-                                        <?php
+                                    <?php
                                     }
                                     ?>
                                 </tbody>
                                 <tfoot>
-                                    <tr >
-                                        <th colspan="7" class="no-padding" >
-                                            <div class="col-xs-2 col-md-1 mt-10" style="" >
+                                    <tr>
+                                        <th colspan="7" class="no-padding">
+                                            <div class="col-xs-2 col-md-1 mt-10" style="">
                                                 <?php
                                                 Model\FormOptions::HienThi($pagesNumber, ["id" => "HienThi", "onchange" => "TimKiemSanPham()"])->render();
                                                 ?>
                                             </div>
-                                            <div class="col-xs-10 col-md-11 "   >
+                                            <div class="col-xs-10 col-md-11 ">
                                                 <?php
                                                 $linkPagination = "/khachhang/index/index/?pagesIndex=[i]&pagesNumber={$pagesNumber}&keyword={$name}";
                                                 echo Common\Common::PhanTrang(ceil($tong / $pagesNumber), $pagesIndex, $linkPagination);
@@ -103,7 +103,7 @@ $linkTimKiem = '/khachhang/index/index/1/10/';
             </div>
         </section>
     </div>
-    <form action="/khachhang/index/import/" enctype="multipart/form-data" method="POST" >
+    <form action="/khachhang/index/import/" enctype="multipart/form-data" method="POST">
         <div class="modal fade" id="ImportModel">
             <div class="modal-dialog">
                 <div class="modal-content">
@@ -114,7 +114,7 @@ $linkTimKiem = '/khachhang/index/index/1/10/';
                     <div class="modal-body">
                         <div class="form-group">
                             <label for="">Chọn file</label>
-                            <input type="file" class="form-control" required="" name="file" >
+                            <input type="file" class="form-control" required="" name="file">
                         </div>
                         <p>Chọn file *.xlsx</p>
                     </div>
@@ -127,7 +127,7 @@ $linkTimKiem = '/khachhang/index/index/1/10/';
         </div>
     </form>
 </div>
-<script type="text/javascript" >
+<script type="text/javascript">
     function TimKiemSanPham() {
         var path = "/khachhang/index/index/?pagesIndex=1&pagesNumber=[pn]&keyword=[key]";
         var tukhoa = $("#TuKhoa").val();

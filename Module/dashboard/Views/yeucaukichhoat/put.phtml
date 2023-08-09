@@ -1,0 +1,59 @@
+<?php
+
+use Module\sanpham\Model\YeuCauKichHoat;
+
+$ycau = new YeuCauKichHoat();
+$ycKichHoats = $ycau->GetAll();
+?>
+<div class="container-fluid ">
+    <div class="row">
+        <section class="col-md-12 pb-10 mt-20">
+            <div class="connectedSortable">
+                <div class="box box-primary">
+                    <div class="box-body  ">
+                        <table class="table table-bordered table-striped  dataTable " id="data">
+                            <thead>
+                                <tr>
+                                    <th></th>
+                                    <th>#</th>
+                                    <th>Họ Tên</th>
+                                    <th>SĐT</th>
+                                    <th>Tỉnh Thành</th>
+                                    <th>Quận Huyện</th>
+                                    <th>Địa Chỉ</th>
+                                    <th>Thông tin sản phẩm</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php
+                                foreach ($ycKichHoats as $k => $op) {
+                                    $_Option = new YeuCauKichHoat($op);
+                                ?>
+                                    <tr>
+                                        <td>
+                                            <a href="/dashboard/yeucaukichhoat/put/<?php echo $_Option->Code ?>" class="btn btn-success">Chọn</a>
+
+                                            <a href="/dashboard/yeucaukichhoat/ok/<?php echo $_Option->Code ?>" class="btn btn-success">
+                                                Chọn
+                                            </a>
+                                        </td>
+                                        <td><?php echo $k + 1; ?></td>
+                                        <th><?php echo $_Option->HoTen; ?></th>
+                                        <th><?php echo $_Option->SDT; ?></th>
+                                        <th><?php echo $_Option->TinhThanh()->Name; ?></th>
+                                        <th><?php echo $_Option->QuanHuyen()->Name; ?></th>
+                                        <th><?php echo $_Option->DiaChi; ?></th>
+                                        <th><a target="_blank" href="/baohanh/<?php echo $_Option->MaTem; ?>">Xem thông tin tem</a></th>
+                                    </tr>
+                                <?php
+                                }
+                                ?>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+</div>

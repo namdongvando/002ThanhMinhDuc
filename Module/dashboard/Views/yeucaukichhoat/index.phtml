@@ -1,0 +1,156 @@
+<?php
+
+use Model\FormRender;
+use Module\sanpham\Model\YeuCauKichHoat;
+
+$ycau = new YeuCauKichHoat();
+$Params["TinhTrang"]  = $_GET["TinhTrang"] ?? "";
+$ycKichHoats = $ycau->GetItems($Params);
+?>
+
+<div class="container-fluid " ng-controller="YeucaukichhoatController">
+    <div class="row">
+        <section class="col-md-12 pb-10 mt-20">
+            <div class=" ">
+                <div class="box box-primary">
+                    <div class="box-body">
+                        <div class="d-flex">
+                            <a href="/dashboard/yeucaukichhoat/index/" class="btn btn-primary">Tất cả</a>
+                            <?php
+                            foreach ($ycau->GetStatusName() as $item) {
+                            ?>
+                                <a href="/dashboard/yeucaukichhoat/index/?TinhTrang=<?php echo $item["Id"]; ?>" class="btn btn-primary">
+                                    <?php echo $item["Name"]; ?>
+                                    <?php echo FormRender::ToolTipElement($item["Des"] ?? ""); ?>
+                                </a>
+                            <?php
+                            }
+                            ?>
+                        </div>
+                        <div class="table-responsive" style="padding-bottom: 100px;">
+                            <table class="table table-bordered table-striped  dataTable " id="dataTableID">
+                                <thead>
+                                    <tr>
+                                        <th style="width: 50px;">#</th>
+                                        <th style="white-space: nowrap; ">Họ Tên</th>
+                                        <th>SĐT</th>
+                                        <th>Mã HH
+                                        </th>
+                                        <th style="white-space: nowrap;width: 100px;">Ngày bắt đầu <i class="pull-right fa fa-info" <?php echo FormRender::ToolTip("Ngày bắt đầu bảo hành.") ?> aria-hidden="true"></i> </th>
+                                        <th style="width: 100px;white-space: nowrap;">T.G Yêu Cầu
+                                            <i class="pull-right fa fa-info" <?php echo FormRender::ToolTip("Thời gian yêu cầu kích  hoạt.") ?> aria-hidden="true"></i>
+                                        </th>
+                                        <th style="width: 100px;white-space: nowrap;">Tỉnh Thành</th>
+                                        <th style="width: 100px;white-space: nowrap;">Quận Huyện</th>
+                                        <th style="width: 100px;white-space: nowrap;">Địa Chỉ</th>
+                                        <th style="width: 100px;white-space: nowrap;">Tình Trạng</th>
+                                        <th style="width:    100px;white-space: nowrap;">Thao tác</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <?php
+                                    foreach ($ycKichHoats as $k => $op) {
+                                        $_Option = new YeuCauKichHoat($op);
+                                    ?>
+                                        <tr>
+                                            <td><?php echo $k + 1; ?></td>
+                                            <th><?php echo $_Option->HoTen; ?></th>
+                                            <th><?php echo $_Option->SDT; ?></th>
+                                            <th><?php echo $_Option->TemSanPham()->SanPham()->DanhMuc()->Code; ?></th>
+                                            <th><?php echo $_Option->TemSanPham()->NgayBatDau(); ?></th>
+                                            <th><?php echo $_Option->RecCreateDate(); ?></th>
+                                            <th><?php echo $_Option->TinhThanh()->Name; ?></th>
+                                            <th><?php echo $_Option->QuanHuyen()->Name; ?></th>
+                                            <th><?php echo $_Option->DiaChi; ?></th>
+                                            <th><?php echo $_Option->TinhTrang(); ?></th>
+                                            <td>
+                                                <div class="btn-group ">
+                                                    <button class="btn btn-success btn-sm dropdown-toggle" data-toggle="dropdown" aria-expanded="true">
+                                                        <i class="fa fa-ellipsis-v"></i>
+                                                        <i class="fa fa-ellipsis-v"></i>
+                                                    </button>
+                                                    <div class="dropdown-menu pull-right" role="menu">
+                                                        <a class=" btn btn-block btn-sm btn-default" target="_blank" href="/baohanh/<?php echo $_Option->MaTem; ?>">
+                                                            Xem
+                                                            <?php echo FormRender::ToolTipElement("Xem thông tin tem sản phẩm phẩm") ?>
+                                                        </a>
+                                                        <a class=" btn btn-block btn-sm btn-primary" target="_blank" href="/sanpham/temsanpham/detailbysanpham/<?php echo $_Option->MaTem; ?>">
+                                                            Sản phẩm
+                                                            <?php echo FormRender::ToolTipElement("Chi tiết tem bảo hành") ?>
+                                                        </a>
+                                                        <!-- <a <?php echo FormRender::ToolTip("Chọn yêu cầu") ?> href="/dashboard/yeucaukichhoat/put/<?php echo $_Option->Code ?>" class="btn btn-primary">Chọn</a> -->
+                                                        <?php
+                                                        if (
+                                                            $_Option->TinhTrang == YeuCauKichHoat::MoiTao
+                                                            || $_Option->TinhTrang == YeuCauKichHoat::KichHoat
+                                                        ) {
+                                                        ?>
+                                                            <button onclick="TuChoiKichHoat('<?php echo $_Option->Code ?>',this)" class="btn  btn-block btn-sm btn-danger">
+                                                                Từ Chối
+                                                                <?php echo FormRender::ToolTipElement("Từ chối kích hoạt") ?>
+                                                            </button>
+                                                        <?php
+                                                        }
+                                                        if ($_Option->TinhTrang == YeuCauKichHoat::HuyKichHoat || $_Option->TinhTrang == YeuCauKichHoat::MoiTao) {
+                                                        ?>
+                                                            <button onclick="OnChon('<?php echo @$_Option->Code ?>','<?php echo @date('Y-m-d', strtotime($_Option->TemSanPham()->NgayBatDau)); ?>');" type="button" data-toggle="modal" data-target='#XacNhanKichHoat' class="btn  btn-block btn-sm btn-success">
+                                                                Đồng Ý
+                                                                <?php echo FormRender::ToolTipElement("Đồng ý kích hoạt") ?>
+                                                            </button>
+                                                        <?php
+                                                        }
+                                                        if ($_Option->TinhTrang == YeuCauKichHoat::HuyKichHoat || $_Option->TinhTrang == YeuCauKichHoat::KichHoat) {
+                                                        ?>
+                                                            <button onclick="LamLaiKichHoat('<?php echo $_Option->Code ?>',this)" href="/dashboard/yeucaukichhoat/ok/<?php echo $_Option->Code ?>" class="btn btn-block  btn-sm btn-primary">
+                                                                Kích hoạt lại
+                                                                <?php echo FormRender::ToolTipElement("Đồng ý kích hoạt") ?>
+                                                            </button>
+                                                        <?php
+                                                        }
+                                                        ?>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    <?php
+                                    }
+                                    ?>
+                                </tbody>
+                            </table>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+    <form onsubmit="DongYKichHoat()" id="formXacNhanKichHoat">
+        <div class="modal fade" id="XacNhanKichHoat">
+
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h4 class="modal-title">Kích hoạt tem sản phẩm </h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="input-group" style="width: 100%;">
+                            <label>Mã yêu cầu</label>
+                            <input type="text" readonly id="mayeucau" class="form-control" name="mayeucau" required="required">
+                        </div>
+                        <div class="input-group" style="width: 100%;">
+                            <label>Ngày bắt đầu</label>
+                            <input type="date" id="ngaybatdau" name="ngaybatdau" class="form-control" required="required">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" onclick="OnChon();" class="btn btn-default" data-dismiss="modal">thoát</button>
+                        <button type="submit" class="btn btn-primary">Đồng Ý</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+<script src="/Module/dashboard/public/js/yeucaukichhoat.js"></script>

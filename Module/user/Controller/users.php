@@ -4,6 +4,7 @@ namespace Module\user\Controller;
 
 define("Token", "Token");
 
+use Common\Common;
 use Module\user\Model\AdminStatus;
 
 class users extends \ApplicationM implements \Controller\IController {
@@ -51,7 +52,10 @@ class users extends \ApplicationM implements \Controller\IController {
                 $user["Note"] = isset($_newUser["Note"]) ? $_newUser["Note"] : "";
                 $user["Groups"] = $_newUser["Groups"];
                 $user["Image"] = "";
+                $user["Parents"] = "";
+                 
                 $ModelAdmin->InsertSubmit($user);
+                Common::toUrl("/user/users/");
             } catch (\Exception $ex) {
                 \Common\Alert::setAlert("danger", $ex->getMessage());
             }

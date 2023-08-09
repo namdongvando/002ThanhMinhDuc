@@ -1,6 +1,7 @@
 <?php
 
-class ApplicationM {
+class ApplicationM
+{
 
     static public $iurl;
     static public $Module;
@@ -8,36 +9,44 @@ class ApplicationM {
     static public $action;
     static public $params;
 
-    function __construct($url = "") {
+    function __construct($url = "")
+    {
         self::$iurl = $url;
         $this->tach_url($url, self::$Module, self::$controller, self::$action, self::$params);
     }
 
-    static function getModule() {
+    static function getModule()
+    {
         return self::$Module;
     }
 
-    static function getController() {
+    static function getController()
+    {
         return self::$controller;
     }
 
-    static function setModule($nameModule) {
+    static function setModule($nameModule)
+    {
         return self::$Module = $nameModule;
     }
 
-    static function setController($nameController) {
+    static function setController($nameController)
+    {
         return self::$controller = $nameController;
     }
 
-    static function getAction() {
+    static function getAction()
+    {
         return self::$action;
     }
 
-    static function setAction($Action) {
+    static function setAction($Action)
+    {
         return self::$action = $Action;
     }
 
-    static function getParam($index = null) {
+    static function getParam($index = null)
+    {
         if (self::$params) {
             foreach (self::$params as $v => $param) {
                 self::$params[$v] = self::BokyTuDacBietPaRam(self::$params[$v]);
@@ -51,12 +60,14 @@ class ApplicationM {
         }
     }
 
-    function setThongBao($ThongBao) {
+    function setThongBao($ThongBao)
+    {
 
         return $_SESSION["ThongBao"] = $ThongBao;
     }
 
-    function setParam($params) {
+    function setParam($params)
+    {
         $Param = $this->getParam();
         if ($Param) {
             $a1[] = $params;
@@ -69,25 +80,30 @@ class ApplicationM {
         self::$params = $Param;
     }
 
-    function unsetThongBao() {
+    function unsetThongBao()
+    {
         unset($_SESSION['ThongBao']);
     }
 
-    function getThongBao() {
+    function getThongBao()
+    {
         $ThongBao = isset($_SESSION["ThongBao"]) ? $_SESSION["ThongBao"] : FALSE;
         $this->unsetThongBao();
         return $ThongBao;
     }
 
-    static function getLang() {
+    static function getLang()
+    {
         return self::$lang;
     }
 
-    public function loi404() {
+    public function loi404()
+    {
         header("Location: " . BASE_DIR . "index/loi404");
     }
 
-    function KiemTraURL($url) {
+    function KiemTraURL($url)
+    {
         if (!filter_var($url, FILTER_VALIDATE_URL) === false) {
             return TRUE;
         } else {
@@ -95,12 +111,13 @@ class ApplicationM {
         }
     }
 
-    function upload_image($file, $extension, $folder, $newname = '') {
+    function upload_image($file, $extension, $folder, $newname = '')
+    {
         if (isset($_FILES[$file]) && !$_FILES[$file]['error']) {
 
-//         $ext = end(explode('.', $_FILES[$file]['name']));
+            //         $ext = end(explode('.', $_FILES[$file]['name']));
             $ext = trim(substr($_FILES[$file]["type"], 6, strlen($_FILES[$file]["type"])));
-//         $ext = $ext[1];
+            //         $ext = $ext[1];
             $name = basename($_FILES[$file]['name'], '.' . $ext);
 
             if (strpos($extension, $ext) === false) {
@@ -127,18 +144,20 @@ class ApplicationM {
         return false;
     }
 
-    public function KiemTraFileHinh($Hinh, $size, $nameHinh, $path) {
+    public function KiemTraFileHinh($Hinh, $size, $nameHinh, $path)
+    {
 
-        if (($Hinh["type"] == "image/gif") ||
-                ($Hinh["type"] == "image/jpeg") ||
-                ($Hinh["type"] == "image/jpg") ||
-                ($Hinh["type"] == "image/png") &&
-                $Hinh['size'] < $size
+        if (
+            ($Hinh["type"] == "image/gif") ||
+            ($Hinh["type"] == "image/jpeg") ||
+            ($Hinh["type"] == "image/jpg") ||
+            ($Hinh["type"] == "image/png") &&
+            $Hinh['size'] < $size
         ) {
             $typeHinh = explode('/', $Hinh['type']);
             $typeHinh = end($typeHinh);
             $pypath = $path . $nameHinh . "." . $typeHinh;
-//            là hinh thì làm cái gì
+            //            là hinh thì làm cái gì
             if (copy($Hinh["tmp_name"], $pypath)) {
                 if (move_uploaded_file($Hinh["tmp_name"], $pypath)) {
                     return $nameHinh . "." . trim(substr($Hinh["type"], 6, strlen($Hinh["type"])));
@@ -146,31 +165,35 @@ class ApplicationM {
                     return FALSE;
                 }
             }
-//            return "." . trim(substr($Hinh["type"], 6, strlen($Hinh["type"])));
+            //            return "." . trim(substr($Hinh["type"], 6, strlen($Hinh["type"])));
         } else {
             return FALSE;
         }
     }
 
-    function getKhachHang() {
+    function getKhachHang()
+    {
         return $_SESSION[KhachHang];
     }
 
-    function KiemTraEmai($email) {
-//      $regule = '/^[^\W][a-zA-Z0-9_]+(\.[a-zA-Z0-9_]+)*\@[a-zA-Z0-9_]+(\.[a-zA-Z0-9_]+)*\.[a-zA-Z]{2,4}$/';
+    function KiemTraEmai($email)
+    {
+        //      $regule = '/^[^\W][a-zA-Z0-9_]+(\.[a-zA-Z0-9_]+)*\@[a-zA-Z0-9_]+(\.[a-zA-Z0-9_]+)*\.[a-zA-Z]{2,4}$/';
         return filter_var($email, FILTER_VALIDATE_EMAIL);
     }
 
-    function KiemTraPhone($Phone) {
+    function KiemTraPhone($Phone)
+    {
         if (preg_match("/^[0-9]{10,11}$/", $Phone)) {
             return $Phone;
         }
         return FALSE;
     }
 
-//   dành cho các chuan thuan
+    //   dành cho các chuan thuan
 
-    function BokyTuDacBiet($str) {
+    function BokyTuDacBiet($str)
+    {
 
         if (!empty($str)) {
             $kytu = array("select", "delete", "<script>", "</script>", "insert", "update");
@@ -183,7 +206,8 @@ class ApplicationM {
         }
     }
 
-    static function BokyTuDacBietPaRam($str) {
+    static function BokyTuDacBietPaRam($str)
+    {
 
         if (!empty($str)) {
             $kytu = array(";", "select", "delete", "insert", "update");
@@ -196,7 +220,8 @@ class ApplicationM {
         }
     }
 
-    function ViewC($data, $CName = "index") {
+    function ViewC($data, $CName = "index")
+    {
         $_Controller = $this->getController();
         $_Action = $this->getAction();
         if (!method_exists("Controller_" . $_Controller, $_Action)) {
@@ -209,7 +234,8 @@ class ApplicationM {
         include_once $layout;
     }
 
-    function tintucView($data) {
+    function tintucView($data)
+    {
         if ($this->getController() == "") {
             $this->controller = "index";
         }
@@ -221,7 +247,7 @@ class ApplicationM {
         $_Param = $this->getParam();
         $_Lang = $this->getLang();
         if (method_exists("Controller_" . $_Controller, $_Action)) {
-//        echo "có action";
+            //        echo "có action";
             $_NoiDungChinh = __DIR__ . "/View/" . $this->getController() . "/" . $this->getAction() . ".phtml";
         } else {
             $_NoiDungChinh = __DIR__ . "/View/" . $this->getController() . "/index.phtml";
@@ -230,7 +256,8 @@ class ApplicationM {
         include_once $layout;
     }
 
-    function controllerView($data) {
+    function controllerView($data)
+    {
         if ($this->getController() == "") {
             $this->controller = "index";
         }
@@ -242,7 +269,7 @@ class ApplicationM {
         $_Param = $this->getParam();
         $_Lang = $this->getLang();
         if (method_exists("Controller_" . $_Controller, $_Action)) {
-//        echo "có action";
+            //        echo "có action";
             $_NoiDungChinh = __DIR__ . "/View/" . $this->getController() . "/" . $this->getAction() . ".phtml";
         } else {
             $_NoiDungChinh = __DIR__ . "/View/" . $this->getController() . "/index.phtml";
@@ -251,7 +278,8 @@ class ApplicationM {
         include_once $layout;
     }
 
-    function AView($data = null) {
+    function AView($data = null)
+    {
 
         if ($this->getController() == "") {
             $this->controller = "index";
@@ -267,7 +295,8 @@ class ApplicationM {
         include_once $view;
     }
 
-    function PTURL(&$TieuDeKD) {
+    function PTURL(&$TieuDeKD)
+    {
         $Model_Pages = new Model_Pages();
         $url = self::$iurl;
         $Tree = [
@@ -275,17 +304,20 @@ class ApplicationM {
                 "/thanh-toan.html$/i",
                 "/thanh-toan.html(.*)$/i",
             )
-//            chi tiết bài viết
-            , "sysbaivietdetail" => array(
+            //            chi tiết bài viết
+            ,
+            "sysbaivietdetail" => array(
                 "/\/(.*)\/(.*)(\.html)(.*)$/i",
                 "/\/(.*)\/(.*)(\.html)$/i",
             )
-//            chi tiết Pages
-            , "syspagedetail" => array(
+            //            chi tiết Pages
+            ,
+            "syspagedetail" => array(
                 "/\/(.*).html$/i",
             )
-//            pages
-            , "syspage" => array(
+            //            pages
+            ,
+            "syspage" => array(
                 "/\/(.*)\/?pages-(.*)/i",
                 "/\/(.*)\/?pages-(.*)\//i",
                 "/\/(.*)/i",
@@ -303,7 +335,7 @@ class ApplicationM {
             }
         }
 
-//        return "index";
+        //        return "index";
 //        //        chi tiết bài viết / sản phẩm
 //        preg_match_all("/\/(.*)\/(.*)(\.html)(.*)$/i", $url, $pat_array);
 //        if (isset($pat_array[1][0])) {
@@ -355,17 +387,20 @@ class ApplicationM {
 //        return FALSE;
     }
 
-    function Modules() {
+    function Modules()
+    {
         return ["app"];
     }
 
-    function CheckModules($mn) {
+    function CheckModules($mn)
+    {
         return in_array($mn, $this->Modules());
     }
 
-    function tach_url($url, &$Module, &$cname, &$action, &$params) {
+    function tach_url($url, &$Module, &$cname, &$action, &$params)
+    {
         $arr = explode("/", $url);
-//        print_r($arr);
+        //        print_r($arr);
 //        echo "---;";
 //        var_dump($arr);
 //        echo $arr[1];
@@ -401,7 +436,8 @@ class ApplicationM {
         return TRUE;
     }
 
-    function RandomNumber($a) {
+    function RandomNumber($a)
+    {
         $characters = "0123456789abcd";
         $randstring = "";
         for ($i = 0; $i < $a; $i++) {
@@ -410,13 +446,15 @@ class ApplicationM {
         return $randstring;
     }
 
-    function RandomString($a = 10) {
+    function RandomString($a = 10)
+    {
         $md5_hash = md5(rand(0, 9999) . time());
         $security_code = substr($md5_hash, 2, $a);
         return $security_code;
     }
 
-    function ModelView($data = null, $layout = "") {
+    function ModelView($data = null, $layout = "")
+    {
         $_Module = $this->getModule();
         $_Controller = $this->getController();
         $_Action = $this->getAction();
@@ -432,7 +470,8 @@ class ApplicationM {
         include_once $layout;
     }
 
-    function ModelViewModule($data = null, $Module = null, $layout = "") {
+    function ModelViewModule($data = null, $Module = null, $layout = "")
+    {
 
         $_Module = $this->getModule();
         $_Controller = $this->getController();
@@ -452,7 +491,8 @@ class ApplicationM {
             include_once $layout;
     }
 
-    function ViewTheme($data = NULL, $theme = null, $themelayout = "") {
+    function ViewTheme($data = NULL, $theme = null, $themelayout = "")
+    {
         $_Module = $this->getModule();
         $_Controller = $this->getController();
         $_Action = $this->getAction();
@@ -470,12 +510,13 @@ class ApplicationM {
             $layout = "theme/" . $theme . "/" . "layout{$themelayout}.phtml";
         }
         if (!is_file($layout)) {
-//            throw new Exception("Không Có Theme");
+            //            throw new Exception("Không Có Theme");
         }
         include_once $layout;
     }
 
-    function ViewThemeModlue($data = NULL, $theme = null, $themelayout = "") {
+    function ViewThemeModlue($data = NULL, $theme = null, $themelayout = "")
+    {
         $_Module = $this->getModule();
         $_Controller = $this->getController();
         $_Action = $this->getAction();
@@ -490,7 +531,12 @@ class ApplicationM {
         ];
         $admin = \Module\user\Model\Admin::getCurentUser(true);
         if ($themelayout == "")
-            $themelayout = $layout[$admin->Groups];
+            $themelayout = $layout[intval($admin->Groups)];
+
+
+        if (isset($_GET["debug"])) {
+            var_dump($themelayout);
+        }
 
         if ($data)
             extract($data);
@@ -510,7 +556,8 @@ class ApplicationM {
         include_once $layout;
     }
 
-    function ViewThemeModule($data = NULL, $theme = null, $themelayout = "") {
+    function ViewThemeModule($data = NULL, $theme = null, $themelayout = "")
+    {
         $_Module = $this->getModule();
         $_Controller = $this->getController();
         $_Action = $this->getAction();

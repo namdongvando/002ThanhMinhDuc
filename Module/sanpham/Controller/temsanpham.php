@@ -2,11 +2,17 @@
 
 namespace Module\sanpham\Controller;
 
-class temsanpham extends \ApplicationM implements \Controller\IController {
+use Exception;
+use lib\input;
+use Module\sanpham\Model\SanPham;
+
+class temsanpham extends \ApplicationM implements \Controller\IController
+{
 
     static public $UserLayout = "backend";
 
-    function __construct() {
+    function __construct()
+    {
         new \Controller\backend();
         try {
             \Core\ViewTheme::set_viewthene("backend");
@@ -15,17 +21,27 @@ class temsanpham extends \ApplicationM implements \Controller\IController {
         }
     }
 
-    function index() {
+    protected function CreateCode($i)
+    {
+        $string = input::RandomString(6, date("y", time()));
+        return $string;
+    }
 
+    function index()
+    {
         if (isset($_POST["ThemTem"])) {
+
             $TemSanPham = new \Module\sanpham\Model\TemSanPham();
             for ($i = 0; $i < intval($_POST["SoLuong"]); $i++) {
-                $date = date("ymd");
-                $string = sha1(rand(1, time())) . microtime();
-                $string = substr($string, 0, 10);
-                $tem["Code"] = "{$date}{$string}";
+                $string = $this->CreateCode($i);
+                while ($TemSanPham->GetByCode($string)) {
+                    $string = $this->CreateCode($i);
+                }
+                $tem["Code"] = "{$string}";
                 $tem["Name"] = $tem["Code"];
+                $tem["MaSanPham"] = 0;
                 $tem["Parents"] = 0;
+                $tem["ThangKetThuc"] = null;
                 $tem["IsPrint"] = 0;
                 $tem["CreateDate"] = date("Y-m-d H:i:s", time());
                 $tem["ModifyDate"] = date("Y-m-d H:i:s", time());
@@ -35,7 +51,15 @@ class temsanpham extends \ApplicationM implements \Controller\IController {
         return $this->ViewThemeModlue();
     }
 
-    public function create() {
+    public function xoatemchuain()
+    {
+
+        $TemSanPham = new \Module\sanpham\Model\TemSanPham();
+        $TemSanPham->DeleteNoPrint();
+        return;
+    }
+    public function create()
+    {
         if (\Module\project\Model\ProjectForm::onSubmit()) {
             try {
                 $project = $_POST["project"];
@@ -48,13 +72,15 @@ class temsanpham extends \ApplicationM implements \Controller\IController {
         }
     }
 
-    public function delete() {
+    public function delete()
+    {
         $temSanPham = new \Module\sanpham\Model\TemSanPham();
         $temSanPham->DeleteSubmit($this->getParam()[0], true);
         \Common\Common::toUrl($_SERVER["HTTP_REFERER"]);
     }
 
-    public function detailbysanpham() {
+    public function detailbysanpham()
+    {
 
         if (isset($_POST["ChonDanhMucSanPham"])) {
             $Chon = $_POST["Chon"];
@@ -69,6 +95,7 @@ class temsanpham extends \ApplicationM implements \Controller\IController {
             $SanPham->ChungLoaiSP = $op->Parents()->Code;
             $SanPham->Mota = $op->Note;
             $model = $SanPham->ToArray();
+            // var_dump($model);
             $SanPham->UpdateSubmit($model);
         }
 
@@ -87,11 +114,11 @@ class temsanpham extends \ApplicationM implements \Controller\IController {
             $temSP["NgayKetThuc"] = date("Y-m-d H:i:s", $a);
             $temSP["ModifyDate"] = date("Y-m-d H:i:s", time());
             $MSP = $ModelSP->GetById($sanPhamPost["Id"]);
-//            var_dump($sanPhamPost);
+            //            var_dump($sanPhamPost);
             $MSP["Name"] = $sanPhamPost["Name"];
             if (\Module\user\Model\Admin::CheckQuyen([\Module\user\Model\Admin::Admin, \Module\user\Model\Admin::SuperAdmin])) {
                 $MSP["MaDaiLy"] = $sanPhamPost["MaDaiLy"];
-                $MSP["TinhTrang"] = $sanPhamPost["TinhTrang"];
+                $MSP["TinhTrang"] = $sanPhamPost["TinhTrang"] ?? SanPham::DangODaiLy;
             }
             $MSP["Mota"] = $sanPhamPost["Mota"];
             $MSP["ChungLoaiSP"] = !empty($sanPhamPost["ChungLoaiSP"]) ? $sanPhamPost["ChungLoaiSP"] : $MSP["ChungLoaiSP"];
@@ -119,18 +146,17 @@ class temsanpham extends \ApplicationM implements \Controller\IController {
             $ModelTemSP->UpdateRowTable($temSP);
         }
         if (\Common\Form::RequestPost("ThenTemPhu", null)) {
-
         }
         $ModelTemSanPham = new \Module\sanpham\Model\TemSanPham();
         // mã sản phẩm
         $idSanPham = $this->getParam(0);
         $maKhachHangTieuDung = md5(time() . rand(1, time()));
-// mã khách hàng tiêu dung
+        // mã khách hàng tiêu dung
         $temSanPham = \Module\sanpham\Model\TemSanPham::GetByCode($idSanPham);
 
         // kiểm tra tem sản phẩm
         $sanPham = new \Module\sanpham\Model\SanPham();
-//        var_dump($temSanPham["MaSanPham"]);
+        //        var_dump($temSanPham["MaSanPham"]);
         if ($temSanPham["MaSanPham"] == 0) {
             $idSP = $sanPham->TaoSanPham($temSanPham["Code"]);
             $temSanPham["MaSanPham"] = $idSP;
@@ -142,11 +168,13 @@ class temsanpham extends \ApplicationM implements \Controller\IController {
         return $this->ViewThemeModlue(["temSanPham" => $tsp, "khachHang" => $kH]);
     }
 
-    public function detail() {
+    public function detail()
+    {
         return $this->ViewThemeModlue();
     }
 
-    public function export() {
+    public function export()
+    {
         return;
         set_time_limit(0);
         $MTemSanPham = new \Module\sanpham\Model\TemSanPham();
@@ -163,14 +191,22 @@ class temsanpham extends \ApplicationM implements \Controller\IController {
         flush();
         exit();
     }
-
-    function zipfile($folder) {
+    function exportCode()
+    {
+        $MTemSanPham = new \Module\sanpham\Model\TemSanPham();
+        $data = $MTemSanPham->GetTempChuaIn();
+        $this->exportListCode("public/Code23.xlsx", $data);
+        header("Location: /public/Code23.xlsx");
+    }
+    function zipfile($folder)
+    {
         $rootPath = realpath($folder);
         $zip = new \ZipArchive();
         $fileName = 'public/file.zip';
         $zip->open($fileName, \ZipArchive::CREATE | \ZipArchive::OVERWRITE);
         $files = new \RecursiveIteratorIterator(
-                new \RecursiveDirectoryIterator($rootPath), \RecursiveIteratorIterator::LEAVES_ONLY
+            new \RecursiveDirectoryIterator($rootPath),
+            \RecursiveIteratorIterator::LEAVES_ONLY
         );
         foreach ($files as $name => $file) {
             if (!$file->isDir()) {
@@ -184,9 +220,40 @@ class temsanpham extends \ApplicationM implements \Controller\IController {
         exit();
     }
 
-    function exporttoFire($fileName, $data) {
+    function exportListCode($fileName, $data)
+    {
         foreach ($data as $k => $value) {
-            $link = Root_URL . "public/phpqrcode/index.php?data=" . Root_URL . "baohanh/" . $value["Code"];
+            // $link = Root_URL . "public/phpqrcode/index.php?data=http://cskhtmd.com/{$value["Code"]}";
+            // $imagesQr = "public/QRCode/{$value["Code"]}.png";
+            // if (!file_exists($imagesQr)) {
+            //     $io = new \lib\io();
+            //     $io->writeFile($imagesQr, file_get_contents($link));
+            // }
+            $data[$k]["Stt"] = $k + 1;
+            $data[$k]["Code"] =  $value["Code"];
+            $data[$k]["Code"] =  "http://cskhtmd.com/" . $value["Code"] . "/";
+            unset($data[$k]["img"]);
+            unset($data[$k]["KhachHangTieuDung"]);
+            unset($data[$k]["NgayBatDau"]);
+            unset($data[$k]["Id"]);
+            unset($data[$k]["NgayKetThuc"]);
+            unset($data[$k]["ThangKetThuc"]);
+            unset($data[$k]["Status"]);
+            unset($data[$k]["UserId"]);
+            unset($data[$k]["Parents"]);
+            unset($data[$k]["CreateDate"]);
+            unset($data[$k]["ModifyDate"]);
+            unset($data[$k]["IsPrint"]);
+            unset($data[$k]["MaSanPham"]);
+        }
+        $Excell = new \Module\excell\Model\excell\ExcelReader();
+        $Excell->CreateFileExCode($fileName, $data);
+    }
+
+    function exporttoFire($fileName, $data)
+    {
+        foreach ($data as $k => $value) {
+            $link = Root_URL . "public/phpqrcode/index.php?data=http://cskhtmd.com/{$value["Code"]}";
             $imagesQr = "public/QRCode/{$value["Code"]}.png";
             if (!file_exists($imagesQr)) {
                 $io = new \lib\io();
@@ -212,7 +279,8 @@ class temsanpham extends \ApplicationM implements \Controller\IController {
         $Excell->CreateFile($fileName, $data);
     }
 
-    public function edit() {
+    public function edit()
+    {
         if (\Common\Form::isPost()) {
             $option = \Common\Form::RequestPost("option", []);
             if ($option) {
@@ -225,12 +293,14 @@ class temsanpham extends \ApplicationM implements \Controller\IController {
         return $this->ModelView(["option" => $option], "");
     }
 
-    function quanlytem() {
+    function quanlytem()
+    {
 
         return $this->ViewThemeModlue();
     }
 
-    public function TinhSoNgay($thang) {
+    public function TinhSoNgay($thang)
+    {
         $nam = 0;
         if ($thang > 12) {
             $nam = floor($thang / 12);
@@ -241,5 +311,4 @@ class temsanpham extends \ApplicationM implements \Controller\IController {
 
         return $thang * 30.5 * 24 * 3600 + $nam * 365 * 24 * 3600;
     }
-
 }
