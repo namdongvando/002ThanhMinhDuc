@@ -13,7 +13,9 @@ $itemsLs = $temSanPham->GetLichSuKiemHang();
 
 ?>
 <div class="container">
-    <h2>Bảo Hành</h2>
+    <h2>
+        <a class="btn btn-primary" href="/trungtambaohanh/yeucaubaohanh/scan/" ><i class="fa fa-arrow-left" ></i></a> 
+        Bảo Hành</h2>
     <div role="tabpanel">
         <div class="nav-tabs-custom">
             <!-- Nav tabs -->
@@ -24,7 +26,7 @@ $itemsLs = $temSanPham->GetLichSuKiemHang();
                 </li>
                 <li role="presentation">
                     <a href="#tab" aria-controls="tab" role="tab" data-toggle="tab">
-                        Yêu Cầu Bảo Hành
+                        Lịch sử bảo hành
                     </a>
                 </li>
             </ul>
@@ -40,26 +42,34 @@ $itemsLs = $temSanPham->GetLichSuKiemHang();
                 </div>
                 <div role="tabpanel" class="tab-pane" id="tab">
                     <p class="text-red">Là danh sách yêu cầu bảo hành đã yêu cầu của tem sản phẩm</p>
-                    <div class="table-responsive">
+                    <div class="table-responsive" style="min-height: 200px;">
                         <?php
-                        $temSanPham->DSYeuCauBaoHanhToHtml($temSanPham->DSYeuCauBaoHanh());
+                        $temSanPham->DSYeuCauBaoHanhToHtml($temSanPham->DSLichSuBaoHanh());
                         ?>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-</div> 
+</div>
 <div class="container">
     <div class="box box-primary">
         <div class="box-header">
-            <div class="box-tools" >
-                <a class="btn btn-success" href="/trungtambaohanh/yeucaubaohanh/TaoYeuCauBaoHanh/<?php echo  $temSanPham->Code; ?>/" >Tạo yêu cầu</a>
+            <div class="box-tools">
+                <?php
+                if ($temSanPham->DSYeuCauBaoHanhChuaHoanThanh()==false) {
+                    ?>
+                    <a class="btn btn-success"
+                        href="/trungtambaohanh/yeucaubaohanh/TaoYeuCauBaoHanh/<?php echo $temSanPham->Code; ?>/">Tạo yêu
+                        cầu</a>
+                    <?php
+                }
+                ?>
             </div>
             <h3 class="box-title">Danh sách yêu cầu</h3>
         </div>
         <div class="box-body">
-            <p class="text-red" >Nhân viên `Tạo yêu cầu` nếu chưa không có yêu cầu bảo hành.</p>
+            <p class="text-red">Nhân viên `Tạo yêu cầu` nếu chưa không có yêu cầu bảo hành.</p>
             <div class="table-responsive">
                 <?php
                 $temSanPham->DSYeuCauBaoHanhToHtml($temSanPham->DSYeuCauBaoHanhChuaHoanThanh(), true);

@@ -200,10 +200,11 @@ $link = "/public/phpqrcode/index.php?data=" . Root_URL . "baohanh/" . $idSanPham
                                                         <?php
                                                     } else {
                                                         ?>
-                                                        <p style="color:red">Tem bảo hanh chưa có thông tin sản phẩm 
-                                                        <b>
-                                                            Liên hệ SĐT <a href="tel:0329.687.989">0329.687.989</a>
-                                                        </b> Để được hỗ trợ</p>
+                                                        <p style="color:red">Tem bảo hanh chưa có thông tin sản phẩm
+                                                            <b>
+                                                                Liên hệ SĐT <a href="tel:0329.687.989">0329.687.989</a>
+                                                            </b> Để được hỗ trợ
+                                                        </p>
                                                         <?php
                                                     }
                                                     ?>
@@ -397,13 +398,21 @@ $link = "/public/phpqrcode/index.php?data=" . Root_URL . "baohanh/" . $idSanPham
                         null,
                         true
                     )->render();
-                    $fForm = new FormRender(new File("Hình sản Phẩm Lỗi", "HinhLoi", [
-                        "accept" => "image/*"
+
+                    $fForm = new FormRender(new File("", "HinhLoi", [
+                        "accept" => "image/*",
+                        "class" =>"hidden"
                     ]));
-                    $fForm->renderHTML();
-
-
                     ?>
+                    <label style="border: dashed 2px green;width: 100%;text-align: center;" >
+                        <?php
+                        $fForm->renderHTML();
+                        ?>
+                        <img style="height: 40px;" src="/public/Camera.png" />
+                        <p style="margin: 0px;" >
+                            Hình sản phẩm
+                        </p>
+                    </label>
                 </div>
                 <div class="modal-footer">
                     <input type="hidden" name="BtnYeuCauBaoHanh" value="1">

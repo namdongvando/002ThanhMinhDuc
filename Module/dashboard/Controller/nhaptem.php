@@ -6,6 +6,7 @@ use Common\Alert;
 use Common\Common;
 use Module\sanpham\Model\SanPham;
 use Module\sanpham\Model\SanPhamForm;
+use Module\sanpham\Model\SanPhamKiemHang;
 use Module\sanpham\Model\TemSanPham;
 use Module\sanpham\Model\XuatNhapKho\FormPhieuXuatNhap;
 use Module\sanpham\Model\XuatNhapKho\PhieuXuatNhap;
@@ -22,6 +23,12 @@ class nhaptem extends \ApplicationM
     function __construct()
     {
         new \Controller\backend();
+
+        // /dashboard/nhaptem/index
+        if(Admin::CheckQuyen([Admin::Admin,Admin::SuperAdmin]) == false){
+            Common::toUrl("/dashboard/index/");
+        }
+
     }
 
     function index()
@@ -51,7 +58,7 @@ class nhaptem extends \ApplicationM
                 // 
                 if (in_array($LyDoXuatKho, $Lydo)) {
                     $TemSanPhamStatus = $StatusLyDo[$LyDoXuatKho];
-                } 
+                }
                 if ($NhanVienKyThuat == null) {
                     throw new \Exception("Không có thông tin nhân viên");
                 }
@@ -63,7 +70,7 @@ class nhaptem extends \ApplicationM
                 $op = new \Module\option\Model\Option($MaDanhMuc);
                 $admin = \Module\user\Model\Admin::getCurentUser(true);
                 $CodeQr = new \Model\CodeQR($admin->Username);
-               // danh sách tem 
+                // danh sách tem 
                 $ds = $CodeQr->GetCodes();
                 if ($ds == false) {
                     throw new \Exception("Không có danh sách sản phẩm");
@@ -87,22 +94,33 @@ class nhaptem extends \ApplicationM
                         $model_Tem["UserId"] = $NhanVienKyThuat;
                         $model_Tem["Status"] = $TemSanPhamStatus;
                         $tenSp->UpdateSubmit($model_Tem);
-                          
+
+                        $Kiemhang = new SanPhamKiemHang();
+                        $Kiemhang->UserId = $NhanVienKyThuat;
+                        $Kiemhang->Status = "HangDatChuan";
+                        $Kiemhang->MaTem = $model_Tem["Code"];
+                        $Kiemhang->Content = "Cập nhật admin";
+                        $Kiemhang->MaSanPham = $value;
+                        $Kiemhang->Name = $NhanVienKyThuat;
+                        $Kiemhang->InsertSubmit($Kiemhang->ToArray());
+                        
                     }
                 }
+ 
                 $PhieuXuatNhap = new PhieuXuatNhap();
                 $PhieuXuatNhap->Code = time();
                 $PhieuXuatNhap->Name = "Xuất Kho";
                 $PhieuXuatNhap->NamePhieu = "PhieuXuatKho";
                 $PhieuXuatNhap->Content = "";
                 $PhieuXuatNhap->Type = PhieuXuatNhap::PhieuXuat;
-                $PhieuXuatNhap->LyDo =  $LyDoXuatKho;
-                $PhieuXuatNhap->UserId =  $NhanVienBanHang;
+                $PhieuXuatNhap->LyDo = $LyDoXuatKho;
+                $PhieuXuatNhap->UserId = $NhanVienBanHang;
                 $PhieuXuatNhap->KhacHang = $MaDaiLy;
-                $PhieuXuatNhap->TaoPhieu($PhieuXuatNhap->ToArray(),$ds,$NhanVienBanHang);
+                $PhieuXuatNhap->TaoPhieu($PhieuXuatNhap->ToArray(), $ds, $NhanVienBanHang);
+                new Alert(["success", "Cập nhật thành công"]);
                 Common::toUrl();
-            } catch (\Exception $exc) { 
-                new Alert(["danger", $exc->getMessage()]); 
+            } catch (\Exception $exc) {
+                new Alert(["danger", $exc->getMessage()]);
             }
         }
         return $this->ViewThemeModlue([], null);
@@ -174,6 +192,7 @@ class nhaptem extends \ApplicationM
                 $postData["DieuKienNhapKho"] = $dataPost["DieuKienNhapKho"];
                 $postData["TinhTrangSanPham"] = $dataPost["TinhTrangSanPham"];
                 $postData["LyDo"] = $dataPost["LyDo"];
+                $postData["LyDoKhac"] = $dataPost["LyDoKhac"];
                 $postData["UserId"] = $admin->Id;
                 $postData["KhacHang"] = "";
                 $postData["Type"] = 1;
@@ -228,7 +247,6 @@ class nhaptem extends \ApplicationM
         $admin = \Module\user\Model\Admin::getCurentUser(true);
         $CodeQr = new \Model\CodeQR($admin->Username);
         $ds = $CodeQr->GetCodes();
-
         $index = 0;
         foreach ($ds as $k => $code) {
             $temSP = new \Module\sanpham\Model\TemSanPham($code);
@@ -243,18 +261,12 @@ class nhaptem extends \ApplicationM
                     </a>
                 </td>
                 <td>
-                    <?php echo $temSP->Code; ?>
+                     <?php 
+                     $temSP->ThongTinSanPhamHTML();
+                     ?>
                 </td>
                 <td>
-                    <p style="margin: 0px;">
-                        <?php echo $temSP->SanPham()->Name; ?>
-                    </p>
-                    <p style="margin: 0px;">
-                        <?php echo $temSP->SanPham()->TinhTrang(); ?>
-                    </p>
-                    <p style="margin: 0px;">
-                        <?php echo $temSP->SanPham()->DaiLy()->Name; ?>
-                    </p>
+                    <?php echo $temSP->Code; ?>
                 </td>
             </tr>
             <?php

@@ -126,12 +126,15 @@ class Link
     }
     public static function KiemHang()
     {
-        ?>
+         
+        if (Admin::CheckQuyen(["KiemHang",Admin::NVKT,Admin::Admin, Admin::SuperAdmin]) == true) {
+            ?>
         <li>
             <a href="/dashboard/kiemhang/">Kiểm Hàng </a>
         </li>
         <?php
-        if (Admin::CheckQuyen([Admin::Admin, Admin::SuperAdmin]) == true) {
+        } 
+        if (Admin::CheckQuyen(["QuetTem",Admin::Admin, Admin::SuperAdmin]) == true) {
             ?>
             <li>
                 <a href="/dashboard/nhaptem/index">Quét Tem </a>

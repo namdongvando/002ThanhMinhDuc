@@ -6,6 +6,7 @@ use Common\Common;
 use Module\excell\Model\excell\ExcelReader;
 use Module\sanpham\Model\SanPhamForm;
 use Module\sanpham\Model\TemSanPham;
+use Module\sanpham\Model\XuatNhapKho\PhieuXuatNhapChiTiet;
 
 class baocao extends \ApplicationM
 {
@@ -286,5 +287,55 @@ class baocao extends \ApplicationM
             $data[] = $dataRow;
         }
         ExcelReader::Export($data, "public/baocao7.xlsx");
+    }
+    function baocao8()
+    {
+ 
+        //7.      Thống kê phiếu xuất nhập
+        ini_set('memory_limit', '-1');
+        $phieuXuatNhapChiTiet = new PhieuXuatNhapChiTiet();
+        $DateType = $_GET["DateType"] ?? "ThoiGianKichHoat";
+        $fromDate = $_GET["fromDate"] ?? Common::GetFirstDateOfMonth();
+        $toDate = $_GET["toDate"] ?? Common::GetLastDateOfMonth();
+         
+        $DSTem =  $phieuXuatNhapChiTiet->GetSanPham( $fromDate, $toDate);
+        $dataRow = [];
+        $dataRow[]="STT";
+        $dataRow[]="Tên đại lý";
+        $dataRow[]="Địa chỉ";
+        $dataRow[]="đại lý";
+        $dataRow[]="Số điện thoại";
+        $dataRow[]="đại lý";
+        $dataRow[]="Tên sản phẩm";
+        $dataRow[]="Mã SP";
+        $dataRow[]="Mã code";
+        $dataRow[]="Nhân viên bán hàng";
+        $dataRow[]="Thời gian kích hoạt";
+        $dataRow[]="Thời gian hoàn trả";
+        $dataRow[]="Lý do hoàn trả";
+        $dataRow[]="Điều kiện nhập kho";
+        $dataRow[]="Lý do";
+        $dataRow[]="Tình trạng sản phẩm";
+        $dataRow[]="Người nhập kho";
+        $data[]  = $dataRow;
+        foreach ($DSTem as $key => $value) {
+            $dataRow = [];
+            $_phieuChiTiet = new PhieuXuatNhapChiTiet($value);
+            $dataRow[] = $key + 1;
+            $dataRow[] = $_phieuChiTiet->TemSanPham()->SanPham()->DaiLy()->Name;
+            $dataRow[] = $_phieuChiTiet->TemSanPham()->SanPham()->DaiLy()->DiaChi();
+            $dataRow[] = $_phieuChiTiet->TemSanPham()->SanPham()->DaiLy()->DienThoai;
+            $dataRow[] = $_phieuChiTiet->TemSanPham()->SanPham()->Name;
+            $dataRow[] = $_phieuChiTiet->TemSanPham()->NgayBatDau();
+            $dataRow[] = $_phieuChiTiet->TemSanPham()->SanPham()->Code;
+            $dataRow[] = $_phieuChiTiet->TemSanPham()->Code;
+            $dataRow[] = $_phieuChiTiet->TemSanPham()->NhanVienBanHang()->UserId()->Name;
+            $dataRow[] = $_phieuChiTiet->TemSanPham()->NgayBatDau();
+            $dataRow[] = $_phieuChiTiet->PhieuXuatNhap()->LyDo;
+            $dataRow[] = $_phieuChiTiet->PhieuXuatNhap()->TinhTrangSanPham()->Name;
+            $dataRow[] = $_phieuChiTiet->PhieuXuatNhap()->UserId()->Name;
+            $data[] = $dataRow;
+        }
+        ExcelReader::Export($data, "public/baocao8.xlsx");
     }
 }

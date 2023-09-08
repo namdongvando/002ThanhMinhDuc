@@ -1,39 +1,19 @@
-<ol class="breadcrumb">
+<ol class="breadcrumb hidden-sm hidden-xs">
     <li><a href="/dashboard/nhaptem/index">Sanh Sách Nhập</a></li>
     <li>Quét Mã</li>
 </ol>
-<!-- <div class="box box-primary">
-    <div class="box-body">
-        <video poster="/public/camera_loading.svg?v=<?php echo time(); ?>"
-            style="transform: scale(1.5);width: 100%;margin: auto; max-height: 500px;" id="preview">
-            loadvideo
-        </video>
-    </div>
-    <div class="box-footer">
-        <div class="btn-group btn-group-toggle" data-toggle="buttons">
-            <label class="btn btn-primary active">
-                <input type="radio" name="options" value="0" autocomplete="off" checked> Camera 1
-            </label>
-            <label class="btn btn-primary ">
-                <input type="radio" name="options" value="1" autocomplete="off" checked> Camera 2
-            </label>
-            <label class="btn btn-primary">
-                <input type="radio" name="options" value="2" autocomplete="off"> Camera 3
-            </label>
-        </div>
-    </div>
-</div>
-<div id="Cams" class="">
-</div>
-
-<div class="clearfix"></div>
-<script src="/Module/dashboard/public/qrcode.js?v=<?php echo time(); ?>" type="text/javascript"></script> -->
-
+ 
 <script src="/Module/dashboard/public/html5-qrcode.min.js" type="text/javascript"></script>
 <div class="container">
     <div class="row">
         <div class="col-md-3"></div>
-        <div class="col-md-6">
+        <div class="col-md-6 mt-20">
+            <a href="/dashboard/nhaptem/index" class="btn btn-primary" >
+               <i class="fa fa-arrow-left" ></i>
+               <span class="hidden-sm hidden-xs" >
+                   Quay lại
+               </span>
+            </a>
             <div id="qr-reader" style="width:100%;height: auto;margin: auto;"></div>
             <div class="thongbao bg-green" id="alertCode"></div>
             <div id="error"></div>

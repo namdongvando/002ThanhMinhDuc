@@ -120,6 +120,7 @@ class kiemhang extends \ApplicationM
                 // Common::toUrl();
             } catch (Exception $th) {
                 //throw $th;
+                new Alert(["danger", $th->getMessage()]);
             }
 
         }

@@ -8,6 +8,8 @@
 
 namespace Module\option\Controller;
 
+use Exception;
+
 /**
  * Description of Auth
  *

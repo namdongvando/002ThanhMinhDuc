@@ -18,8 +18,8 @@ $ds = $CodeQr->GetCodes();
     <div class="row">
         <div class="col-md-12">
             <div class="box box-primary">
-                <div class="box-header"  style="padding-top: 5px;">
-                    <a class="btn btn-primary"   href="/dashboard/nhaptem/">
+                <div class="box-header" style="padding-top: 5px;">
+                    <a class="btn btn-primary" href="/dashboard/nhaptem/">
                         <i class="fa fa-arrow-left"></i>
                     </a>
                     <h3 style="margin-left: 10px;line-height: 20px;" class="box-title">Tiếp nhận đổi trả</h3>
@@ -38,6 +38,7 @@ $ds = $CodeQr->GetCodes();
                                 <?php
                                 $f->LyDo()->renderHTML();
                                 ?>
+                                
                             </div>
                             <div class="col-md-4">
                                 <?php
@@ -49,6 +50,12 @@ $ds = $CodeQr->GetCodes();
                                 $f->DieuKienNhapKho()->renderHTML();
                                 ?>
                             </div>
+                            <div class="col-md-12" id="NoiDungKhac_LyDo" style="display: none;" >
+                                    <?php
+                                    $f->LyDoKhac()->renderHTML();
+                                    ?>
+
+                                </div>
                             <div class="col-md-12">
                                 <?php
                                 $f->Content()->renderHTML();

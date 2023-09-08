@@ -79,5 +79,15 @@ class SanPhamKiemHang extends \datatable\ZendData
         return $this->InsertRowsTable($model);
     }
 
+    function ToArray() {
+        $a["Id"] = $this->Id;
+        $a["Name"] = $this->Name;
+        $a["MaSanPham"] = $this->MaSanPham;
+        $a["MaTem"] = $this->MaTem;
+        $a["UserId"] = $this->UserId;
+        $a["Status"] = $this->Status;
+        $a["Content"] = $this->Content;
+        return $a;
+    }
 
 }

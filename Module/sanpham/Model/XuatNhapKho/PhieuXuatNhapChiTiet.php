@@ -3,6 +3,7 @@ namespace Module\sanpham\Model\XuatNhapKho;
 
 use datatable\ZendData;
 use Module\sanpham\Model\SanPham;
+use Module\sanpham\Model\TemSanPham;
 use Module\user\Model\Admin;
 use Zend\Db\TableGateway\TableGateway;
 
@@ -14,6 +15,7 @@ class PhieuXuatNhapChiTiet extends ZendData
     public $Id;
     public $Code;
     public $MaPhieu;
+    public $NamePhieu;
     public $SanPhamId;
     public $UserId;
     public $Type;
@@ -38,6 +40,7 @@ class PhieuXuatNhapChiTiet extends ZendData
         $this->Id = $item["Id"] ?? null;
         $this->Code = $item["Code"] ?? null;
         $this->MaPhieu = $item["MaPhieu"] ?? null;
+        $this->NamePhieu = $item["NamePhieu"] ?? null;
         $this->SanPhamId = $item["SanPhamId"] ?? null;
         $this->UserId = $item["UserId"] ?? null;
         $this->Type = $item["Type"] ?? null;
@@ -65,9 +68,11 @@ class PhieuXuatNhapChiTiet extends ZendData
 
     function GetByMaTem($MaTem)
     {
-        return $this->GetRowsByWhere("`Code` = '{$MaTem}'");
+        return $this->GetRowsByWhere("`Code` = '{$MaTem}' order by `CreateRecorde` DESC");
     }
-
+    function TemSanPham() {
+        return new TemSanPham($this->Code);
+    }
     function SanPham()
     {
         return new SanPham($this->SanPhamId);
@@ -90,4 +95,14 @@ class PhieuXuatNhapChiTiet extends ZendData
         ];
         return (object) $a[$this->Type];
     }
+
+    function PhieuXuatNhap()  {
+        return new PhieuXuatNhap($this->MaPhieu);
+    }
+    
+    function GetSanPham($formDate,$toDate)  {
+        return $this->GetRowsByWhere("`NamePhieu` = 'PhieuDoiTra' and `CreateRecorde` >= '{$formDate} 00:00:00' 
+        and `CreateRecorde` <= '{$toDate} 23:59:59' GROUP BY `Code`");   
+    }
+
 }

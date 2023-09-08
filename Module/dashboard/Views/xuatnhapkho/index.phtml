@@ -6,6 +6,7 @@
 
 use Datatable\Table;
 use Model\FormOptions;
+use Model\FormRender;
 use Model\Obj2Html;
 use Module\sanpham\Model\XuatNhapKho\PhieuXuatNhap;
 use Module\sanpham\Model\XuatNhapKho\PhieuXuatNhapChiTiet;
@@ -25,7 +26,6 @@ $CodeQr = new \Model\CodeQR($admin->Username);
                 <div class="box-body ">
                     <?php
                     $link = "/dashboard/xuatnhapkho/index/";
-                    // $dataTable = new Table(["rows" => $data["rows"], "columns" => $columns], Card::class);
                     $dataTable = new Table([
                         "rows" => $response["rows"],
                         "columns" => $response["columns"]

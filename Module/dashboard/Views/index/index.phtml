@@ -4,6 +4,7 @@ use Datatable\Response;
 use Datatable\Table;
 use Model\FormRender;
 use Module\trungtambaohanh\Model\YeuCauBaoHanh;
+use Module\user\Model\Admin;
 use PFBC\Element\Hidden;
 use PFBC\Element\Select;
 use PFBC\Element\Textbox;
@@ -25,16 +26,17 @@ $response->rows = $items;
 $response->status = Response::OK;
 $response->columns = [
     "Actions" => "Thao Tác",
+    "Status" => "Tình Trạng",
     "TinhThanh" => "Tỉnh Thành",
     "QuanHuyen" => "Quận Huyện",
+    "DiaChi" => "Địa Chỉ",
+    "SDT" => "SĐT",
     "KhachHangTieuDung" => "Mã khách hàng",
     "MaTem" => "Mã Tem",
-    "SDT" => "SĐT",
-    "Status" => "Tình Trạng",
-    "DiaChi" => "Địa Chỉ",
-    "NgayBaoHanh" => "Ngày yêu cầu bảo hành",
-    "NoiDung" => "Nội dung",
     "CreateDate" => "Ngày tạo yêu cầu",
+    "NgayBaoHanh" => "Ngày yêu cầu bảo hành",
+    "NgayThucHien" => "Ngày thực hiện",
+    "NoiDung" => "Nội dung",
 ];
 $response = $response->ToRow();
 
@@ -44,7 +46,7 @@ $fpageSize = new FormRender(new Hidden("pageSize", $params["pageSize"]));
 $fKeyword = new FormRender(new Textbox("Từ khóa", "Keyword", [
     "class" => "form-control",
     "onchange" => "submit()",
-    "placeholder"=>"SĐT...",
+    "placeholder" => "SĐT...",
     "value" => $_REQUEST["Keyword"] ?? ""
 ]));
 
@@ -64,10 +66,31 @@ $fTinhTrang = new FormRender(
 <ol class="hidden-sm hidden-xs breadcrumb" style="margin-bottom: 5px;">
     <li><a href="/dashboard/">Yêu cầu bảo hành</a></li>
 </ol>
- 
+
 <div class="container-fluid ">
     <section class=" ">
         <div class="">
+            <?php
+            if (Admin::CheckQuyen([Admin::Admin]) == false) {
+                ?>
+                <div class="box-primary box mt-10">
+                    <div class="box-body ">
+                        <div class="">
+                            <?php
+                            if (Admin::CheckQuyen([Admin::Admin,Admin::SuperAdmin,Admin::NVKT]) == true) {
+                                ?>
+                                <a href="/dashboard/kiemhang/" class="btn btn-lg btn-success">Kiểm hàng</a>
+                                <?php
+                            }
+                            ?>
+                            <a href="/trungtambaohanh/yeucaubaohanh/scan/" class="btn btn-lg btn-success">Bảo hành</a>
+                        </div>
+                    </div>
+                </div>
+                <?php
+            }
+            ?>
+
             <form action="/dashboard/index/index/" method="get">
                 <div class="row">
                     <div class="col-md-2 col-xs-6">
@@ -88,7 +111,7 @@ $fTinhTrang = new FormRender(
                 <div class="box-header">
                     <div class="box-tools">
                     </div>
-                    <h3 class="box-title">Danh sách yêu cầu bảo hành</h3>
+                    <h3 class="box-title">Yêu cầu bảo hành</h3>
                 </div>
                 <div class="box-body table-responsive ">
 

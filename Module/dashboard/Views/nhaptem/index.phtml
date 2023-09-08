@@ -11,8 +11,10 @@ use Module\user\Model\Admin;
 $admin = Admin::getCurentUser(true);
 $CodeQr = new \Model\CodeQR($admin->Username);
 $ds = $CodeQr->GetCodes();
-
-
+$temSPDauTien = new \Module\sanpham\Model\TemSanPham(reset($ds) ?? null);
+// echo $temSPDauTien->SanPham()->DanhMuc;
+// var_dump($temSPDauTien->SanPham());
+// $temSPDauTien->NhanVienKyThuat()->UserId()->Id;
 ?>
 <form action="" enctype="multipart/form-data" method="POST">
     <div class="modal fade" id="ChonSanPham">
@@ -23,27 +25,30 @@ $ds = $CodeQr->GetCodes();
                     <h4 class="modal-title">Chọn Model Sản Phẩm</h4>
                 </div>
                 <div class="modal-body">
-                    <div style="color:red !important;">
-                        Cập nhật thông tin sản phẩm vào tem bảo hành, ghi nhận vị trí của sản phẩm
-                        <br>Lưu ý:
-                        <ol>
-                            <li>Sản phẩm phải giống nhau</li>
-                            <li>Cùng nhân viên bán hàng</li>
-                        </ol>
-                    </div>
                     <?php
-                    Module\option\Model\OptionForm::SelectGroups("Danh Mục Sản Phẩm", "Chon[MaDanhMuc]", \Module\option\Model\Option::DanhMucVatTu)->renderHtml();
+
+                    Module\option\Model\OptionForm::SelectGroups(
+                        "Danh Mục Sản Phẩm",
+                        "Chon[MaDanhMuc]",
+                        \Module\option\Model\Option::DanhMucVatTu
+                        ,
+                        ["value" => $temSPDauTien->SanPham()->DanhMuc]
+                    )->renderHtml();
                     Module\sanpham\Model\SanPhamForm::MaDaiLy()->renderHTML();
                     FormOptions::Select(
                         "",
                         "Chon[NhanVien]",
                         Admin::GetUsersOptions(Admin::NVKT),
-                        ["label" => 'Nhân Viên Kỹ Thuật &nbsp &nbsp &nbsp <a href="/user/users/" target="_blank" > Thêm Nhân Viên</a> ', 'style' => "width:100%;"]
+                        [
+                            "label" => 'Nhân Viên Kỹ Thuật &nbsp &nbsp &nbsp <a href="/user/users/" target="_blank" > Thêm Nhân Viên</a> ',
+                            'style' => "width:100%;",
+                            "value" => $temSPDauTien->NhanVienKyThuat()->UserId()->Id
+                        ]
                     )->renderHtml();
                     FormOptions::Select(
                         "",
                         "Chon[NhanVienBanHang]",
-                        Admin::GetUsersOptions(),
+                        Admin::GetUsersOptions(Admin::KinhDoanh),
                         ["label" => 'Nhân viên Bán hàng  ', 'style' => "width:100%;"]
                     )->renderHtml();
 
@@ -112,14 +117,22 @@ $ds = $CodeQr->GetCodes();
                             <i class="fa fa-arrow-up"></i>
                         </span>
                     </a> -->
-                    <a href="/dashboard/nhaptem/doitra" class="btn  btn-primary">
+                    <?php
+                    if (Admin::CheckQuyen([Admin::Admin, Admin::SuperAdmin]) == true) {
+                        ?>
+                        <a href="/dashboard/nhaptem/doitra" class="btn  btn-primary">
 
-                        <span class="hidden-xs hidden-sm">Tiếp nhận đổi trả</span>
-                        <span class="hidden-md hidden-lg">
-                            <i class="fa fa-arrows-v"></i>
-                            TN đổi trả
-                        </span>
-                    </a>
+                            <span class="hidden-xs hidden-sm">Tiếp nhận đổi trả</span>
+                            <span class="hidden-md hidden-lg">
+                                <i class="fa fa-arrows-v"></i>
+                                TN đổi trả
+                            </span>
+                        </a>
+
+                        <?php
+                    }
+
+                    ?>
                     <!-- <a href="/dashboard/nhaptem/kygui" class="btn  btn-primary">
                         Ký gửi/Trưng bày
                     </a>   -->
@@ -130,8 +143,8 @@ $ds = $CodeQr->GetCodes();
                                 <tr>
                                     <th style="width: 50px">Stt</th>
                                     <th style="width: 200px">Thao Tác</th>
-                                    <th style="width: 150px">Mã Tem</th>
                                     <th>Thông Tin Sản Phẩm</th>
+                                    <th style="width: 150px">Mã Tem</th>
                                 </tr>
                             </thead>
                             <tbody id="DanhSachTem" class="ajaxAutoReload" data-target="#DanhSachTem"
@@ -155,18 +168,12 @@ $ds = $CodeQr->GetCodes();
                                                     class="btn btn-primary">Chọn</a>
                                             </td>
                                             <td>
-                                                <?php echo $temSP->Code; ?>
+                                                <?php
+                                                $temSP->ThongTinSanPhamHTML();
+                                                ?>
                                             </td>
                                             <td>
-                                                <p style="margin: 0px;">
-                                                    <?php echo $temSP->SanPham()->Name; ?>
-                                                </p>
-                                                <p style="margin: 0px;">
-                                                    <?php echo $temSP->SanPham()->TinhTrang(); ?>
-                                                </p>
-                                                <p style="margin: 0px;">
-                                                    <?php echo $temSP->SanPham()->DaiLy()->Name; ?>
-                                                </p>
+                                                <?php echo $temSP->Code; ?>
                                             </td>
                                         </tr>
                                         <?php

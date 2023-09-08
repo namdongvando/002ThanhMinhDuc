@@ -3,7 +3,7 @@ use Module\trungtambaohanh\Model\YeuCauBaoHanh;
 
 $ycbh = new YeuCauBaoHanh($_Param[0]);
 ?>
-<ol class="breadcrumb">
+<ol class="breadcrumb hidden-sm hidden-xs">
     <li>
         <a href="/trungtambaohanh/yeucaubaohanh/index/<?php echo $ycbh->Code; ?>">
             Chi Tiết Yêu Cầu
@@ -11,12 +11,18 @@ $ycbh = new YeuCauBaoHanh($_Param[0]);
     </li>
     <li class="active">Kiểm tra tem </li>
 </ol>
-<h3 class="text-center">Quét tem sản phẩm</h3>
 <script src="/Module/dashboard/public/html5-qrcode.min.js" type="text/javascript"></script>
 <div class="container">
     <div class="row">
         <div class="col-md-3"></div>
-        <div class="col-md-6">
+        <div class="col-md-6 mt-20">
+            <a href="/dashboard/index/index/" class="btn hidden-lg hidden-md btn-primary" >
+                <i class="fa fa-arrow-left" ></i>
+                <span class="hidden-sm hidden-xs" >
+                    Quay lại
+                </span>
+            </a>
+            <h3 class="text-center">Quét tem sản phẩm</h3>
             <p class="text-red" >Nhân viên bảo hành quét tem để bắt đầu bảo hành</p>
             <div id="qr-reader" style=" width:auto;margin: auto;"></div>
             <div class="thongbao bg-green" id="alertCode"></div>

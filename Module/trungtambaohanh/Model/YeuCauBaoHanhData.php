@@ -75,6 +75,13 @@ class YeuCauBaoHanhData extends \datatable\ZendData implements \Model\IModel
         $log = new YeuCauBaoHanhLogData();
         $log->InsertSubmit($model);
     }
+    public function XacNhanHoanThanh($model)
+    {
+        $model["UpdateDate"] = date(DateFomatDB, time()); 
+        $this->UpdateRowTable($model);
+        $log = new YeuCauBaoHanhLogData();
+        $log->InsertSubmit($model);
+    }
     public function DeleteSubmit($id)
     {
         return $this->DeleteRowById($id);

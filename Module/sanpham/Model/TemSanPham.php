@@ -5,6 +5,7 @@ namespace Module\sanpham\Model;
 use Datatable\Response;
 use Datatable\Table;
 use Module\khachhang\Model\KhachHangTieuDung;
+use Module\sanpham\Model\XuatNhapKho\PhieuXuatNhap;
 use Module\sanpham\Model\XuatNhapKho\PhieuXuatNhapChiTiet;
 use Module\trungtambaohanh\Model\YeuCauBaoHanh;
 
@@ -27,10 +28,10 @@ class TemSanPham extends TemSanPhamData
         if ($dv) {
             if (!is_array($dv)) {
                 $code = $dv;
-                $dv = $this->GetById($code);
+                $dv = $this->GetByCode($code);
 
                 if (!$dv) {
-                    $dv = $this->GetByCode($code);
+                    $dv = $this->GetById($code);
                     // echo "code";
                 } else {
                     // var_dump($code);
@@ -105,7 +106,15 @@ class TemSanPham extends TemSanPhamData
         return $sanpham->GetRowsByWhere($where);
     }
 
-
+    function NhanVienKyThuat()
+    {
+        return new SanPhamKiemHang($this->GetLichSuKiemHang()[0] ?? []);
+    }
+    function NhanVienBanHang()
+    {
+        $phieuChiTiet = new PhieuXuatNhapChiTiet();
+        return new PhieuXuatNhapChiTiet($phieuChiTiet->GetByMaTem($this->Code)[0] ?? []);
+    }
 
     public function Code($code = null)
     {
@@ -375,6 +384,9 @@ class TemSanPham extends TemSanPhamData
                         <th>Họ Tên</th>
                         <th>Sản Phẩm</th>
                         <th>Mã Tem</th>
+                        <th>Tình Trạng</th>
+                        <th>Nội dung</th>
+                        <th>Ngày tạo</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -408,9 +420,6 @@ class TemSanPham extends TemSanPhamData
                                 <td>
                                     <?php echo $_item->CreateRecord ?>
                                 </td>
-                                <td>
-                                    <?php echo $_item->UpdateRecord ?>
-                                </td>
                             </tr>
                             <?php
 
@@ -443,13 +452,19 @@ class TemSanPham extends TemSanPhamData
         $items = $yeucau->ChuaHoanThanh($this->Code);
         return $items;
     }
+    function DSLichSuBaoHanh()
+    {
+        $yeucau = new YeuCauBaoHanh();
+        $items = $yeucau->DaHoanThanh($this->Code);
+        return $items;
+    }
     function DSYeuCauBaoHanh()
     {
         $yeucau = new YeuCauBaoHanh();
         $items = $yeucau->GetByMaTem($this->Code);
         return $items;
     }
-    function DSYeuCauBaoHanhToHtml($items,$actions = false)
+    function DSYeuCauBaoHanhToHtml($items, $actions = false)
     {
         $response = new Response();
         $response->params = [];
@@ -462,10 +477,13 @@ class TemSanPham extends TemSanPhamData
         $response->columns = [
             "Actions" => "Thao Tác",
             "Id" => "#",
+            "NoiDung" => "Nội dung bảo hành",
+            "idNhanVien" => "Nhân Viên",
+            "KetQua" => "Kết Quả",
             "SDT" => "SĐT",
             "Status" => "Tình Trạng",
-            "NgayBaoHanh" => "Ngày bảo hành",
             "CreateDate" => "Ngày tạo yêu cầu",
+            "NgayBaoHanh" => "Ngày bảo hành",
 
         ];
         $response = $response->ToRow();
@@ -482,5 +500,45 @@ class TemSanPham extends TemSanPhamData
         $dataTable->RenderHtml();
     }
 
+    function CheckPhieuDoiTra()
+    {
+        $code = $this->Code;
+        $ChiTietPhieu = new PhieuXuatNhapChiTiet();
+        return $ChiTietPhieu->GetRowByWhere(" `Code` = '{$code}' and `NamePhieu` = 'PhieuDoiTra'");
+    }
+
+    function ThongTinSanPhamHTML()
+    {
+        ?>
+        <p style="margin: 0px;">
+            <b>Mã Tem</b>:
+            <?php echo $this->Code; ?>
+        </p>
+        <p style="margin: 0px;">
+            <b>Tên sản phẩm</b>:
+            <?php echo $this->SanPham()->Name; ?>
+        </p>
+        <p style="margin: 0px;">
+            <b>Loại sản phẩm</b>:
+            <?php echo $this->CheckPhieuDoiTra() == null ? "SP mới" : "Hàng nhập lại kho" ?>
+        </p>
+        <!-- <p style="margin: 0px;">
+            <b>Trang Thái</b>:
+            <?php echo $this->SanPham()->TinhTrang(); ?>
+        </p> -->
+        <p style="margin: 0px;">
+            <b>Đại ly</b> :
+            <?php echo $this->SanPham()->DaiLy()->Name; ?>
+        </p>
+        <p style="margin: 0px;">
+            <b>Nhân viên kỹ thuật</b>:
+            <?php echo $this->NhanVienKyThuat()->UserId()->Name; ?>
+        </p>
+        <p style="margin: 0px;">
+            <b>Nhân viên Bán hàng</b>:
+            <?php echo $this->NhanVienBanHang()->UserId()->Name; ?>
+        </p>
+        <?php
+    }
 
 }

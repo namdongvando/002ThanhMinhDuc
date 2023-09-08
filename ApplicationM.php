@@ -527,11 +527,12 @@ class ApplicationM
             \Module\user\Model\Admin::DaiLy => "daily",
             \Module\user\Model\Admin::TTBH => "ttbh",
             \Module\user\Model\Admin::NVKT => "nvkt",
+            \Module\user\Model\Admin::KinhDoanh => "nvkt",
             \Module\user\Model\Admin::Customer => "customer",
         ];
         $admin = \Module\user\Model\Admin::getCurentUser(true);
         if ($themelayout == "")
-            $themelayout = $layout[intval($admin->Groups)];
+            $themelayout = $layout[intval($admin->Groups)]??"";
 
 
         if (isset($_GET["debug"])) {

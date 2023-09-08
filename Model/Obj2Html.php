@@ -11,7 +11,7 @@ class Obj2Html
 {
 
 
-    static function ThongTinSanPhamTheoMaTem($maTem)
+    static function ThongTinSanPhamTheoMaTem($maTem, $kiemHang = true)
     {
 
         $temSanPham = new TemSanPham($maTem);
@@ -34,16 +34,23 @@ class Obj2Html
         <p><b>Loại SP:</b>
             <?php echo $temSanPham->SanPham()->DanhMuc()->Name; ?>
         </p>
-        <p><b>Nhân Viên:</b>
-            <?php
-            echo $temSanPham->UserId()->Name ?? "";
+        <?php
+        if ($kiemHang == false) {
             ?>
-        </p>
-        <p><b>Nhân viên bán hàng:</b>
+            <p><b>Nhân Viên:</b>
+                <?php
+                echo $temSanPham->UserId()->Name ?? "";
+                ?>
+            </p>
+            <p><b>Nhân viên bán hàng:</b>
+                <?php
+                echo $temSanPham->UserId()->Name ?? "";
+                ?>
+            </p>
+
             <?php
-            echo $temSanPham->UserId()->Name ?? "";
-            ?>
-        </p>
+        }
+        ?>
         <p><b>Nhân Viên Kiểm Hàng:</b>
             <?php
             echo $temSanPham->ThongTinKiemHang()->UserId()->Username ?? "";
@@ -90,7 +97,7 @@ class Obj2Html
     }
 
     public static function ThongTinYeuCau($yc)
-    { 
+    {
         $yeuCauBaoHanh = new YeuCauBaoHanh($yc);
 
         ?>

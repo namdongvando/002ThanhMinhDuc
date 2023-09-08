@@ -28,7 +28,10 @@ class index extends \ApplicationM
     {
         return $this->ViewThemeModlue();
     }
-
+    function indexkt()
+    {
+        return $this->ViewThemeModlue();
+    }
     function listdata()
     {
         $time = filemtime("Module/dashboard/public/js/dashboardWorkflows.js");

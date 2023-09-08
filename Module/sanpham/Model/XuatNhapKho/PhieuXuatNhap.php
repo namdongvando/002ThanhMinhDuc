@@ -22,6 +22,7 @@ class PhieuXuatNhap extends ZendData
     public $DieuKienNhapKho;
     public $TinhTrangSanPham;
     public $LyDo;
+    public $LyDoKhac;
 
     public $Content;
     public $UserId;
@@ -54,6 +55,7 @@ class PhieuXuatNhap extends ZendData
         $this->DieuKienNhapKho = $item["DieuKienNhapKho"] ?? null;
         $this->TinhTrangSanPham = $item["TinhTrangSanPham"] ?? null;
         $this->LyDo = $item["LyDo"] ?? null;
+        $this->LyDoKhac = $item["LyDoKhac"] ?? null;
         $this->Content = $item["Content"] ?? null;
         $this->UserId = $item["UserId"] ?? null;
         $this->KhacHang = $item["KhacHang"] ?? null;
@@ -79,6 +81,7 @@ class PhieuXuatNhap extends ZendData
             )
         );
     }
+ 
     function LyDo()
     {
         return new Option(
@@ -111,6 +114,16 @@ class PhieuXuatNhap extends ZendData
         $where = "1=1 order by `CreateRecorde` DESC";
         return $this->GetRowsTablePt($where, $indexPage, $numberPage, $total);
 
+    }
+    function GetItems1($params, $indexPage, $numberPage, &$total)
+    {
+        $NamePhieu = $params["NamePhieu"]??null;
+        $NamePhieuSql = "1=1";
+        if($NamePhieu){
+            $NamePhieuSql = "`NamePhieu` = '{$NamePhieu}'"; 
+        }
+        $where = " {$NamePhieuSql} order by `CreateRecorde` DESC";
+        return $this->GetRowsTablePt($where, $indexPage, $numberPage, $total);
     }
     function GetCode()
     {
@@ -145,13 +158,13 @@ class PhieuXuatNhap extends ZendData
             $admin = \Module\user\Model\Admin::getCurentUser(true);
             $UserId = $admin->Id;
         }
-        
+         
         $id = $this->Post($Phieu);
         foreach ($DSMtem as $key => $value) {
             $tem = new TemSanPham($value);
             $model = [
                 "Code" => $tem->Code,
-                "MaPhieu" => $id,
+                "MaPhieu" => $id, 
                 "SanPhamId" => $tem->SanPham()->Id,
                 "UserId" => $UserId,
                 "Type" => $Phieu["Type"],
@@ -161,11 +174,12 @@ class PhieuXuatNhap extends ZendData
                 "Id" => $tem->Id,
                 "UserId" => $tem->UserId
             ]);
-
+            
             $ChiTietPhieu = new PhieuXuatNhapChiTiet();
-         
-            $ChiTietPhieu->Post($model);
+            
+            $model["NamePhieu"] = $Phieu["NamePhieu"];
 
+            $ChiTietPhieu->Post($model);
         }
         return $Phieu["Code"];
     }
@@ -219,4 +233,6 @@ class PhieuXuatNhap extends ZendData
         $id = $this->Code;
         return "<a href='/dashboard/xuatnhapkho/detail/{$id}' class='btn btn-primary' >Xem</a>";
     }
+
+    
 }

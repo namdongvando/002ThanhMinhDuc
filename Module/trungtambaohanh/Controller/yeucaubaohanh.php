@@ -47,7 +47,7 @@ class yeucaubaohanh extends \ApplicationM
             $ModelyeuCau = new \Module\trungtambaohanh\Model\YeuCauBaoHanh($Ma);
             $yeuCau = $ModelyeuCau->GetByCode($Ma);
             $yeuCau["Status"] = ModelYeuCauBaoHanh::DaXuLy;
-            $ModelyeuCau->UpdateSubmit($yeuCau);
+            $ModelyeuCau->XacNhanHoanThanh($yeuCau);
         }
         return $this->ViewThemeModlue();
     }

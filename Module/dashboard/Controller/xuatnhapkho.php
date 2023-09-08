@@ -29,8 +29,9 @@ class xuatnhapkho extends \ApplicationM
         $XuatNhapKho = new PhieuXuatNhap();
         $total = 0;
         $pageIndex = intval($_REQUEST["indexPage"] ?? "1");
-        $params["pageSize"] = intval($_REQUEST["pageIndex"] ?? "10");
-        $items = $XuatNhapKho->GetItems([], $pageIndex, $params["pageSize"], $total);
+        $params["pageSize"] = intval($_REQUEST["pageSize"] ?? "10");
+        $params["NamePhieu"] =  "PhieuDoiTra";
+        $items = $XuatNhapKho->GetItems1($params, $pageIndex, $params["pageSize"], $total);
         $response = new Response();
         $response->params = $params;
         $response->totalrows = $total;
@@ -43,6 +44,7 @@ class xuatnhapkho extends \ApplicationM
             "Id" => "#",
             "Code" => "Mã Phiếu",
             "Name" => "Tên Phiếu",
+            "NamePhieu" => "Loại phiếu",
             "UserId" => "Nhân Viên Bán Hàng",
             "KhacHang" => "Khách hàng",
             "Type" => "Loại Phiếu",

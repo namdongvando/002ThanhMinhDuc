@@ -180,6 +180,12 @@ class YeuCauBaoHanh extends YeuCauBaoHanhData
         $where = "`MaTem` = '{$maTem}' and `Status` != '{$status}' ";
         return $this->GetRowsByWhere($where);
     }
+    function DaHoanThanh($maTem)
+    {
+        $status = self::DaXuLy;
+        $where = "`MaTem` = '{$maTem}' and `Status` = '{$status}' ";
+        return $this->GetRowsByWhere($where);
+    }
 
     public static function GetByCode($code)
     {
@@ -238,25 +244,38 @@ class YeuCauBaoHanh extends YeuCauBaoHanhData
     }
     function ToRow($index)
     {
+        $MaTem = $this->MaTem; 
+        ///sanpham/temsanpham/detailbysanpham/210324d2fc7dd548/
         $a["Id"] = $index + 1;
         $a["Code"] = $this->Code;
         $a["Name"] = $this->Name;
         $a["TinhThanh"] = $this->TinhThanh()->Name;
         $a["QuanHuyen"] = $this->QuanHuyen()->Name;
-        $a["KhachHangTieuDung"] = $this->KhachHangTieuDung;
+
+        $a["KhachHangTieuDung"] = $this->KhachHangTieuDung()->Name;
+        $a["KetQua"] = $this->KetQuaXuLy()->NoiDungXuLy()->Name;
+        $a["PhuongAnXuLy"] = $this->PhuongAnXuLy()->NoiDungXuLy()->Name;
         $a["SDT"] = $this->SDT;
         $a["Status"] = $this->Status();
         $a["IdTrungTamBaoHanh"] = $this->IdTrungTamBaoHanh;
-        $a["MaTem"] = $this->MaTem;
+        $a["MaTem"] = $MaTem ;
+        if(Admin::CheckQuyen([Admin::Admin])){
+            $a["MaTem"] = "<a href='/sanpham/temsanpham/detailbysanpham/{$MaTem}/' >{$MaTem}</a>" ;
+        }
         $a["DiaChi"] = $this->DiaChi;
-        $a["idNhanVien"] = $this->idNhanVien;
+        $a["idNhanVien"] = $this->idNhanVien()->Name??"";
         $a["NgayBaoHanh"] = date("d-m-Y", strtotime($this->NgayBaoHanh));
         $a["NoiDung"] = $this->NoiDungBaoHanh()->Name;
         $a["NoiDungKhac"] = $this->NoiDungKhac;
         $a["HinhAnh"] = $this->HinhAnh;
         $a["CreateDate"] = date("d-m-Y", strtotime($this->CreateDate));
+        $a["NgayThucHien"] = "";
         $a["UpdateDate"] = $this->UpdateDate;
         return $a;
+    }
+
+    function idNhanVien() {
+        return new Admin($this->idNhanVien);
     }
 
     function DanhSachHinh()

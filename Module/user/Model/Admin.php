@@ -24,15 +24,16 @@ class Admin extends AdminTable
     const DaiLy = 3;
     const TTBH = 4;
     const NVKT = 5;
+    const KinhDoanh = 6;
 
     function __construct($NhanVien = NULL)
     {
         parent::__construct();
         if (!is_array($NhanVien)) {
             $id = $NhanVien;
-            $NhanVien = $this->GetById($id);
+            $NhanVien = $this->getUserByUsername($id);
             if ($NhanVien == null) {
-                $NhanVien = $this->getUserByUsername($id);
+                $NhanVien = $this->GetById($id);
             }
         }
         $this->Id = $NhanVien['Id'] ?? null;

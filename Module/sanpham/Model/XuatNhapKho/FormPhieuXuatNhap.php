@@ -8,6 +8,7 @@ use Module\sanpham\Model\TemSanPham;
 use Module\user\Model\Admin;
 use PFBC\Element\Select;
 use PFBC\Element\Textarea;
+use PFBC\Element\Textbox;
 use Zend\Db\TableGateway\TableGateway;
 
 class FormPhieuXuatNhap extends ZendData
@@ -160,6 +161,17 @@ class FormPhieuXuatNhap extends ZendData
         return new Select("Lý Do", $Name, $Options, $prop);
 
     }
+
+    public function LyDoKhac($val = null)
+    {
+        $prop["Id"] = __FUNCTION__;
+        $prop = $this->getProp($prop);
+        $prop["value"] = $this->getValue($val, __FUNCTION__);
+        $Name = $this->getName(__FUNCTION__);
+        return new Textbox("Lý Do Khác", $Name, $prop);
+
+    }
+
     public function LyDoXuatKho($val = null)
     {
         $prop["data-target"] = "#NoiDungKhac_" . __FUNCTION__;
