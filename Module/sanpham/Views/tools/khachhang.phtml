@@ -1,0 +1,178 @@
+<?php
+
+use Model\FormRender;
+use Module\sanpham\Model\TemSanPham;
+use Module\sanpham\Model\Tools;
+
+$pagesIndex = $_GET["pagesIndex"] ?? 1;
+$pageNumber = $_GET["pageNumber"] ?? 10;
+$status = $_GET["status"] ?? "all";
+$MaTem = $_GET["MaTem"] ?? "";
+$status = trim($status);
+$MaTem = trim($MaTem);
+$tong = 0;
+$name = "";
+$linkNumberIndex = '/sanpham/temsanpham/index/1/';
+$params["name"] = $name;
+$params["status"] = $status;
+$params["MaTem"] = $MaTem;
+$TemSanPhams = Tools::GetTemKichHoatKhongCoThongTinKhachHang();
+?>
+<div class="">
+    <ol class="breadcrumb ">
+        <li>
+            <a href="/dashboad/">Dashboad</a>
+        </li>
+        <li>
+            <a href="#">Quản Lý Sản Phẩm</a>
+        </li>
+        <li class="active">Công cụ</li>
+    </ol>
+    <div class="container-fluid">
+        <section class="pb-10">
+            <div class="col-md-2">
+                <?php
+                include("menu.phtml");
+                ?>
+            </div>
+            <div class="col-md-10">
+                <div class="box ">
+                    <div class="box-header ">
+                        <h3 class="box-title">
+                            Danh Sách Tem Sản Phẩm(
+                            <?php echo number_format($tong, 0, ".", ","); ?>)
+                        </h3>
+                        <div class="btn-group pull-right">
+                            <a class="btn btn-capnhat btn-success">Cập nhật thông tin sản phẩm mặc định</a>
+                        </div>
+                    </div>
+                    <div class="box-body table-responsive">
+                        <p>Danh sách các tem "Chưa kích hoạt" không có thông tin khách hàng </p>
+
+
+                        <table class="table table-bordered  " id="data">
+                            <thead>
+                                <tr class="bg-primary">
+                                    <th style="width: 70px;">STT
+                                        <?php echo FormRender::ToolTipElement("Số thứ tự"); ?>
+                                    </th>
+                                    <th style="width: 150px;">Mã
+                                        <?php echo FormRender::ToolTipElement("Mã tem bảo hành"); ?>
+                                    </th>
+                                    <th>Sản Phẩm
+                                        <?php echo FormRender::ToolTipElement("Tên sản phẩm"); ?>
+                                    </th>
+                                    <th style="width: 150px;">Tình Trạng
+                                        <?php echo FormRender::ToolTipElement("Tình trạng tem bảo hành"); ?>
+                                    </th>
+                                    <th style="width: 130px;">Ngày Bắt Đầu
+                                        <?php echo FormRender::ToolTipElement("Ngày bắt đầu bảo hành"); ?>
+                                    </th>
+                                    <th style="width: 120px;">Thời Gian
+                                        <?php echo FormRender::ToolTipElement("Thời gian bảo hành"); ?>
+                                    </th>
+                                    <th style="width: 150px;">Ngày Kết Thúc
+                                        <?php echo FormRender::ToolTipElement("Ngày kết thúc bảo hành"); ?>
+                                    </th>
+                                    <th style="width: 100px;">Ngày Tạo
+                                        <?php echo FormRender::ToolTipElement("Ngày tạo tem bảo hành"); ?>
+                                    </th>
+                                    <th style="width: 100px;">Ngày Sửa
+                                        <?php echo FormRender::ToolTipElement("Ngày cập nhật bảo hành"); ?>
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php
+                                if ($TemSanPhams)
+                                    foreach ($TemSanPhams as $k => $op) {
+                                        $_op = new TemSanPham($op);
+                                        ?>
+                                        <tr>
+
+                                            <td class="text-center">
+                                                <?php echo $k + 1; ?>
+                                            </td>
+                                            <td>
+                                                <?php echo $_op->Name ?>
+                                            </td>
+                                            <td>
+                                                <?php echo $_op->SanPham()->Name; ?>
+                                            </td>
+                                            <td>
+                                                <?php echo $_op->Status()->Name; ?>
+                                            </td>
+                                            <td>
+                                                <?php echo $_op->NgayBatDau() ?>
+                                            </td>
+                                            <td>
+                                                <?php echo $_op->ThangKetThuc() ?>
+                                            </td>
+                                            <td>
+                                                <?php echo $_op->NgayKetThuc() ?>
+                                            </td>
+                                            <td>
+                                                <?php echo $_op->CreateDate() ?>
+                                            </td>
+                                            <td>
+                                                <?php echo $_op->ModifyDate() ?>
+                                            </td>
+                                        </tr>
+                                        <?php
+                                    }
+                                ?>
+                            </tbody>
+
+                        </table>
+                        <?php
+                        $linkPagination = "/sanpham/tools/temchuakichhoat/?pageNumber={$pageNumber}&status={$status}&pagesIndex=[i]";
+                        echo Common\Common::PhanTrang(ceil($tong / $pageNumber), $pagesIndex, $linkPagination);
+                        ?>
+                    </div>
+                </div>
+            </div>
+
+        </section>
+    </div>
+</div>
+<script>
+    var index = 0;
+    var ListDanhSach = 0;
+
+    $(function () {
+        $(".btn-capnhat").click(function () {
+            index = 0;
+            CapNhatThongTinSanPham();
+        });
+
+    })
+
+    function CapNhatThongTinSanPham() {
+        if (ListDanhSach[index] == false) {
+            return;
+        }
+        const element = ListDanhSach[index];
+        if (element) {
+            $.ajax({
+                type: "get",
+                url: `/sanpham/tools/UpdateSanPham/${element.MaSanPham}`,
+                dataType: "json",
+                success: function (response) {
+                    console.log('e', element);
+                    CapNhatThongTinSanPham();
+                }
+            });
+        }
+        index++;
+    }
+    $.ajax({
+        type: "get",
+        url: "/sanpham/tools/GetTemChuKichHoatKhongCoThongTinSanPham",
+        dataType: "json",
+        success: function (response) {
+            ListDanhSach = response;
+
+        }
+    });
+
+</script>

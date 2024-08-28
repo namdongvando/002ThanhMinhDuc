@@ -16,11 +16,11 @@ class FormRender
     }
     static public function ToolTip($var, $placement = "top")
     {
-        return  'data-toggle="tooltip" data-placement="' . $placement . '" title="' . $var . '"';
+        return 'data-toggle="tooltip" data-placement="' . $placement . '" title="' . $var . '"';
     }
     static public function ToolTipElement($var, $placement = "top", $icon = "fa-info-circle")
     {
-        return  '<i data-toggle="tooltip" data-placement="' . $placement . '" title="' . $var . '" class="fa ' . $icon . '" aria-hidden="true"></i>';
+        return '<i data-toggle="tooltip" data-placement="' . $placement . '" title="' . $var . '" class="fa ' . $icon . '" aria-hidden="true"></i>';
     }
     public function render()
     {
@@ -29,7 +29,7 @@ class FormRender
 
     public function renderHTML()
     {
-        $attrStr =  $this->element->getAttributes();
+        $attrStr = $this->element->getAttributes();
         $required = "";
         if (strpos($attrStr, FormRender::Required) > 0) {
             $required = "(*)";
@@ -47,7 +47,7 @@ HTML;
     public function renderHTMLIcon($icon)
     {
         $label = $this->element->getLabel();
-        $attrStr =  $this->element->getAttributes();
+        $attrStr = $this->element->getAttributes();
         $required = "";
         if (strpos($attrStr, FormRender::Required) > 0) {
             $required = "(*)";

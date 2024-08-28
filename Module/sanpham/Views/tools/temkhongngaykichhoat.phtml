@@ -1,0 +1,181 @@
+<?php
+
+use Model\FormRender;
+use Module\sanpham\Model\TemSanPham;
+use Module\sanpham\Model\Tools;
+
+$pagesIndex = $_GET["pagesIndex"] ?? 1;
+$pageNumber = $_GET["pageNumber"] ?? 100;
+$status = $_GET["status"] ?? "all";
+$MaTem = $_GET["MaTem"] ?? "";
+$status = trim($status);
+$MaTem = trim($MaTem);
+$tong = 0;
+$name = "";
+$linkNumberIndex = '/sanpham/tools/temkhongngaykichhoat/';
+$params["name"] = $name;
+$params["status"] = $status;
+$params["MaTem"] = $MaTem;
+
+$TemSanPhams = Tools::GetTemKichHoatKhongNgay($pagesIndex, $pageNumber, $tong);
+// var_dump($TemSanPhams);
+?>
+<div class="">
+    <ol class="breadcrumb ">
+        <li>
+            <a href="/dashboad/">Dashboad</a>
+        </li>
+        <li>
+            <a href="#">Quản Lý Sản Phẩm</a>
+        </li>
+        <li class="active">Công cụ</li>
+    </ol>
+    <div class="container-fluid">
+        <section class="pb-10">
+            <div class="col-md-2">
+                <?php
+                include(__DIR__ . "/menu.phtml");
+                ?>
+            </div>
+            <div class="col-md-10">
+                <div class="box ">
+                    <div class="box-header ">
+                        <h3 class="box-title">
+                            Danh Sách Tem Sản Phẩm(
+                            <span id="SoTemConLai">
+                                <?php echo number_format($tong, 0, ".", ","); ?>
+                            </span>
+                            )
+                        </h3>
+                        <div class=" btn-group pull-right">
+                            <a class="btn btn-capnhat btn-success">Cập nhật ngày kết thúc bảo hành</a>
+                        </div>
+                    </div>
+                    <div class="box-body table-responsive">
+                        <p>Danh sách các tem "Chưa kích hoạt" không có thông tin khách hàng </p>
+                        <table class="table table-bordered  " id="data">
+                            <thead>
+                                <tr class="bg-primary">
+                                    <th style="width: 70px;">STT
+                                        <?php echo FormRender::ToolTipElement("Số thứ tự"); ?>
+                                    </th>
+                                    <th style="width: 90px;">
+                                        Thao tác
+                                    </th>
+                                    <th style="width: 150px;">Mã
+                                        <?php echo FormRender::ToolTipElement("Mã tem bảo hành"); ?>
+                                    </th>
+                                    <th>Khách hàng
+                                        <?php echo FormRender::ToolTipElement("Tên khách hàng"); ?>
+                                    </th>
+                                    <th style="width: 150px;">Tình Trạng
+                                        <?php echo FormRender::ToolTipElement("Tình trạng tem bảo hành"); ?>
+                                    </th>
+                                    <th style="width: 130px;">Ngày Bắt Đầu
+                                        <?php echo FormRender::ToolTipElement("Ngày bắt đầu bảo hành"); ?>
+                                    </th>
+                                    <th style="width: 120px;">Thời Gian
+                                        <?php echo FormRender::ToolTipElement("Thời gian bảo hành"); ?>
+                                    </th>
+                                    <th style="width: 150px;">Ngày Kết Thúc
+                                        <?php echo FormRender::ToolTipElement("Ngày kết thúc bảo hành"); ?>
+                                    </th>
+                                    <th style="width: 100px;">Ngày Tạo
+                                        <?php echo FormRender::ToolTipElement("Ngày tạo tem bảo hành"); ?>
+                                    </th>
+                                    <th style="width: 100px;">Ngày Sửa
+                                        <?php echo FormRender::ToolTipElement("Ngày cập nhật bảo hành"); ?>
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php
+                                if ($TemSanPhams)
+                                    foreach ($TemSanPhams as $k => $op) {
+                                        $_op = new TemSanPham($op);
+                                        ?>
+                                        <tr>
+
+                                            <td class="text-center">
+                                                <?php echo $k + 1; ?>
+                                            </td>
+                                            <td class="text-center">
+                                                <a target="__blank"
+                                                    href="/sanpham/temsanpham/detailbysanpham/<?php echo $_op->Name ?>/"
+                                                    class="btn btn-primary">
+                                                    Xem
+                                                </a>
+                                            </td>
+                                            <td>
+                                                <?php echo $_op->Name ?>
+                                                <!-- /sanpham/temsanpham/detailbysanpham/21032436c0fcde18/ -->
+                                            </td>
+                                            <td>
+                                                <?php echo $_op->KhachHangTieuDung()->Name; ?>
+                                            </td>
+                                            <td>
+                                                <?php // echo $_op->Status; ?>
+                                                <?php echo $_op->Status()->Name; ?>
+                                            </td>
+                                            <td>
+                                                <?php echo $_op->NgayBatDau() ?>
+                                            </td>
+                                            <td>
+                                                <?php echo $_op->ThangKetThuc() ?>
+                                            </td>
+                                            <td>
+                                                <?php echo $_op->NgayKetThuc() ?>
+                                            </td>
+                                            <td>
+                                                <?php echo $_op->CreateDate() ?>
+                                            </td>
+                                            <td>
+                                                <?php echo $_op->ModifyDate() ?>
+                                            </td>
+                                        </tr>
+                                        <?php
+                                    }
+                                ?>
+                            </tbody>
+
+                        </table>
+                        <?php
+                        $linkPagination = "/sanpham/tools/temchuakichhoat/?pageNumber={$pageNumber}&status={$status}&pagesIndex=[i]";
+                        echo Common\Common::PhanTrang(ceil($tong / $pageNumber), $pagesIndex, $linkPagination);
+                        ?>
+                    </div>
+                </div>
+            </div>
+
+        </section>
+    </div>
+</div>
+<script>
+
+    $(function () {
+        var index = 0;
+        var ListDanhSach = [];
+        $(".btn-capnhat").click(function () {
+            index = 0;
+            console.log('index', index);
+            CapNhatThongTinSanPham();
+        });
+        function CapNhatThongTinSanPham() {
+            $.ajax({
+                type: "get",
+                url: `/sanpham/tools/UpdateNgayKichHoat/`,
+                dataType: "json",
+                success: function (response) {
+                    CapNhatThongTinSanPham();
+                    $("#SoTemConLai").html(response.toLocaleString(undefined, {
+                        minimumFractionDigits: 0,
+                        maximumFractionDigits: 0
+                    }));
+                }
+            });
+        }
+    })
+
+
+
+</script>

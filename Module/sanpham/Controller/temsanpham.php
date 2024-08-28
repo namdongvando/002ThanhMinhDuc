@@ -230,8 +230,8 @@ class temsanpham extends \ApplicationM implements \Controller\IController
             //     $io->writeFile($imagesQr, file_get_contents($link));
             // }
             $data[$k]["Stt"] = $k + 1;
-            $data[$k]["Code"] =  $value["Code"];
-            $data[$k]["Code"] =  "http://cskhtmd.com/" . $value["Code"] . "/";
+            $data[$k]["Code"] = $value["Code"];
+            $data[$k]["Code"] = "http://cskhtmd.com/" . $value["Code"] . "/";
             unset($data[$k]["img"]);
             unset($data[$k]["KhachHangTieuDung"]);
             unset($data[$k]["NgayBatDau"]);

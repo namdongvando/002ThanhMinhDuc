@@ -3,6 +3,7 @@
 namespace Module\dashboard\Controller;
 
 use Common\Common;
+use Module\dashboard\Model\ModelBaoCao;
 use Module\excell\Model\excell\ExcelReader;
 use Module\sanpham\Model\SanPhamForm;
 use Module\sanpham\Model\TemSanPham;
@@ -26,20 +27,19 @@ class baocao extends \ApplicationM
 
         return $this->ViewThemeModlue([], null, "");
     }
+
+
     function baocao1()
     {
         ini_set('memory_limit', '-1');
-        $TemSamPham = new TemSanPham();
-        $DateType = $_GET["DateType"] ?? "ThoiGianKichHoat";
+        $BaoCao = new ModelBaoCao();
         $fromDate = $_GET["fromDate"] ?? Common::GetFirstDateOfMonth();
         $toDate = $_GET["toDate"] ?? Common::GetLastDateOfMonth();
-        $DSTem =  $TemSamPham->GetByParams(
-            [
-                "Status" => TemSanPham::Active,
-                "dateType" => $DateType,
-                "fromDate" => $fromDate,
-                "toDate" => $toDate,
-            ]
+        $CodebaoCao = $fromDate . $toDate;
+
+        $DSTem = $BaoCao->TemBaoHangBaoCao1(
+            $fromDate,
+            $toDate,
         );
         $dataRow = [];
         $dataRow[] = "STT";
@@ -53,7 +53,7 @@ class baocao extends \ApplicationM
         $dataRow[] = "Thời gian hết bảo hành";
         $dataRow[] = "Tình trạng sản phẩm";
 
-        $data[]  = $dataRow;
+        $data[] = $dataRow;
         foreach ($DSTem as $key => $value) {
             $dataRow = [];
             $_tem = new TemSanPham($value);
@@ -69,14 +69,65 @@ class baocao extends \ApplicationM
             $dataRow[] = $_tem->Status()->Name;
             $data[] = $dataRow;
         }
-        $fileName = date("Y-m-d_His", time());
-        ExcelReader::Export($data, "public/baocao1.xlsx");
+
+        // mkdir("public/baocao1.xlsx", 0777);
+        ExcelReader::Export($data, "data/{$CodebaoCao}baocao1.xlsx");
+        // Common::toUrl("/public/baocao1.xlsx");
+        echo json_encode([
+            "url" => "/public/{$CodebaoCao}baocao1.xlsx",
+        ]);
+    }
+    function baocao_1()
+    {
+        ini_set('memory_limit', '-1');
+        $TemSamPham = new TemSanPham();
+        $DateType = $_GET["DateType"] ?? "ThoiGianKichHoat";
+        echo $fromDate = $_GET["fromDate"] ?? Common::GetFirstDateOfMonth(6, 2024);
+        echo $toDate = $_GET["toDate"] ?? Common::GetLastDateOfMonth(6, 2024);
+        $DSTem = $TemSamPham->GetByParams(
+            [
+                "Status" => TemSanPham::Active,
+                "dateType" => $DateType,
+                "fromDate" => $fromDate,
+                "toDate" => $toDate,
+            ]
+        );
+        var_dump($DSTem);
+        // $dataRow = [];
+        // $dataRow[] = "STT";
+        // $dataRow[] = "Tên đại lý";
+        // $dataRow[] = "Địa chỉ đại lý";
+        // $dataRow[] = "Số điện thoại đại lý";
+        // $dataRow[] = "Tên sản phẩm";
+        // $dataRow[] = "Mã SP";
+        // $dataRow[] = "Mã code";
+        // $dataRow[] = "Thời gian kích hoạt";
+        // $dataRow[] = "Thời gian hết bảo hành";
+        // $dataRow[] = "Tình trạng sản phẩm";
+
+        // $data[] = $dataRow;
+        // foreach ($DSTem as $key => $value) {
+        //     $dataRow = [];
+        //     $_tem = new TemSanPham($value);
+        //     $dataRow[] = $key + 1;
+        //     $dataRow[] = $_tem->SanPham()->DaiLy()->Name;
+        //     $dataRow[] = $_tem->SanPham()->DaiLy()->DiaChi;
+        //     $dataRow[] = $_tem->SanPham()->DaiLy()->DienThoai;
+        //     $dataRow[] = $_tem->SanPham()->Name;
+        //     $dataRow[] = $_tem->SanPham()->Code();
+        //     $dataRow[] = $_tem->Code;
+        //     $dataRow[] = $_tem->NgayBatDau();
+        //     $dataRow[] = $_tem->NgayKetThuc();
+        //     $dataRow[] = $_tem->Status()->Name;
+        //     $data[] = $dataRow;
+        // }
+
     }
     function baocao2()
     {
         ini_set('memory_limit', '-1');
         $TemSamPham = new TemSanPham();
-        $DSTem =  $TemSamPham->GetByStatus(TemSanPham::Huy);
+        $DSTem = $TemSamPham->GetByStatus(TemSanPham::Huy);
         $dataRow = [];
         $dataRow[] = "STT";
         $dataRow[] = "Tên đại lý";
@@ -88,7 +139,7 @@ class baocao extends \ApplicationM
         $dataRow[] = "Thời gian kích hoạt";
         $dataRow[] = "Tình trạng sản phẩm";
 
-        $data[]  = $dataRow;
+        $data[] = $dataRow;
         foreach ($DSTem as $key => $value) {
             $dataRow = [];
             $_tem = new TemSanPham($value);
@@ -102,13 +153,13 @@ class baocao extends \ApplicationM
             $dataRow[] = $_tem->Status()->Name;
             $data[] = $dataRow;
         }
-        ExcelReader::Export($data, "public/baocao2.xlsx");
+        ExcelReader::Export($data, "data/baocao2.xlsx");
     }
     function baocao3()
     {
         ini_set('memory_limit', '-1');
         $TemSamPham = new TemSanPham();
-        $DSTem =  $TemSamPham->GetByStatusDaiLy(TemSanPham::Active);
+        $DSTem = $TemSamPham->GetByStatusDaiLy(TemSanPham::Active);
         $dataRow = [];
         $dataRow[] = "STT";
         $dataRow[] = "Tên đại lý";
@@ -119,7 +170,7 @@ class baocao extends \ApplicationM
         $dataRow[] = "Mã code";
         $dataRow[] = "Thời gian kích hoạt để xuất kho";
         $dataRow[] = "Tình trạng sản phẩm";
-        $data[]  = $dataRow;
+        $data[] = $dataRow;
         foreach ($DSTem as $key => $value) {
             $dataRow = [];
             $_tem = new TemSanPham($value);
@@ -134,7 +185,7 @@ class baocao extends \ApplicationM
             $dataRow[] = $_tem->Status()->Name;
             $data[] = $dataRow;
         }
-        ExcelReader::Export($data, "public/baocao3.xlsx");
+        ExcelReader::Export($data, "data/baocao3.xlsx");
     }
     function baocao4()
     {
@@ -145,7 +196,7 @@ class baocao extends \ApplicationM
         $fromDate = $_GET["fromDate"] ?? Common::GetFirstDateOfMonth();
         $toDate = $_GET["toDate"] ?? Common::GetLastDateOfMonth();
 
-        $DSTem =  $TemSamPham->GetByStatusNguoiDungParams(
+        $DSTem = $TemSamPham->GetByStatusNguoiDungParams(
             [
                 "Status" => TemSanPham::Active,
                 "dateType" => $DateType,
@@ -167,7 +218,7 @@ class baocao extends \ApplicationM
         $dataRow[] = "Mã code";
         $dataRow[] = "Thời gian người sử dụng kích hoạt";
         $dataRow[] = "Thời gian hết bảo hành";
-        $data[]  = $dataRow;
+        $data[] = $dataRow;
 
         foreach ($DSTem as $key => $value) {
             $dataRow = [];
@@ -185,7 +236,7 @@ class baocao extends \ApplicationM
             $dataRow[] = $_tem->NgayKetThuc();
             $data[] = $dataRow;
         }
-        ExcelReader::Export($data, "public/baocao4.xlsx");
+        ExcelReader::Export($data, "data/baocao4.xlsx");
     }
     function baocao5()
     {
@@ -194,7 +245,7 @@ class baocao extends \ApplicationM
 
         ini_set('memory_limit', '-1');
         $TemSamPham = new TemSanPham();
-        $DSTem =  $TemSamPham->GetByStatus(TemSanPham::DeActive);
+        $DSTem = $TemSamPham->GetByStatus(TemSanPham::DeActive);
         $dataRow = [];
         $dataRow[] = "Tên đại lý";
         $dataRow[] = "Địa chỉ đại lý";
@@ -202,7 +253,7 @@ class baocao extends \ApplicationM
         $dataRow[] = "Tên sản phẩm";
         $dataRow[] = "Mã SP";
         $dataRow[] = "Mã code";
-        $data[]  = $dataRow;
+        $data[] = $dataRow;
         foreach ($DSTem as $key => $value) {
             $dataRow = [];
             $_tem = new TemSanPham($value);
@@ -215,7 +266,7 @@ class baocao extends \ApplicationM
             $dataRow[] = $_tem->Code;
             $data[] = $dataRow;
         }
-        ExcelReader::Export($data, "public/baocao6.xlsx");
+        ExcelReader::Export($data, "data/baocao6.xlsx");
     }
     function baocao6()
     {
@@ -224,7 +275,7 @@ class baocao extends \ApplicationM
 
         ini_set('memory_limit', '-1');
         $TemSamPham = new TemSanPham();
-        $DSTem =  $TemSamPham->GetByStatus(TemSanPham::DeActive);
+        $DSTem = $TemSamPham->GetByStatus(TemSanPham::DeActive);
         $dataRow = [];
         $dataRow[] = "Tên đại lý";
         $dataRow[] = "Địa chỉ đại lý";
@@ -233,7 +284,7 @@ class baocao extends \ApplicationM
         $dataRow[] = "Tên sản phẩm";
         $dataRow[] = "Mã SP";
         $dataRow[] = "Mã code";
-        $data[]  = $dataRow;
+        $data[] = $dataRow;
         foreach ($DSTem as $key => $value) {
             $dataRow = [];
             $_tem = new TemSanPham($value);
@@ -247,7 +298,7 @@ class baocao extends \ApplicationM
             $dataRow[] = $_tem->Code;
             $data[] = $dataRow;
         }
-        ExcelReader::Export($data, "public/baocao6.xlsx");
+        ExcelReader::Export($data, "data/baocao6.xlsx");
     }
     function baocao7()
     {
@@ -257,7 +308,7 @@ class baocao extends \ApplicationM
         $DateType = $_GET["DateType"] ?? "ThoiGianKichHoat";
         $fromDate = $_GET["fromDate"] ?? Common::GetFirstDateOfMonth();
         $toDate = $_GET["toDate"] ?? Common::GetLastDateOfMonth();
-        $DSTem =  $TemSamPham->GetByParams(
+        $DSTem = $TemSamPham->GetByParams(
             [
                 "Status" => TemSanPham::ChuaDung,
                 "dateType" => $DateType,
@@ -273,7 +324,7 @@ class baocao extends \ApplicationM
         $dataRow[] = "Tên sản phẩm";
         $dataRow[] = "Thời gian khi báo mã SP";
         $dataRow[] = "Mã code";
-        $data[]  = $dataRow;
+        $data[] = $dataRow;
         foreach ($DSTem as $key => $value) {
             $dataRow = [];
             $_tem = new TemSanPham($value);
@@ -286,38 +337,38 @@ class baocao extends \ApplicationM
             $dataRow[] = $_tem->Code;
             $data[] = $dataRow;
         }
-        ExcelReader::Export($data, "public/baocao7.xlsx");
+        ExcelReader::Export($data, "data/baocao7.xlsx");
     }
     function baocao8()
     {
- 
+
         //7.      Thống kê phiếu xuất nhập
         ini_set('memory_limit', '-1');
         $phieuXuatNhapChiTiet = new PhieuXuatNhapChiTiet();
         $DateType = $_GET["DateType"] ?? "ThoiGianKichHoat";
         $fromDate = $_GET["fromDate"] ?? Common::GetFirstDateOfMonth();
         $toDate = $_GET["toDate"] ?? Common::GetLastDateOfMonth();
-         
-        $DSTem =  $phieuXuatNhapChiTiet->GetSanPham( $fromDate, $toDate);
+
+        $DSTem = $phieuXuatNhapChiTiet->GetSanPham($fromDate, $toDate);
         $dataRow = [];
-        $dataRow[]="STT";
-        $dataRow[]="Tên đại lý";
-        $dataRow[]="Địa chỉ";
-        $dataRow[]="đại lý";
-        $dataRow[]="Số điện thoại";
-        $dataRow[]="đại lý";
-        $dataRow[]="Tên sản phẩm";
-        $dataRow[]="Mã SP";
-        $dataRow[]="Mã code";
-        $dataRow[]="Nhân viên bán hàng";
-        $dataRow[]="Thời gian kích hoạt";
-        $dataRow[]="Thời gian hoàn trả";
-        $dataRow[]="Lý do hoàn trả";
-        $dataRow[]="Điều kiện nhập kho";
-        $dataRow[]="Lý do";
-        $dataRow[]="Tình trạng sản phẩm";
-        $dataRow[]="Người nhập kho";
-        $data[]  = $dataRow;
+        $dataRow[] = "STT";
+        $dataRow[] = "Tên đại lý";
+        $dataRow[] = "Địa chỉ";
+        $dataRow[] = "đại lý";
+        $dataRow[] = "Số điện thoại";
+        $dataRow[] = "đại lý";
+        $dataRow[] = "Tên sản phẩm";
+        $dataRow[] = "Mã SP";
+        $dataRow[] = "Mã code";
+        $dataRow[] = "Nhân viên bán hàng";
+        $dataRow[] = "Thời gian kích hoạt";
+        $dataRow[] = "Thời gian hoàn trả";
+        $dataRow[] = "Lý do hoàn trả";
+        $dataRow[] = "Điều kiện nhập kho";
+        $dataRow[] = "Lý do";
+        $dataRow[] = "Tình trạng sản phẩm";
+        $dataRow[] = "Người nhập kho";
+        $data[] = $dataRow;
         foreach ($DSTem as $key => $value) {
             $dataRow = [];
             $_phieuChiTiet = new PhieuXuatNhapChiTiet($value);
@@ -336,6 +387,6 @@ class baocao extends \ApplicationM
             $dataRow[] = $_phieuChiTiet->PhieuXuatNhap()->UserId()->Name;
             $data[] = $dataRow;
         }
-        ExcelReader::Export($data, "public/baocao8.xlsx");
+        ExcelReader::Export($data, "data/baocao8.xlsx");
     }
 }

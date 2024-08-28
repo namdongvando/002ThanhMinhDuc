@@ -77,9 +77,12 @@ class ZendData
     {
         return $this->TableContext->select($where)->count();
     }
-
     function GetRows($where = "")
     {
+        if (self::$IsDebug) {
+            echo $where;
+            var_dump($this->TableContext->select($where));
+        }
         if ($where)
             return (array) $this->fechArray($this->TableContext->select($where));
         return (array) $this->fechArray($this->TableContext->select());
@@ -147,6 +150,7 @@ class ZendData
 
     function InsertRowsTable($row)
     {
+
         $this->TableContext->insert($row);
         return $this->TableContext->lastInsertValue;
     }

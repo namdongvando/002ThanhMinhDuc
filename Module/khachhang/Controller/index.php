@@ -2,11 +2,15 @@
 
 namespace Module\khachhang\Controller;
 
-class index extends \ApplicationM implements \Controller\IController {
+use Exception;
+
+class index extends \ApplicationM implements \Controller\IController
+{
 
     static public $UserLayout = "backend";
 
-    function __construct() {
+    function __construct()
+    {
         new \Controller\backend();
         try {
             \Core\ViewTheme::set_viewthene("backend");
@@ -15,36 +19,42 @@ class index extends \ApplicationM implements \Controller\IController {
         }
     }
 
-    function index() {
+    function index()
+    {
 
         return $this->ViewThemeModlue();
     }
 
-    function add() {
-//        var_dump();
+    function add()
+    {
+        //        var_dump();
         if (isset($_POST["khachhang"])) {
             $kh = $_POST["khachhang"];
             $khachHang = new \Module\khachhang\Model\KhachHang();
             $khachHangThanhToan = new \Module\khachhang\Model\KhachHangThanhToan();
+            $kh["NhomHangKinhDoanh"] = 0;
+            unset($kh["Id"]);
             $id = $khachHang->InsertSubmit($kh);
-            $khtt_POST = $_POST["khachhangthanhtoan"];
-            $khtt_POST["MaKhachHang"] = $kh["Code"];
-            $khtt_POST["Fax"] = !empty($khtt_POST["Fax"]) ? $khtt_POST["Fax"] : "";
-            $a = $khachHangThanhToan->GetByMaKhachHang($khtt_POST["MaKhachHang"]);
-            if ($a == null) {
-                $khachHangThanhToan->InsertSubmit($khtt_POST);
-            }
+            // $khtt_POST = $_POST["khachhangthanhtoan"];
+            // $khtt_POST["MaKhachHang"] = $kh["Code"];
+            // $khtt_POST["Fax"] = !empty($khtt_POST["Fax"]) ? $khtt_POST["Fax"] : "";
+            // $a = $khachHangThanhToan->GetByMaKhachHang($khtt_POST["MaKhachHang"]);
+            // if ($a == null) {
+            //     $khachHangThanhToan->InsertSubmit($khtt_POST);
+            // }
             \Common\Common::toUrl("/khachhang/index/edit/" . sha1($id));
         }
         return $this->ViewThemeModlue();
     }
 
-    function controller() {
+    function controller()
+    {
 
         $this->ViewThemeModlue();
     }
 
-    function import() {
+    function import()
+    {
         try {
             if (true) {
                 ini_set('display_errors', 0);
@@ -80,11 +90,13 @@ class index extends \ApplicationM implements \Controller\IController {
         }
     }
 
-    public function create() {
+    public function create()
+    {
         if (\Module\project\Model\ProjectForm::onSubmit()) {
             try {
                 $project = $_POST["project"];
                 $pr = new \Module\project\Model\Project();
+
                 $pr->InsertSubmit($project);
                 \Application\redirectTo::Url($_SERVER["HTTP_REFERER"]);
             } catch (Exception $exc) {
@@ -93,18 +105,21 @@ class index extends \ApplicationM implements \Controller\IController {
         }
     }
 
-    public function delete() {
+    public function delete()
+    {
         $idKachHang = $this->getParam()[0];
         $khachHang = new \Module\khachhang\Model\KhachHang();
         $khachHang->DeleteSubmit($idKachHang, true);
         \Common\Common::toUrl("/khachhang/index/");
     }
 
-    public function detail() {
+    public function detail()
+    {
 
     }
 
-    public function edit() {
+    public function edit()
+    {
         if (isset($_POST["khachhang"])) {
             $kh = $_POST["khachhang"];
             $khachHang = new \Module\khachhang\Model\KhachHang();
@@ -115,37 +130,42 @@ class index extends \ApplicationM implements \Controller\IController {
             $KHBYId["Parents"] = $kh["Parents"];
             $KHBYId["KhuVuc"] = $kh["KhuVuc"];
             $KHBYId["Zalo"] = $kh["Zalo"];
-            $KHBYId["LoaiHinhKinhDoanh"] = $kh["LoaiHinhKinhDoanh"];
+            $KHBYId["LoaiHinhKinhDoanh"] = $kh["LoaiHinhKinhDoanh"] ?? 0;
             $KHBYId["QuanHuyen"] = $kh["QuanHuyen"];
             $KHBYId["TinhThanh"] = $kh["TinhThanh"];
             $KHBYId["LaChuKinhDoanh"] = $kh["LaChuKinhDoanh"];
             $KHBYId["DienThoai"] = $kh["DienThoai"];
             $KHBYId["DiDong"] = $kh["DiDong"];
             $KHBYId["MaSoThue"] = $kh["MaSoThue"];
+            $KHBYId["DiaChi"] = $kh["DiaChi"];
             $KHBYId["DiaChiGiaoHang"] = $kh["DiaChiGiaoHang"];
-            $KHBYId["NhomHangKinhDoanh"] = $kh["NhomHangKinhDoanh"];
+            $KHBYId["NhomHangKinhDoanh"] = intval($kh["NhomHangKinhDoanh"]);
             $khachHang->UpdateSubmit($KHBYId);
             $KHTT = \Module\khachhang\Model\KhachHangThanhToan::GetByMaKhachHang($KHBYId["Code"]);
             if ($KHTT) {
                 $khtt_POST = $_POST["khachhangthanhtoan"];
-                $KHTT["TenCongTy"] = $khtt_POST["TenCongTy"];
-                $KHTT["MaSoThue"] = $khtt_POST["MaSoThue"];
-                $KHTT["DiaChi"] = $khtt_POST["DiaChi"];
-                $KHTT["NganHang"] = $khtt_POST["NganHang"];
-                $KHTT["Fax"] = $khtt_POST["Fax"];
-                $KHTT["STK"] = $khtt_POST["STK"];
-                $KHTT["GhiChu"] = $khtt_POST["GhiChu"];
+                $KHTT["Name"] = $khtt_POST["TenCongTy"] ?? " ";
+                $KHTT["TenCongTy"] = $khtt_POST["TenCongTy"] ?? " ";
+                $KHTT["MaSoThue"] = $khtt_POST["MaSoThue"] ?? "";
+                $KHTT["DiaChi"] = $khtt_POST["DiaChi"] ?? "";
+                $KHTT["NganHang"] = $khtt_POST["NganHang"] ?? "";
+                $KHTT["SDT"] = $khtt_POST["SDT"] ?? "";
+                $KHTT["Fax"] = $khtt_POST["Fax"] ?? "";
+                $KHTT["STK"] = $khtt_POST["STK"] ?? "";
+                $KHTT["GhiChu"] = $khtt_POST["GhiChu"] ?? "";
                 $khachHangThanhToan->UpdateSubmit($KHTT);
             } else {
                 $khtt_POST = $_POST["khachhangthanhtoan"];
-                $KHTT["MaKhachHang"] = $KHBYId["Code"];
-                $KHTT["TenCongTy"] = $khtt_POST["TenCongTy"];
-                $KHTT["MaSoThue"] = $khtt_POST["MaSoThue"];
-                $KHTT["DiaChi"] = $khtt_POST["DiaChi"];
-                $KHTT["NganHang"] = $khtt_POST["NganHang"];
-                $KHTT["STK"] = $khtt_POST["STK"];
-                $KHTT["Fax"] = $khtt_POST["Fax"];
-                $KHTT["GhiChu"] = $khtt_POST["GhiChu"];
+                $KHTT["MaKhachHang"] = $KHBYId["Code"] ?? "";
+                $KHTT["Name"] = $khtt_POST["TenCongTy"] ?? "";
+                $KHTT["TenCongTy"] = $khtt_POST["TenCongTy"] ?? "";
+                $KHTT["MaSoThue"] = $khtt_POST["MaSoThue"] ?? "";
+                $KHTT["DiaChi"] = $khtt_POST["DiaChi"] ?? "";
+                $KHTT["NganHang"] = $khtt_POST["NganHang"] ?? "";
+                $KHTT["SDT"] = $khtt_POST["SDT"] ?? "";
+                $KHTT["STK"] = $khtt_POST["STK"] ?? "";
+                $KHTT["Fax"] = $khtt_POST["Fax"] ?? "";
+                $KHTT["GhiChu"] = $khtt_POST["GhiChu"] ?? "";
                 $khachHangThanhToan->InsertSubmit($KHTT);
             }
         }

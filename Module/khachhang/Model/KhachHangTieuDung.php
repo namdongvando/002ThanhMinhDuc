@@ -55,7 +55,7 @@ class KhachHangTieuDung extends KhachHangTieuDungData
         $diaChi = $this->DiaChi;
         $tinhThanh = $this->TinhThanh()->Name;
         $quanHuyen = $this->QuanHuyen()->Name;
-        return  "{$diaChi}, {$quanHuyen}, {$tinhThanh}";
+        return "{$diaChi}, {$quanHuyen}, {$tinhThanh}";
     }
     function TinhThanh()
     {
@@ -66,10 +66,27 @@ class KhachHangTieuDung extends KhachHangTieuDungData
         return new \Module\option\Model\TinhThanh($this->QuanHuyen);
     }
 
+
+    public static function TaoKhachHangMacDinh($maKhachHangTieuDung)
+    {
+        $kh["Code"] = $maKhachHangTieuDung;
+        $kh["Name"] = "Khách hàng của Thành Minh Đức";
+        $kh["TinhThanh"] = "32";
+        $kh["QuanHuyen"] = "45";
+        $kh["Phone"] = "0329.68.79.89";
+        $kh["DiaChi"] = "Đang cập nhật …";
+        $kh["GhiChu"] = 'Nhấn "Sửa thông tin" để khai báo đúng thông tin người sử dụng SP để đảm bảo quyền lợi bảo hành. Hỗ trợ: 0329.68.79.89';
+        $kh["Parent"] = "0";
+
+        $khachHang = new KhachHangTieuDung();
+        $khachHang->InsertRowsTable($kh);
+        return self::GetKhachHangByCode($maKhachHangTieuDung);
+    }
     public static function TaoKhachHang($maKhachHangTieuDung)
     {
         $kh["Code"] = $maKhachHangTieuDung;
         $kh["Name"] = "";
+        $kh["Parent"] = "0";
         $khachHang = new KhachHangTieuDung();
         $khachHang->InsertRowsTable($kh);
         return self::GetKhachHangByCode($maKhachHangTieuDung);
@@ -86,12 +103,13 @@ class KhachHangTieuDung extends KhachHangTieuDungData
     {
         $KH = new KhachHangTieuDung();
         $KH->UpdateSubmit($model);
+        return self::GetKhachHangByCode($model["Code"]);
     }
 
     public function TenSanPham()
     {
         $code = $this->Code;
-        $temms =  TemSanPham::GetByKhachHangTieuDung($code);
+        $temms = TemSanPham::GetByKhachHangTieuDung($code);
         return new TemSanPham($temms);
     }
 

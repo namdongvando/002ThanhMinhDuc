@@ -2,34 +2,42 @@
 
 namespace Module\sanpham\Controller;
 
-class kho extends index {
+class kho extends index
+{
 
-    public function __construct() {
+    public function __construct()
+    {
         parent::__construct();
     }
 
-    public function index() {
+    public function index()
+    {
         return $this->ViewThemeModlue();
     }
 
-    public function resettem() {
+    public function resettem()
+    {
         $sanPham = new \Module\sanpham\Model\SanPham();
         $sanPham->resettem();
     }
 
-    public function create() {
+    public function create()
+    {
 
     }
 
-    public function delete() {
+    public function delete()
+    {
 
     }
 
-    public function detail() {
+    public function detail()
+    {
 
     }
 
-    public function edit() {
+    public function edit()
+    {
 
     }
 

@@ -100,6 +100,7 @@ class DatabaseZend implements \Model\IModel
     {
         if (!$where)
             $where = " `Id` = '{$QA["Id"]}' ";
+
         return $this->ConnetTable->update($QA, $where);
     }
 

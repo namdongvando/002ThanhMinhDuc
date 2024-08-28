@@ -5,7 +5,7 @@ use Module\sanpham\Model\TemSanPham;
 use Module\excell\Model\excell\ExcelReader;
 
 $TemSamPham = new TemSanPham();
-$DSTem =  $TemSamPham->GetByStatus(TemSanPham::Active);
+$DSTem = $TemSamPham->GetByStatus(TemSanPham::Active);
 ?>
 <ol class="breadcrumb">
     <li><a href="/dashboard/baocao/">Danh sách báo cáo</a></li>
@@ -45,7 +45,7 @@ $DSTem =  $TemSamPham->GetByStatus(TemSanPham::Active);
                             $dataRow[] = "Thời gian kích hoạt";
                             $dataRow[] = "Tình trạng sản phẩm";
 
-                            $data[]  = $dataRow;
+                            $data[] = $dataRow;
                             foreach ($DSTem as $key => $value) {
                                 $dataRow = [];
                                 $_tem = new TemSanPham($value);

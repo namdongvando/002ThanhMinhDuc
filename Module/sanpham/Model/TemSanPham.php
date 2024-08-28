@@ -21,7 +21,8 @@ class TemSanPham extends TemSanPhamData
     const YeuCauKichHoat = 2;
 
     public $Id, $Name, $Code, $MaSanPham, $KhachHangTieuDung, $NgayBatDau, $ThangKetThuc, $NgayKetThuc, $Status, $UserId, $CreateDate, $ModifyDate;
-
+    public $Parents;
+    public $IsPrint;
     public function __construct($dv = null)
     {
         parent::__construct();
@@ -90,6 +91,7 @@ class TemSanPham extends TemSanPhamData
         $name = $params["name"] ?? "";
         $status = $params["status"] ?? "all";
         $maTem = $params["MaTem"] ?? "";
+        $NgayBatDau = $params["NgayBatDau"] ?? "";
         $statusSql = "";
         if ($status != "all") {
             $statusSql = " and `status` = '{$status}'";
@@ -98,9 +100,13 @@ class TemSanPham extends TemSanPhamData
         if ($maTem != "") {
             $maTemSql = " and `Code` like '%{$maTem}%'";
         }
+        $ngayBatDauSql = "";
+        if ($NgayBatDau != "") {
+            $ngayBatDauSql = " and `ModifyDate` > '{$NgayBatDau}'";
+        }
         $pagesIndex = ($pagesIndex - 1) * $pageNumber;
         $sanpham = new TemSanPham();
-        $where = " `Name` like '%{$name}%' {$statusSql} {$maTemSql} ";
+        $where = " `Name` like '%{$name}%' {$statusSql} {$maTemSql} {$ngayBatDauSql} ";
         $tong = $sanpham->GetRowsNumber($where);
         $where .= " limit {$pagesIndex},{$pageNumber}";
         return $sanpham->GetRowsByWhere($where);
@@ -143,6 +149,25 @@ class TemSanPham extends TemSanPhamData
     {
         return $this->GetRows("`Status` = '{$Status}'");
     }
+    public function GetByChuaKichHoat($index, $pageSize, &$Total)
+    {
+        $where = "`Status` != '1'";
+        $Total = $this->GetRowsNumber($where);
+        $start = ($index - 1) * $pageSize;
+        $where .= " limit $start, $pageSize ";
+        return $this->GetRows($where);
+
+    }
+    public function GetTemKichHoatKhongNgay($index, $pageSize, &$Total)
+    {
+        $where = "`Status` = '1' and (`NgayKetThuc` is null )";
+        $Total = $this->GetRowsNumber($where);
+        $start = ($index - 1) * $pageSize;
+        $where .= " limit $start, $pageSize ";
+
+        return $this->GetRows($where);
+
+    }
     public function GetByParams($Params)
     {
         $Status = $Params["Status"] ?? null;
@@ -167,7 +192,10 @@ class TemSanPham extends TemSanPhamData
             $whereToDate = " and `{$dateTypeCol}` < '{$toDate}'";
         }
         $where = "{$whereStatus} {$whereFromDate} {$whereToDate} order by `{$dateTypeCol}` DESC";
-        return $this->GetRows($where);
+        self::$IsDebug = 1;
+        $items = $this->GetRows($where);
+        self::$IsDebug = 0;
+        return $items;
     }
     public function GetByStatusDaiLy($Status)
     {
@@ -288,35 +316,35 @@ class TemSanPham extends TemSanPhamData
     {
         return [
             self::ChuaDung =>
-            [
-                "Id" => null,
-                "Name" => "Chưa Dùng",
-            ],
+                [
+                    "Id" => null,
+                    "Name" => "Chưa Dùng",
+                ],
             self::Active =>
-            [
-                "Id" => self::Active,
-                "Name" => "Kích Hoạt",
-            ],
+                [
+                    "Id" => self::Active,
+                    "Name" => "Kích Hoạt",
+                ],
             self::DeActive =>
-            [
-                "Id" => self::DeActive,
-                "Name" => "Chưa Kích Hoạt",
-            ],
+                [
+                    "Id" => self::DeActive,
+                    "Name" => "Chưa Kích Hoạt",
+                ],
             self::YeuCauKichHoat =>
-            [
-                "Id" => self::YeuCauKichHoat,
-                "Name" => "Yêu Cầu Kích Hoạt",
-            ],
+                [
+                    "Id" => self::YeuCauKichHoat,
+                    "Name" => "Yêu Cầu Kích Hoạt",
+                ],
             self::KyGui =>
-            [
-                "Id" => self::KyGui,
-                "Name" => "Ký gửi",
-            ],
+                [
+                    "Id" => self::KyGui,
+                    "Name" => "Ký gửi",
+                ],
             self::TrungBay =>
-            [
-                "Id" => self::TrungBay,
-                "Name" => "Trưng bày",
-            ]
+                [
+                    "Id" => self::TrungBay,
+                    "Name" => "Trưng bày",
+                ]
         ];
     }
 
@@ -352,6 +380,26 @@ class TemSanPham extends TemSanPhamData
         return "Chưa cấu hình";
     }
 
+    function TinhNgayKetThuc()
+    {
+        $ngayBd = strtotime($this->NgayBatDau);
+        $soNgay = $this->TinhSoNgay($this->ThangKetThuc);
+        $a = $ngayBd + $soNgay;
+        return date("Y-m-d H:i:s", $a);
+    }
+
+    public function TinhSoNgay($thang)
+    {
+        $nam = 0;
+        if ($thang > 12) {
+            $nam = floor($thang / 12);
+        }
+        if ($nam > 0) {
+            $thang = $thang - ($nam * 12);
+        }
+
+        return $thang * 30.5 * 24 * 3600 + $nam * 365 * 24 * 3600;
+    }
     public function NgayBatDau()
     {
         if ($this->NgayBatDau != null)
@@ -458,6 +506,26 @@ class TemSanPham extends TemSanPhamData
         $items = $yeucau->DaHoanThanh($this->Code);
         return $items;
     }
+
+    function ToArray()
+    {
+        return [
+            "Id" => $this->Id,
+            "Name" => $this->Name,
+            "Code" => $this->Code,
+            "MaSanPham" => $this->MaSanPham,
+            "KhachHangTieuDung" => $this->KhachHangTieuDung,
+            "NgayBatDau" => $this->NgayBatDau,
+            "NgayKetThuc" => $this->NgayKetThuc,
+            "Status" => $this->Status,
+            "UserId" => $this->UserId,
+            "CreateDate" => $this->CreateDate,
+            "ModifyDate" => $this->ModifyDate,
+            "Parents" => $this->Parents,
+            "IsPrint" => $this->IsPrint,
+        ];
+    }
+
     function DSYeuCauBaoHanh()
     {
         $yeucau = new YeuCauBaoHanh();

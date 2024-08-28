@@ -2,18 +2,18 @@
 $admin = new Module\user\Model\Admin($admin);
 ?>
 <script type="text/javascript">
-    app.controller("usersController", function($scope, $http) {
-        $scope.resetMail = function(id) {
+    app.controller("usersController", function ($scope, $http) {
+        $scope.resetMail = function (id) {
             try {
                 if (window.confirm('Bạn có muốn reset mật khẩu tài khoản này không?') == false) {
                     return false;
                 }
                 $http.post("/user/users/resetpassword/", $.param({
                     "publicKey": id
-                })).then(function(res) {
+                })).then(function (res) {
                     $scope.thongBao = "đã reset password";
                 });
-            } catch (e) {}
+            } catch (e) { }
         }
     });
 </script>
@@ -30,7 +30,8 @@ $admin = new Module\user\Model\Admin($admin);
 <div class="container-fluid" ng-controller="usersController">
     <form action="" method="post" enctype="multipart/form-data">
         <div class="row">
-            <div ng-show="thongBao" class="alert" style="padding: 10px;background-color: green;color: #fff;position: fixed;right: 0px;z-index: 999; ">
+            <div ng-show="thongBao" class="alert"
+                style="padding: 10px;background-color: green;color: #fff;position: fixed;right: 0px;z-index: 999; ">
                 <strong>Success!</strong> {{thongBao}}.
             </div>
             <section class="col-md-6 pb-10">
@@ -39,7 +40,8 @@ $admin = new Module\user\Model\Admin($admin);
                         <div class="box-header">
                             <h3 class="box-title">Tài Khoản</h3>
                             <div class="box-tools">
-                                <input type="button" ng-click="resetMail('<?php echo $admin->publicKey(); ?>')" class="btn btn-success" value="Reset Password" />
+                                <input type="button" ng-click="resetMail('<?php echo $admin->publicKey(); ?>')"
+                                    class="btn btn-success" value="Reset Password" />
                             </div>
                         </div>
                         <div class="box-body">
@@ -82,12 +84,12 @@ $admin = new Module\user\Model\Admin($admin);
                                 </div>
                                 <div class="col-md-6 admin trungtambaohanh">
                                     <?php
-                                    Module\user\Model\AdminForm::TrungTamBaoHanh($admin->TrungTamBaoHanh()->idKhachHang)->renderHTML();
+                                    // Module\user\Model\AdminForm::TrungTamBaoHanh($admin->TrungTamBaoHanh()->idKhachHang)->renderHTML();
                                     ?>
                                 </div>
                                 <div class="col-md-6 admin khachhang">
                                     <?php
-                                    Module\user\Model\AdminForm::KhachHang($admin->KhachHang()->idKhachHang)->renderHTML();
+                                    // Module\user\Model\AdminForm::KhachHang($admin->KhachHang()->idKhachHang)->renderHTML();
                                     ?>
                                 </div>
                                 <div class="col-md-12">
@@ -139,7 +141,7 @@ $admin = new Module\user\Model\Admin($admin);
     </form>
 </div>
 <script>
-    $(function() {
+    $(function () {
         var HienThiNhom = () => {
             var idNhom = $("#Nhom").val();
             if (idNhom == '1' || idNhom == '2') {

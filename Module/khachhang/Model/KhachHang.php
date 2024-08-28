@@ -116,9 +116,9 @@ class KhachHang extends KhachHangData
 
     public function DiaChi()
     {
-        return $this->DiaChi . ", " . $this->QuanHuyen()->Name  . ", " . $this->TinhThanh()->Name;
+        return $this->DiaChi . ", " . $this->QuanHuyen()->Name . ", " . $this->TinhThanh()->Name;
     }
-    public static function KhachHangsPT($name = "", $pagesIndex, $pageNumber, &$tong)
+    public static function KhachHangsPT($name, $pagesIndex, $pageNumber, &$tong)
     {
         $Kh = new KhachHang();
         $pagesIndex = max($pagesIndex, 1);

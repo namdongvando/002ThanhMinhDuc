@@ -2,7 +2,8 @@
 
 namespace Module\user\Model;
 
-class TaiKhoan extends TaiKhoanTable {
+class TaiKhoan extends TaiKhoanTable
+{
 
     public $id;
     public $idUer;
@@ -12,7 +13,8 @@ class TaiKhoan extends TaiKhoanTable {
     const CodeKhachHang = "KH";
     const CodeTrungTamBaoHanh = "TTBH";
 
-    public function __construct($taiKhoan = null) {
+    public function __construct($taiKhoan = null)
+    {
         if ($taiKhoan) {
             if (!is_array($taiKhoan)) {
 
@@ -25,7 +27,8 @@ class TaiKhoan extends TaiKhoanTable {
         parent::__construct();
     }
 
-    public function GetByIdUser($idUser, $code) {
+    public function GetByIdUser($idUser, $code)
+    {
         $where = "`idUser` = '{$idUser}' and `Code` ='{$code}'";
         $res = $this->ToRow($this->Select($where));
         if ($res == null) {
@@ -34,7 +37,8 @@ class TaiKhoan extends TaiKhoanTable {
         return $res;
     }
 
-    public function TaiKhoanKhachHang($idUser, $code) {
+    public function TaiKhoanKhachHang($idUser, $code)
+    {
         $Model["idUser"] = $idUser;
         $Model["idKhachHang"] = 0;
         $Model["Code"] = $code;
@@ -42,15 +46,18 @@ class TaiKhoan extends TaiKhoanTable {
         return $this->GetByIdUser($idUser, $code);
     }
 
-    public function Post($Model) {
+    public function Post($Model)
+    {
         return $this->InsertSubmit($Model);
     }
 
-    public function Put($TaiKhoanModel) {
+    public function Put($TaiKhoanModel)
+    {
         return $this->UpdateSubmit($TaiKhoanModel);
     }
 
-    public function GetByKhachHangIdUser($Id) {
+    public function GetByKhachHangIdUser($Id)
+    {
         $where = "`idUser` = '{$Id}'";
         return $this->ToArray($this->Select($where));
     }

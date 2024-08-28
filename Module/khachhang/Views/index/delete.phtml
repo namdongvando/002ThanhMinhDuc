@@ -1,26 +1,27 @@
 <?php
 $project = new Module\project\Model\Project($project);
 ?>
-<script type="text/javascript" >
-    app.controller("projecteditController", function($scope, $http) {
-        $scope.projectInnit = function() {
+<script type="text/javascript">
+    app.controller("projecteditController", function ($scope, $http) {
+        $scope.projectInnit = function () {
 
         }
     });
 </script>
-<div class="row " ng-controller="projecteditController" ng-init='projectInnit()' >
-    <section class="col-md-6 pb-10" >
-        <div class="connectedSortable" >
-            <div class="box box-primary" >
-                <div class="box-header" >
-                    <h3 class="box-title" >Xóa Dự Án</h3>
+<div class="row " ng-controller="projecteditController" ng-init='projectInnit()'>
+    <section class="col-md-6 pb-10">
+        <div class="connectedSortable">
+            <div class="box box-primary">
+                <div class="box-header">
+                    <h3 class="box-title">Xóa Dự Án</h3>
                 </div>
-                <div class="box-body" >
-                    <form action="" method="post" enctype="multipart/form-data" >
+                <div class="box-body">
+                    <form action="" method="post" enctype="multipart/form-data">
                         <div class="form-group">
                             <label class="label-danger" for="">Nhập mật khẩu để xác nhận xóa dự án này.</label>
-                            <input type="password" class="form-control" name="password" id="password" >
-                            <input type="hidden" value="<?php echo $project->EncodeData(); ?>" class="form-control" name="project" id="project" >
+                            <input type="password" class="form-control" name="password" id="password">
+                            <input type="hidden" value="<?php echo $project->EncodeData(); ?>" class="form-control"
+                                name="project" id="project">
                         </div>
                         <input type="submit" name="save" class="btn btn-danger" value="Xác Nhận" />
                     </form>
@@ -28,29 +29,37 @@ $project = new Module\project\Model\Project($project);
             </div>
         </div>
     </section>
-    <section class="col-md-6 pb-10" >
-        <div class="connectedSortable" >
-            <div class="box box-primary" >
-                <div class="box-header" >
-                    <h3 class="box-title" >Thông Tin Dự Án </h3>
+    <section class="col-md-6 pb-10">
+        <div class="connectedSortable">
+            <div class="box box-primary">
+                <div class="box-header">
+                    <h3 class="box-title">Thông Tin Dự Án </h3>
                 </div>
-                <div class="box-body" >
-                    <table class="table table-bordered" >
+                <div class="box-body">
+                    <table class="table table-bordered">
                         <tr>
                             <td>Tên Dự Án</td>
-                            <td><?php echo $project->Name ?></td>
+                            <td>
+                                <?php echo $project->Name ?>
+                            </td>
                         </tr>
                         <tr>
                             <td>Email</td>
-                            <td><?php echo $project->Email ?></td>
+                            <td>
+                                <?php echo $project->Email ?>
+                            </td>
                         </tr>
                         <tr>
                             <td>Số Điện Thoại</td>
-                            <td><?php echo $project->Phone ?></td>
+                            <td>
+                                <?php echo $project->Phone ?>
+                            </td>
                         </tr>
                         <tr>
                             <td>Địa Chỉ</td>
-                            <td><?php echo $project->Address ?></td>
+                            <td>
+                                <?php echo $project->Address ?>
+                            </td>
                         </tr>
 
                     </table>

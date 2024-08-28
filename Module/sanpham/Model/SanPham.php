@@ -10,7 +10,8 @@ class SanPham extends SanPhamData
     const DangOChiNhanh = 2;
     const DangSuDung = 3;
 
-    public $Id, $Name, $Code, $ChungLoaiSP, $Mota, $Gia, $HinhAnh, $DanhMuc, $TinhTrang, $MaDaiLy;
+    public $Id,
+    $Name, $Code, $ChungLoaiSP, $Mota, $Gia, $HinhAnh, $DanhMuc, $TinhTrang, $MaDaiLy;
     public $idKhachHang;
     public $isLook;
     public $Wfstatus;
@@ -37,6 +38,14 @@ class SanPham extends SanPhamData
         $this->Wfstatus = $dv["Wfstatus"] ?? 0;
         $this->MaDaiLy = $dv["MaDaiLy"] ?? null;
         $this->isLook = $dv["isLook"] ?? null;
+    }
+
+
+    function SanPhamTheoThoiGian($tuNgay, $denNgay)
+    {
+        $where = "SELECT * FROM `thanhminhduc_sanpham` WHERE Id in (SELECT `Id` FROM `thanhminhduc_sanpham_log` WHERE NgayTao > '{$tuNgay}' and NgayTao < '{$denNgay}' GROUP by `Id`);";
+        $item = $this->GetRowByWhere($where);
+        return $item;
     }
 
     function DanhMuc()
@@ -84,13 +93,11 @@ class SanPham extends SanPhamData
     {
         $sqlCount = "SELECT count(*) as `Tong`  FROM `" . table_prefix . "sanpham` as `sp`,`" . table_prefix . "tembaohanh` as `temsp` 
         WHERE `temsp`.`MaSanPham` = `sp`.`Id` ";
-        $sql = "SELECT `sp`.* FROM `" . table_prefix . "sanpham` as `sp`,`" . table_prefix . "tembaohanh` as `temsp` 
-        WHERE `temsp`.`MaSanPham` = `sp`.`Id` ";
+        $sql = "SELECT DISTINCT sp.*,`Status` FROM `" . table_prefix . "tembaohanh` as `temsp`, `" . table_prefix . "sanpham` as `sp` WHERE `temsp`.`MaSanPham` = `sp`.`Id`";
 
         $sanpham = new SanPham();
         $pagesIndex = ($pagesIndex - 1) * $pageNumber;
         if (is_array($option)) {
-            $name = $option["keyword"];
             $TinhTrang = intval($option["TinhTrang"]);
             $danhmuc = $option["danhmuc"];
             $madaily = $option["madaily"];
@@ -106,14 +113,8 @@ class SanPham extends SanPhamData
                 $MaDaiLySql = "and `sp`.`MaDaiLy` = '{$madaily}'";
             }
             $tinhTrangSql = "";
-            if ($TinhTrang > -1) {
-                $TenChuaKichHoatSQL = "";
-                if ($TinhTrang == TemSanPham::DeActive) {
-                    // tem chưa kích hoạt 
-                    /* Là tem đã được khai báo tên sp và khách hàng chưa gửi yêu cầu kích hoạt */
-                    $TenChuaKichHoatSQL = "and `sp`.`DanhMuc` != ''";
-                }
-                $tinhTrangSql = "and `temsp`.`Status` = '{$TinhTrang}' {$TenChuaKichHoatSQL}";
+            if ($TinhTrang) {
+                $tinhTrangSql = "and `temsp`.`Status` = '{$TinhTrang}' ";
             }
             //            phân theo dai lý
             $daily = !empty($option["daily"]) ? $option["daily"] : null;
@@ -122,12 +123,7 @@ class SanPham extends SanPhamData
                 $dailySql = " and `sp`.`MaDaiLy` = '{$daily}'";
             }
             $sqlCount .= " {$danhmucSql} {$dailySql} {$MaDaiLySql} {$tinhTrangSql} ";
-            // $tong = $sanpham->GetRowsNumber($where);
             $sql .= " {$danhmucSql} {$dailySql} {$MaDaiLySql} {$tinhTrangSql} ";
-        } else {
-            $name = $option;
-            $sqlCount .= " and `sp`.`Name` like '%{$name}%' and `Name` != '' ";
-            $sql .= " and `sp`.`Name` like '%{$name}%' and `Name` != '' ";
         }
         // echo $sqlCount;
         $tongSql = $sanpham->runsqlToArray($sqlCount);
@@ -135,6 +131,30 @@ class SanPham extends SanPhamData
         $sql .= "limit {$pagesIndex},{$pageNumber}";
         return $sanpham->runsqlToArray($sql);
     }
+    public function GetItem($option, $pagesIndex = 1, $pageNumber = 10, &$tong)
+    {
+
+        $TinhTrang = intval($option["TinhTrang"]);
+        $whereDm = " ";
+        if ($option["danhmuc"]) {
+            $dm = $option["danhmuc"];
+            $whereDm = " and  `DanhMuc`='{$dm}' ";
+        }
+        $whereDL = " ";
+        if ($option["madaily"] != "all") {
+            $daily = $option["madaily"];
+            $whereDL = " and  `MaDaiLy`='{$daily}' ";
+        }
+        $where = "`TinhTrang` = '{$TinhTrang}' {$whereDm} {$whereDL}";
+        $item = $this->GetRowsByWhere($where);
+        $tong = count($item);
+        $pagesIndex = ($pagesIndex - 1) * $pageNumber;
+        $where .= " limit {$pagesIndex},{$pageNumber}";
+
+        return $this->GetRowsByWhere($where);
+    }
+
+
 
     function resettem()
     {
@@ -171,7 +191,6 @@ class SanPham extends SanPhamData
     {
         return $this->GetRowsNumber();
     }
-
     public function TemBaoHanh()
     {
         $tem = new TemSanPham();
@@ -245,6 +264,13 @@ class SanPham extends SanPhamData
         return $this->InsertSubmit($sanPham);
     }
 
+
+    function TimSanPham()
+    {
+
+
+    }
+
     /**
      * tim2 san pham them code
      * @param {type} parameter
@@ -310,6 +336,8 @@ class SanPham extends SanPhamData
 
     public function Id()
     {
-        return md5($this->Id);
+        if ($this->Id)
+            return md5($this->Id);
+        return null;
     }
 }

@@ -14,30 +14,16 @@ class backend
         <meta http-equiv="cache-control" content="no-cache" />
         <meta name="google-signin-client_id" content="<?php echo \Module\user\Model\GoogleConfig::GetGoogleClient_id(); ?>">
         <link rel="shortcut icon" href="/public/theme/TMD/images/logo.png" />
-        <!-- Bootstrap 3.3.5 -->
         <link rel="stylesheet" href="/public/admin/bootstrap/css/bootstrap.min.css">
-        <!-- Font Awesome -->
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
-        <!-- Ionicons -->
         <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
         <link href="/public/admin/plugins/select2/select2.min.css" rel="stylesheet" type="text/css" />
-        <!-- Theme style -->
-        <!-- AdminLTE Skins. Choose a skin from the css/skins
-             folder instead of downloading all of them to reduce the load. -->
-
-        <!-- iCheck -->
         <link rel="stylesheet" href="/public/admin/plugins/iCheck/flat/blue.css">
-        <!-- Morris chart -->
         <link rel="stylesheet" href="/public/admin/plugins/morris/morris.css">
-        <!-- jvectormap -->
         <link rel="stylesheet" href="/public/admin/plugins/jvectormap/jquery-jvectormap-1.2.2.css">
-        <!-- Date Picker -->
         <link rel="stylesheet" href="/public/admin/plugins/datepicker/datepicker3.css">
-        <!-- Daterange picker -->
         <link rel="stylesheet" href="/public/admin/plugins/daterangepicker/daterangepicker-bs3.css">
-        <!-- bootstrap wysihtml5 - text editor -->
         <link rel="stylesheet" href="/public/admin/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css">
-        <!--<link href="/public/admin/plugins/datatables/jquery.dataTables.min.css" rel="stylesheet" type="text/css"/>-->
         <link rel="stylesheet" href="/public/admin/plugins/datatables/dataTables.bootstrap.css">
         <link rel="stylesheet" href="/public/admin/dist/css/AdminLTE.min.css">
         <link href="/public/admin/dist/css/skins/_all-skins.min.css?v=<?php echo time(); ?>" rel="stylesheet" type="text/css" />
@@ -129,6 +115,26 @@ class backend
                 overflow: hidden;
 
             }
+
+            *:hover::-webkit-scrollbar-thumb {
+                background-color: #aaa;
+            }
+
+            *::-webkit-scrollbar-thumb {
+                background-color: transparent;
+                border-radius: 100px;
+                width: 5px;
+            }
+
+            *:hover::-webkit-scrollbar {
+                background-color: #ddd;
+            }
+
+            *::-webkit-scrollbar {
+                background-color: transparent;
+                width: 5px;
+                border-radius: 100px;
+            }
         </style>
 
         <?php
@@ -213,6 +219,7 @@ class backend
                                     <?php
                                     \Module\dashboard\Model\Menu::LinkNhapTem();
                                     \Module\dashboard\Model\Menu::YeuCauKichHoatTem();
+                                    \Module\sanpham\Model\Menu::LinkTemSanPham();
                                     ?>
                                 </ul>
                             </li>
@@ -249,13 +256,18 @@ class backend
                                     <?php
                                     \Module\sanpham\Model\Menu::LinkSanPham();
                                     \Module\sanpham\Model\Menu::LinkDanhMucSanPham();
-                                    \Module\sanpham\Model\Menu::LinkTemSanPham();
+
                                     ?>
                                 </ul>
                             </li>
                             <li>
                                 <a href="/user/users/">
                                     <span>Quản Lý Tài Khoản</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="/sanpham/tools/">
+                                    <span>Công cụ</span>
                                 </a>
                             </li>
                         </ul>
@@ -560,16 +572,16 @@ class backend
                 });
             })
 
-            if ('Notification' in window) {
-                if (Notification.permission === 'denied') {
-                    alert("Cho phép trình duyệt nhận thông báo để thông báo");
-                    Notification.requestPermission().then(() => {
+            // if ('Notification' in window) {
+            //     if (Notification.permission === 'denied') {
+            //         alert("Cho phép trình duyệt nhận thông báo để thông báo");
+            //         Notification.requestPermission().then(() => {
 
-                    });
-                }
-            } else {
-                alert("trình duyệt không hỗ trợ nhận thông báo!");
-            }
+            //         });
+            //     }
+            // } else {
+            //     alert("trình duyệt không hỗ trợ nhận thông báo!");
+            // }
             setInterval(() => {
                 $.ajax({
                     type: "get",
@@ -606,6 +618,31 @@ class backend
                 });
 
             }, 3000);
+        </script>
+
+        <script type="text/javascript">
+            function OnRegisterSWError(e) {
+                console.log(" Failed to register service worker: ", e);
+            };
+            window.C2_RegisterSW = function C2_RegisterSW() {
+                if (!navigator.serviceWorker) {
+                    return;
+                }
+                try {
+                    navigator.serviceWorker.register("/sw.js", {
+                        scope: './'
+                    }).then(function (reg) {
+                        OnRegisterSWError("Registered service worker on " + reg.scope);
+                    })
+                        .catch(OnRegisterSWError);
+                }
+                catch (e) {
+                    OnRegisterSWError(e);
+                }
+            };
+            if (window["C2_RegisterSW"]) {
+                window["C2_RegisterSW"]();
+            } 
         </script>
 
         <?php
@@ -785,6 +822,17 @@ class backend
                             <?php
                             \Common\Link::KiemHang();
                             ?>
+                            <li class="dropdown">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                    Quản lý sản phẩm
+                                    <span class="caret"></span>
+                                </a>
+                                <ul class="dropdown-menu" role="menu">
+                                    <?php
+                                    \Module\sanpham\Model\Menu::LinkSanPham();
+                                    ?>
+                                </ul>
+                            </li>
                         </ul>
                     </div><!-- /.navbar-collapse -->
                     <!-- Navbar Right Menu -->

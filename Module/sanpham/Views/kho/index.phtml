@@ -1,13 +1,15 @@
 <?php
 
+use Common\Common;
 use Model\FormRender;
+use Module\sanpham\Model\SanPham;
 use Module\sanpham\Model\TemSanPham;
 use Module\sanpham\Model\TemSanPhamForm;
 
 $sanPham = new Module\sanpham\Model\SanPham();
 $tong = 0;
 $pagesIndex = isset($_GET["pagesIndex"]) ? intval($_GET["pagesIndex"]) : 1;
-$pageNumber = isset($_GET["pageNumber"]) ? intval($_GET["pageNumber"]) : 10;
+$pageNumber = isset($_GET["pageNumber"]) ? intval($_GET["pageNumber"]) : 20;
 $MaDaiLy = $_GET["madaily"] ?? "all";
 
 $DanhMuc = isset($_GET["dm"]) ? $_GET["dm"] : "0";
@@ -18,15 +20,17 @@ $name["danhmuc"] = $DanhMuc;
 $name["keyword"] = $keyword;
 $name["TinhTrang"] = $TinhTrang;
 
+if (true) {
+    ini_set('display_errors', 1);
+    ini_set('display_startup_errors', 1);
+    error_reporting(E_ALL);
+}
 $SanPhams = $sanPham->SanPhamsPT($name, $pagesIndex, $pageNumber, $tong);
 $totalPage = ceil($tong / $pageNumber);
 ?>
-<ol class="breadcrumb">
-    <li>Danh Sách Sản Phẩm</li>
-</ol>
 <form action="" enctype="multipart/form-data" method="POST">
-    <div class=" ">
-        <div class="container-fluid">
+    <div class="container-fluid">
+        <div class="row ">
             <div class="box box-primary">
                 <div class="box-header">
                     <h3 class="box-title">Danh Sách Sản Phẩm (<?php echo $tong; ?>)</h3>
@@ -38,16 +42,20 @@ $totalPage = ceil($tong / $pageNumber);
                             <div class="modal-dialog modal-sm">
                                 <div class="modal-content">
                                     <div class="modal-header">
-                                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                        <button type="button" class="close" data-dismiss="modal"
+                                            aria-hidden="true">&times;</button>
                                         <h4 class="modal-title">Xem Trên Di Động</h4>
                                     </div>
                                     <div class="modal-body">
-                                        <img src="<?php echo \Common\Common::LinkQrcode(\Common\Common::Actual_link()); ?>" class="img img-responsive" alt="alt" title="alt">
+                                        <img src="<?php echo \Common\Common::LinkQrcode(\Common\Common::Actual_link()); ?>"
+                                            class="img img-responsive" alt="alt" title="alt">
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <!-- <button type="button" data-target="#TimKiem" class="btn-toggle btn btn-primary"><i class="fa fa-search"></i></button> -->
+
+                        <button type="button" data-target="#TimKiem" class="btn-toggle btn btn-primary"><i
+                                class="fa fa-search"></i></button>
                         <!-- <button onclick="window.location.reload();" data-toggle="tooltip" data-placement="top" title="Reload" type="button" class="btn btn-default"><i class="fa fa-refresh"></i></button> -->
                     </div>
                 </div>
@@ -55,33 +63,45 @@ $totalPage = ceil($tong / $pageNumber);
                     <div class="row">
                         <div class="col-md-12 " id="TimKiem">
                             <div class="row">
-                                <!-- <div class="col-md-2">
+                                <div class="col-md-2 ">
                                     <?php
-                                    //Model\FormOptions::TimKiem($keyword, ["id" => "TuKhoa", "onchange" => "TimKiemSanPham()"])->renderHTML();
-                                    ?>
-                                </div> -->
-                                <div class="col-md-2">
-                                    <?php
-                                    Module\sanpham\Model\SanPhamForm::DanhMuc($DanhMuc, ["id" => "DanhMucSanPham", "onchange" => "TimKiemSanPham()"])->renderHTML();
-                                    ?>
-                                </div>
-                                <div class="col-md-2">
-                                    <?php
-                                    Module\sanpham\Model\SanPhamForm::MaDaiLy($MaDaiLy, ["id" => "MaDaiLy", "onchange" => "TimKiemSanPham()"])->renderHTML();
+                                    Module\sanpham\Model\SanPhamForm::DanhMuc(
+                                        $DanhMuc,
+                                        [
+                                            "id" => "DanhMucSanPham",
+                                            "style" => "width: 100%",
+                                            "onchange" => "TimKiemSanPham()"
+                                        ]
+                                    )->renderHTML();
                                     ?>
                                 </div>
-                                <div class="col-md-2">
+                                <div class="col-md-2 col-xs-6">
                                     <?php
-                                    $a  = [-1 => "Tất Cả"] + TemSanPham::GetStatus();
-                                    Model\FormOptions::Select($TinhTrang, "TinhTrang", $a, ["id" => "TinhTrang", "label" => "Trạng Thái Tem", "onchange" => "TimKiemSanPham()"])->renderHTML();
+                                    Module\sanpham\Model\SanPhamForm::MaDaiLy($MaDaiLy, [
+                                        "id" => "MaDaiLy",
+                                        "style" => "width: 100%",
+                                        "onchange" => "TimKiemSanPham()"
+                                    ])->renderHTML();
+                                    ?>
+                                </div>
+                                <div class="col-md-2 col-xs-6">
+                                    <?php
+
+                                    $a = array_merge([-1 => "Tất Cả"], TemSanPham::GetStatus());
+                                    Model\FormOptions::Select($TinhTrang, "TinhTrang", $a, [
+                                        "id" => "TinhTrang",
+                                        "label" => "Trạng Thái Tem",
+                                        "style" => "width: 100%",
+                                        "onchange" => "TimKiemSanPham()"
+                                    ])->renderHTML();
                                     ?>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-12">
-                        <div class="row">
-                            <div class="table-responsive" style="padding-bottom: 200px;" >
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="table-responsive">
                                 <table class="table table-hover table-bordered " id="data">
                                     <thead>
                                         <tr class="bg-blue">
@@ -91,19 +111,28 @@ $totalPage = ceil($tong / $pageNumber);
                                             <th>Tên Sản Phẩm </th>
                                             <th>Khách Hàng </th>
                                             <th>Kích hoạt
-                                                <i <?php echo FormRender::ToolTip("Tình trạng tem bảo hành"); ?> class="fa fa-info-circle     "></i>
+                                                <i <?php echo FormRender::ToolTip("Tình trạng tem bảo hành"); ?>
+                                                    class="fa fa-info-circle     "></i>
                                             </th>
-                                            <th style="width: 150px;">Danh Mục
-                                                <i <?php echo FormRender::ToolTip("Danh mục sản phẩm."); ?> class="fa fa-info-circle    "></i>
+                                            <th class="text-center" style="width: 120px;">Ngày XK
+                                                <i <?php echo FormRender::ToolTip("Ngày xuất kho"); ?>
+                                                    class="fa fa-info-circle    "></i>
+                                            </th>
+                                            <th class="text-center" style="width: 120px;">Ls
+                                                <i <?php echo FormRender::ToolTip("Lịch sử"); ?>
+                                                    class="fa fa-info-circle    "></i>
                                             </th>
                                             <th style="width: 150px;">Tem bảo hành
-                                                <i <?php echo FormRender::ToolTip("Thông tin tem bảo hành."); ?> class="fa fa-info-circle    "></i>
+                                                <i <?php echo FormRender::ToolTip("Thông tin tem bảo hành."); ?>
+                                                    class="fa fa-info-circle    "></i>
                                             </th>
-                                            <th style="width: 160px;">Tình Trạng
-                                                <i <?php echo FormRender::ToolTip("Tình trạng sản phẩm."); ?> class="fa fa-info-circle    "></i>
+                                            <th style="width: 130px;">Tình Trạng
+                                                <i <?php echo FormRender::ToolTip("Tình trạng sản phẩm."); ?>
+                                                    class="fa fa-info-circle    "></i>
                                             </th>
                                             <th style="width: 150px;">Tên Đại Lý
-                                                <i <?php echo FormRender::ToolTip("Đại lý quản lý sản phẩm."); ?> class="fa fa-info-circle    "></i>
+                                                <i <?php echo FormRender::ToolTip("Đại lý quản lý sản phẩm."); ?>
+                                                    class="fa fa-info-circle    "></i>
                                             </th>
                                         </tr>
                                     </thead>
@@ -111,80 +140,109 @@ $totalPage = ceil($tong / $pageNumber);
                                         <?php
                                         foreach ($SanPhams as $k => $sp) {
                                             $_sp = new Module\sanpham\Model\SanPham($sp);
-                                        ?>
+
+                                            ?>
                                             <tr class="">
                                                 <td class="text-center">
-                                                    <a href="/sanpham/taosanpham/edit/<?php echo $_sp->Id(); ?>/" data-toggle="tooltip" data-placement="top" title="Xem" class="  btn btn-xs btn-success">
+                                                    <a href="/sanpham/taosanpham/edit/<?php echo $_sp->Id(); ?>/"
+                                                        data-toggle="tooltip" data-placement="top" title="Xem"
+                                                        class="  btn btn-xs btn-success">
                                                         <i class="fa fa-eye"></i>
                                                     </a>
-                                                    <a class="btn btn-xs btn-primary" data-toggle="modal" href='#modal<?php echo $_sp->Id(); ?>'>
+                                                    <a class="btn btn-xs btn-primary" data-toggle="modal"
+                                                        href='#modal<?php echo $_sp->Id(); ?>'>
                                                         <i class="fa fa-qrcode"></i>
                                                     </a>
                                                     <div class="modal fade" id="modal<?php echo $_sp->Id(); ?>">
                                                         <div class="modal-dialog modal-sm">
                                                             <div class="modal-content">
                                                                 <div class="modal-header">
-                                                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                                                    <button type="button" class="close" data-dismiss="modal"
+                                                                        aria-hidden="true">&times;</button>
                                                                     <h4 class="modal-title">QR code</h4>
                                                                 </div>
                                                                 <div class="modal-body">
-                                                                    <img src="<?php echo $_sp->LinkQRcodeBaoHanh(); ?>" class="img img-responsive" alt="alt" title="alt">
+                                                                    <img src="<?php echo $_sp->LinkQRcodeBaoHanh(); ?>"
+                                                                        class="img img-responsive" alt="alt" title="alt" />
                                                                 </div>
                                                             </div>
                                                         </div>
                                                     </div>
                                                 </td>
-                                                <td class="text-center"><?php echo ($pagesIndex - 1) * $pageNumber + $k + 1; ?></td>
-                                                <td><?php echo $_sp->Code; ?></td>
-                                                <td><?php echo $_sp->Name ?></td>
-                                                <td>
-                                                    <?php echo $_sp->TemBaoHang()->KhachHangTieuDung()->Name; ?>
-                                                    |<?php echo $_sp->TemBaoHang()->KhachHangTieuDung()->Phone; ?>
-                                                </td>
-                                                <td style="width: 150px;"><?php
-                                                                            // echo $_sp->TemBaoHang()->Status;
-                                                                            echo $_sp->TemBaoHang()->Status()->Name;
-                                                                            // var_dump($_sp->TemBaoHang()->Status());
-                                                                            ?></td>
-                                                <td class="text-nowrap">
+
+                                                <td class="text-center">
                                                     <?php
-                                                    echo $_sp->DanhMuc()->Name;
+                                                    echo ($pagesIndex - 1) * $pageNumber + $k + 1;
                                                     ?>
                                                 </td>
-                                                <td style="width: 150px;" class="text-left">
-                                                    <a data-toggle="tooltip" title="Xem Tem Bảo Hành" target="_blank" href="/sanpham/temsanpham/detailbysanpham/<?php echo $_sp->TemBaoHang()->Code; ?>">
+                                                <td class="text-center">
+                                                    <?php echo $_sp->Code; ?>
+                                                </td>
+                                                <td>
+                                                    <?php echo $_sp->Name ?>
+                                                </td>
+                                                <td>
+                                                    <?php echo $_sp->TemBaoHang()->KhachHangTieuDung()->Name; ?>
+                                                    |
+                                                    <?php echo $_sp->TemBaoHang()->KhachHangTieuDung()->Phone; ?>
+                                                </td>
+                                                <td style="width: 150px;">
+                                                    <?php
+                                                    echo $_sp->TemBaoHang()->Status()->Name;
+                                                    ?>
+                                                </td>
+                                                <td class="text-nowrap text-center">
+                                                    <?php
+                                                    echo $_sp->TemBaoHang()->NgayBatDau();
+                                                    ?>
+                                                </td>
+                                                <td class="text-nowrap text-center">
+                                                    <?php
+                                                    Common::ViewDate($_sp->TemBaoHang()->GetLichSuKiemHang()[0]["CreateRecord"] ?? null);
+                                                    ?>
+                                                </td>
+                                                <td class="text-center" style="width: 150px;" class="text-left">
+                                                    <a data-toggle="tooltip" title="Xem Tem Bảo Hành" target="_blank"
+                                                        href="/sanpham/temsanpham/detailbysanpham/<?php echo $_sp->TemBaoHang()->Code; ?>">
                                                         <?php echo $_sp->TemBaoHang()->Code; ?>
                                                     </a>
                                                 </td>
-                                                <td><?php echo $_sp->TinhTrang(); ?></td>
+                                                <td class="text-center">
+                                                    <?php echo $_sp->TinhTrang(); ?>
+                                                </td>
                                                 <td>
                                                     <a href="<?php echo $_sp->DaiLy()->LinkChiTiet(); ?>">
-                                                        <span class="overflow-hidden text-nowrap"><?php echo $_sp->DaiLy()->Name; ?></span>
+                                                        <span class="overflow-hidden text-nowrap">
+                                                            <?php echo $_sp->DaiLy()->Name; ?>
+                                                        </span>
                                                     </a>
                                                 </td>
                                             </tr>
-                                        <?php
+                                            <?php
                                         }
                                         ?>
                                     </tbody>
-                                    <tfoot>
-                                        <tr>
-                                            <th colspan="7">
-                                                <div class="col-xs-2 col-md-1 mt-10 ">
-                                                    <?php
-                                                    Model\FormOptions::HienThi($pageNumber, ["id" => "HienThi", "onchange" => "TimKiemSanPham()"])->render();
-                                                    ?>
-                                                </div>
-                                                <div class="col-xs-10 col-md-11 ">
-                                                    <?php
-                                                    $linkPt = "/sanpham/kho/index/?madaily={$MaDaiLy}&pagesIndex=[i]&pageNumber={$pageNumber}&dm={$DanhMuc}&keyword={$keyword}&TinhTrang={$TinhTrang}";
-                                                    echo Common\Common::PhanTrang($totalPage, $pagesIndex, $linkPt);
-                                                    ?>
-                                                </div>
-                                            </th>
-                                        </tr>
-                                    </tfoot>
                                 </table>
+                                <div class="d-flex" style="width: 100%;">
+                                    <div class="mt-10">
+                                        <?php
+                                        Model\FormOptions::HienThi(
+                                            $pageNumber,
+                                            [
+                                                "id" => "HienThi",
+                                                "style" => "width :100px;",
+                                                "onchange" => "TimKiemSanPham()"
+                                            ]
+                                        )->render();
+                                        ?>
+                                    </div>
+                                    <div>
+                                        <?php
+                                        $linkPt = "/sanpham/kho/index/?madaily={$MaDaiLy}&pagesIndex=[i]&pageNumber={$pageNumber}&dm={$DanhMuc}&keyword={$keyword}&TinhTrang={$TinhTrang}";
+                                        echo Common::PhanTrang($totalPage, $pagesIndex, $linkPt);
+                                        ?>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -210,3 +268,10 @@ $totalPage = ceil($tong / $pageNumber);
         window.location.href = path;
     }
 </script>
+
+<style>
+    .table {
+        width: max-content;
+        min-width: 100%;
+    }
+</style>

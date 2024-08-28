@@ -258,7 +258,7 @@ class Admin extends AdminTable
         return in_array($user, $nhom);
     }
 
-    public function GetAllPT($name = "", $pagesIndex, $pageNumber, &$tong)
+    public function GetAllPT($name, $pagesIndex, $pageNumber, &$tong)
     {
         $superId = userGroups::SupperAdmin;
         $idGroupSql = " `Groups` != '$superId' and ";
@@ -278,7 +278,7 @@ class Admin extends AdminTable
         $pagesIndex = max($pagesIndex, 1);
         $pagesIndex = ($pagesIndex - 1) * $pageNumber;
         $Kh = new Admin();
-        $tong = $Kh->GetRowsNumber($where);
+        $tong = $Kh->GetRowsNumber($where) ?? 0;
         $where .= " limit {$pagesIndex},{$pageNumber}";
         return $Kh->GetRowsByWhere($where);
     }

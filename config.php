@@ -34,7 +34,7 @@ $_SESSION[UserApp] = isset($_SESSION[UserApp]) ? $_SESSION[UserApp] : null;
 $_SESSION['TenHienThi'] = 0;
 global $INI;
 
-$online =  false;
+$online = false;
 // echo $_SERVER["HTTP_HOST"];
 // if (strpos($_SERVER["HTTP_HOST"], "dev1")) {
 //     $online = false;
@@ -44,7 +44,7 @@ if ($online == false) {
     $INI['host'] = "localhost";
     $INI['username'] = "root";
     $INI['password'] = "";
-    $INI['DBname'] = "thanh962_demo1";
+    $INI['DBname'] = "thanhmin_demo2";
     define("BASE_URL", "http://localhost:8081/");
     define("Root_URL", "http://localhost:8081/");
     define("DOMAIN", ".localhost:8081");

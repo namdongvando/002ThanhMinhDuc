@@ -15,6 +15,9 @@ $temSPDauTien = new \Module\sanpham\Model\TemSanPham(reset($ds) ?? null);
 // echo $temSPDauTien->SanPham()->DanhMuc;
 // var_dump($temSPDauTien->SanPham());
 // $temSPDauTien->NhanVienKyThuat()->UserId()->Id;
+// $itemDetail = reset($ds) ?? null;
+// $temMacDauTien = new \Module\sanpham\Model\TemSanPham($itemDetail);
+ 
 ?>
 <form action="" enctype="multipart/form-data" method="POST">
     <div class="modal fade" id="ChonSanPham">
@@ -26,7 +29,6 @@ $temSPDauTien = new \Module\sanpham\Model\TemSanPham(reset($ds) ?? null);
                 </div>
                 <div class="modal-body">
                     <?php
-
                     Module\option\Model\OptionForm::SelectGroups(
                         "Danh Mục Sản Phẩm",
                         "Chon[MaDanhMuc]",
@@ -92,7 +94,7 @@ $temSPDauTien = new \Module\sanpham\Model\TemSanPham(reset($ds) ?? null);
                     </a>
                     <?php
                     $kt = \Model\Permistion::CheckPermistion([Admin::Admin, Admin::SuperAdmin]);
-                    if ($kt == true) {
+                    if($kt == true) {
                         ?>
                         <button type="button" class="btn btn-primary" data-toggle="modal" data-target='#ChonSanPham'>
                             <span class="hidden-xs hidden-sm">Chọn Sản Phẩm</span>
@@ -101,24 +103,9 @@ $temSPDauTien = new \Module\sanpham\Model\TemSanPham(reset($ds) ?? null);
                         <?php
                     }
                     ?>
-                    <!-- <button type="button" class="btn btn-primary" data-toggle="modal" data-target='#ModalXuatKho'>
-                        <span class="hidden-xs hidden-sm">Xuất kho
-                            <i class="fa fa-arrow-up"></i>
-                        </span>
-                        <span class="hidden-md hidden-lg">Xuất kho
-                            <i class="fa fa-arrow-up"></i>
-                        </span>
-                    </button> -->
-                    <!-- <a href="/dashboard/nhaptem/xuatkho" class="btn  btn-primary">
-                        <span class="hidden-xs hidden-sm">Xuất kho
-                            <i class="fa fa-arrow-up"></i>
-                        </span>
-                        <span class="hidden-md hidden-lg">Xuất kho
-                            <i class="fa fa-arrow-up"></i>
-                        </span>
-                    </a> -->
+
                     <?php
-                    if (Admin::CheckQuyen([Admin::Admin, Admin::SuperAdmin]) == true) {
+                    if(Admin::CheckQuyen([Admin::Admin, Admin::SuperAdmin]) == true) {
                         ?>
                         <a href="/dashboard/nhaptem/doitra" class="btn  btn-primary">
 
@@ -152,8 +139,8 @@ $temSPDauTien = new \Module\sanpham\Model\TemSanPham(reset($ds) ?? null);
                                 data-urldata="/dashboard/nhaptem/danhsachtem/">
                                 <?php
                                 $index = 0;
-                                if ($ds) {
-                                    foreach ($ds as $k => $code) {
+                                if($ds) {
+                                    foreach($ds as $k => $code) {
 
                                         $temSP = new \Module\sanpham\Model\TemSanPham($code);
                                         // var_dump($code);

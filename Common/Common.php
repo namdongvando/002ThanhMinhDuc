@@ -92,6 +92,14 @@ class Common
         echo $str;
     }
 
+    public static function ViewDate($datestring)
+    {
+        if ($datestring == null) {
+            return "";
+        }
+        return date("d-m-Y", strtotime($datestring));
+
+    }
     public static function DateTimeFormat()
     {
         return "d-m-Y H:i";

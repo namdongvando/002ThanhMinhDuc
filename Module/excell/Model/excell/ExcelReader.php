@@ -164,7 +164,7 @@ class ExcelReader
         exit();
     }
 
-    static  public function Export($data, $fileName)
+    static public function Export($data, $fileName)
     {
         $spreadsheet = new Spreadsheet();
         $spreadsheet->setActiveSheetIndex(0);
@@ -172,12 +172,12 @@ class ExcelReader
         // Set kiểu chữ
         $spreadsheet->getDefaultStyle()->getFont()->setName('Times New Roman');
         $spreadsheet->getDefaultStyle()->getFont()->setSize('14');
-        foreach ($data[0] as $r  => $v) {
+        foreach ($data[0] as $r => $v) {
             $sheet0->getColumnDimension(self::GetCollums($r))->setAutoSize(true);
         }
         foreach ($data as $row => $colums) {
             $colIndex = 0;
-            foreach ($colums as  $value) {
+            foreach ($colums as $value) {
                 // echo $colIndex;
 
                 $sheet0->setCellValue(
@@ -194,7 +194,7 @@ class ExcelReader
         $writer->save($fileName);
         header("Location: /{$fileName}");
     }
-    static  public function GetCollums($num)
+    static public function GetCollums($num)
     {
         $numeric = $num % 26;
         $letter = chr(65 + $numeric);
@@ -205,7 +205,7 @@ class ExcelReader
             return $letter;
         }
     }
-    static  public function GetCellName($col, $row)
+    static public function GetCellName($col, $row)
     {
         $row = max($row, 1);
         $colName = self::GetCollums($col);
