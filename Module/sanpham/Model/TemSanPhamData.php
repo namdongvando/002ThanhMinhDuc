@@ -79,9 +79,9 @@ class TemSanPhamData extends \datatable\ZendData implements \Model\IModel
     {
         return $this->DeleteRowByWhere(" `Code` like '23%' or `Code` like '22%' ");
     }
-    public function GetTempChuaIn()
+    public function  GetTempChuaIn()
     {
-        return $this->GetRowsByWhere(" `Code` like '23%' or `Code` like '22%' ");
+        return $this->GetRowsByWhere(" `Code` like '24%'");
     }
 
     function GetAll2Option($where = null)

@@ -57,7 +57,7 @@ class ZendData
         if ($id == null) {
             $this->TableContext = new TableGateway($TableName, $this->Connect());
         } else {
-            $this->TableContext = new TableGateway($TableName, $this->Connect(), new \Zend\Db\TableGateway\Feature($id));
+            $this->TableContext = new TableGateway($TableName, $this->Connect());
         }
         self::$TableName = $TableName;
     }

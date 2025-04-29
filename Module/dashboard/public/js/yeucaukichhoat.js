@@ -22,7 +22,7 @@ function DongYKichHoat() {
         data: dataFormString,
         contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
         success: function (response) {
-            alert("cập nhật thành công");
+            // alert("cập nhật thành công");
             window.location.reload();
         },
         error: function () {
@@ -37,7 +37,7 @@ function TuChoiKichHoat(code, e) {
         url: `/dashboard/yeucaukichhoat/tuchoi/${code}`,
         type: 'GET',
         success: function (response) {
-            alert("cập nhật thành công");
+            // alert("cập nhật thành công");
             window.location.reload();
         },
         error: function () {
@@ -52,7 +52,7 @@ function LamLaiKichHoat(code, e) {
         url: `/dashboard/yeucaukichhoat/lamlai/${code}`,
         type: 'GET',
         success: function (response) {
-            alert("cập nhật thành công");
+            // alert("cập nhật thành công");
             window.location.reload();
         },
         error: function () {

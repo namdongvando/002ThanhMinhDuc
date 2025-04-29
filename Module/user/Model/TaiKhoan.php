@@ -53,6 +53,7 @@ class TaiKhoan extends TaiKhoanTable
 
     public function Put($TaiKhoanModel)
     {
+        
         return $this->UpdateSubmit($TaiKhoanModel);
     }
 

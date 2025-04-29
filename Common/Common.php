@@ -104,6 +104,10 @@ class Common
     {
         return "d-m-Y H:i";
     }
+    public static function DBNow()
+    {
+        return date("Y-m-d h:i:s", time());
+    }
 
     public static function DateFormat()
     {

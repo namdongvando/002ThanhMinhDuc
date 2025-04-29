@@ -79,13 +79,10 @@ if ($_SESSION["KhachHangTieuDung"] == null) {
 }
 $sanPham = new Module\sanpham\Model\SanPham($sanPham);
 
-$link = "/public/phpqrcode/index.php?data=" . Root_URL . "baohanh/" . $idSanPham . "/"
+$link = "/public/phpqrcode/index.php?data=http://cskhtmd.com/" . $temSanPham->Code . "/";
 
-
-    ?>
+?>
 <script src="/theme/thanhminhduc/public/baohanhController.js"></script>
-
-
 <div class="container" style="margin-top: 15px;">
     <div class="row">
         <div class="col-xs-4">
@@ -401,15 +398,15 @@ $link = "/public/phpqrcode/index.php?data=" . Root_URL . "baohanh/" . $idSanPham
 
                     $fForm = new FormRender(new File("", "HinhLoi", [
                         "accept" => "image/*",
-                        "class" =>"hidden"
+                        "class" => "hidden"
                     ]));
                     ?>
-                    <label style="border: dashed 2px green;width: 100%;text-align: center;" >
+                    <label style="border: dashed 2px green;width: 100%;text-align: center;">
                         <?php
                         $fForm->renderHTML();
                         ?>
                         <img style="height: 40px;" src="/public/Camera.png" />
-                        <p style="margin: 0px;" >
+                        <p style="margin: 0px;">
                             Hình sản phẩm
                         </p>
                     </label>

@@ -65,8 +65,8 @@ $TemSanPhams = \Module\sanpham\Model\TemSanPham::GetRowsPT($params, $pagesIndex,
                     </div>
                 </div>
                 <div class="box-body ">
-                    <form action="/sanpham/temsanpham/index/" method="get">
-                        <div class="row">
+                    <div class="row">
+                        <form action="/sanpham/temsanpham/index/" method="get">
                             <div class="col-md-2 col-xs-6">
                                 <input value="<?php echo $params["MaTem"] ?? ""; ?>" type="text" name="MaTem"
                                     placeholder="Mã tem" class="form-control">
@@ -92,17 +92,13 @@ $TemSanPhams = \Module\sanpham\Model\TemSanPham::GetRowsPT($params, $pagesIndex,
                                     </option>
                                 </select>
                             </div>
-
-                            <div class="col-md-2">
+                            <div class="col-md-2 col-xs-6">
                                 <button type="submit" class="btn btn-primary">
                                     <i class="fa fa-search"></i>
                                 </button>
-
                             </div>
-
-
-                        </div>
-                    </form>
+                        </form>
+                    </div>
                     <div class="table-responsive">
                         <table class="table table-bordered" id="data">
                             <thead>

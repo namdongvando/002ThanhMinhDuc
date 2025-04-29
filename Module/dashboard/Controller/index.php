@@ -28,6 +28,10 @@ class index extends \ApplicationM
     {
         return $this->ViewThemeModlue();
     }
+    function baohanh()
+    {
+        return $this->ViewThemeModlue();
+    }
     function indexkt()
     {
         return $this->ViewThemeModlue();

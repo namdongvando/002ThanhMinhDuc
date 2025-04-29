@@ -60,7 +60,7 @@ class FormTieuTriDanhGia
         $name = self::SetName(__FUNCTION__);
         return new FormRender(new Hidden($name, $val));
     }
-    public static function TieuTri($val = null, $codeOption, $title)
+    public static function TieuTri($val , $codeOption, $title)
     {
         $Option["value"] = self::GetValueTieuTri($val, $codeOption);
         $Option["labelclass"] = "block";

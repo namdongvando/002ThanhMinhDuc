@@ -1,6 +1,10 @@
 <?php
 
 // api này không cần dang nhap
+
+use Module\trungtambaohanh\Model\YeuCauBaoHanh;
+use Module\trungtambaohanh\Model\YeuCauBaoHanhData;
+
 class Controller_api extends Application
 {
 
@@ -408,7 +412,18 @@ class Controller_api extends Application
             ]
         );
     }
- 
+
+    function GetSLYeuCauBaoHanh()
+    {
+        ini_set('display_errors', 0);
+        ini_set('display_startup_errors', 0);
+        header('Content-Type: application/json; charset=utf-8');
+        $y = new YeuCauBaoHanh();
+        $TableName = table_prefix . "yeucaubaohanh";
+        $items = $y->runsqlToArray("select `Status`, count(*) as  `Tong` from {$TableName} Group by `Status`");
+        echo json_encode($items);
+    }
+
 
     //luuthongtin
 }

@@ -91,26 +91,26 @@ abstract class AbstractTableGateway implements TableGatewayInterface
             return;
         }
 
-        if (! $this->featureSet instanceof Feature\FeatureSet) {
+        if (!$this->featureSet instanceof Feature\FeatureSet) {
             $this->featureSet = new Feature\FeatureSet;
         }
 
         $this->featureSet->setTableGateway($this);
         $this->featureSet->apply(EventFeatureEventsInterface::EVENT_PRE_INITIALIZE, []);
 
-        if (! $this->adapter instanceof AdapterInterface) {
+        if (!$this->adapter instanceof AdapterInterface) {
             throw new Exception\RuntimeException('This table does not have an Adapter setup');
         }
 
-        if (! is_string($this->table) && ! $this->table instanceof TableIdentifier && ! is_array($this->table)) {
+        if (!is_string($this->table) && !$this->table instanceof TableIdentifier && !is_array($this->table)) {
             throw new Exception\RuntimeException('This table object does not have a valid table set.');
         }
 
-        if (! $this->resultSetPrototype instanceof ResultSetInterface) {
+        if (!$this->resultSetPrototype instanceof ResultSetInterface) {
             $this->resultSetPrototype = new ResultSet;
         }
 
-        if (! $this->sql instanceof Sql) {
+        if (!$this->sql instanceof Sql) {
             $this->sql = new Sql($this->adapter, $this->table);
         }
 
@@ -181,7 +181,7 @@ abstract class AbstractTableGateway implements TableGatewayInterface
      */
     public function select($where = null)
     {
-        if (! $this->isInitialized) {
+        if (!$this->isInitialized) {
             $this->initialize();
         }
 
@@ -202,7 +202,7 @@ abstract class AbstractTableGateway implements TableGatewayInterface
      */
     public function selectWith(Select $select)
     {
-        if (! $this->isInitialized) {
+        if (!$this->isInitialized) {
             $this->initialize();
         }
         return $this->executeSelect($select);
@@ -216,7 +216,8 @@ abstract class AbstractTableGateway implements TableGatewayInterface
     protected function executeSelect(Select $select)
     {
         $selectState = $select->getRawState();
-        if (isset($selectState['table'])
+        if (
+            isset($selectState['table'])
             && $selectState['table'] != $this->table
             && (is_array($selectState['table'])
                 && end($selectState['table']) != $this->table)
@@ -226,9 +227,11 @@ abstract class AbstractTableGateway implements TableGatewayInterface
             );
         }
 
-        if (isset($selectState['columns'])
+        if (
+            isset($selectState['columns'])
             && $selectState['columns'] == [Select::SQL_STAR]
-            && $this->columns !== []) {
+            && $this->columns !== []
+        ) {
             $select->columns($this->columns);
         }
 
@@ -257,7 +260,7 @@ abstract class AbstractTableGateway implements TableGatewayInterface
      */
     public function insert($set)
     {
-        if (! $this->isInitialized) {
+        if (!$this->isInitialized) {
             $this->initialize();
         }
         $insert = $this->sql->insert();
@@ -271,7 +274,7 @@ abstract class AbstractTableGateway implements TableGatewayInterface
      */
     public function insertWith(Insert $insert)
     {
-        if (! $this->isInitialized) {
+        if (!$this->isInitialized) {
             $this->initialize();
         }
         return $this->executeInsert($insert);
@@ -300,7 +303,7 @@ abstract class AbstractTableGateway implements TableGatewayInterface
         // See https://github.com/zendframework/zf2/issues/7311
         $unaliasedTable = false;
         if (is_array($insertState['table'])) {
-            $tableData      = array_values($insertState['table']);
+            $tableData = array_values($insertState['table']);
             $unaliasedTable = array_shift($tableData);
             $insert->into($unaliasedTable);
         }
@@ -330,10 +333,12 @@ abstract class AbstractTableGateway implements TableGatewayInterface
      */
     public function update($set, $where = null, array $joins = null)
     {
-        if (! $this->isInitialized) {
+        if (!$this->isInitialized) {
             $this->initialize();
         }
+
         $sql = $this->sql;
+
         $update = $sql->update();
         $update->set($set);
         if ($where !== null) {
@@ -356,7 +361,7 @@ abstract class AbstractTableGateway implements TableGatewayInterface
      */
     public function updateWith(Update $update)
     {
-        if (! $this->isInitialized) {
+        if (!$this->isInitialized) {
             $this->initialize();
         }
         return $this->executeUpdate($update);
@@ -383,7 +388,7 @@ abstract class AbstractTableGateway implements TableGatewayInterface
 
         $unaliasedTable = false;
         if (is_array($updateState['table'])) {
-            $tableData      = array_values($updateState['table']);
+            $tableData = array_values($updateState['table']);
             $unaliasedTable = array_shift($tableData);
             $update->table($unaliasedTable);
         }
@@ -410,7 +415,7 @@ abstract class AbstractTableGateway implements TableGatewayInterface
      */
     public function delete($where)
     {
-        if (! $this->isInitialized) {
+        if (!$this->isInitialized) {
             $this->initialize();
         }
         $delete = $this->sql->delete();
@@ -453,7 +458,7 @@ abstract class AbstractTableGateway implements TableGatewayInterface
 
         $unaliasedTable = false;
         if (is_array($deleteState['table'])) {
-            $tableData      = array_values($deleteState['table']);
+            $tableData = array_values($deleteState['table']);
             $unaliasedTable = array_shift($tableData);
             $delete->from($unaliasedTable);
         }
@@ -546,7 +551,8 @@ abstract class AbstractTableGateway implements TableGatewayInterface
         $this->sql = clone $this->sql;
         if (is_object($this->table)) {
             $this->table = clone $this->table;
-        } elseif (is_array($this->table)
+        } elseif (
+            is_array($this->table)
             && count($this->table) == 1
             && is_object(reset($this->table))
         ) {

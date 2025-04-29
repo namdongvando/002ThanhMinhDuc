@@ -2,6 +2,7 @@
 
 namespace Module\sanpham\Controller;
 
+use Common\Common;
 use Exception;
 use lib\input;
 use Module\khachhang\Model\KhachHangTieuDung;
@@ -41,10 +42,15 @@ class tools extends \ApplicationM
     public function UpdateTemChuaKichHoat()
     {
         $total = 0;
-        $TemSanPhams = \Module\sanpham\Model\Tools::GetTemChuaKichHoat_1(1, 1, $total);
+        $TemSanPhams = \Module\sanpham\Model\Tools::GetTemChuaKichHoat_1(
+            1,
+            1,
+            $total
+        );
         if ($TemSanPhams[0]) {
             $temSanPham = new TemSanPham($TemSanPhams[0]);
             $khachHangTieuDung = $temSanPham->KhachHangTieuDung();
+
             if ($khachHangTieuDung->Code == null) {
                 // chưa có mã khách hàng
                 $temSanPham->KhachHangTieuDung = $temSanPham->Code;
@@ -66,11 +72,20 @@ class tools extends \ApplicationM
                 KhachHangTieuDung::Update($kh);
                 echo $total;
             }
+            $temSanPham = new TemSanPham($TemSanPhams[0]);
+            $temSanPham->UpdateSubmit([
+                "Id" => $temSanPham->Id,
+                "Status" => 1,
+                "NgayBatDau" => Common::DBNow(),
+                "ModifyDate" => Common::DBNow()
+            ]);
             $temSanPham->UpdateSubmit([
                 "Id" => $temSanPham->Id,
                 "Status" => 1,
                 "NgayKetThuc" => $temSanPham->TinhNgayKetThuc(),
+                "ModifyDate" => Common::DBNow()
             ]);
+
         } else {
             echo $total;
         }
@@ -85,7 +100,13 @@ class tools extends \ApplicationM
             $temSanPham->UpdateSubmit([
                 "Id" => $temSanPham->Id,
                 "Status" => 1,
+                "NgayBatDau" => Common::DBNow(),
+                "ModifyDate" => Common::DBNow()
+            ]);
+            $temSanPham->UpdateSubmit([
+                "Id" => $temSanPham->Id,
                 "NgayKetThuc" => $temSanPham->TinhNgayKetThuc(),
+                "ModifyDate" => Common::DBNow()
             ]);
         }
         echo $total;
@@ -111,6 +132,5 @@ class tools extends \ApplicationM
     {
         return $this->ViewThemeModlue();
     }
-
 
 }

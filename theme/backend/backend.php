@@ -193,10 +193,7 @@ class backend
                             <?php
                             // \Common\Link::MenuQuanLy();
                             \Common\Link::KiemHang();
-
-
                             ?>
-
                             <li class="dropdown">
                                 <a target="_self" class="dropdown-toggle" data-toggle="dropdown">
                                     Thống kê, đánh giá
