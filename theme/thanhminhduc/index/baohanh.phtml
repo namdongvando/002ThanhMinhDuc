@@ -1,3 +1,17 @@
+<?php
+use Model\FormTieuTriDanhGia;
+use Model\Notification;
+use Module\khachhang\Model\KhachHangTieuDungForm;
+use Module\option\Model\Option;
+use Module\trungtambaohanh\Model\YeuCauBaoHanhForm;
+use PFBC\Element\File;
+
+ini_set('display_errors', 0);
+ini_set('display_startup_errors', 0);
+error_reporting(0);
+
+// display_errors = on
+?>
 <style>
     .ResetTable.table tr td {
         padding: 0px 10px;
@@ -61,19 +75,19 @@
 <?php
 use Model\FormRender;
 
-$temSanPham = new \Module\sanpham\Model\TemSanPham($_Param[0]);
 
-use Model\FormTieuTriDanhGia;
-use Model\Notification;
-use Module\khachhang\Model\KhachHangTieuDungForm;
-use Module\option\Model\Option;
-use Module\trungtambaohanh\Model\YeuCauBaoHanhForm;
-use PFBC\Element\File;
+$temSanPham = new \Module\sanpham\Model\TemSanPham($_Param[0] ?? "236qo7ve");
+// $temSanPham = new \Module\sanpham\Model\TemSanPham("236qo7ve");
+
+// var_dump($temSanPham->Status);
+
 
 $idSanPham = $_Param[0];
 $_SESSION["KhachHangTieuDung"] = $_SESSION["KhachHangTieuDung"] ?? null;
+// var_dump($_SESSION["KhachHangTieuDung"]);
 if ($_SESSION["KhachHangTieuDung"] == null) {
     $khachHang = $temSanPham->KhachHangTieuDung();
+    // var_dump($khachHang->Name);
 } else {
     $khachHang = $_SESSION["KhachHangTieuDung"];
 }
@@ -147,6 +161,7 @@ $link = "/public/phpqrcode/index.php?data=http://cskhtmd.com/" . $temSanPham->Co
                                 <div class="col-md-12">
                                     <div class="row">
                                         <?php
+                                        // $temSanPham->Status = Module\sanpham\Model\TemSanPham::Active;
                                         if ($temSanPham->Status != Module\sanpham\Model\TemSanPham::Active) {
                                             ?>
 
@@ -498,7 +513,7 @@ $link = "/public/phpqrcode/index.php?data=http://cskhtmd.com/" . $temSanPham->Co
     </form>
 </div>
 <div class="modal fade" id="SuaThongTin">
-    <form action="" enctype="multipart/form-data" enctype="multipart/form-data" method="POST">
+    <form action="/index/baohanh/" enctype="multipart/form-data" enctype="multipart/form-data" method="POST">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">

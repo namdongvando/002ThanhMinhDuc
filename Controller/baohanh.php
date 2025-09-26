@@ -24,6 +24,7 @@ class Controller_baohanh extends Application
 
     function index()
     {
+
         return $this->ViewTheme([], null, "tmd");
     }
 

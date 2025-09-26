@@ -29,6 +29,7 @@ class Controller_index extends Application
 
     function index()
     {
+
         return $this->ViewTheme([], null, "tmd");
     }
 
@@ -114,7 +115,6 @@ class Controller_index extends Application
             $tt["Id"] = $tt1["Id"];
             $thongBao->Put($tt);
         }
-
         $yeucaubaohanh["HoTen"] = Common::CheckInput($yeucaubaohanh["HoTen"]);
         $yeucaubaohanh["SDT"] = Common::CheckInput($yeucaubaohanh["SDT"]);
         $yeucaubaohanh["TinhThanh"] = Common::CheckInput($yeucaubaohanh["TinhThanh"]);
@@ -126,6 +126,7 @@ class Controller_index extends Application
         $yeucaubaohanh["RecUpdateDate"] = date("Y-m-d H:i:s", time());
         $yeucaubaohanh["Code"] = $yeucaubaohanh["MaTem"];
         $YeuCauKichHoat = new YeuCauKichHoat($yeucaubaohanh["Code"]);
+        $this->dongy($yeucaubaohanh["Code"]);
 
         if ($YeuCauKichHoat->Code == null) {
             $YeuCauKichHoat->InsertSubmit($yeucaubaohanh);
@@ -145,6 +146,49 @@ class Controller_index extends Application
             echo json_encode($yeucaubaohanh);
         }
     }
+
+    function dongy($id)
+    {
+        // cập nhật yêu cầu
+        $ngaybatdau = date("Y-m-d", time());
+        $yeuCau = new YeuCauKichHoat($id);
+        $yc = $yeuCau->GetByCode($id);
+        $yc["TinhTrang"] = YeuCauKichHoat::KichHoat;
+        $yeuCau->UpdateSubmit($yc);
+        //  cập nhật thông tin tem sản phẩm
+        $khTieuDung = new KhachHangTieuDung($yeuCau->MaTem);
+        $khtd["Name"] = $yeuCau->HoTen;
+        $khtd["Code"] = $yeuCau->MaTem;
+        $khtd["Phone"] = $yeuCau->SDT;
+        $khtd["DiaChi"] = $yeuCau->DiaChi;
+        $khtd["CMNN"] = "";
+        $khtd["GhiChu"] = "";
+        $khtd["SubData"] = "";
+        $khtd["TinhThanh"] = $yeuCau->TinhThanh;
+        $khtd["KhuVuc"] = "";
+        $khtd["QuanHuyen"] = $yeuCau->QuanHuyen;
+        $khtd["Parent"] = 0;
+
+        if ($khTieuDung->Id == null) {
+            $khTieuDung->InsertSubmit($khtd);
+        } else {
+            $khtd["Id"] = $khTieuDung->Id;
+            $khTieuDung->UpdateSubmit($khtd);
+        }
+        $khTieuDung = new KhachHangTieuDung($khtd["Code"]);
+        $temsp = new TemSanPham($yeuCau->MaTem);
+        $item = $temsp->GetByCode($yeuCau->MaTem);
+        $item["NgayBatDau"] = $ngaybatdau;
+        $ngaybd = strtotime($item["NgayBatDau"]);
+        $item["KhachHangTieuDung"] = $khTieuDung->Code;
+        $ngayKetThuc = date("Y-m-d", $ngaybd + (730 * 24 * 3600));
+        $item["NgayKetThuc"] = $ngayKetThuc;
+        $item["Status"] = TemSanPham::Active;
+        $temsp->UpdateSubmit($item);
+        echo json_encode($item, JSON_UNESCAPED_UNICODE);
+    }
+
+
 
     function YeuCauBaoHanh()
     {
@@ -166,7 +210,7 @@ class Controller_index extends Application
             $adapter = new \Core\Adapter();
             $yeuCauCode = $ModelYeuCau["Code"];
             $img = "public/baohanh/{$yeuCauCode}/";
-             $adapter->upload_image1(
+            $adapter->upload_image1(
                 $_FILES["HinhLoi"],
                 $img,
                 $yeuCauCode,
@@ -196,25 +240,41 @@ class Controller_index extends Application
     function baohanh()
     {
         $alert = null;
+        // var_dump(KhachHangTieuDungForm::formName);
+        // die();
+        ini_set('display_errors', 1);
+        ini_set('display_startup_errors', 1);
+        error_reporting(1);
+
         if (isset($_POST[KhachHangTieuDungForm::formName])) {
+
             $dataPost = $_POST[KhachHangTieuDungForm::formName];
+            // var_dump($dataPost);
             $maTem = $dataPost["MaTen"];
             $ModelTemSanPham = new TemSanPham($maTem);
+            // var_dump($ModelTemSanPham->KhachHangTieuDung);
             if ($ModelTemSanPham->KhachHangTieuDung) {
-                $dataPost["Code"] = $ModelTemSanPham->KhachHangTieuDung;
+                // $dataPost["Code"] = $ModelTemSanPham->KhachHangTieuDung;
                 unset($dataPost["MaTen"]);
-                $modelKhachHang = new KhachHangTieuDung($dataPost["Code"]);
-                $dataPost["Id"] = $modelKhachHang->Id;
-                $modelKhachHang->UpdateRowTable($dataPost);
-                $alert["content"] = "Thông tin Quý khách đã được cập nhật";
-                $alert["type"] = "success";
-                (new Notification())->SetContent($alert);
+                $modelKhachHang = new KhachHangTieuDung($ModelTemSanPham->KhachHangTieuDung);
+                // var_dump($modelKhachHang->Name);
+
+                if ($modelKhachHang) {
+                    // var_dump($modelKhachHang->Id);
+                    $dataPost["Id"] = $modelKhachHang->Id;
+                    // var_dump($dataPost);
+                    $modelKhachHang->UpdateRowTable($dataPost);
+                    $alert["content"] = "Thông tin Quý khách đã được cập nhật";
+                    $alert["type"] = "success";
+                    (new Notification())->SetContent($alert);
+                }
                 Common::toUrl();
             }
         }
 
         if (isset($_POST["BtnYeuCauKichHoat"])) {
             $this->yeucaukichhoat(false);
+
             $alert["content"] = "Cảm ơn Quý khách, yêu cầu kích hoạt của Quý khách sẽ được thực hiện trong vòng 24h tới!";
             $alert["type"] = "success";
             (new Notification())->SetContent($alert);

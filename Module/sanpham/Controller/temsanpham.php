@@ -101,6 +101,7 @@ class temsanpham extends \ApplicationM implements \Controller\IController
 
         if (\Common\Form::RequestPost("IsSubmit", null)) {
             $temSP = \Common\Form::RequestPost("temsanpham", []);
+
             $khachHanhTieuDung = \Common\Form::RequestPost("khachhangtieudung", []);
             $sanPhamPost = \Common\Form::RequestPost("sanpham", []);
             $ModelTemSP = new \Module\sanpham\Model\TemSanPham();
@@ -135,14 +136,21 @@ class temsanpham extends \ApplicationM implements \Controller\IController
                 }
             }
             unset($sanPhamPost["Code"]);
+            //  var_dump($temSP);
             $ModelSP->UpdateSubmit($MSP);
             if ($khachHanhTieuDung["Id"] == "") {
                 $khachHanhTieuDung["Code"] = "kh" . $khachHanhTieuDung["Phone"] . time();
+                $khachHanhTieuDung["Parent"] = "0";
                 $idKHTieuDung = $ModelKhachHanhTieuDung->InsertSubmit($khachHanhTieuDung);
+                // var_dump("_________");
                 $temSP["KhachHangTieuDung"] = $khachHanhTieuDung["Code"];
             } else {
                 $ModelKhachHanhTieuDung->UpdateRowTable($khachHanhTieuDung);
-            }
+                $temSP["KhachHangTieuDung"] = $khachHanhTieuDung["Code"];
+            }  
+            // $temSP["Parent"] = "";
+            // echo $temSP["Parent"] = "";
+            // var_dump($temSP);
             $ModelTemSP->UpdateRowTable($temSP);
         }
         if (\Common\Form::RequestPost("ThenTemPhu", null)) {

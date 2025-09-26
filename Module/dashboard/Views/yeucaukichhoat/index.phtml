@@ -1,11 +1,30 @@
 <?php
 
+use Common\Form;
+use Model\Common;
+use Model\FormCommon;
+use Model\FormCommon1;
 use Model\FormRender;
+use Model\Request;
 use Module\sanpham\Model\YeuCauKichHoat;
 
 $ycau = new YeuCauKichHoat();
-$Params["TinhTrang"] = $_GET["TinhTrang"] ?? "";
-$ycKichHoats = $ycau->GetItems($Params);
+$Params["TinhTrang"] = Request::Request("TinhTrang", "");
+$tinhTrang = $Params["TinhTrang"];
+$Params["SDT"] = Request::Request("SDT", "");
+$Params["HoTen"] = Request::Request("HoTen", "");
+$pagesIndex = Request::Request("pagesIndex", 1);
+
+$pagesIndex = Request::Request("pagesIndex", 1);
+$number = Request::Request("pagesSize", 15);
+
+$ycKichHoats = $ycau->GetItems(
+    $Params,
+    $pagesIndex,
+    $number,
+    $total
+);
+// var_dump($total);
 ?>
 
 <div class="container-fluid " ng-controller="YeucaukichhoatController">
@@ -28,13 +47,86 @@ $ycKichHoats = $ycau->GetItems($Params);
                             }
                             ?>
                         </div>
-                        <div class="table-responsive" style="padding-bottom: 100px;">
-                            <table class="table table-bordered table-striped  dataTable " id="dataTableID">
+                        <div class="table-responsive" style="padding-bottom: 50px;">
+                            <table class="table table-bordered table-striped " id="dataTableID">
                                 <thead>
                                     <tr>
+                                        <th style="width:    100px;white-space: nowrap;">Thao tác</th>
                                         <th style="width: 50px;">#</th>
-                                        <th style="white-space: nowrap; ">Họ Tên</th>
-                                        <th>SĐT</th>
+                                        <th class="text-center" style="white-space: nowrap; ">Họ Tên
+
+                                            <div class="btn-group">
+                                                <button class="btn btn-sm dropdown-toggle" data-toggle="dropdown"
+                                                    aria-expanded="true">
+                                                    <i class="fa fa-filter"></i>
+                                                </button>
+                                                <div class="dropdown-menu filterform pull-left" role="menu">
+                                                    <form action="" method="get">
+                                                        <h3 class="lbl_timkiem">Tìm kiếm</h3>
+                                                        <?php
+                                                        FormCommon1::Hidden(
+                                                            "TinhTrang",
+                                                            Request::Get("TinhTrang", ""),
+                                                        )->render();
+                                                        FormCommon1::TextBox(
+                                                            "",
+                                                            "HoTen",
+                                                            [
+                                                                "class" => "form-control",
+                                                                "placeholder" => "Nhập Họ Tên",
+                                                                "value" => Request::Request("HoTen", ""),
+                                                            ],
+                                                        )->render();
+                                                        ?>
+                                                        <div class="box-footer text-right">
+
+                                                            <div class="row">
+                                                                <a href="/dashboard/yeucaukichhoat/index/?TinhTrang=<?php echo $tinhTrang ?>"
+                                                                    class="btn btn-default">Làm lại</a>
+                                                                <button class="btn btn-success">Đồng ý</button>
+                                                            </div>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            </div>
+
+                                        </th>
+                                        <th class="text-center">SĐT
+                                            <div class="btn-group">
+                                                <button class="btn btn-sm dropdown-toggle" data-toggle="dropdown"
+                                                    aria-expanded="true">
+                                                    <i class="fa fa-filter"></i>
+                                                </button>
+                                                <div class="dropdown-menu filterform pull-left" role="menu">
+                                                    <form action="" method="get">
+                                                        <h3 class="lbl_timkiem">Tìm kiếm</h3>
+                                                        <?php
+                                                        FormCommon1::Hidden(
+                                                            "TinhTrang",
+                                                            Request::Get("TinhTrang", ""),
+                                                        )->render();
+                                                        FormCommon1::TextBox(
+                                                            "",
+                                                            "SDT",
+                                                            [
+                                                                "class" => "form-control",
+                                                                "placeholder" => "Nhập SĐT",
+                                                                "value" => Request::Request("SDT", ""),
+                                                            ],
+                                                        )->render();
+                                                        ?>
+                                                        <div class="box-footer text-right">
+                                                            <div class="row">
+                                                                <a href="/dashboard/yeucaukichhoat/index/?TinhTrang=<?php echo $tinhTrang ?>"
+                                                                    class="btn btn-default">Làm lại</a>
+                                                                <button class="btn btn-success">Đồng ý</button>
+                                                            </div>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            </div>
+
+                                        </th>
                                         <th>Mã HH
                                         </th>
                                         <th style="white-space: nowrap;width: 100px;">Ngày bắt đầu <i
@@ -46,7 +138,7 @@ $ycKichHoats = $ycau->GetItems($Params);
                                         <th style="width: 100px;white-space: nowrap;">Quận Huyện</th>
                                         <th style="width: 100px;white-space: nowrap;">Địa Chỉ</th>
                                         <th style="width: 100px;white-space: nowrap;">Tình Trạng</th>
-                                        <th style="width:    100px;white-space: nowrap;">Thao tác</th>
+
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -55,24 +147,14 @@ $ycKichHoats = $ycau->GetItems($Params);
                                         $_Option = new YeuCauKichHoat($op);
                                         ?>
                                         <tr>
-                                            <td><?php echo $k + 1; ?></td>
-                                            <th><?php echo $_Option->HoTen; ?></th>
-                                            <th><?php echo $_Option->SDT; ?></th>
-                                            <th><?php echo $_Option->TemSanPham()->SanPham()->DanhMuc()->Code; ?></th>
-                                            <th><?php echo $_Option->TemSanPham()->NgayBatDau(); ?></th>
-                                            <th><?php echo $_Option->RecCreateDate(); ?></th>
-                                            <th><?php echo $_Option->TinhThanh()->Name; ?></th>
-                                            <th><?php echo $_Option->QuanHuyen()->Name; ?></th>
-                                            <th><?php echo $_Option->DiaChi; ?></th>
-                                            <th><?php echo $_Option->TinhTrang(); ?></th>
-                                            <td>
-                                                <div class="btn-group ">
+                                            <td class="text-center">
+                                                <div class="btn-group">
                                                     <button class="btn btn-success btn-sm dropdown-toggle"
                                                         data-toggle="dropdown" aria-expanded="true">
                                                         <i class="fa fa-ellipsis-v"></i>
                                                         <i class="fa fa-ellipsis-v"></i>
                                                     </button>
-                                                    <div class="dropdown-menu pull-right" role="menu">
+                                                    <div class="dropdown-menu pull-left" role="menu">
                                                         <a class=" btn btn-block btn-sm btn-default" target="_blank"
                                                             href="/baohanh/<?php echo $_Option->MaTem; ?>">
                                                             Xem
@@ -124,12 +206,31 @@ $ycKichHoats = $ycau->GetItems($Params);
                                                     </div>
                                                 </div>
                                             </td>
+                                            <td><?php echo $k + 1; ?></td>
+                                            <th><?php echo $_Option->HoTen; ?></th>
+                                            <th><?php echo $_Option->SDT; ?></th>
+                                            <th><?php echo $_Option->TemSanPham()->SanPham()->DanhMuc()->Code; ?></th>
+                                            <th><?php echo $_Option->TemSanPham()->NgayBatDau(); ?></th>
+                                            <th><?php echo $_Option->RecCreateDate(); ?></th>
+                                            <th><?php echo $_Option->TinhThanh()->Name; ?></th>
+                                            <th><?php echo $_Option->QuanHuyen()->Name; ?></th>
+                                            <th><?php echo $_Option->DiaChi; ?></th>
+                                            <th><?php echo $_Option->TinhTrang(); ?></th>
+
                                         </tr>
                                         <?php
                                     }
                                     ?>
                                 </tbody>
                             </table>
+                            <?php
+                            echo Common::PhanTrang(
+                                $total,
+                                $pagesIndex,
+                                $number,
+                                "/dashboard/yeucaukichhoat/index/?TinhTrang={$tinhTrang}&pagesIndex=[i]&pagesSite={$number}",
+                            );
+                            ?>
                         </div>
 
                     </div>
@@ -170,3 +271,9 @@ $ycKichHoats = $ycau->GetItems($Params);
 </div>
 
 <script src="/Module/dashboard/public/js/yeucaukichhoat.js?v=1"></script>
+<style>
+    .table td,
+    .table th {
+        white-space: nowrap !important;
+    }
+</style>

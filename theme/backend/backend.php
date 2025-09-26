@@ -567,6 +567,14 @@ class backend
                         }
                     })
                 });
+
+                $(".dropdown-menu").click(function (e) {
+
+                    if (e.target.matches("input") == true) {
+                        e.preventDefault();
+                        return false;
+                    }
+                });
             })
 
             // if ('Notification' in window) {

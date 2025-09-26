@@ -38,8 +38,17 @@ class YeuCauKichHoatData extends \datatable\ZendData implements \Model\IModel
         if ($Params["TinhTrang"]) {
             $tinhTrangSql = "and `TinhTrang` = '{$Params["TinhTrang"]}'";
         }
-        $where = " 1=1 {$tinhTrangSql} ORDER BY `RecCreateDate` DESC limit {$pagesIndex},{$number}  ";
-        $tong = $this->GetNumberRows(" 1=1 ");
+        $sdtSql = "";
+        if ($Params["SDT"]) {
+            $sdtSql = "and `SDT` like '%{$Params["SDT"]}%'";
+        }
+        $hoTenSql = "";
+        if ($Params["HoTen"]) {
+            $hoTenSql = "and `HoTen` like '%{$Params["HoTen"]}%'";
+        }
+        $where = " 1=1 {$hoTenSql}  {$sdtSql} {$tinhTrangSql} ORDER BY `RecCreateDate` DESC ";
+        $tong = $this->GetNumberRows($where);
+        $where .= " limit {$pagesIndex},{$number}  ";
         return $this->GetRowsByWhere($where);
     }
     public function GetAllPT($pagesIndex = 1, $number = 500, &$tong = 0)

@@ -185,6 +185,7 @@ class ZendData
             $where = "`Id` = '{$row["Id"]}'";
             unset($row["Id"]);
         }
+        // $row["Parent"] = $row["Parent"] ?? "";
         return $this->TableContext->update($row, $where);
     }
 

@@ -78,6 +78,31 @@ legend {
     white-space: nowrap !important;
     display: block;
 }
-.d-flex{
+
+.d-flex {
     display: flex;
+}
+
+.filterform {
+    padding: 10px;
+    min-width: 300px;
+    left: -100px;
+}
+
+.filterform .lbl_timkiem {
+    font-size: 1.2em;
+    text-align: left;
+    font-weight: bold;
+    margin: 0px;
+}
+
+@media screen and (max-width: 500px) {
+    .filterform {
+        padding: 10px;
+        min-width: 300px;
+        width: 90%;
+        left: 5%;
+        position: fixed;
+        top: 150px
+    }
 }

@@ -261,6 +261,7 @@ class TemSanPham extends TemSanPhamData
 
     public function KhachHangTieuDung()
     {
+        
         return new KhachHangTieuDung($this->KhachHangTieuDung);
     }
 
