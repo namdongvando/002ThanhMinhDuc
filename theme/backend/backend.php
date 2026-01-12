@@ -26,6 +26,7 @@ class backend
         <link rel="stylesheet" href="/public/admin/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css">
         <link rel="stylesheet" href="/public/admin/plugins/datatables/dataTables.bootstrap.css">
         <link rel="stylesheet" href="/public/admin/dist/css/AdminLTE.min.css">
+        <link rel="manifest" href="/public/manifest.json?v=<?php echo time(); ?>" />
         <link href="/public/admin/dist/css/skins/_all-skins.min.css?v=<?php echo time(); ?>" rel="stylesheet" type="text/css" />
         <link href="/public/admin/dist/Custom.css?v=<?php echo fileatime("public/admin/dist/Custom.css"); ?>" rel="stylesheet"
             type="text/css" />

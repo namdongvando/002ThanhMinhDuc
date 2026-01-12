@@ -126,15 +126,18 @@ class Controller_index extends Application
         $yeucaubaohanh["RecUpdateDate"] = date("Y-m-d H:i:s", time());
         $yeucaubaohanh["Code"] = $yeucaubaohanh["MaTem"];
         $YeuCauKichHoat = new YeuCauKichHoat($yeucaubaohanh["Code"]);
-        $this->dongy($yeucaubaohanh["Code"]);
-
+        // var_dump($yeucaubaohanh);
+        
+        
         if ($YeuCauKichHoat->Code == null) {
             $YeuCauKichHoat->InsertSubmit($yeucaubaohanh);
         } else {
             $yeucaubaohanh["Id"] = $YeuCauKichHoat->Id;
             unset($yeucaubaohanh["TinhTrang"]);
+             
             $YeuCauKichHoat->UpdateSubmit($yeucaubaohanh);
         }
+        $this->dongy($yeucaubaohanh["Code"]);
         // cập nhật tem sảm  phẩm khi chưa kích hoạt
         $temsp = new TemSanPham($yeucaubaohanh["MaTem"]);
         if ($temsp->Status == TemSanPham::DeActive) {
@@ -157,6 +160,7 @@ class Controller_index extends Application
         $yeuCau->UpdateSubmit($yc);
         //  cập nhật thông tin tem sản phẩm
         $khTieuDung = new KhachHangTieuDung($yeuCau->MaTem);
+
         $khtd["Name"] = $yeuCau->HoTen;
         $khtd["Code"] = $yeuCau->MaTem;
         $khtd["Phone"] = $yeuCau->SDT;
@@ -170,7 +174,9 @@ class Controller_index extends Application
         $khtd["Parent"] = 0;
 
         if ($khTieuDung->Id == null) {
+            
             $khTieuDung->InsertSubmit($khtd);
+ 
         } else {
             $khtd["Id"] = $khTieuDung->Id;
             $khTieuDung->UpdateSubmit($khtd);

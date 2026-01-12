@@ -1,0 +1,60 @@
+{
+    "short_name": "Thành Minh Đức",
+    "name": "Thành Minh Đức",
+    "manifest_version": 3,
+    "description": "Quản lý tem bán hàng",
+    "orientation": "portrait",
+    "screenshots": [
+        {
+            "src": "/public/logo/screen1280x800.png",
+            "sizes": "1280x800",
+            "type": "image/png",
+            "platform": "wide",
+            "label": "Giao diện trên máy tính"
+        },
+        {
+            "src": "/public/logo/screen640x1136.png",
+            "sizes": "640x1136",
+            "type": "image/png",
+            "platform": "narrow",
+            "label": "Giao diện trên điện thoại"
+        }
+    ],
+    "icons": [
+        {
+            "src": "/public/logo/icon_16.png",
+            "type": "image/png",
+            "sizes": "16x16"
+        },
+        {
+            "src": "/public/logo/icon_24.png",
+            "type": "image/png",
+            "sizes": "24x24"
+        },
+        {
+            "src": "/public/logo/icon_32.png",
+            "type": "image/png",
+            "sizes": "32x32"
+        },
+        {
+            "src": "/public/logo/icon_128.png",
+            "type": "image/png",
+            "sizes": "128x128"
+        },
+        {
+            "src": "/public/logo/icon_192.png",
+            "type": "image/png",
+            "sizes": "192x192"
+        },
+        {
+            "src": "/public/logo/icon_512.png",
+            "type": "image/png",
+            "sizes": "512x512"
+        }
+    ],
+    "start_url": "/dashboard",
+    "background_color": "#fff",
+    "display": "standalone",
+    "scope": "/",
+    "theme_color": "#fff"
+}
