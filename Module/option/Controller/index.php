@@ -2,6 +2,8 @@
 
 namespace Module\option\Controller;
 
+use Exception;
+
 define("AppDir", "Module/option");
 define("AppPath", "/Module/option");
 

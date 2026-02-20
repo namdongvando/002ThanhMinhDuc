@@ -1,0 +1,118 @@
+<ol class="breadcrumb">
+    <li><a href="/dashboard/">Dashboard</a></li>
+    <li><a href="/dashboard/nhaptem/index">Danh Sanh Sách Nhập</a></li>
+</ol>
+<?php
+
+use Model\FormOptions;
+use Module\user\Model\Admin;
+
+$admin = Admin::getCurentUser(true);
+$CodeQr = new \Model\CodeQR("kiemhang_" . $admin->Username);
+$ds = $CodeQr->GetCodes();
+?>
+<form action="" enctype="multipart/form-data" method="POST">
+    <div class="modal fade" id="ChonSanPham">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title">Chọn Model Sản Phẩm</h4>
+                </div>
+                <div class="modal-body">
+                    <?php
+                    Module\option\Model\OptionForm::SelectGroups("Danh Mục Sản Phẩm", "Chon[MaDanhMuc]", \Module\option\Model\Option::DanhMucVatTu)->renderHtml();
+                    Module\sanpham\Model\SanPhamForm::MaDaiLy()->renderHTML();
+                    FormOptions::Select(
+                        "",
+                        "Chon[NhanVien]",
+                        Admin::GetUsersOptions(Admin::NVKT),
+                        ["label" => 'Nhân Viên Kỹ Thuật &nbsp &nbsp &nbsp <a href="/user/users/" target="_blank" > Thêm Nhân Viên</a> ', 'style' => "width:100%;"]
+                    )->renderHtml();
+                    ?>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="submit" name="ChonDanhMucSanPham" class="btn btn-primary">OK</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="box box-primary">
+                <div class="box-header">
+                    <h3 class="box-title">Danh Sách Mã</h3>
+                    <div class="box-tools">
+                        <a href="/dashboard/kiemhang/scan" class="btn btn-primary"><i class="fa fa-camera"></i></a>
+                    </div>
+                </div>
+                <div class="box-body table-responsive">
+                    <a href="/dashboard/kiemhang/clear" onclick="return confirm('Bạn có chắc muốn nhập lại?')"
+                        class="pull-right btn-sm btn btn-danger">
+                        Xóa Hết
+                    </a>
+                    <button type="button" class="btn btn-sm " data-toggle="modal" data-target='#ChonSanPham'>Chọn Sản
+                        Phẩm</button>
+                    <a href="/dashboard/kiemhang/index" class="btn btn-sm btn-primary">
+                        <i class="fa fa-refresh"></i>
+                    </a> 
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th style="width: 100px">Thao Tác</th>
+                                <th style="width: 50px">Stt</th>
+                                <th style="width: 150px">Mã Tem</th>
+                                <th>Thông Tin Sản Phẩm</th>
+                            </tr>
+                        </thead>
+                        <tbody id="DanhSachTem" class="ajaxAutoReload" data-target="#DanhSachTem" data-timeload="2000"
+                            data-urlcheck="/dashboard/kiemhang/coderefesh/"
+                            data-urldata="/dashboard/kiemhang/danhsachtem/">
+                            <?php
+                            $index = 0;
+                            if ($ds) {
+                                foreach ($ds as $k => $code) {
+
+                                    $temSP = new \Module\sanpham\Model\TemSanPham($code);
+                                    // var_dump($code);
+                                    // var_dump($temSP);
+                                    ?>
+                                    <tr>
+                                        <td><a href="/sanpham/temsanpham/detailbysanpham/<?php echo $code; ?>/"
+                                                class="btn btn-primary">Xem</a></td>
+                                        <td>
+                                            <?php echo 1 + $index++; ?>
+                                        </td>
+                                        <td>
+                                            <?php echo $temSP->Code; ?>
+                                        </td>
+                                        <td>
+                                            <p style="margin: 0px;">
+                                                <b>Tên Sản Phẩm:</b>
+                                                <?php echo $temSP->SanPham()->Name; ?>
+                                            </p>
+                                            <p style="margin: 0px;">
+                                                <b>Tình Trạng:</b>
+                                                <?php echo $temSP->SanPham()->TinhTrang(); ?>
+                                            </p>
+                                            <p style="margin: 0px;">
+                                                <b>Đại Lý:</b>
+                                                <?php echo $temSP->SanPham()->DaiLy()->Name; ?>
+                                            </p>
+                                        </td>
+                                    </tr>
+                                    <?php
+                                }
+                            }
+                            ?>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>

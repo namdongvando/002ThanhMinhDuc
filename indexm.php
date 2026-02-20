@@ -1,43 +1,45 @@
 <?php
+if (!session_id()) {
+    session_start();
+    ob_start();
+}
 
-session_start();
-ob_start();
 try {
     date_default_timezone_set('Asia/Ho_Chi_Minh');
-    define("debug", TRUE);
+    // define("debug", TRUE);
 
     if (true) {
-        ini_set('display_errors', 1);
-        ini_set('display_startup_errors', 1);
+        ini_set('display_errors', 0);
+        ini_set('display_startup_errors', 0);
         error_reporting(E_ALL);
     }
 
-    function minify_output($buffer) {
-        $search = array(
-            '/\>[^\S ]+/s',
-            '/[^\S ]+\</s',
-            '/(\s)+/s'
-        );
-        $replace = array(
-            '>',
-            '<',
-            '\\1'
-        );
-        if (preg_match("/\<html/i", $buffer) == 1 && preg_match("/\<\/html\>/i", $buffer) == 1) {
-            $buffer = preg_replace($search, $replace, $buffer);
-        }
-        return $buffer;
-    }
+    // function minify_output($buffer) {
+    //     $search = array(
+    //         '/\>[^\S ]+/s',
+    //         '/[^\S ]+\</s',
+    //         '/(\s)+/s'
+    //     );
+    //     $replace = array(
+    //         '>',
+    //         '<',
+    //         '\\1'
+    //     );
+    //     if (preg_match("/\<html/i", $buffer) == 1 && preg_match("/\<\/html\>/i", $buffer) == 1) {
+    //         $buffer = preg_replace($search, $replace, $buffer);
+    //     }
+    //     return $buffer;
+    // }
 
-//    ob_start(minify_output);
+    //    ob_start(minify_output);
     $url = $_SERVER['REQUEST_URI'];
-    include 'config.php';
+    // include 'config.php';
 // load composer
     if (file_exists("vendor/autoload.php"))
         require_once "vendor/autoload.php";
-//    load menu
+    //    load menu
     if (empty($_GET["Module"])) {
-//        Cac module tu do
+        //        Cac module tu do
         $Application = new ApplicationM($url);
         $Module = $Application->getModule();
         $cnameV = $Application->getController();

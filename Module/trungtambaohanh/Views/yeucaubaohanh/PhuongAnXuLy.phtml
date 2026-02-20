@@ -1,0 +1,84 @@
+<?php
+use Module\trungtambaohanh\Model\FormXuLyYeuCau;
+use Module\trungtambaohanh\Model\FormYeuCauBaoHanh;
+use Module\trungtambaohanh\Model\YeuCauBaoHanh;
+
+$ycbh = new YeuCauBaoHanh($_Param[0]);
+
+
+?>
+<ol class="breadcrumb">
+    <li>
+        <a href="/trungtambaohanh/yeucaubaohanh/index/<?php echo $ycbh->Code; ?>">
+            Chi Tiết Yêu Cầu
+        </a>
+    </li>
+    <li class="active">Phương án xử lý </li>
+</ol>
+
+<div class="container">
+    <div class='box box-primary'>
+        <div class='box-header'>
+            <h3 class='box-title'>Phương an xử lý </h3>
+        </div>
+        <div class='box-body'>
+
+
+            <form action="" method="post">
+
+                <?php
+                $yeuCauBaoHanh = new YeuCauBaoHanh($_Param[0]);
+                $yeuForm = new FormYeuCauBaoHanh((array) $yeuCauBaoHanh);
+                ?>
+                <div class="row">
+                    <div class="col-md-12" style="min-height: 50px;">
+                        <b>Lỗi bảo hành: </b>
+                        <?php
+                        $yeuForm->Id()->render();
+                        echo $yeuCauBaoHanh->NoiDungBaoHanh()->Name;
+                        ?>
+                    </div>
+                </div>
+
+                <?php
+                $yeuCauBaoHanh = new YeuCauBaoHanh($_Param[0]);
+                $yeuForm = new FormYeuCauBaoHanh((array) $yeuCauBaoHanh);
+                $PhuongAnXuLy = $yeuCauBaoHanh->PhuongAnXuLy();
+
+                $vf["MaYeuCau"] = $ycbh->Code;
+                $vf["NoiDung"] = $PhuongAnXuLy->NoiDung;
+                $vf["NoiDungKhac"] = $PhuongAnXuLy->NoiDungKhac;
+
+                $FormYC = new FormXuLyYeuCau($vf);
+                ?>
+                <div class="row">
+                    <div class="col-md-6">
+                        <?php
+                        $FormYC->MaYeuCau()->render();
+                        $FormYC->NoiDung()->renderHtml();
+                        $display = $PhuongAnXuLy->NoiDung == "Khac" ? "block" : "none";
+                        ?>
+                        <div id="NoiDungKhac_XuLyYeuCau" style="display: <?php echo $display ?>;">
+                            <?php
+                            $FormYC->NoiDungKhac()->renderHTML();
+                            ?>
+                        </div>
+
+                    </div>
+                    <div class="col-md-6">
+                        <p>Chọn "cập nhật" để cập nhật lỗi bảo hành</p>
+                    </div>
+                </div>
+                <div class="col-md-12 text-right">
+                    <a class="btn btn-primary" href="/trungtambaohanh/yeucaubaohanh/index/<?php echo $ycbh->Code; ?>">
+                        Quay lại
+                    </a>
+                    <button onclick="return(confirm('Bạn có muốn lưu phương án xử lý này?'))" class="btn btn-success"
+                        name="PhuongAnXuLy">Cập
+                        nhật</button>
+                </div>
+            </form>
+
+        </div>
+    </div>
+</div>

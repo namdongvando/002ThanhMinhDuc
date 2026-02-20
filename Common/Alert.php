@@ -2,13 +2,16 @@
 
 namespace Common;
 
-class Alert {
+class Alert
+{
 
-    function __construct($content = []) {
+    function __construct($content = [])
+    {
         self::setAlert($content[0], $content[1]);
     }
 
-    static function getAlert() {
+    static function getAlert()
+    {
         if (!isset($_SESSION["Alert"])) {
             return NULL;
         }
@@ -17,7 +20,8 @@ class Alert {
         return $al;
     }
 
-    static function showAlert() {
+    static function showAlert()
+    {
         $alert = self::getAlert();
         if ($alert) {
             ?>
@@ -30,7 +34,8 @@ class Alert {
         }
     }
 
-    static function setAlert($type, $Content) {
+    static function setAlert($type, $Content)
+    {
         $_SESSION["Alert"]["Type"] = $type;
         $_SESSION["Alert"]["Content"] = $Content;
     }

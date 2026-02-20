@@ -1,15 +1,17 @@
 <?php
 
+
 date_default_timezone_set('Asia/Ho_Chi_Minh');
 
-define("debug", true);
+define("debug", false);
+
+
 if (true) {
     ini_set('display_errors', 1);
     ini_set('display_startup_errors', 1);
-    error_reporting(E_ALL);
+    // error_reporting(E_ALL & ~E_DEPRECATED & ~E_STRICT);
 }
 
-date_default_timezone_set('Asia/Ho_Chi_Minh');
 
 function minify_output($buffer)
 {
@@ -46,7 +48,7 @@ $pathAutoload = "vendor/autoload.php";
 if (file_exists($pathAutoload)) {
     include_once $pathAutoload;
 }
-
+// var_dump(Get_Module());
 //var_dump($_GET["path"]);
 $host = $_SERVER["HTTP_HOST"];
 $user = explode(DOMAIN, $host);
@@ -55,6 +57,12 @@ define("EVN", "dev");
 //mcategory
 
 $Application = new Application($url);
+$_controller = $Application->getController();
+if (in_array($_controller, Get_Module())) {
+    include "indexm.php";
+    return;
+}
+
 if (empty($_GET["ctr"])) {
     $cnameV = $Application->getController();
     $cname = "Controller_" . $cnameV;
@@ -68,11 +76,6 @@ if (empty($_GET["ctr"])) {
     $Application->setAction($action);
     $Application->setParam($params);
 }
-
-// echo $cnameV;
-// echo $action;
-// var_dump($params);
-// echo $cname;
 if (class_exists($cname, TRUE)) {
 
     if (method_exists($cname, $action)) {
@@ -99,8 +102,8 @@ if (class_exists($cname, TRUE)) {
 // echo $Application->getController();
 // echo $Application->getAction();
 if (true) {
-    echo $Application->getController();
-    echo $Application->getAction();
+    $Application->getController();
+    $Application->getAction();
 }
 // $etime = time() + microtime();
 // echo $etime - $stime;

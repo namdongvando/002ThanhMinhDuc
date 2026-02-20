@@ -1,0 +1,42 @@
+"/public/theme/TMD/images/logo.png"
+"/public/admin/bootstrap/css/bootstrap.min.css",
+"https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css",
+"https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css",
+"/public/admin/plugins/select2/select2.min.css",
+"/public/admin/plugins/iCheck/flat/blue.css",
+"/public/admin/plugins/morris/morris.css",
+"/public/admin/plugins/jvectormap/jquery-jvectormap-1.2.2.css",
+"/public/admin/plugins/datepicker/datepicker3.css",
+"/public/admin/plugins/daterangepicker/daterangepicker-bs3.css",
+"/public/admin/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css",
+"/public/admin/plugins/datatables/dataTables.bootstrap.css",
+"/public/admin/dist/css/AdminLTE.min.css",
+"/public/admin/dist/css/skins/_all-skins.min.css" ,
+"/public/admin/dist/Custom.css" ,
+"https://apis.google.com/js/platform.js?onload=onLoad"
+
+
+<script type="text/javascript">
+    function OnRegisterSWError(e) {
+        console.log(" Failed to register service worker: ", e);
+    };
+    window.C2_RegisterSW = function C2_RegisterSW() {
+        if (!navigator.serviceWorker) {
+            return;
+        }
+        try {
+            navigator.serviceWorker.register("/sw.js", {
+                scope: './'
+            }).then(function (reg) {
+                OnRegisterSWError("Registered service worker on " + reg.scope);
+            })
+                .catch(OnRegisterSWError);
+        }
+        catch (e) {
+            OnRegisterSWError(e);
+        }
+    };
+    if (window["C2_RegisterSW"]) {
+        window["C2_RegisterSW"]();
+    } 
+</script>

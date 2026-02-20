@@ -2,7 +2,8 @@
 
 namespace Module\user\Model;
 
-class userGroups extends userGroupsTable {
+class userGroups extends userGroupsTable
+{
 
     const DoiTac = 2;
     const Admin = 1;
@@ -10,6 +11,7 @@ class userGroups extends userGroupsTable {
     const DaiLy = 3;
     const TrungTamBaoHanh = 4;
     const NVKT = 5;
+    const KinhDoanh = 6;
 
     public $Id;
     public $Name;
@@ -17,7 +19,8 @@ class userGroups extends userGroupsTable {
     public $Role;
     public $GroupsId;
 
-    function __construct($u = null) {
+    function __construct($u = null)
+    {
         parent::__construct();
         if ($u) {
             $this->Id = !empty($u["Id"]) ? $u["Id"] : "";
@@ -28,16 +31,17 @@ class userGroups extends userGroupsTable {
         }
     }
 
-    function GetAll2Option() {
+    function GetAll2Option()
+    {
         $where = " `GroupsId` >= 0 order by `GroupsId`";
         return $this->getColumnsOption(["GroupsId", "Name"], $where);
     }
 
-    function GetByGroupsId($id) {
+    function GetByGroupsId($id)
+    {
         $where = " `GroupsId` = '{$id}'";
         return $this->ToRow($this->Select($where));
     }
 
 }
 ?>
-

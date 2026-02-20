@@ -4,25 +4,30 @@ namespace Module\user\Controller;
 
 define("Token", "Token");
 
+use Common\Common;
 use Module\user\Model\AdminStatus;
 
-class users extends \ApplicationM implements \Controller\IController {
+class users extends \ApplicationM implements \Controller\IController
+{
 
     const AppDir = "Module/user";
     const AppPath = "/Module/user";
 
     static public $UserLayout = "user";
 
-    function __construct() {
+    function __construct()
+    {
         new \Controller\backend();
     }
 
-    public function index() {
+    public function index()
+    {
 
         return $this->ViewThemeModlue();
     }
 
-    public function create() {
+    public function create()
+    {
 
         if (\Module\user\Model\AdminForm::onSubmit()) {
             try {
@@ -51,7 +56,10 @@ class users extends \ApplicationM implements \Controller\IController {
                 $user["Note"] = isset($_newUser["Note"]) ? $_newUser["Note"] : "";
                 $user["Groups"] = $_newUser["Groups"];
                 $user["Image"] = "";
+                $user["Parents"] = "";
+
                 $ModelAdmin->InsertSubmit($user);
+                Common::toUrl("/user/users/");
             } catch (\Exception $ex) {
                 \Common\Alert::setAlert("danger", $ex->getMessage());
             }
@@ -59,7 +67,8 @@ class users extends \ApplicationM implements \Controller\IController {
         }
     }
 
-    public function delete() {
+    public function delete()
+    {
         $id = $this->getParam()[0];
         $admin = new \Module\user\Model\Admin();
         $User = $admin->GetById($id);
@@ -70,15 +79,16 @@ class users extends \ApplicationM implements \Controller\IController {
         \Common\Common::toUrl();
     }
 
-    public function detail() {
+    public function detail()
+    {
 
     }
 
-    public function edit() {
+    public function edit()
+    {
         $admin = new \Module\user\Model\Admin();
         if (\Module\user\Model\AdminForm::onSubmit()) {
             $userPost = $_POST["users"];
-            $taikhoanPost = $_POST["taikhoan"];
             $User = $admin->GetById($userPost["Id"]);
             if ($User) {
                 $User["Name"] = $userPost["Name"];
@@ -89,22 +99,6 @@ class users extends \ApplicationM implements \Controller\IController {
                 $User["Note"] = $userPost["Note"];
                 $User["Groups"] = $userPost["Groups"];
                 $admin->UpdateSubmit($User);
-                $TaiKhoan = new \Module\user\Model\TaiKhoan();
-                $TaiKhoanModel = $TaiKhoan->GetByIdUser($User["Id"], \Module\user\Model\TaiKhoan::CodeKhachHang);
-//                var_dump($TaiKhoanModel);
-                if ($TaiKhoanModel) {
-                    $TaiKhoanModel["idKhachHang"] = $taikhoanPost["KhachHang"];
-//                    var_dump($TaiKhoanModel);
-                    $TaiKhoan->Put($TaiKhoanModel);
-                }
-                $TaiKhoanModel = $TaiKhoan->GetByIdUser($User["Id"], \Module\user\Model\TaiKhoan::CodeTrungTamBaoHanh);
-                if ($TaiKhoanModel) {
-                    $TaiKhoanModel["idKhachHang"] = $taikhoanPost["TrungTamBaoHang"];
-                    var_dump($TaiKhoanModel);
-                    $TaiKhoan->Put($TaiKhoanModel);
-                }
-                \Application\redirectTo::Url($_SERVER["HTTP_REFERER"]);
-                exit();
             }
         }
         $id = $this->getParam()[0];
@@ -112,7 +106,8 @@ class users extends \ApplicationM implements \Controller\IController {
         return $this->ViewThemeModlue(["admin" => $admin]);
     }
 
-    public function import() {
+    public function import()
+    {
 
 
         try {
@@ -161,7 +156,8 @@ class users extends \ApplicationM implements \Controller\IController {
         \Common\Common::toUrl($_SERVER["HTTP_REFERER"]);
     }
 
-    public function resetpassword() {
+    public function resetpassword()
+    {
         $publicKey = $_POST["publicKey"];
         $admin = new \Module\user\Model\Admin();
         $Model = $admin->getUserByPublicKey($publicKey);
@@ -171,4 +167,3 @@ class users extends \ApplicationM implements \Controller\IController {
 
 }
 ?>
-

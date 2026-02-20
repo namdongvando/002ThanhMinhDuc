@@ -12,12 +12,12 @@ $KhachHang = new Module\khachhang\Model\KhachHang($KhachHang);
     </li>
     <li class="active">Sửa</li>
 </ol>
-<div class="container" >
-    <div class="row" >
-        <div class="clearfix" ></div>
-        <section class="pb-10" >
-            <form action="" method="POST" enctype="multipart/form-data" >
-                <div class="" >
+<div class="container">
+    <div class="row">
+        <div class="clearfix"></div>
+        <section class="pb-10">
+            <form action="" method="POST" enctype="multipart/form-data">
+                <div class="">
                     <div class="box box-solid">
                         <div class=" box-header bg-blue-gradient">
                             <h3 class="box-title">Thêm Khách Hàng</h3>
@@ -28,9 +28,10 @@ $KhachHang = new Module\khachhang\Model\KhachHang($KhachHang);
                                 <legend>Thông tin hành chính</legend>
                                 <div class="row pt-15">
                                     <div class="col-md-4">
-                                        <a class="pull-right btn btn-primary btn-xs" data-toggle="modal" href='#huongDan'>
-                                            <i class="fa fa-question" ></i>
-                                        </a>
+                                        <!-- <a class="pull-right btn btn-primary btn-xs" data-toggle="modal"
+                                            href='#huongDan'>
+                                            <i class="fa fa-question"></i>
+                                        </a> -->
                                         <?php
                                         Module\khachhang\Model\KhachHangForm::Id($KhachHang->Id)->render();
                                         Module\khachhang\Model\KhachHangForm::Code($KhachHang->Code)->renderHTML();
@@ -39,16 +40,20 @@ $KhachHang = new Module\khachhang\Model\KhachHang($KhachHang);
                                             <div class="modal-dialog modal-lg">
                                                 <div class="modal-content">
                                                     <div class="modal-header">
-                                                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                                        <button type="button" class="close" data-dismiss="modal"
+                                                            aria-hidden="true">&times;</button>
                                                         <h3 class="modal-title">Hướng Dẫn</h3>
                                                     </div>
                                                     <div class="modal-body center-block">
-                                                        <div class="text-center"  >
-                                                            <img style="margin: auto;" class="img img-responsive" src="/public/duongdan/MaKhachHang.JPG" alt="hướng Dẫn"/>
+                                                        <div class="text-center">
+                                                            <img style="margin: auto;" class="img img-responsive"
+                                                                src="/public/duongdan/MaKhachHang.JPG"
+                                                                alt="hướng Dẫn" />
                                                         </div>
                                                     </div>
                                                     <div class="modal-footer">
-                                                        <button type="button" class="btn btn-default" data-dismiss="modal">Thoát</button>
+                                                        <button type="button" class="btn btn-default"
+                                                            data-dismiss="modal">Thoát</button>
                                                     </div>
                                                 </div>
                                             </div>
@@ -132,7 +137,7 @@ $KhachHang = new Module\khachhang\Model\KhachHang($KhachHang);
                                     </div>
                                     <div class="col-md-12">
                                         <?php
-                                        Module\khachhang\Model\KhachHangForm::DiaChiGiaoHang($KhachHang->DiaChi)->renderHTML();
+                                        Module\khachhang\Model\KhachHangForm::DiaChiGiaoHang($KhachHang->DiaChiGiaoHang)->renderHTML();
                                         ?>
                                     </div>
                                 </div>
@@ -178,11 +183,12 @@ $KhachHang = new Module\khachhang\Model\KhachHang($KhachHang);
                                 </div>
                             </fieldset>
                         </div>
-                        <div class="box-footer" >
+                        <div class="box-footer">
                             <?php
                             Module\rmm\Model\RoomForm::btnSave()->render();
                             ?>
-                            <a href="/khachhang/index/delete/<?php echo sha1($KhachHang->Id); ?>" data-confirm="Xóa Khách Hàng Này?" class="btn xoa btn-danger" >Xóa</a>
+                            <a href="/khachhang/index/delete/<?php echo sha1($KhachHang->Id); ?>"
+                                data-confirm="Xóa Khách Hàng Này?" class="btn xoa btn-danger">Xóa</a>
                         </div>
                     </div>
                 </div>

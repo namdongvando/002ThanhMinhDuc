@@ -2,6 +2,8 @@
 
 namespace Module\trungtambaohanh\Controller;
 
+use Exception;
+
 class index extends \ApplicationM implements \Controller\IController {
 
     static public $UserLayout = "backend";
@@ -17,6 +19,10 @@ class index extends \ApplicationM implements \Controller\IController {
 
     function index() {
 
+        return $this->ViewThemeModlue();
+    }
+    function temsanpham() {
+        
         return $this->ViewThemeModlue();
     }
 

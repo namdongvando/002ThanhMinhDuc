@@ -21,7 +21,6 @@ class index extends \ApplicationM implements \Controller\IController
 
     function index()
     {
-
         return $this->ViewThemeModlue();
     }
 

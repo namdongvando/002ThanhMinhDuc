@@ -30,7 +30,7 @@ $options = \Module\option\Model\Option::GetOptionsByGroups($groups);
                                 <?php
                                 \Module\option\Model\OptionForm::Code()->renderHTML();
                                 \Module\option\Model\OptionForm::Name()->renderHTML();
-                                \Module\option\Model\OptionForm::Groups()->renderHTML();
+                                \Module\option\Model\OptionForm::Groups($_Param[0])->renderHTML();
                                 \Module\option\Model\OptionForm::Note()->renderHTML();
                                 \Module\option\Model\OptionForm::Parents(0)->renderHTML();
                                 \Module\option\Model\OptionForm::OrderBy(0)->renderHTML();

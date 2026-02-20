@@ -6,7 +6,8 @@ use Zend\Db\Sql\Ddl;
 use Zend\Db\Sql\TableIdentifier;
 use Zend\Db\TableGateway\TableGateway;
 
-class SanPhamLog extends \datatable\ZendData implements \Model\IModel {
+class SanPhamLog extends \datatable\ZendData implements \Model\IModel
+{
 
     private static $tableNews;
     private $TableName;
@@ -17,7 +18,8 @@ class SanPhamLog extends \datatable\ZendData implements \Model\IModel {
     public $NgayTao;
     public $NgaySua;
 
-    public function __construct($dv = null) {
+    public function __construct($dv = null)
+    {
         $this->TableName = table_prefix . "sanpham_log";
         $this->setTableGateway($this->TableName);
         parent::__construct($this->TableName);
@@ -42,7 +44,8 @@ class SanPhamLog extends \datatable\ZendData implements \Model\IModel {
         }
     }
 
-    function SanPham() {
+    function SanPham()
+    {
         $sanPhan = new SanPham();
         $sanPhan->Id = $this->Id;
         $sanPhan->Name = $this->Name;
@@ -60,35 +63,41 @@ class SanPhamLog extends \datatable\ZendData implements \Model\IModel {
         return $sanPhan;
     }
 
-    public function DeleteSubmit($id) {
+    public function DeleteSubmit($id)
+    {
 
     }
 
-    public function GetAll() {
+    public function GetAll()
+    {
 
     }
 
-    public function GetById($id) {
+    public function GetById($id)
+    {
 
     }
 
-    public function GetByName($name) {
+    public function GetByName($name)
+    {
 
     }
 
-    public function InsertSubmit($model) {
+    public function InsertSubmit($model)
+    {
         $mSanPham["idKhachHang"] = !empty($mSanPham["idKhachHang"]) ? $mSanPham["idKhachHang"] : 0;
         $this->InsertRowsTable($model);
     }
 
-    public function UpdateSubmit($model) {
+    public function UpdateSubmit($model)
+    {
 
     }
 
-    public function GetByIdSP($param0) {
+    public function GetByIdSP($param0)
+    {
         return $this->GetRows("`Id` = '{$param0}' ORDER BY `NgayTao` DESC");
     }
 
 }
 ?>
-

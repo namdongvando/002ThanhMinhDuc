@@ -1,12 +1,25 @@
-<ol class="breadcrumb" >
-    <li><a href="/dashboard/nhaptem/index" >Sanh Sách Nhập</a></li>
+<ol class="breadcrumb">
+    <li><a href="/dashboard/">Dashboard</a></li>
+    <li><a href="/dashboard/nhaptem/index">Danh Sanh Sách Nhập</a></li>
 </ol>
 <?php
-$admin = \Module\user\Model\Admin::getCurentUser(true);
+
+use Model\FormCommon;
+use Model\FormOptions;
+use Module\user\Model\Admin;
+
+$admin = Admin::getCurentUser(true);
 $CodeQr = new \Model\CodeQR($admin->Username);
 $ds = $CodeQr->GetCodes();
+$temSPDauTien = new \Module\sanpham\Model\TemSanPham(reset($ds) ?? null);
+// echo $temSPDauTien->SanPham()->DanhMuc;
+// var_dump($temSPDauTien->SanPham());
+// $temSPDauTien->NhanVienKyThuat()->UserId()->Id;
+// $itemDetail = reset($ds) ?? null;
+// $temMacDauTien = new \Module\sanpham\Model\TemSanPham($itemDetail);
+ 
 ?>
-<form action="" enctype="multipart/form-data" method="POST" >
+<form action="" enctype="multipart/form-data" method="POST">
     <div class="modal fade" id="ChonSanPham">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -16,14 +29,41 @@ $ds = $CodeQr->GetCodes();
                 </div>
                 <div class="modal-body">
                     <?php
-                    Module\option\Model\OptionForm::SelectGroups("Danh Mục Sản Phẩm", "Chon[MaDanhMuc]", \Module\option\Model\Option::DanhMucVatTu)->renderHtml();
-                    Module\sanpham\Model\SanPhamForm::TinhTrang()->renderHTML();
+                    Module\option\Model\OptionForm::SelectGroups(
+                        "Danh Mục Sản Phẩm",
+                        "Chon[MaDanhMuc]",
+                        \Module\option\Model\Option::DanhMucVatTu
+                        ,
+                        ["value" => $temSPDauTien->SanPham()->DanhMuc]
+                    )->renderHtml();
                     Module\sanpham\Model\SanPhamForm::MaDaiLy()->renderHTML();
+                    FormOptions::Select(
+                        "",
+                        "Chon[NhanVien]",
+                        Admin::GetUsersOptions(Admin::NVKT),
+                        [
+                            "label" => 'Nhân Viên Kỹ Thuật &nbsp &nbsp &nbsp <a href="/user/users/" target="_blank" > Thêm Nhân Viên</a> ',
+                            'style' => "width:100%;",
+                            "value" => $temSPDauTien->NhanVienKyThuat()->UserId()->Id
+                        ]
+                    )->renderHtml();
+                    FormOptions::Select(
+                        "",
+                        "Chon[NhanVienBanHang]",
+                        Admin::GetUsersOptions(Admin::KinhDoanh),
+                        ["label" => 'Nhân viên Bán hàng  ', 'style' => "width:100%;"]
+                    )->renderHtml();
+
+                    FormCommon::LyDoXuatKho(null, "Chon[LyDoXuatKho]", [
+                        "style" => "width:100%;"
+                    ])->renderHTML();
                     ?>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                    <button type="submit" name="ChonDanhMucSanPham" class="btn btn-primary">OK</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Đóng</button>
+                    <button type="submit"
+                        onclick="return confirm('Bạn muốn cập nhật thông tin sản phẩm cho tem bảo hành')"
+                        name="ChonDanhMucSanPham" class="btn btn-primary">Xác nhận</button>
                 </div>
             </div>
         </div>
@@ -36,57 +76,103 @@ $ds = $CodeQr->GetCodes();
                 <div class="box-header">
                     <h3 class="box-title">Danh Sách Mã</h3>
                     <div class="box-tools">
-                        <a href="/dashboard/nhaptem/scan" class="btn btn-primary" ><i class="fa fa-camera" ></i></a>
+                        <a href="/dashboard/nhaptem/scan" class="btn btn-primary">
+                            <i class="fa fa-camera"></i>
+                        </a>
+                        <a href="/dashboard/nhaptem/index" class="btn btn-primary">
+                            <i class="fa fa-refresh"></i>
+                        </a>
                     </div>
                 </div>
-                <div class="box-body table-responsive">
-                    <a href="/dashboard/nhaptem/clear" onclick="return confirm('Bạn có chắc muốn nhập lại?')" class="pull-right btn-sm btn btn-danger" >
-                        Xóa Hết
+                <div class="box-body">
+                    <a href="/dashboard/nhaptem/clear" onclick="return confirm('Bạn có chắc muốn nhập lại?')"
+                        class="pull-right btn btn-danger">
+                        <span class="hidden-xs hidden-sm">Xóa Hết
+                            <i class="fa fa-trash"></i>
+                        </span>
+                        <span class="hidden-md hidden-lg"><i class="fa fa-trash"></i></span>
                     </a>
-                    <button type="button" class="btn btn-sm " data-toggle="modal" data-target='#ChonSanPham'>Chọn Sản Phẩm</button>
-                    <a href="/dashboard/nhaptem/index" class="btn btn-sm btn-primary"  >
-                        <i class="fa fa-refresh" ></i>
-                    </a>
-                    <div class="container">
-                        <?php
+                    <?php
+                    $kt = \Model\Permistion::CheckPermistion([Admin::Admin, Admin::SuperAdmin]);
+                    if($kt == true) {
                         ?>
-                    </div>
-                    <table class="table table-bordered" >
-                        <thead>
-                            <tr>
-                                <th style="width: 50px" >Stt</th>
-                                <th style="width: 150px"  >Mã Tem</th>
-                                <th>Thông Tin Sản Phẩm</th>
-                            </tr>
-                        </thead>
-                        <tbody id="DanhSachTem" class="ajaxAutoReload" data-target="#DanhSachTem" data-timeload="2000" data-urlcheck="/dashboard/nhaptem/coderefesh/" data-urldata="/dashboard/nhaptem/danhsachtem/"  >
-                            <?php
-                            $index = 0;
-                            if ($ds) {
-                                foreach ($ds as $k => $code) {
-                                    $temSP = new \Module\sanpham\Model\TemSanPham($code);
-                                    if ($temSP->Code != "") {
+                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target='#ChonSanPham'>
+                            <span class="hidden-xs hidden-sm">Chọn Sản Phẩm</span>
+                            <span class="hidden-md hidden-lg">Chọn SP</span>
+                        </button>
+                        <?php
+                    }
+                    ?>
+
+                    <?php
+                    if(Admin::CheckQuyen([Admin::Admin, Admin::SuperAdmin]) == true) {
+                        ?>
+                        <a href="/dashboard/nhaptem/doitra" class="btn  btn-primary">
+
+                            <span class="hidden-xs hidden-sm">Tiếp nhận đổi trả</span>
+                            <span class="hidden-md hidden-lg">
+                                <i class="fa fa-arrows-v"></i>
+                                TN đổi trả
+                            </span>
+                        </a>
+
+                        <?php
+                    }
+
+                    ?>
+                    <!-- <a href="/dashboard/nhaptem/kygui" class="btn  btn-primary">
+                        Ký gửi/Trưng bày
+                    </a>   -->
+                    <div class=" table-responsive mt-10">
+
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th style="width: 50px">Stt</th>
+                                    <th style="width: 200px">Thao Tác</th>
+                                    <th>Thông Tin Sản Phẩm</th>
+                                    <th style="width: 150px">Mã Tem</th>
+                                </tr>
+                            </thead>
+                            <tbody id="DanhSachTem" class="ajaxAutoReload" data-target="#DanhSachTem"
+                                data-timeload="2000" data-urlcheck="/dashboard/nhaptem/coderefesh/"
+                                data-urldata="/dashboard/nhaptem/danhsachtem/">
+                                <?php
+                                $index = 0;
+                                if($ds) {
+                                    foreach($ds as $k => $code) {
+
+                                        $temSP = new \Module\sanpham\Model\TemSanPham($code);
+                                        // var_dump($code);
+                                        // var_dump($temSP);
                                         ?>
                                         <tr>
-                                            <td><?php echo 1 + $index++; ?></td>
-                                            <td><?php echo $temSP->Code; ?></td>
                                             <td>
-                                                <p style="margin: 0px;" ><?php echo $temSP->SanPham()->Name; ?></p>
-                                                <p style="margin: 0px;" ><?php echo $temSP->SanPham()->TinhTrang(); ?></p>
-                                                <p style="margin: 0px;" ><?php echo $temSP->SanPham()->DaiLy()->Name; ?></p>
+                                                <?php echo 1 + $index++; ?>
+                                            </td>
+                                            <td>
+                                                <a href="/dashboard/workflow/temsanpham/<?php echo $code; ?>/"
+                                                    class="btn btn-primary">Chọn</a>
+                                            </td>
+                                            <td>
+                                                <?php
+                                                $temSP->ThongTinSanPhamHTML();
+                                                ?>
+                                            </td>
+                                            <td>
+                                                <?php echo $temSP->Code; ?>
                                             </td>
                                         </tr>
                                         <?php
                                     }
                                 }
-                            }
-                            ?>
-                        </tbody>
-                    </table>
+                                ?>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>
 
     </div>
 </div>
-

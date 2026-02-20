@@ -1,12 +1,18 @@
 <?php
 
 use Common\Common;
+use Model\FormRender;
+use Module\khachhang\Model\KhachHangTieuDung;
+use Module\sanpham\Model\SanPham;
 
-$pageNumber = 1;
+$pageNumber = $_GET["pageNumber"] ?? 1;
+$name = $_GET["name"] ?? "";
+$name = trim($name);
 $Number = 20;
 $Tong = 0;
-datatable\ZendData::$IsDebug = true;
-$KhachHangs = \Module\khachhang\Model\KhachHangTieuDung::KhachHangTieuDungsPt($pageNumber, $Number, $Tong);
+// datatable\ZendData::$IsDebug = true;
+$params["name"] = $name;
+$KhachHangs = \Module\khachhang\Model\KhachHangTieuDung::KhachHangTieuDungsPt($params, $pageNumber, $Number, $Tong);
 ?>
 <script type="text/javascript">
     app.controller("optionController", function($scope, $http) {
@@ -21,54 +27,93 @@ $KhachHangs = \Module\khachhang\Model\KhachHangTieuDung::KhachHangTieuDungsPt($p
     </li>
     <li class="active">Khách Hàng Tiêu Dùng</li>
 </ol>
-<div class="row ">
+<div class="container-fluid ">
     <section class="col-md-12 pb-10 mt-20">
-        <div class=" ">
+        <div class="row ">
             <div class="box box-primary">
                 <div class="box-header">
-                    <h3 class="box-title">Danh Sách Khách Hàng Tiêu Dùng</h3>
+                    <h3 class="box-title">Danh Sách Khách Hàng Tiêu Dùng (<?php echo $Tong; ?>)</h3>
                 </div>
-                <div class="box-body table-responsive">
-                    <table class="table table-bordered " id="data">
-                        <thead>
-                            <tr>
-                                <th class="text-center">#</th>
-                                <th>Họ & Tên</th>
-                                <th>SĐT</th>
-                                <th>Địa Chỉ</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <?php
-                            foreach ($KhachHangs as $index => $kh) {
-                                $_Kh = new Module\khachhang\Model\KhachHangTieuDung($kh);
-                            ?>
-                                <tr>
-                                    <td class="text-center"><?php echo $index + 1; ?></td>
-                                    <td><?php echo $_Kh->Name; ?></td>
-                                    <td><?php echo $_Kh->Phone; ?></td>
-                                    <td><?php echo $_Kh->DiaChi; ?></td>
-                                </tr>
-                            <?php
-                            }
-                            ?>
-                        </tbody>
-                        <tfoot>
-                            <tr>
-                                <th class="text-center" style="width: 50px;">#</th>
-                                <th style="width: 300px;">Họ & Tên</th>
-                                <th>SĐT</th>
-                                <th>Địa Chỉ</th>
-                            </tr>
-                        </tfoot>
+                <div class="box-body">
+                    <div class="">
+                        <form action="/khachhang/khachhangtieudung/index/" method="get">
+                            <div class="d-flex">
+                                <input type="hidden" name="pageNumber" value="1">
+                                <input style="width:250px" type="text" value="<?php echo $name; ?>" name="name" class="form-control" placeholder="Họ tên, SĐT">
+                                <button class="btn btn-primary">Tìm Kiếm</button>
+                            </div>
+                        </form>
+                    </div>
 
-                    </table>
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-hover " id="data">
+                            <thead>
+                                <tr>
+                                    <th class="text-center">#</th>
+                                    <th>Họ & Tên</th>
+                                    <th>SĐT</th>
+                                    <th>Sản Phẩm
+                                        <?php echo FormRender::ToolTipElement("Danh sách sản phẩm"); ?>
+                                    </th>
+                                    <th>Ngày Mua</th>
+                                    <th>Tỉnh thành</th>
+                                    <th>Quận huyện</th>
+                                    <th>Địa Chỉ</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php
+                                foreach ($KhachHangs as $index => $kh) {
+                                    $_Kh = new Module\khachhang\Model\KhachHangTieuDung($kh);
+                                ?>
+                                    <tr>
+                                        <td class="text-center"><?php echo $index + 1; ?></td>
+                                        <td><?php echo $_Kh->Name; ?></td>
+                                        <td><?php echo $_Kh->Phone; ?></td>
+                                        <td>
+                                            <?php
+                                            foreach ($_Kh->SanPhams() as $key => $value) {
+                                                $sp = new KhachHangTieuDung($value);
+
+                                            ?>
+                                                <a class="btn-block" href="/sanpham/temsanpham/detailbysanpham/<?php echo $sp->TenSanPham()->Code; ?>/">
+                                                    --| <?php
+                                                        echo $sp->TenSanPham()->SanPham()->Name;
+                                                        ?>
+                                                </a>
+                                            <?php
+                                            }
+                                            ?>
+
+                                        </td>
+                                        <td><?php echo $_Kh->TenSanPham()->NgayBatDau(); ?></td>
+                                        <td><?php echo $_Kh->TinhThanh()->Name; ?></td>
+                                        <td><?php echo $_Kh->QuanHuyen()->Name; ?></td>
+                                        <td><?php echo $_Kh->DiaChi; ?></td>
+                                    </tr>
+                                <?php
+                                }
+                                ?>
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <th class="text-center" style="width: 50px;">#</th>
+                                    <th style="width: 300px;">Họ & Tên</th>
+                                    <th>SĐT</th>
+                                    <th>Địa Chỉ</th>
+                                </tr>
+                            </tfoot>
+
+                        </table>
+
+                    </div>
                     <?php
-                    echo Common::PhanTrang(10, 1, "[i]");
+                    $totalPage =  ceil($Tong / $Number);
+                    $link = "/khachhang/khachhangtieudung/index/?pageNumber=[i]&name={$name}";
+                    echo Common::PhanTrang($totalPage, $pageNumber, $link);
                     ?>
                 </div>
             </div>
-
         </div>
     </section>
 </div>
